@@ -1,13 +1,13 @@
 # Python Grundlagen {#python-grundlagen}
-Hoffentlich hast du bereits einen [speziellen Ordner](#dateien-ordner) für dieses Buch erstellt. Lade das [Übungs-Notebook](notebooks/Basics.ipynb) herunter (Alt+Klick sollte es eher herunterladen als öffnen), lege es in den Ordner des Kapitels und öffne es, siehe die [relevanten Anweisungen](#jupyter-notebooks). Du musst zwischen den Erklärungen hier und den Übungen im Notizbuch hin und her wechseln, also halte sie beide offen.
+Hoffentlich hast du bereits einen [speziellen Ordner](#files-folder) für dieses Buch erstellt. Lade das [Übungs-Notebook](notebooks/Basics.ipynb) herunter (Alt+Klick sollte es eher herunterladen als öffnen), lege es in den Ordner des Kapitels und öffne es, siehe die [relevanten Anweisungen](#jupyter-notebooks). Du musst zwischen den Erklärungen hier und den Übungen im Notizbuch hin und her wechseln, also halte sie beide offen.
 
 ## Konzepte des Kapitels
 
 * [Variablen](#variablen).
-* [Konstanten](#konstanten).
-* Grundlegende [Werttypen](#werttypen).
-* Dinge [ausdrucken](#ausdrucken).
-* Werte [in Zeichenketten einfügen](#formatierung-von-zeichenketten).
+* [Konstanten](#constants).
+* Grundlegende [Werttypen](#value-types).
+* Dinge [ausdrucken](#print).
+* Werte [in Zeichenketten einfügen](#string-formatting).
 
 ## Variablen {#variablen}
 Das erste grundlegende Konzept, mit dem wir uns vertraut machen müssen, ist die **Variable**. Variablen werden verwendet, um Informationen zu speichern, und du kannst sie dir als eine Kiste mit einem Namensschild vorstellen, in die du etwas hineinlegen kannst. Das Namensschild auf dieser Kiste ist der Name der Variable und ihr Wert ist das, was du darin speicherst. Zum Beispiel können wir eine Variable erstellen, die die Anzahl der Beine speichert, die ein Spielfigur hat. Wir beginnen mit einer für einen Menschen typischen Zahl.
