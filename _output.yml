@@ -1,0 +1,18 @@
+bookdown::bs4_book:
+  css:
+    - bs4_style.css
+    - style.css
+  template: book_template.html
+  theme:
+    primary: "#096B72"
+  includes:
+    in_header: ga4tag.html
+  repo: https://github.com/alexander-pastukhov/learning-python-by-writing-games-de
+  footnotes_inline : yes
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+  latex_engine: xelatex
+  citation_package: natbib
+  keep_tex: yes
+bookdown::epub_book: default

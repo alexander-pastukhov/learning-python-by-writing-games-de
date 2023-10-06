@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 3 Programmier-Tipps und -Tricks | Lerne Python, indem du Spiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="Bevor Sie Ihren ersten Code schreiben, müssen wir über die Kunst des Programmierens sprechen. Wie ich bereits erwähnt habe, geht es nicht nur darum, dass der Code funktioniert, sondern darum, dass...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 3 Programmier-Tipps und -Tricks | Lerne Python, indem du Spiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/programming-tips.html">
+<meta property="og:description" content="Bevor Sie Ihren ersten Code schreiben, müssen wir über die Kunst des Programmierens sprechen. Wie ich bereits erwähnt habe, geht es nicht nur darum, dass der Code funktioniert, sondern darum, dass...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 3 Programmier-Tipps und -Tricks | Lerne Python, indem du Spiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="Bevor Sie Ihren ersten Code schreiben, müssen wir über die Kunst des Programmierens sprechen. Wie ich bereits erwähnt habe, geht es nicht nur darum, dass der Code funktioniert, sondern darum, dass...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-NBXRG6YB3R');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Spiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="active" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="programming-tips" class="section level1" number="3">
+<h1>
+<span class="header-section-number">Kapitel 3</span> Programmier-Tipps und -Tricks<a class="anchor" aria-label="anchor" href="#programming-tips"><i class="fas fa-link"></i></a>
+</h1>
+<p>Bevor Sie Ihren ersten Code schreiben, müssen wir über die Kunst des Programmierens sprechen. Wie ich bereits erwähnt habe, geht es nicht nur darum, dass der Code funktioniert, sondern darum, dass er leicht zu verstehen ist. Korrekt funktionierender Code ist ein schönes Plus, aber wenn ich zwischen einem Spaghetti-Code, der momentan korrekt funktioniert, und einem klar geschriebenen und dokumentierten Code, der noch repariert werden muss, wählen muss, werde ich immer Letzteren bevorzugen. Ich kann Dinge reparieren, die ich verstehe, ich kann nur hoffen, wenn ich das nicht tue.</p>
+<p>Unten sind einige Tipps zum Schreiben und Lesen von Code. Einige mögen beim ersten Lesen kryptisch klingen (sie werden klar, sobald wir das notwendige Material behandeln). Einige werden sich für die einfachen Projekte, die wir umsetzen werden, als Overkill anfühlen. Ich schlage vor, dass Sie diesen Abschnitt beim ersten Mal ungezwungen lesen, aber oft darauf zurückkommen, sobald wir ernsthaft mit Programmieren beginnen. Leider werden diese Tricks nicht funktionieren, wenn Sie sie nicht benutzen! Daher sollten Sie sie <em>immer</em> benutzen und sie sollten Ihre <em>guten Gewohnheiten</em> werden, wie das Anlegen eines Sicherheitsgurtes. Der Sicherheitsgurt ist an den meisten (hoffentlich allen) Tagen nicht nützlich, aber Sie tragen ihn, weil er plötzlich und sehr dringend extrem nützlich werden könnte und Sie nie sicher sein können, wann das passieren wird. Gleiches gilt für das Programmieren. Oft werden Sie versucht sein, einen “quick-n-dirty” Code zu schreiben, weil es sich nur um einen “einfachen Test”, eine temporäre Lösung, einen Prototyp, ein Pilotexperiment, usw. handelt. Aber wie man so schön sagt: “Es gibt nichts Beständigeres als eine provisorische Lösung”. Häufiger als nicht werden Sie feststellen, dass Ihr Spielzeugcode zu einem ausgewachsenen Experiment herangewachsen ist und es ein Durcheinander ist. Oder Sie möchten zu dem Pilotexperiment zurückkehren, das Sie vor ein paar Monaten durchgeführt haben, aber Sie stellen fest, dass es einfacher ist, von vorne zu beginnen, als zu verstehen, wie dieses Monster funktioniert<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Mir ist das öfter passiert, als ich zugeben möchte.&lt;/p&gt;"><sup>4</sup></a>. Widerstehen Sie also der Versuchung! Bilden Sie gute Gewohnheiten und Ihr zukünftiges Ich wird sehr dankbar sein!</p>
+<div id="schreibtipps" class="section level2" number="3.1">
+<h2>
+<span class="header-section-number">3.1</span> Den Code schreiben<a class="anchor" aria-label="anchor" href="#schreibtipps"><i class="fas fa-link"></i></a>
+</h2>
+<div id="verwende-einen-linter" class="section level3" number="3.1.1">
+<h3>
+<span class="header-section-number">3.1.1</span> Verwende einen Linter<a class="anchor" aria-label="anchor" href="#verwende-einen-linter"><i class="fas fa-link"></i></a>
+</h3>
+<p>Ein Linter ist ein Programm, das deinen Code-Stil analysiert und highlightet Probleme, die es findet: unnötige Leerzeichen, fehlende Leerzeichen, falsche Namen, übermäßig lange Zeilen, usw. Diese haben keinen Einflluss darauf, wie der Code ausgeführt wird, aber das Befolgen der Linter-Ratschläge führt zu einem konsistenten Standard, wenn auch langweiligen[^ “Langweilig ist gut!”, siehe den Film “The Hitman’s Bodyguard.”] Python Code. Versuche, alle Probleme zu beheben, die der Linter aufgeworfen hat. Verwende jedoch dein besseres Urteilsvermögen, denn manchmal sind Zeilen, die länger sind als der Linter es bevorzugen würde, lesbarer als zwei kürzere. Ebenso kann ein “schlechter” Variablenname nach den Standards des Linters für einen Psychologen eine aussagekräftige Bezeichnung sein. Denke daran, dein Code ist für Menschen, nicht für den Linter.</p>
+</div>
+<div id="dokumentiere-deinen-code" class="section level3" number="3.1.2">
+<h3>
+<span class="header-section-number">3.1.2</span> Dokumentiere deinen Code<a class="anchor" aria-label="anchor" href="#dokumentiere-deinen-code"><i class="fas fa-link"></i></a>
+</h3>
+<p>Jedes Mal, wenn du eine neue Datei erstellst: dokumentiere sie und aktualisiere die Dokumentation, wann immer du neue Funktionen oder Klassen hinzufügst/änderst/löschst. Jedes Mal, wenn du eine neue Funktion erstellst: dokumentiere sie. Neue Klasse: dokumentiere sie. Neue Konstante: es sei denn, es ist alleine aus dem Namen klar, dokumentiere sie. Du wirst eine <a href="https://numpydoc.readthedocs.io/en/latest/format.html">NumPy</a> Methode der Dokumentation in dem Buch lernen.</p>
+<p>Ich kann nicht genug betonen, wie wichtig es ist, deinen Code zu dokumentieren. VS Code (ein Editor, den wir verwenden werden) ist intelligent genug, um NumPy Docstrings zu parsen, also wird es dir diese Hilfe anzeigen, wann immer du deine eigenen Funktionen verwendest (hilft dir, dir selbst zu helfen!). Noch wichtiger ist, dass das Schreiben von Dokumentationen dich dazu zwingt, in menschlicher Sprache zu denken und zu formulieren, was die Funktion oder Klasse macht, welchen Typ die Argumente / Attribute / Methoden haben, was der Bereich der gültigen Werte ist, was die Standards sind, was eine Funktion zurückgeben sollte usw. Mehr als oft nicht, wirst du feststellen, dass du ein wichtiges Detail übersehen hast, das aus dem Code selbst nicht ersichtlich ist.</p>
+</div>
+<div id="füge-etwas-luft-hinzu" class="section level3" number="3.1.3">
+<h3>
+<span class="header-section-number">3.1.3</span> Füge etwas Luft hinzu<a class="anchor" aria-label="anchor" href="#f%C3%BCge-etwas-luft-hinzu"><i class="fas fa-link"></i></a>
+</h3>
+<p>Trenne Codeblöcke durch einige leere Zeilen. Denke an Absätze im normalen Text. Du würdest nicht wollen, dass dein Buch ein einziger Absatz-Alptraum ist? Platziere vor jedem Codeblock einen Kommentar, der erklärt, <em>was</em> er macht, aber nicht <em>wie</em> er es macht. Zum Beispiel wird es in unserem typischen PsychoPy-basierten Spiel einen Punkt geben, an dem wir alle Reize zeichnen und das Fenster aktualisieren. Das ist ein schöner selbstständiger Codeblock, der als <code># Zeichnen aller Reize</code> beschrieben werden kann. Der Code liefert Details darüber, was genau gezeichnet wird, was die Zeichenreihenfolge ist, usw. Aber dieser einzelne Kommentar hilft dir zu verstehen, worum es in diesem Codeblock geht und ob er für dich momentan relevant ist.
+Das Gleiche gilt für <code># Verarbeitung von Tastendrücken</code> oder <code># Überprüfung der Spielende-Bedingungen</code>, usw. Aber sei vorsichtig und stelle sicher, dass der Kommentar den Code korrekt beschreibt. Wenn der Kommentar zum Beispiel <code># Zeichnen aller Reize</code> sagt, sollte es nirgendwo anders einen Code zum Zeichnen von Reizen geben und keinen weiteren Code, der etwas anderes tut!</p>
+</div>
+<div id="schreibe-deinen-code-schritt-für-schritt" class="section level3" number="3.1.4">
+<h3>
+<span class="header-section-number">3.1.4</span> Schreibe deinen Code Schritt für Schritt<a class="anchor" aria-label="anchor" href="#schreibe-deinen-code-schritt-f%C3%BCr-schritt"><i class="fas fa-link"></i></a>
+</h3>
+<p>Dein Motto sollte “langsam aber stetig” lauten. Auf diese Weise werde ich dich durch die Spiele führen. Beginne immer mit etwas extrem Einfachem wie einem statischen Rechteck oder Bild. Stelle sicher, dass es funktioniert. Füge eine kleinere Funktionalität hinzu: Farbwechsel, Positionsänderung, ein weiteres Rechteck, speichere es als Attribut, usw. Stelle sicher, dass es funktioniert. Gehe niemals zum nächsten Schritt, es sei denn, du verstehst vollständig, was dein aktueller Code macht und du bist dir zu 100% sicher, dass er sich so verhält, wie er sollte. Und ich meine 100% ernst! Wenn du auch nur den Schatten eines Zweifels hast, überprüfe es erneut. Andernfalls wird dieser Schatten wachsen und dich zunehmend unsicher über deinen Code machen. Dieser Ansatz in Schildkrötengeschwindigkeit mag albern und übermäßig langsam erscheinen, ist aber immer noch schneller, als einen großen Codeblock zu schreiben und dann zu versuchen, ihn zum Laufen zu bringen. Es ist viel einfacher, einfache Probleme einzeln zu lösen, als viele auf einmal.</p>
+</div>
+<div id="es-ist-nichts-falsches-an-stackoverflow" class="section level3" number="3.1.5">
+<h3>
+<span class="header-section-number">3.1.5</span> Es ist nichts Falsches an StackOverflow<a class="anchor" aria-label="anchor" href="#es-ist-nichts-falsches-an-stackoverflow"><i class="fas fa-link"></i></a>
+</h3>
+<p>Ja, man kann immer versuchen, eine Lösung für sein Problem auf StackOverflow zu finden<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Wenn Sie jedoch an dem Seminar teilnehmen, fragen Sie mich bitte zuerst!&lt;/p&gt;"><sup>5</sup></a>. Ich mache das die ganze Zeit! Sie sollten die bereitgestellte Lösung jedoch <em>nur verwenden, wenn Sie sie verstehen</em>! Kopieren Sie nicht einfach den Code, der ein Problem wie Ihres zu lösen <em>scheint</em>. Wenn Sie das tun und Sie haben Glück, könnte es funktionieren. Oder, wieder wenn Sie Glück haben, funktioniert es auf eine offensichtliche Weise nicht. Aber wenn Sie nicht so viel Glück haben, wird es (manchmal) subtil falsch funktionieren. Und da Sie nicht wirklich wussten, was der Code tat, als Sie ihn einfügten, werden Sie noch mehr verwirrt sein. Nutzen Sie also StackOverflow als eine Quelle des Wissens, nicht als eine Quelle zum Kopieren und Einfügen von Code!</p>
+</div>
+</div>
+<div id="reading-tips" class="section level2" number="3.2">
+<h2>
+<span class="header-section-number">3.2</span> Den Code lesen<a class="anchor" aria-label="anchor" href="#reading-tips"><i class="fas fa-link"></i></a>
+</h2>
+<p>Das Lesen von Code ist einfach, weil Computer dumm sind und Sie schlau sind. Das bedeutet, dass die Anweisungen, die Sie dem Computer geben, notwendigerweise sehr einfach sind und daher für einen Menschen sehr leicht zu verstehen sind. Das Lesen von Code ist jedoch auch schwierig, weil Computer dumm sind und Sie schlau sind. Sie sind so schlau, dass Sie nicht einmal den gesamten Code lesen müssen, um zu verstehen, was er tut. Sie lesen nur die Schlüsselstellen und füllen die Lücken aus. Leider neigen Sie dazu, Fehler zu überlesen. Dies ist nicht nur beim Programmieren der Fall, wenn Sie jemals einen Text Korrektur gelesen haben, wissen Sie, wie schwierig es ist, Tippfehler zu finden. Ihr Gehirn korrigiert sie in Echtzeit mit Hilfe des Kontexts und Sie lesen das Wort so, wie es sein sollte, nicht so, wie es tatsächlich geschrieben ist<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Tipp: Lesen Sie Ihren Text ein Satz nach dem anderen von hinten nach vorne oder lesen Sie zufällig einen Satz nach dem anderen. Dies bricht den Fluss des Textes und hilft Ihnen, sich auf die Wörter zu konzentrieren, anstatt auf die Bedeutung und die Geschichte.&lt;/p&gt;"><sup>6</sup></a>.</p>
+<p>Meine Erfahrung mit Programmierung im Allgemeinen und im Besonderen auf diesem Seminar ist, dass die meisten Probleme, bei denen Sie stecken bleiben, im Nachhinein einfach bis dumm und offensichtlich sind<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Im Nachhinein ist man immer schlauer!&lt;/p&gt;"><sup>7</sup></a>. Verzweifeln Sie nicht! Es liegt nicht an Ihnen, sondern ist lediglich eine Folge davon, wie wunderbar Ihr Gehirn für die Mustererkennung verdrahtet ist. Im Folgenden finden Sie einige Vorschläge, die Ihnen helfen könnten, das Lesen von Code robuster zu gestalten.</p>
+<div id="denken-sie-wie-ein-computer" class="section level3" number="3.2.1">
+<h3>
+<span class="header-section-number">3.2.1</span> Denken Sie wie ein Computer<a class="anchor" aria-label="anchor" href="#denken-sie-wie-ein-computer"><i class="fas fa-link"></i></a>
+</h3>
+<p>Lesen Sie den Code Zeile für Zeile und “führen Sie ihn aus”, so wie es der Computer tun würde. Verwenden Sie Stift und Papier, um den Überblick über die Variablen zu behalten. Verfolgen Sie, welche Codeblöcke wann erreicht werden können. Verlangsamen Sie sich und stellen Sie sicher, dass Sie jede Zeile verstehen und in der Lage sind, den Überblick über die Variablen zu behalten. Sobald Sie das tun, wird es einfach sein, einen Fehler zu erkennen.</p>
+</div>
+<div id="tun-sie-so-als-hätten-sie-diesen-code-in-ihrem-leben-noch-nie-gesehen" class="section level3" number="3.2.2">
+<h3>
+<span class="header-section-number">3.2.2</span> Tun Sie so, als hätten Sie diesen Code in Ihrem Leben noch nie gesehen<a class="anchor" aria-label="anchor" href="#tun-sie-so-als-h%C3%A4tten-sie-diesen-code-in-ihrem-leben-noch-nie-gesehen"><i class="fas fa-link"></i></a>
+</h3>
+<p>Nehmen Sie an, Sie haben keine Ahnung, was der Code tut. Wie ich schrieb, sehen Sie oft <em>wörtlich</em> einen Fehler nicht, weil Ihr Gehirn Details auffüllt und die Realität so biegt, dass sie Ihren Erwartungen entspricht<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Kürzlich verbrachte ich eine halbe Stunde damit, zu verstehen, warum zwei identische Codeblöcke unterschiedliche Ergebnisse liefern. Mein Sohn fand fast sofort einen Unterschied (ein fehlendes Komma in einem von ihnen), weil es für ihn nur ein Haufen Buchstaben und Zahlen war.&lt;/p&gt;"><sup>8</sup></a>. Sie <em>wissen</em>, was dieser Codeblock tun sollte, also lesen Sie ihn statt dessen nur flüchtig und nehmen an, dass er tut, was er soll, es sei denn, es sieht offensichtlich schrecklich falsch aus. Es ist schwer, Ihre Erwartungen auszuschalten, aber es ist immens hilfreich.</p>
+</div>
+<div id="suchen-sie-nicht-nur-unter-der-straßenlampe" class="section level3" number="3.2.3">
+<h3>
+<span class="header-section-number">3.2.3</span> Suchen Sie nicht nur unter der Straßenlampe<a class="anchor" aria-label="anchor" href="#suchen-sie-nicht-nur-unter-der-stra%C3%9Fenlampe"><i class="fas fa-link"></i></a>
+</h3>
+<p>Immer wenn Sie neuen Code verwenden oder etwas implementieren müssen, das kompliziert erscheint, und Ihr Code nicht so funktioniert, wie er sollte, neigen Sie dazu, anzunehmen, dass das Problem beim neuen, ausgefallenen Code liegt. Einfach, weil er neu, ausgefallen und kompliziert ist. Meiner Erfahrung nach versteckt sich der Fehler jedoch typischerweise in der einfacheren “trivialen” Codezeile in der Nähe, die Sie nie richtig anschauen, weil sie einfach und trivial ist. Überprüfen Sie alles, nicht nur die Stellen, an denen Sie einen Fehler vermuten.</p>
+</div>
+<div id="nutzen-sie-den-debugger" class="section level3" number="3.2.4">
+<h3>
+<span class="header-section-number">3.2.4</span> Nutzen Sie den Debugger<a class="anchor" aria-label="anchor" href="#nutzen-sie-den-debugger"><i class="fas fa-link"></i></a>
+</h3>
+<p>Im Buch werden Sie lernen, wie Sie die Ausführung Ihres Spiels anhalten können, um seinen Zustand zu untersuchen. Nutzen Sie dieses Wissen! Setzen Sie Haltepunkte und führen Sie den Code Schritt für Schritt aus. Überprüfen Sie die Werte von Variablen im Tab “Watch”. Verwenden Sie die Debug-Konsole, um zu überprüfen, ob Funktionen die Ergebnisse liefern, die sie sollten. Teilen Sie komplexe Bedingungen oder mathematische Formeln in kleine Teile auf, kopieren und führen Sie diese Teile in der Debug-Konsole aus und überprüfen Sie, ob die Zahlen zusammenpassen. Stellen Sie sicher, dass ein Codeblock in Ordnung ist und analysieren Sie dann den nächsten. Das Debuggen ist besonders hilfreich, um den Code zu identifizieren, der nicht erreicht wird oder zum falschen Zeitpunkt erreicht wird.</p>
+</div>
+</div>
+<div id="zen-von-python" class="section level2" number="3.3">
+<h2>
+<span class="header-section-number">3.3</span> Zen von Python<a class="anchor" aria-label="anchor" href="#zen-von-python"><i class="fas fa-link"></i></a>
+</h2>
+<p>Ich fand den <a href="https://www.python.org/dev/peps/pep-0020/">Zen von Python</a> als gute Inspiration, um die Programmierung anzugehen.</p>
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="Software.html"><span class="header-section-number">2</span> Software</a></div>
+<div class="next"><a href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#programming-tips"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li>
+<a class="nav-link" href="#schreibtipps"><span class="header-section-number">3.1</span> Den Code schreiben</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#verwende-einen-linter"><span class="header-section-number">3.1.1</span> Verwende einen Linter</a></li>
+<li><a class="nav-link" href="#dokumentiere-deinen-code"><span class="header-section-number">3.1.2</span> Dokumentiere deinen Code</a></li>
+<li><a class="nav-link" href="#f%C3%BCge-etwas-luft-hinzu"><span class="header-section-number">3.1.3</span> Füge etwas Luft hinzu</a></li>
+<li><a class="nav-link" href="#schreibe-deinen-code-schritt-f%C3%BCr-schritt"><span class="header-section-number">3.1.4</span> Schreibe deinen Code Schritt für Schritt</a></li>
+<li><a class="nav-link" href="#es-ist-nichts-falsches-an-stackoverflow"><span class="header-section-number">3.1.5</span> Es ist nichts Falsches an StackOverflow</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#reading-tips"><span class="header-section-number">3.2</span> Den Code lesen</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#denken-sie-wie-ein-computer"><span class="header-section-number">3.2.1</span> Denken Sie wie ein Computer</a></li>
+<li><a class="nav-link" href="#tun-sie-so-als-h%C3%A4tten-sie-diesen-code-in-ihrem-leben-noch-nie-gesehen"><span class="header-section-number">3.2.2</span> Tun Sie so, als hätten Sie diesen Code in Ihrem Leben noch nie gesehen</a></li>
+<li><a class="nav-link" href="#suchen-sie-nicht-nur-unter-der-stra%C3%9Fenlampe"><span class="header-section-number">3.2.3</span> Suchen Sie nicht nur unter der Straßenlampe</a></li>
+<li><a class="nav-link" href="#nutzen-sie-den-debugger"><span class="header-section-number">3.2.4</span> Nutzen Sie den Debugger</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#zen-von-python"><span class="header-section-number">3.3</span> Zen von Python</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/01-programming-tips.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/01-programming-tips.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-06.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>
