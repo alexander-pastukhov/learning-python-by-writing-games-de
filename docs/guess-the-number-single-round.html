@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 5 Guess the Number: eine einzelne Runden Edition | Lerne Python, indem du Spiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="Das vorherige Kapitel deckte die Grundlagen von Python ab, sodass Du nun bereit bist, Dein erstes Spiel zu entwickeln! Wir werden es Schritt für Schritt aufbauen, da es viel zu lernen gibt über...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 5 Guess the Number: eine einzelne Runden Edition | Lerne Python, indem du Spiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/guess-the-number-single-round.html">
+<meta property="og:description" content="Das vorherige Kapitel deckte die Grundlagen von Python ab, sodass Du nun bereit bist, Dein erstes Spiel zu entwickeln! Wir werden es Schritt für Schritt aufbauen, da es viel zu lernen gibt über...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 5 Guess the Number: eine einzelne Runden Edition | Lerne Python, indem du Spiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="Das vorherige Kapitel deckte die Grundlagen von Python ab, sodass Du nun bereit bist, Dein erstes Spiel zu entwickeln! Wir werden es Schritt für Schritt aufbauen, da es viel zu lernen gibt über...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Spiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="active" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Guess the Number: eine einzelne Runden Edition</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="guess-the-number-single-round" class="section level1" number="5">
+<h1>
+<span class="header-section-number">Kapitel 5</span> Guess the Number: eine einzelne Runden Edition<a class="anchor" aria-label="anchor" href="#guess-the-number-single-round"><i class="fas fa-link"></i></a>
+</h1>
+<p>Das vorherige Kapitel deckte die Grundlagen von Python ab, sodass Du nun bereit bist, Dein erstes Spiel zu entwickeln! Wir werden es Schritt für Schritt aufbauen, da es viel zu lernen gibt über Eingaben, Bibliotheken, bedingte Aussagen und Einrückungen.</p>
+<p>Bevor Du anfängst, erstelle einen neuen Ordner (innerhalb Deines <a href="Software.html#files-folder">Kursordners</a>), benenne ihn zum Beispiel “guess-the-number”, lade das <a href="notebooks/Guess%20the%20number%20-%20single%20round.ipynb">Übungsnotizbuch</a> herunter, kopiere es in den neu erstellten Ordner und öffne es in <a href="Software.html#jupyter-notebooks">Jupyter Notebook</a>. Wie im vorherigen Kapitel wird es Übungen zum Lesen und Verstehen des Codes enthalten.</p>
+<p>Wir werden jedoch <a href="Software.html#install-vs-code">VS Code</a> verwenden, um Skripte mit dem eigentlichen Spiel zu programmieren. Du musst für jede Code-Praxis eine separate Datei erstellen<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Du kannst den vorherigen Code “Speichern unter…” um das Herumkopieren von Dingen per Hand zu vermeiden.&lt;/p&gt;"><sup>11</sup></a> (z.B., <em>code01.py</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ich empfehle die Verwendung von &lt;code&gt;01&lt;/code&gt; statt von &lt;code&gt;1&lt;/code&gt;, da dies eine konsistente Dateisortierung in Deinem Dateimanager gewährleistet&lt;/p&gt;"><sup>12</sup></a>, <em>code02.py</em>, etc.) Dies ist nicht die effizienteste Implementierung einer Versionskontrolle und wird sicherlich den Ordner überladen. Aber es würde mir ermöglichen, Deine Lösungen für jeden Schritt zu sehen, was es mir leichter machen würde, Feedback zu geben. Zum Einreichen der Aufgabe, zippe einfach den Ordner und reiche die Zip-Datei ein.</p>
+<div id="konzepte-des-kapitels-1" class="section level2" number="5.1">
+<h2>
+<span class="header-section-number">5.1</span> Konzepte des Kapitels<a class="anchor" aria-label="anchor" href="#konzepte-des-kapitels-1"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>
+<a href="#documenting-your-code">Dokumentation des Codes</a>.</li>
+<li>
+<a href="guess-the-number-single-round.html#debugging">Debuggen von Code</a>.</li>
+<li>Eingabe einer <a href="guess-the-number-single-round.html#input-function">Eingabe</a> von einem Benutzer.</li>
+<li>Verwendung von <a href="guess-the-number-single-round.html#comparisons">Vergleichen</a> in <a href="guess-the-number-single-round.html#if-statement">bedingten Aussagen</a>.</li>
+<li>Verwendung von <a href="guess-the-number-single-round.html#indentation">Einrückungen</a>, um Aussagen zu gruppieren.</li>
+<li>Verwendung von Python <a href="guess-the-number-single-round.html#using-libraries">Bibliotheken</a>.</li>
+<li>Generieren von <a href="#picking-a-number-randomly">Zufallszahlen</a>.</li>
+</ul>
+</div>
+<div id="das-spiel" class="section level2" number="5.2">
+<h2>
+<span class="header-section-number">5.2</span> Das Spiel<a class="anchor" aria-label="anchor" href="#das-spiel"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wir werden ein Spiel programmieren, bei dem ein Teilnehmer (Computer) eine Zahl innerhalb eines bestimmten Bereichs auswählt (sagen wir, zwischen 1 und 10) und der andere Teilnehmer (menschlicher Spieler) versucht, diese zu erraten. Nach jedem Versuch des Menschen antwortet der Computer, ob die tatsächliche Zahl niedriger als die Vermutung ist, höher als die Vermutung ist oder mit ihr übereinstimmt. Das Spiel ist vorbei, wenn der Spieler die Zahl richtig errät oder (in der späteren Version des Spiels) keine Versuche mehr hat.</p>
+<p>Unsere erste Version wird nur einen Versuch zulassen und der Gesamtspielalgorithmus wird folgendermaßen aussehen:</p>
+<ol style="list-style-type: decimal">
+<li>der Computer generiert eine Zufallszahl zwischen 1 und 10</li>
+<li>druckt sie aus für Debugging-Zwecke</li>
+<li>fordert den Benutzer auf, eine Vermutung einzugeben</li>
+<li>vergleicht die beiden Zahlen und gibt das Ergebnis aus: “Meine Zahl ist niedriger”, “Meine Zahl ist höher” oder “Genau richtig!”</li>
+</ol>
+</div>
+<div id="lass-uns-eine-zahl-auswählen" class="section level2" number="5.3">
+<h2>
+<span class="header-section-number">5.3</span> Lass uns eine Zahl auswählen<a class="anchor" aria-label="anchor" href="#lass-uns-eine-zahl-ausw%C3%A4hlen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Beginnen wir damit, nur die ersten zwei Schritte des Programms zu implementieren. Erstelle zuerst eine Variable, die eine Zahl enthält, die der Computer “ausgesucht” hat. Wir nennen sie <code>number_picked</code> (Du kannst auch einen anderen aussagekräftigen Namen verwenden, aber es könnte einfacher sein, wenn wir alle den gleichen Namen verwenden). Um die Dinge am Anfang einfacher zu machen, codieren wir eine beliebige Zahl zwischen 1 und 10 hart (wähle die, die Dir gefällt). Dann lass uns diese ausdrucken, so dass wir die Zahl selbst kennen<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Natürlich wissen wir es, weil wir es hart kodiert haben, aber das wird nicht der Fall sein, wenn der Computer es zufällig generiert, also lassen wir uns für die Zukunft planen&lt;/p&gt;"><sup>13</sup></a>. Verwende die Zeichenkettenformatierung, um die Dinge benutzerfreundlich zu gestalten, z. B. drucke etwas aus wie “Die Zahl, die ich ausgewählt habe, ist …”. Du solltest in der Lage sein, dies mit dem Wissen aus dem <a href="python-grundlagen.html#string-formatting">vorherigen Kapitel</a> zu tun. Dein Code sollte aus zwei Zeilen bestehen:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="guess-the-number-single-round.html#cb26-1" tabindex="-1"></a><span class="co"># 1. erstelle Variable und setze ihren Wert</span></span>
+<span id="cb26-2"><a href="guess-the-number-single-round.html#cb26-2" tabindex="-1"></a><span class="co"># 2. gebe den Wert aus</span></span></code></pre></div>
+<p>Probiere diesen Zweizeiler in einem Jupyter Notebook aus (erstelle ein leeres Notebook nur dafür). Wenn Du damit zufrieden bist, kopiere-den Code in <code>code01.py</code> und lies weiter, um zu erfahren, wie Du es dokumentieren und ausführen kannst.</p>
+<div class="program">
+<p>Füge Deinen Code in <code>code01.py</code> ein.</p>
+</div>
+</div>
+<div id="dokumentiere-deinen-code-1" class="section level2" number="5.4">
+<h2>
+<span class="header-section-number">5.4</span> Dokumentiere Deinen Code<a class="anchor" aria-label="anchor" href="#dokumentiere-deinen-code-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, wo Du Deine erste Datei mit einem Python-Programm hast, solltest Du es dokumentieren. Die Dokumentation eines zwei Zeilen langen und einfachen Programms mag albern erscheinen, aber es sollte etwas Automatisches sein. Später wirst Du mehrere Zeilen Kommentare verwenden, um eine einzelne Zeilenfunktion zu dokumentieren. Noch einmal, es geht nicht um den Code, der funktioniert, es geht um den Code, den Du verstehen kannst. In gewisser Weise ist es besser, ein sauberes, gut dokumentiertes Programm zu haben, das momentan nicht korrekt funktioniert, als einen undokumentierten Spaghetti-Code, der funktioniert. Du kannst das Erstere korrigieren und aktualisieren, das Letztere zu warten oder zu aktualisieren…</p>
+<p>In Python hast Du zwei Möglichkeiten, Kommentare zu schreiben: mehrzeilig und einzeilig</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="guess-the-number-single-round.html#cb27-1" tabindex="-1"></a><span class="co">'''Ein </span></span>
+<span id="cb27-2"><a href="guess-the-number-single-round.html#cb27-2" tabindex="-1"></a><span class="co">mehrzeiliger </span></span>
+<span id="cb27-3"><a href="guess-the-number-single-round.html#cb27-3" tabindex="-1"></a><span class="co">Kommentar</span></span>
+<span id="cb27-4"><a href="guess-the-number-single-round.html#cb27-4" tabindex="-1"></a><span class="co">'''</span></span>
+<span id="cb27-5"><a href="guess-the-number-single-round.html#cb27-5" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="guess-the-number-single-round.html#cb27-6" tabindex="-1"></a><span class="co">#  Ein einzeiliger Kommentar.</span></span></code></pre></div>
+<p>Verwende mehrzeilige Kommentare, um die Dokumentation für einzelne Dateien, Funktionen, Klassen, Methoden usw. zu schreiben. Du wirst lernen, wie Du diese Dokumentation im Numpy-Docstring-Stil formatierst, sobald Du Funktionen kennst. In unserem Fall solltest Du Deine <code>code01.py</code>-Datei mit einem mehrzeiligen Kommentar beginnen, der kurz beschreibt, welches Programm sie enthält. Mindestens solltest Du schreiben, dass dies ein <em>Guess a Number</em>-Spiel ist. Wahrscheinlich ist es eine gute Idee, zu skizzieren, worum es in dem Spiel geht.</p>
+<p>Verwende einzeilige Kommentare, um zu erklären, was in einem bestimmten Codeblock passiert. Du musst nicht jede Zeile kommentieren und Du solltest den Code nicht in menschlicher Sprache replizieren. Ein Kommentar sollte darüber sein, <em>was</em> passiert, nicht <em>wie</em>. Du hast bereits einen Block Code, also dokumentiere ihn mit einem einzelnen Satz.</p>
+<div class="program">
+<p>Dokumentiere die <code>code01.py</code>.</p>
+</div>
+</div>
+<div id="debugging" class="section level2" number="5.5">
+<h2>
+<span class="header-section-number">5.5</span> Ausführen und Debuggen deines Spiels in VS Code<a class="anchor" aria-label="anchor" href="#debugging"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da wir ein zwei Zeilen langes Programm haben, können wir es ausführen und schon anfangen zu lernen, wie man es debuggt. Ja, unser aktuelles Programm ist wahrscheinlich zu einfach, um ein tatsächliches Debugging zu benötigen, aber es ist auch einfach genug, um das Verständnis des Debuggings zu erleichtern. Und das Debuggen ist eine entscheidende Fähigkeit, die ein laufendes Programm von einer Blackbox in etwas transparentes und leichtes<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Oder zumindest leichter.&lt;/p&gt;"><sup>14</sup></a> zu verstehen verwandelt. Weiter unten werde ich beschreiben, wie man in VS Code debuggt, aber du könntest <a href="https://code.visualstudio.com/docs/python/debugging">ein offizielles Handbuch</a> zu Rate ziehen, falls sich in der Zwischenzeit etwas geändert hat.</p>
+<p>Es gibt zwei Möglichkeiten, ein Python-Programm in VS Code auszuführen. Zuerst kannst Du den <em>“Run Python File in Terminal”</em> Abspielknopf auf der rechten Seite verwenden. Dies führt dein Programm <em>ohne</em> Debugger aus, so dass Du es nur für die tatsächlichen Läufe des finalisierten Codes verwenden solltest. Trotzdem kannst Du versuchen, es auszuführen und zu sehen, ob es das ausgibt, was es sollte.</p>
+<p><img src="images/debug-vs-run.png" alt="Running code without a debugger.">
+Die Alternative ist der Debugging-Reiter, der eine kleine Wanze auf dem Run-Knopf hat. Wenn Du ihn auswählst, wird <em>“Run and Debug”</em> angezeigt. Klicke auf den Knopf und es werden verschiedene Optionen für verschiedene Arten von Python-Projekten und -Frameworks angeboten. Für unsere Absichten und Zwecke benötigen wir nur <em>“Python File: Debug the currently active Python file”</em>. Klicke darauf und es wird Deinen Code ausführen (sollte genau so laufen wie mit dem anderen Knopf).</p>
+<div class="float">
+<img src="images/debug-select-debug-configuration.png" alt="Selecting debugging configuration."><div class="figcaption">Selecting debugging configuration.</div>
+</div>
+<p>Du willst wahrscheinlich nicht die ganze Zeit durch Debugging-Tab → Run and Debug-Knopf → Konfiguration auswählen klicken. Ein besserer Weg ist es, es einmal für alle zu konfigurieren und dann die <strong>F5</strong>-Taste zu verwenden, um Deinen Code auszuführen. Klicke zunächst auf <em>“Erstelle eine launch.json-Datei”</em> und wähle erneut <em>“Python File: Debug the currently active Python file”</em> aus. Du wirst sehen, dass eine neue <em>launch.json</em> Datei im Editor erscheint, die so aussehen sollte:</p>
+<div class="float">
+<img src="images/debug-launch-json.png" alt="Debug configuration in launch.json file."><div class="figcaption">Debug configuration in launch.json file.</div>
+</div>
+<p>Das war’s! VS Code hat für Dich eine Konfiguration erstellt. Jetzt kannst Du die <em>launch.json</em>-Datei schließen und Dein Programm durch einfaches Drücken der <strong>F5</strong>-Taste ausführen. Versuch es! Wieder einmal sollte es genauso funktionieren wie zuvor, aber warum sind wir dann durch all diese Mühe gegangen? Weil der Debugger die Ausführung Deines Codes <em>pausiert</em>, wann immer er auf ein Problem trifft und Dir die Chance gibt, Variablen zu untersuchen, Code-Snippets auszuführen usw. Im Gegensatz dazu wird das Ausführen der Python-Datei im Terminal (die erste Option) nur eine Fehlermeldung ausgeben und das Programm beenden. Außerdem kannst Du <em>Breakpoints</em> verwenden, um das Programm an jeder Zeile anzuhalten, was Dir die Möglichkeit gibt, Deinen Code an jeder Stelle, die Du benötigst, zu untersuchen.</p>
+<p>Du aktivierst Breakpoints, indem Du links von der Zeilennummer, die Dich interessiert, klickst. Hier habe ich auf Zeile 6 geklickt und Du kannst einen roten Punkt sehen, der einen aktiven Breakpoint anzeigt</p>
+<div class="float">
+<img src="images/debug-breakpoint.png" alt="Active breakpoint."><div class="figcaption">Active breakpoint.</div>
+</div>
+<p>Wenn ich jetzt den Code über <strong>F5</strong> ausführe, hält das Programm an dieser Zeile <em>bevor</em> es sie ausführt.</p>
+<div class="float">
+<img src="images/debug-pause.png" alt="Program paused at the breakpoint."><div class="figcaption">Program paused at the breakpoint.</div>
+</div>
+<p>Das gibt mir die Möglichkeit zu sehen, welchen Wert meine Variable <code>number_picked</code> hat. Sie ist bereits in den lokalen Variablen aufgeführt (oben links). Aber ich habe sie auch zur Liste der beobachteten Variablen (<em>Watch</em>, links in der Mitte) hinzugefügt und mir ihren Wert in der <em>Debug Console</em> (unten) angesehen, die es mir ermöglicht, <em>beliebigen</em> Python-Code auszuführen, während mein Programm angehalten ist. Mach das Gleiche und erkunde selbst diese unterschiedlichen Möglichkeiten. Sieh zum Beispiel, wie du <code>number_picked + 1</code> oder <code>number_picked * number_picked</code> im <em>Watch</em> Tab und in der <em>Debug Console</em> berechnen kannst.</p>
+<p>Sobald du fertig bist, den aktuellen Zustand des Programms zu untersuchen, hast du sechs Buttons oben zur Verfügung, um zu entscheiden, was als nächstes zu tun ist (fahre mit der Maus darüber, um Hinweise zu sehen). Sie sind, von links nach rechts</p>
+<ul>
+<li>Fortfahren (<strong>F5</strong>): Setze das Programm fort.</li>
+<li>Step Over (<strong>F10</strong>): Führt den Code aus, ohne in Funktionen zu gehen (diese und die beiden folgenden Optionen werden klarer, sobald du lernst, Funktionen zu schreiben).</li>
+<li>In den Code hineinsteigen (<strong>F11</strong>)</li>
+<li>Aus dem Code heraussteigen (<strong>Shift+F11</strong>).</li>
+<li>Das Programm neu starten (<strong>Ctrl+Shift+F5</strong>).</li>
+<li>Das Programm stoppen (<strong>Shift+F5</strong>).</li>
+</ul>
+<p>Um besser zu verstehen, wie das funktioniert, stoppe das Programm (<strong>Shift+F5</strong>) und setze einen zusätzlichen Haltepunkt in die erste Zeile deines Codes (Zeile #5 in meinem Programm, die anderen Zeilen sind Kommentare oder leer). Führe das Programm wieder über <strong>F5</strong> aus und es wird an dieser ersten Zeile pausieren. Kannst du jetzt den Wert der Variable <code>number_picked</code> ermitteln?</p>
+<p>Die Antwort lautet “nein”, weil diese Variable noch nicht existiert. Denke daran, das Programm pausiert <em>vor</em> dem Ausführen der Zeile. Benutze <strong>F10</strong>, um Schritt für Schritt durch den Code zu gehen und zu sehen, wie die Variable erscheint und die Information ausgegeben wird.</p>
+<p>Diese Debugging-Übung war vielleicht nicht notwendig, um Probleme mit deinem aktuellen Code zu lösen, aber sie hat gezeigt, wie das in der Zukunft funktioniert. Zögere nicht, einen Haltepunkt zu setzen, um das Programm zu pausieren und zu überprüfen, ob die Realität (d.h. die tatsächlichen Werte der Variablen) deinen Erwartungen entspricht. Nutze das Durchlaufen des Codes, um die Dinge zu verlangsamen und zu beobachten und zu überlegen.</p>
+</div>
+<div id="input-function" class="section level2" number="5.6">
+<h2>
+<span class="header-section-number">5.6</span> Einen Spieler nach einer Vermutung fragen<a class="anchor" aria-label="anchor" href="#input-function"><i class="fas fa-link"></i></a>
+</h2>
+<p>Um das Spiel <em>Guess the Number</em> zu spielen, braucht es zwei. Der Computer hat seinen Teil erledigt, indem er eine Zahl ausgewählt hat, jetzt müssen wir einen Spieler bitten, seine Vermutung einzugeben. Dafür verwenden wir die <a href="https://docs.python.org/3/library/functions.html#input">input()</a> <em>Funktion</em>.</p>
+<p>Eine Funktion ist ein isolierter Code, der (optionale) <em>Eingaben</em> akzeptiert, eine <em>Aktion</em> ausführt und optional einen Wert (<em>Ausgabe</em>) zurückgibt. Dies ermöglicht einerseits, den Code in kleinere Blöcke zu unterteilen, die einfacher zu warten sind und andererseits, den gleichen Code wiederzuverwenden. Du hast bereits die <a href="https://docs.python.org/3/library/functions.html#print">print()</a> Funktion verwendet, um Dinge auszudrucken, und die <a href="https://docs.python.org/3/library/functions.html#func-str">str()</a>, <a href="https://docs.python.org/3/library/functions.html#bool">bool()</a>, <a href="https://docs.python.org/3/library/functions.html#int">int()</a> und <a href="https://docs.python.org/3/library/functions.html#float">float()</a> Funktionen, um Werte zu konvertieren. Bei der <a href="https://docs.python.org/3/library/functions.html#print">print()</a> Funktion ist die <em>Eingabe</em> eine beliebige Anzahl von Werten (sogar keine, probiere das in Jupiter Notebook aus!), ihre <em>Aktion</em> ist es, Dinge auszudrucken, aber sie gibt nichts zurück (keine <em>Ausgabe</em>). Die <a href="https://docs.python.org/3/library/functions.html#float">float()</a> Funktion nimmt (etwas überraschend) null oder einen Wert als <em>Eingabe</em> (versuche, ihr keinen oder mehr als einen in Jupiter Notebook zu geben und sieh den Unterschied), versucht, den gegebenen Wert in float zu konvertieren (wirft einen Fehler, wenn sie das nicht kann), und gibt einen float-Wert als <em>Ausgabe</em> zurück.</p>
+<p>Ein ähnliches <em>Eingabe</em> → <em>Aktion</em> → <em>Ausgabe</em> Schema gilt für die <a href="https://docs.python.org/3/library/functions.html#input">input(prompt)</a> Funktion. Sie akzeptiert optional einen <code>prompt</code> String als Eingabe. Dann druckt sie die <code>prompt</code> Nachricht aus und wartet darauf, dass ein Benutzer einen <em>String</em> eingibt, bis dieser <strong>Enter</strong> drückt. Dann gibt sie diesen <em>String</em>-Wert zurück. Dieser letzte Punkt über den <em>String</em> ist wichtig, denn in unserem Spiel müssen die Spieler eine <em>ganze Zahl</em> und keinen String eingeben. Gehen wir für einen Moment davon aus, dass die Eingabe immer eine gültige Ganzzahl ist, also gib nur gültige Ganzzahlen ein, wenn du das Programm testest! Auf diese Weise können wir sie ohne zusätzliche Prüfungen (die wir in der Zukunft hinzufügen werden) in eine Ganzzahl umwandeln und dieser Wert einer neuen Variable namens <code>guess</code> zuweisen. Du musst also eine einzelne Zuweisungsanweisung mit der <code>guess</code> Variablen auf der linken Seite und dem Aufruf der <a href="https://docs.python.org/3/library/functions.html#input">input()</a> Funktion auf der rechten Seite hinzufügen (denke an eine schöne Aufforderungsnachricht), eingehüllt (innerhalb) der Typumwandlung in eine Ganzzahl über <a href="https://docs.python.org/3/library/functions.html#int">int()</a>. Teste diesen Code, aber gib wieder nur gültige Ganzzahlen ein, damit die Umwandlung ohne Fehler funktioniert.</p>
+<div class="program">
+<p>Aktualisiere deine <code>code01.py</code></p>
+</div>
+</div>
+<div id="if-statement" class="section level2" number="5.7">
+<h2>
+<span class="header-section-number">5.7</span> Bedingte <em>if</em>-Anweisung<a class="anchor" aria-label="anchor" href="#if-statement"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt haben wir zwei Zahlen: Eine, die der Computer ausgewählt hat (<code>number_picked</code>), und eine, die der Spieler eingegeben hat (<code>guess</code>). Wir müssen sie vergleichen, um die korrekte Ausgabemeldung zu liefern. Dafür verwenden wir die bedingte <a href="https://docs.python.org/3/tutorial/controlflow.html#if-statements">if-Anweisung</a>:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="guess-the-number-single-round.html#cb28-1" tabindex="-1"></a><span class="cf">if</span> eine_Bedingung_ist_wahr:</span>
+<span id="cb28-2"><a href="guess-the-number-single-round.html#cb28-2" tabindex="-1"></a>    <span class="co"># Tu etwas</span></span>
+<span id="cb28-3"><a href="guess-the-number-single-round.html#cb28-3" tabindex="-1"></a><span class="cf">elif</span> eine_andere_Bedingung_ist_wahr:</span>
+<span id="cb28-4"><a href="guess-the-number-single-round.html#cb28-4" tabindex="-1"></a>    <span class="co"># Tu etwas anderes</span></span>
+<span id="cb28-5"><a href="guess-the-number-single-round.html#cb28-5" tabindex="-1"></a><span class="cf">elif</span> noch_eine_andere_Bedingung_ist_wahr:</span>
+<span id="cb28-6"><a href="guess-the-number-single-round.html#cb28-6" tabindex="-1"></a>    <span class="co"># Tu noch etwas anderes</span></span>
+<span id="cb28-7"><a href="guess-the-number-single-round.html#cb28-7" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb28-8"><a href="guess-the-number-single-round.html#cb28-8" tabindex="-1"></a>    <span class="co"># Tu etwas nur, wenn alle Bedingungen oben falsch sind.</span></span></code></pre></div>
+<p>Nur der <code>if</code>-Teil ist erforderlich, während <code>elif</code> (kurz für “else, if”) und <code>else</code> optional sind. So kannst du etwas tun, nur wenn eine Bedingung wahr ist:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="guess-the-number-single-round.html#cb29-1" tabindex="-1"></a><span class="cf">if</span> eine_Bedingung_ist_wahr:</span>
+<span id="cb29-2"><a href="guess-the-number-single-round.html#cb29-2" tabindex="-1"></a>    <span class="co"># Tu etwas, aber ANSONSTEN TU NICHTS </span></span>
+<span id="cb29-3"><a href="guess-the-number-single-round.html#cb29-3" tabindex="-1"></a>    <span class="co"># und fahre mit der Codeausführung fort</span></span>
+<span id="cb29-4"><a href="guess-the-number-single-round.html#cb29-4" tabindex="-1"></a>  </span>
+<span id="cb29-5"><a href="guess-the-number-single-round.html#cb29-5" tabindex="-1"></a><span class="co"># Einige Codezeilen, die nach der if-Anweisung ausgeführt werden,</span></span>
+<span id="cb29-6"><a href="guess-the-number-single-round.html#cb29-6" tabindex="-1"></a><span class="co"># unabhängig davon, ob die Bedingung wahr war oder nicht.</span></span></code></pre></div>
+<p>Bevor wir bedingte Anweisungen in unserem Spiel verwenden können, musst du (1) die Bedingungen selbst und (2) die Verwendung von Einrückungen als Mittel zur Gruppierung von Anweisungen verstehen.</p>
+</div>
+<div id="comparisons" class="section level2" number="5.8">
+<h2>
+<span class="header-section-number">5.8</span> Bedingungen und Vergleiche<a class="anchor" aria-label="anchor" href="#comparisons"><i class="fas fa-link"></i></a>
+</h2>
+<p>Eine Bedingung ist jeder Ausdruck, der überprüft werden kann, um zu sehen, ob er <code>True</code> oder <code>False</code> ist. Ein einfaches Beispiel für einen solchen Ausdruck sind Vergleiche, die in menschlicher Sprache ausgedrückt werden als: <em>Ist heute Donnerstag?</em> <em>Ist die Antwort (gleich) 42?</em> <em>Regnet es und habe ich einen Regenschirm?</em> Wir werden uns für einen Moment auf solche Vergleiche konzentrieren, aber später wirst Du sehen, dass in Python <em>jeder</em> Ausdruck entweder <code>True</code> oder <code>False</code> ist, auch wenn er nicht wie ein Vergleich aussieht<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Dies liegt daran, dass Du jeden Wert über die Funktion &lt;a href="https://docs.python.org/3/library/functions.html#bool"&gt;bool()&lt;/a&gt;, die Du letztes Mal kennengelernt hast, in einen logischen Wert umwandeln kannst und so jeder Wert (umgewandelt) entweder &lt;code&gt;True&lt;/code&gt; oder &lt;code&gt;False&lt;/code&gt; ist.&lt;/p&gt;'><sup>15</sup></a>.</p>
+<p>Für den Vergleich kannst Du die folgenden Operatoren verwenden:</p>
+<ul>
+<li>
+<em>“A ist gleich B”</em> wird geschrieben als <code>A == B</code>.</li>
+<li>
+<em>“A ist nicht gleich B”</em> wird geschrieben als <code>A != B</code>.</li>
+<li>
+<em>“A ist größer als B”</em> und <em>“A ist kleiner als B”</em> sind entsprechend <code>A &gt; B</code> und <code>A &lt; B</code>.</li>
+<li>
+<em>“A ist größer als oder gleich B”</em> und <em>“A ist kleiner als oder gleich B”</em> sind entsprechend <code>A &gt;= B</code> und <code>A &lt;= B</code> (bitte beachte die Reihenfolge der Symbole, da <code>=&gt;</code> und <code>=&lt;</code> einen Fehler erzeugen werden).</li>
+</ul>
+<div class="practice">
+<p>Löse einige Vergleiche in Übung #1.</p>
+</div>
+<p>Beachte, dass Python auch einen <a href="https://docs.python.org/3/library/operator.html#operator.is_">is</a> Operator hat, der <em>identisch</em> mit <code>==</code> <em>aussehen</em> kann (z.B. sieht <code>x == 2</code> äquivalent zu <code>x is 2</code> aus). Darüber hinaus funktioniert er in <em>einigen</em> Fällen auch auf die gleiche Weise. Es gibt jedoch einen subtilen Unterschied: <code>==</code> überprüft, ob <em>Werte</em> identisch sind, während <code>is</code> überprüft, ob <em>Objekte</em> (die “Werte halten”) identisch sind. Du musst Klassen und Objekte verstehen, bevor Du diesen Unterschied schätzen kannst, also behalte vorerst im Hinterkopf, dass Du nur <code>==</code> verwenden solltest (ich werde explizit erwähnen, wann <code>is</code> benötigt wird).</p>
+<p>Du kannst den logischen Wert mit dem Operator <code>not</code> <em>invertieren</em>, da <code>not True</code> <code>False</code> und <code>not False</code> <code>True</code> ist. Das bedeutet, dass <code>A != B</code> dasselbe ist wie <code>not A == B</code> und entsprechend ist <code>A == B</code> <code>not A != B</code>. Um zu sehen, wie das funktioniert, betrachte beide Fälle, wenn <code>A</code> tatsächlich gleich <code>B</code> ist und wenn es nicht so ist.</p>
+<ul>
+<li>Wenn A gleich B ist, dann ergibt <code>A == B</code> <code>True</code>. Das <code>A != B</code> ist dann <code>False</code>, also <code>not A != B</code> → <code>not False</code> → <code>True</code>.</li>
+<li>Wenn A nicht gleich B ist, dann ergibt <code>A == B</code> <code>False</code>. Das <code>A != B</code> ist dann <code>True</code>, also <code>not A != B</code> → <code>not True</code> → <code>False</code>.</li>
+</ul>
+<div class="practice">
+<p>Überprüfe diese Inversion selbst in Übung #2.</p>
+</div>
+<p>Du kannst auch mehrere Vergleiche mit den Operatoren <code>and</code> und/oder<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Wortspiel beabsichtigt&lt;/p&gt;"><sup>16</sup></a> <code>or</code> kombinieren. Wie in der menschlichen Sprache bedeutet <code>and</code>, dass beide Teile wahr sein müssen: <code>True and True</code> → <code>True</code>, aber <code>True and False</code> → <code>False</code>, <code>False and True</code> → <code>False</code>, und <code>False and False</code> → <code>False</code>. Dasselbe gilt, wenn Du mehr als zwei Bedingungen/Vergleiche über <code>and</code> verknüpfst: <strong>Alle</strong> müssen wahr sein. Im Fall von <code>or</code> muss nur eine der Aussagen wahr sein, z.B. <code>True or True</code> → <code>True</code>, <code>True or False</code> → <code>True</code>, <code>False or True</code> → <code>True</code>, aber <code>False or False</code> → <code>False</code>. Auch hier gilt für mehr als zwei Vergleiche/Bedingungen, dass mindestens eine von ihnen wahr sein sollte, damit der gesamte Ausdruck wahr ist.</p>
+<div class="practice">
+<p>Mache die Übungen #3 und #4.</p>
+</div>
+<p>Ein subtiler, aber wichtiger Punkt: Bedingungen werden von links nach rechts ausgewertet, bis der gesamte Ausdruck auf die eine oder andere Weise aufgelöst ist. Das bedeutet, dass wenn der erste Ausdruck in einem <code>and</code> <code>False</code> ist, der zweite (der Rest von ihnen) <strong>nie ausgewertet</strong> wird. D.h., wenn sowohl <code>erster</code> als auch <code>zweiter</code> Ausdruck <code>True</code> sein müssen und Du weißt, dass <code>erster</code> Ausdruck bereits <code>False</code> ist, ist der gesamte Ausdruck in jedem Fall <code>False</code>. Das bedeutet, dass es im folgenden Code keinen Fehler geben wird, obwohl die Auswertung von <code>int("e123")</code> allein einen <code>ValueError</code> auslösen würde.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="guess-the-number-single-round.html#cb30-1" tabindex="-1"></a><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">5</span> <span class="kw">and</span> <span class="bu">int</span>(<span class="st">"e123"</span>) <span class="op">==</span> <span class="dv">123</span></span>
+<span id="cb30-2"><a href="guess-the-number-single-round.html#cb30-2" tabindex="-1"></a><span class="co">#&gt; False</span></span></code></pre></div>
+<p>Umkehrst Du jedoch die Reihenfolge, so dass <code>int("e123") == 123</code> zuerst ausgewertet werden muss, erhältst Du eine Fehlermeldung</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="guess-the-number-single-round.html#cb31-1" tabindex="-1"></a><span class="bu">int</span>(<span class="st">"e123"</span>) <span class="op">==</span> <span class="dv">123</span> <span class="kw">and</span> <span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">4</span></span>
+<span id="cb31-2"><a href="guess-the-number-single-round.html#cb31-2" tabindex="-1"></a><span class="co">#&gt; invalid literal for int() with base 10: 'e123'</span></span></code></pre></div>
+<p>Ähnlich verhält es sich, wenn bei <code>or</code> <em>irgendein</em> Ausdruck <code>True</code> ist, musst Du den Rest nicht überprüfen.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="guess-the-number-single-round.html#cb32-1" tabindex="-1"></a><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">4</span> <span class="kw">or</span> <span class="bu">int</span>(<span class="st">"e123"</span>) <span class="op">==</span> <span class="dv">123</span></span>
+<span id="cb32-2"><a href="guess-the-number-single-round.html#cb32-2" tabindex="-1"></a><span class="co">#&gt; True</span></span></code></pre></div>
+<p>Ist die erste Bedingung jedoch <code>False</code>, müssen wir fortfahren (und stolpern dabei über einen Fehler):</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="guess-the-number-single-round.html#cb33-1" tabindex="-1"></a><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">5</span> <span class="kw">or</span> <span class="bu">int</span>(<span class="st">"e123"</span>) <span class="op">==</span> <span class="dv">123</span></span>
+<span id="cb33-2"><a href="guess-the-number-single-round.html#cb33-2" tabindex="-1"></a><span class="co">#&gt; invalid literal for int() with base 10: 'e123'</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #5.</p>
+</div>
+<p>Schließlich kannst Du, wie in der einfachen Arithmetik, Klammern <code>()</code> verwenden, um Bedingungen zu gruppieren. So kann die Aussage “Ich esse immer Schokolade, aber ich esse Spinat nur, wenn ich hungrig bin” wie folgt geschrieben werden: <code>food == "chocolate" or (food == "spinach" and hungry)</code>. Hier werden <code>food == "chocolate"</code> und <code>food == "spinach" and hungry</code> unabhängig voneinander ausgewertet, ihre Werte werden an ihrer Stelle eingesetzt und dann wird die <code>and</code>-Bedingung ausgewertet.</p>
+<div class="practice">
+<p>Mache Übung #6.</p>
+</div>
+<p>Ein letzter Gedanke zu Vergleichen: Zögere nicht, sie in Jupyter Notebook mit verschiedenen Kombinationen von Werten zu testen oder das Programm an der Bedingung über einen Haltepunkt anzuhalten und einen Vergleich in <em>Watch</em> oder <em>Debug Console</em> auszuwerten.</p>
+</div>
+<div id="indentation" class="section level2" number="5.9">
+<h2>
+<span class="header-section-number">5.9</span> Gruppieren von Anweisungen über Einrückungen<a class="anchor" aria-label="anchor" href="#indentation"><i class="fas fa-link"></i></a>
+</h2>
+<p>Lass uns zu einer bedingten if-Anweisung zurückkehren. Sieh dir das folgende Codebeispiel an (und beachte ein <code>:</code> am Ende von <code>if some_condition_is_true:</code>), in dem <em>Anweisung #1</em> nur ausgeführt wird, wenn <em>eine Bedingung</em> wahr ist, während <em>Anweisung #2</em> danach ausgeführt wird, <em>unabhängig</em> von der Bedingung.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="guess-the-number-single-round.html#cb34-1" tabindex="-1"></a><span class="cf">if</span> some_condition_is_true:</span>
+<span id="cb34-2"><a href="guess-the-number-single-round.html#cb34-2" tabindex="-1"></a>    Anweisung <span class="co">#1</span></span>
+<span id="cb34-3"><a href="guess-the-number-single-round.html#cb34-3" tabindex="-1"></a>Anweisung <span class="co">#2 </span></span></code></pre></div>
+<p>Beide Aussagen #1 und #2 folgen nach der if-Anweisung. Aber wie erkennt Python, dass die erste nur ausgeführt wird, wenn die Bedingung wahr ist, und die andere immer ausgeführt wird? Die Antwort ist Einrückung: Die <strong>4 (vier!) Leerzeichen</strong>, die automatisch hinzugefügt werden, wenn du in VS Code auf <strong>Tab</strong> drückst und entfernt werden, wenn du auf <strong>Shift+Tab</strong> drückst. Die Einrückung platziert Anweisung #1 <em>innerhalb</em> der if-Anweisung. Daher zeigt die Einrückung an, ob Anweisungen zur gleichen Gruppe gehören und nacheinander ausgeführt werden müssen (gleiche Einrückungsebene für <code>if</code> und <code>Anweisung #2</code>) oder sich innerhalb einer bedingten Anweisung, Schleife, Funktion, Klasse usw. befinden (<code>Anweisung #1</code>). Für komplexeren Code, der zum Beispiel eine if-Anweisung innerhalb einer if-Anweisung innerhalb einer Schleife haben wird, drückst du dies aus, indem du weitere Ebenen der Einrückung hinzufügst. Zum Beispiel:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="guess-the-number-single-round.html#cb35-1" tabindex="-1"></a><span class="co"># einige Anweisungen außerhalb der Schleife (0 Einrückung)</span></span>
+<span id="cb35-2"><a href="guess-the-number-single-round.html#cb35-2" tabindex="-1"></a><span class="cf">while</span> Spiel_ist_nicht_vorbei: <span class="co"># (0 Einrückung)</span></span>
+<span id="cb35-3"><a href="guess-the-number-single-round.html#cb35-3" tabindex="-1"></a>    <span class="co"># Anweisungen innerhalb der Schleife</span></span>
+<span id="cb35-4"><a href="guess-the-number-single-round.html#cb35-4" tabindex="-1"></a>    <span class="cf">if</span> Taste_gedrückt: <span class="co"># (Einrückung von 4)</span></span>
+<span id="cb35-5"><a href="guess-the-number-single-round.html#cb35-5" tabindex="-1"></a>        <span class="co"># innerhalb der Schleife und if-Anweisung</span></span>
+<span id="cb35-6"><a href="guess-the-number-single-round.html#cb35-6" tabindex="-1"></a>        <span class="cf">if</span> Taste <span class="op">==</span> <span class="st">"Space"</span>: <span class="co"># (Einrückung von 8)</span></span>
+<span id="cb35-7"><a href="guess-the-number-single-round.html#cb35-7" tabindex="-1"></a>            <span class="co"># innerhalb der Schleife, if-Anweisung und einer weiteren if-Anweisung</span></span>
+<span id="cb35-8"><a href="guess-the-number-single-round.html#cb35-8" tabindex="-1"></a>            springen() <span class="co"># (Einrückung von 12)</span></span>
+<span id="cb35-9"><a href="guess-the-number-single-round.html#cb35-9" tabindex="-1"></a>        <span class="cf">else</span>: <span class="co"># (Einrückung von 4)</span></span>
+<span id="cb35-10"><a href="guess-the-number-single-round.html#cb35-10" tabindex="-1"></a>            <span class="co"># innerhalb der Schleife, if-Anweisung und im sonst-Teil einer weiteren if-Anweisung</span></span>
+<span id="cb35-11"><a href="guess-the-number-single-round.html#cb35-11" tabindex="-1"></a>            stehen() <span class="co"># (Einrückung von 12)</span></span>
+<span id="cb35-12"><a href="guess-the-number-single-round.html#cb35-12" tabindex="-1"></a></span>
+<span id="cb35-13"><a href="guess-the-number-single-round.html#cb35-13" tabindex="-1"></a>    <span class="co"># Anweisungen innerhalb der Schleife, aber außerhalb der äußersten if-Anweisung</span></span>
+<span id="cb35-14"><a href="guess-the-number-single-round.html#cb35-14" tabindex="-1"></a>    drucke(Taste) <span class="co"># (Einrückung von 4)</span></span>
+<span id="cb35-15"><a href="guess-the-number-single-round.html#cb35-15" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="guess-the-number-single-round.html#cb35-16" tabindex="-1"></a><span class="co"># einige Anweisungen außerhalb der Schleife (0 Einrückung)</span></span></code></pre></div>
+<p>Achte sehr genau auf die Einrückung, denn sie bestimmt, welche Anweisungen zusammen ausgeführt werden! Ein falscher Einrückungsgrad ist leider ein sehr häufiger Fehler.</p>
+<div class="practice">
+<p>Mache Übung #7.</p>
+</div>
+<p>Die <code>if</code> und <code>ifelse</code> Anweisungen werden so lange ausgewertet, bis eine von ihnen sich als <code>True</code> herausstellt. Danach werden alle folgenden <code>ifelse</code> und <code>else</code> Anweisungen einfach ignoriert.</p>
+<div class="practice">
+<p>Mache Übung #8.</p>
+</div>
+</div>
+<div id="überprüfung-der-antwort" class="section level2" number="5.10">
+<h2>
+<span class="header-section-number">5.10</span> Überprüfung der Antwort<a class="anchor" aria-label="anchor" href="#%C3%BCberpr%C3%BCfung-der-antwort"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt hast du alle notwendigen Werkzeuge, um die erste Version unseres Spiels zu beenden. Füge deinem <code>code01.py</code> bedingte Anweisungen hinzu, so dass</p>
+<ul>
+<li>wenn die Computerwahl kleiner als die Vermutung des Spielers ist, druckt es <code>"Meine Zahl ist niedriger!"</code>
+</li>
+<li>wenn die Computerwahl größer als die Vermutung des Spielers ist, druckt es <code>"Meine Zahl ist höher!"</code>
+</li>
+<li>wenn die beiden Zahlen identisch sind, druckt es <code>"Volltreffer!"</code>
+</li>
+</ul>
+<p>Speichere zunächst eine Kopie deines ursprünglichen Codes in <code>code02.py</code> und füge dann den Vergleich und das Drucken hinzu.
+::: {.program}
+Erweitere dein Programm mit dem Vergleich in <code>code02.py</code>
+:::</p>
+<p>Teste, ob dein Code funktioniert. Nutze wieder Breakpoints, wenn du den Kontrollfluss besser verstehen und überprüfen möchtest, ob die Vergleiche so funktionieren, wie du es erwartest.</p>
+</div>
+<div id="using-libraries" class="section level2" number="5.11">
+<h2>
+<span class="header-section-number">5.11</span> Verwenden von Bibliotheken<a class="anchor" aria-label="anchor" href="#using-libraries"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unser Spiel ist “funktionsvollständig”: der Computer wählt eine Zahl, der Spieler macht eine Vermutung, der Computer reagiert entsprechend. Derzeit spielen wir jedoch für beide Seiten. Lass uns den Computer selbst eine zufällige Zahl auswählen. Dafür müssen wir die Funktion <a href="https://docs.python.org/3/library/random.html#random.randint">randint(a, b)</a> verwenden. Sie ist Teil jeder Python-Distribution, so dass du sie auch hättest, wenn du eine einfache Python-Distribution installierst, anstatt eine von PsychoPy zu verwenden. Du kannst sie jedoch nicht sofort so verwenden, wie du es mit <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> oder <code>input()</code> getan hast. Gib <code>randint(1, 3)</code> in dein Jupyter Notebook ein und beobachte den <em>NameError: name ‘randint’ is not defined</em>.</p>
+<p>Der Grund dafür ist, dass Python unglaublich viele Funktionen hat und das Laden aller gleichzeitig den Speicher mit Dingen verstopfen würde, die du nie zu verwenden beabsichtigt hast. Stattdessen sind sie in <em>Bibliotheken</em> verpackt, so dass du nur die Funktionen (oder Bibliotheken) importieren kannst, die du tatsächlich für dein Programm benötigst. Du importierst sie über eine <code>import</code>-Anweisung, die an den Anfang deiner Datei gehört (aber unter dem Kommentar zum Inhalt der Datei). Es gibt mehrere Möglichkeiten, wie du Bibliotheken importieren kannst. Erstens kannst du eine <em>gesamte</em> Bibliothek importieren (wie zum Beispiel die <em>random</em> Bibliothek, die die Funktion <code>randint()</code> hat, die wir benötigen) und dann ihre Funktionen als <code>&lt;Bibliothek&gt;.&lt;Funktion&gt;</code> verwenden. Für <code>randint</code> wäre das</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="guess-the-number-single-round.html#cb36-1" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb36-2"><a href="guess-the-number-single-round.html#cb36-2" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="guess-the-number-single-round.html#cb36-3" tabindex="-1"></a>computer_wahl <span class="op">=</span> random.randint(<span class="dv">1</span>, <span class="dv">5</span>)</span></code></pre></div>
+<p>Ich würde dies als bevorzugte Art der Verwendung von Bibliotheken empfehlen, da es dich zwingt, den Namen der Bibliothek explizit zu erwähnen, wenn du eine Funktion aufrufst, d.h. <code>random.randint()</code> statt nur <code>randint()</code>. Dies mag nicht wichtig erscheinen, wenn nur eine Bibliothek importiert wird, aber selbst in einem moderat großen Projekt wirst du viele Bibliotheken importieren, so dass es schwierig wird herauszufinden, zu welcher Bibliothek die Funktion gehört. Noch wichtiger ist, dass verschiedene Bibliotheken Funktionen mit <em>demselben Namen</em> haben können. In diesem Fall stammt die Funktion, die du verwendest, aus der <em>letzten</em> Bibliothek, die du importiert hast. Aber du wirst das vielleicht nicht bemerken und dies ist eine Art von Fehler, der wirklich schwer aufzuspüren ist. Importiere also immer die gesamte Bibliothek und verwende die <code>Bibliothek.</code> Notation, es sei denn, du hast einen sehr guten Grund, etwas anderes zu tun!</p>
+<p>Eine weitere und weniger explizite Option besteht darin, nur <em>einige</em> Funktionen zu importieren und sie <em>ohne</em> den <code>library.</code> Präfix zu verwenden. Du kannst mehr als eine Funktion importieren, indem du sie alle auflistest.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="guess-the-number-single-round.html#cb37-1" tabindex="-1"></a><span class="im">from</span> random <span class="im">import</span> randint, randrange</span>
+<span id="cb37-2"><a href="guess-the-number-single-round.html#cb37-2" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="guess-the-number-single-round.html#cb37-3" tabindex="-1"></a>computer_wahl <span class="op">=</span> randint(<span class="dv">1</span>, <span class="dv">5</span>)</span></code></pre></div>
+<p>Du kannst auch eine Bibliothek oder eine Funktion beim Importieren über <code>as</code> <em>umbenennen</em>. Kurz gesagt, solltest du dies nicht tun, da die Verwendung eines anderen Namens für eine Bibliothek oder eine Funktion es anderen (und sogar dem zukünftigen Du) erschweren würde, deinen Code zu verstehen. Es gibt jedoch einige “standardmäßige” Umbenennungsmuster, die universell verwendet werden und auf die du wahrscheinlich stoßen wirst.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="guess-the-number-single-round.html#cb38-1" tabindex="-1"></a><span class="co"># dies ist die übliche Art, diese zwei Bibliotheken zu importieren</span></span>
+<span id="cb38-2"><a href="guess-the-number-single-round.html#cb38-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb38-3"><a href="guess-the-number-single-round.html#cb38-3" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb38-4"><a href="guess-the-number-single-round.html#cb38-4" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="guess-the-number-single-round.html#cb38-5" tabindex="-1"></a>np.<span class="bu">abs</span>(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb38-6"><a href="guess-the-number-single-round.html#cb38-6" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="guess-the-number-single-round.html#cb38-7" tabindex="-1"></a><span class="co"># du kannst auch einzelne Funktionen umbenennen, wenn du unbedingt musst (aber bitte nicht!)</span></span>
+<span id="cb38-8"><a href="guess-the-number-single-round.html#cb38-8" tabindex="-1"></a><span class="im">from</span> random <span class="im">import</span> randint <span class="im">as</span> zufalls_zahl</span>
+<span id="cb38-9"><a href="guess-the-number-single-round.html#cb38-9" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="guess-the-number-single-round.html#cb38-10" tabindex="-1"></a>computer_wahl <span class="op">=</span> zufalls_zahl(<span class="dv">1</span>, <span class="dv">5</span>)</span></code></pre></div>
+<p>Zum Schluss gibt es noch eine <strong>sehr schlechte Möglichkeit</strong>, Funktionen aus einer Bibliothek zu importieren: <code>from random import *</code>. Das Sternchen bedeutet, dass du <em>alle</em> Funktionen aus der Bibliothek importieren möchtest und sie ohne <code>random.</code> Präfix aufrufen möchtest. Tu das niemals, niemals, niemals<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Habe ich schon niemals gesagt? Niemals!&lt;/p&gt;"><sup>17</sup></a>! Dadurch wird deine Umgebung mit Funktionen gefüllt, von denen du vielleicht nichts weißt, die möglicherweise andere Funktionen überschreiben, Konflikte verursachen etc. Niemals! Ich zeige dir das nur, weil du irgendwann einen Code sehen wirst, der diesen Ansatz verwendet, und du könntest denken, dass das eine gute Idee ist. Es ist eine schreckliche Idee! Importiere die Bibliothek, nicht die Funktionen, damit du explizit zeigen kannst, auf welche Bibliothek du dich verlässt, wenn du eine Funktion aufrufst. Denke immer an den <a href="https://www.python.org/dev/peps/pep-0020/">Zen of Python</a>: “Explizit ist besser als implizit.”</p>
+</div>
+<div id="eine-zufallszahl-auswählen" class="section level2" number="5.12">
+<h2>
+<span class="header-section-number">5.12</span> Eine Zufallszahl auswählen<a class="anchor" aria-label="anchor" href="#eine-zufallszahl-ausw%C3%A4hlen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt wo du weißt, wie man eine Bibliothek importiert, können wir die Funktion <a href="https://docs.python.org/3/library/random.html#random.randint">randint()</a> verwenden. Speichere dafür eine Kopie deines vorherigen Codes in <code>code03.py</code>. Importiere die Bibliothek und verwende <a href="https://docs.python.org/3/library/random.html#random.randint">randint()</a>, um eine Zufallszahl zwischen 1 und 10 zu generieren. Lese die Dokumentation zu <a href="https://docs.python.org/3/library/random.html#random.randint">randint()</a>, um zu verstehen, wie man es verwendet. Das Lesen von Handbüchern ist ein notwendiger Teil des Programmierens, also ist dies ein guter Zeitpunkt, um das Üben zu beginnen.</p>
+<p>Sobald du dies in <code>code02.py</code> implementiert hast, führe es mehrmals aus, um zu überprüfen, dass der Computer tatsächlich unterschiedliche Zufallswerte auswählt. Verwende erneut Breakpoints, wenn du genau überprüfen möchtest, was passiert.</p>
+<div class="program">
+<p>Gib deinen Code in <code>code03.py</code> ein.</p>
+</div>
+<p>Herzlichen Glückwunsch, du hast gerade dein erstes Computerspiel programmiert! Ja, es ist sehr einfach, aber es hat die Schlüsselzutaten: eine zufällige Entscheidung des Computers, Benutzereingabe und Feedback. Beim nächsten Mal wirst du über Schleifen lernen, um mehrere Versuche zu ermöglichen, und wirst damit beginnen, Funktionen zu schreiben, um deinen Code modular und zuverlässig zu machen. In der Zwischenzeit vertiefen wir dein Wissen, indem wir noch ein Spiel programmieren!</p>
+</div>
+<div id="einarmiger-bandit-einzelrundenedition" class="section level2" number="5.13">
+<h2>
+<span class="header-section-number">5.13</span> Einarmiger Bandit (Einzelrundenedition)<a class="anchor" aria-label="anchor" href="#einarmiger-bandit-einzelrundenedition"><i class="fas fa-link"></i></a>
+</h2>
+<p>Du weißt alles, was du brauchst, um eine einfache Version eines “Einarmigen Banditen”-Spiels zu programmieren. Hier ist die Spiellogik:</p>
+<ol style="list-style-type: decimal">
+<li>Importiere die Zufallsbibliothek, damit du die Funktion <code>randint</code> verwenden kannst.</li>
+<li>Generiere drei zufällige Ganzzahlen (sagen wir, zwischen 1 und 5) und speichere sie in drei Variablen <code>slot1</code>, <code>slot2</code> und <code>slot3</code>.</li>
+<li>Drucke die Zahlen aus, verwende die String-Formatierung, um sie schön aussehen zu lassen.</li>
+<li>Zusätzlich,
+<ul>
+<li>wenn alle drei Werte gleich sind, drucke <code>"Dreierpasch!"</code>.</li>
+<li>Wenn nur zwei Zahlen übereinstimmen, drucke <code>"Paar!"</code>.</li>
+<li>Drucke nichts, wenn alle Zahlen unterschiedlich sind.</li>
+</ul>
+</li>
+</ol>
+<p>Vergiss nicht, die neue Datei <code>code03.py</code> zu dokumentieren und verwende Breakpoints, um sie zu debuggen, wenn du möchtest.</p>
+<div class="program">
+<p>Gib deinen Code in <code>code04.py</code> ein.</p>
+</div>
+</div>
+<div id="abgabe-für-das-seminar" class="section level2" number="5.14">
+<h2>
+<span class="header-section-number">5.14</span> Abgabe für das Seminar<a class="anchor" aria-label="anchor" href="#abgabe-f%C3%BCr-das-seminar"><i class="fas fa-link"></i></a>
+</h2>
+<p>Für das Seminar gib einen gezippten Ordner mit dem Übungs-Notebook und allen vier Programmen ab.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#guess-the-number-single-round"><span class="header-section-number">5</span> Guess the Number: eine einzelne Runden Edition</a></li>
+<li><a class="nav-link" href="#konzepte-des-kapitels-1"><span class="header-section-number">5.1</span> Konzepte des Kapitels</a></li>
+<li><a class="nav-link" href="#das-spiel"><span class="header-section-number">5.2</span> Das Spiel</a></li>
+<li><a class="nav-link" href="#lass-uns-eine-zahl-ausw%C3%A4hlen"><span class="header-section-number">5.3</span> Lass uns eine Zahl auswählen</a></li>
+<li><a class="nav-link" href="#dokumentiere-deinen-code-1"><span class="header-section-number">5.4</span> Dokumentiere Deinen Code</a></li>
+<li><a class="nav-link" href="#debugging"><span class="header-section-number">5.5</span> Ausführen und Debuggen deines Spiels in VS Code</a></li>
+<li><a class="nav-link" href="#input-function"><span class="header-section-number">5.6</span> Einen Spieler nach einer Vermutung fragen</a></li>
+<li><a class="nav-link" href="#if-statement"><span class="header-section-number">5.7</span> Bedingte if-Anweisung</a></li>
+<li><a class="nav-link" href="#comparisons"><span class="header-section-number">5.8</span> Bedingungen und Vergleiche</a></li>
+<li><a class="nav-link" href="#indentation"><span class="header-section-number">5.9</span> Gruppieren von Anweisungen über Einrückungen</a></li>
+<li><a class="nav-link" href="#%C3%BCberpr%C3%BCfung-der-antwort"><span class="header-section-number">5.10</span> Überprüfung der Antwort</a></li>
+<li><a class="nav-link" href="#using-libraries"><span class="header-section-number">5.11</span> Verwenden von Bibliotheken</a></li>
+<li><a class="nav-link" href="#eine-zufallszahl-ausw%C3%A4hlen"><span class="header-section-number">5.12</span> Eine Zufallszahl auswählen</a></li>
+<li><a class="nav-link" href="#einarmiger-bandit-einzelrundenedition"><span class="header-section-number">5.13</span> Einarmiger Bandit (Einzelrundenedition)</a></li>
+<li><a class="nav-link" href="#abgabe-f%C3%BCr-das-seminar"><span class="header-section-number">5.14</span> Abgabe für das Seminar</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/03-guess-the-number-single-round.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/03-guess-the-number-single-round.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-09.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

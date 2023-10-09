@@ -120,7 +120,7 @@
 
 \title{Lerne Python, indem du Spiele entwickels}
 \author{Alexander (Sasha) Pastukhov}
-\date{2023-10-06}
+\date{2023-10-09}
 
 \begin{document}
 \maketitle
@@ -714,6 +714,451 @@ Wie oben erwähnt, haben Sie im Falle von echten Werten zwei Möglichkeiten: \te
 Machen Sie Übung \#11, um ein besseres Gefühl für den Unterschied zu bekommen.
 
 Es gibt noch viel mehr zur Formatierung und Sie können auf \href{https://pyformat.info/}{pyformat.info} darüber lesen. Diese Grundlagen sind jedoch ausreichend, um in dem nächsten Kapitel mit der Programmierung unseres ersten Spiels zu beginnen.
+
+\hypertarget{guess-the-number-single-round}{%
+\chapter{Guess the Number: eine einzelne Runden Edition}\label{guess-the-number-single-round}}
+
+Das vorherige Kapitel deckte die Grundlagen von Python ab, sodass Du nun bereit bist, Dein erstes Spiel zu entwickeln! Wir werden es Schritt für Schritt aufbauen, da es viel zu lernen gibt über Eingaben, Bibliotheken, bedingte Aussagen und Einrückungen.
+
+Bevor Du anfängst, erstelle einen neuen Ordner (innerhalb Deines \protect\hyperlink{files-folder}{Kursordners}), benenne ihn zum Beispiel ``guess-the-number'', lade das \href{notebooks/Guess\%20the\%20number\%20-\%20single\%20round.ipynb}{Übungsnotizbuch} herunter, kopiere es in den neu erstellten Ordner und öffne es in \protect\hyperlink{jupyter-notebooks}{Jupyter Notebook}. Wie im vorherigen Kapitel wird es Übungen zum Lesen und Verstehen des Codes enthalten.
+
+Wir werden jedoch \protect\hyperlink{install-vs-code}{VS Code} verwenden, um Skripte mit dem eigentlichen Spiel zu programmieren. Du musst für jede Code-Praxis eine separate Datei erstellen\footnote{Du kannst den vorherigen Code ``Speichern unter\ldots{}'' um das Herumkopieren von Dingen per Hand zu vermeiden.} (z.B., \emph{code01.py}\footnote{Ich empfehle die Verwendung von \texttt{01} statt von \texttt{1}, da dies eine konsistente Dateisortierung in Deinem Dateimanager gewährleistet}, \emph{code02.py}, etc.) Dies ist nicht die effizienteste Implementierung einer Versionskontrolle und wird sicherlich den Ordner überladen. Aber es würde mir ermöglichen, Deine Lösungen für jeden Schritt zu sehen, was es mir leichter machen würde, Feedback zu geben. Zum Einreichen der Aufgabe, zippe einfach den Ordner und reiche die Zip-Datei ein.
+
+\hypertarget{konzepte-des-kapitels-1}{%
+\section{Konzepte des Kapitels}\label{konzepte-des-kapitels-1}}
+
+\begin{itemize}
+\tightlist
+\item
+  \protect\hyperlink{documenting-your-code}{Dokumentation des Codes}.
+\item
+  \protect\hyperlink{debugging}{Debuggen von Code}.
+\item
+  Eingabe einer \protect\hyperlink{input-function}{Eingabe} von einem Benutzer.
+\item
+  Verwendung von \protect\hyperlink{comparisons}{Vergleichen} in \protect\hyperlink{if-statement}{bedingten Aussagen}.
+\item
+  Verwendung von \protect\hyperlink{indentation}{Einrückungen}, um Aussagen zu gruppieren.
+\item
+  Verwendung von Python \protect\hyperlink{using-libraries}{Bibliotheken}.
+\item
+  Generieren von \protect\hyperlink{picking-a-number-randomly}{Zufallszahlen}.
+\end{itemize}
+
+\hypertarget{das-spiel}{%
+\section{Das Spiel}\label{das-spiel}}
+
+Wir werden ein Spiel programmieren, bei dem ein Teilnehmer (Computer) eine Zahl innerhalb eines bestimmten Bereichs auswählt (sagen wir, zwischen 1 und 10) und der andere Teilnehmer (menschlicher Spieler) versucht, diese zu erraten. Nach jedem Versuch des Menschen antwortet der Computer, ob die tatsächliche Zahl niedriger als die Vermutung ist, höher als die Vermutung ist oder mit ihr übereinstimmt. Das Spiel ist vorbei, wenn der Spieler die Zahl richtig errät oder (in der späteren Version des Spiels) keine Versuche mehr hat.
+
+Unsere erste Version wird nur einen Versuch zulassen und der Gesamtspielalgorithmus wird folgendermaßen aussehen:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  der Computer generiert eine Zufallszahl zwischen 1 und 10
+\item
+  druckt sie aus für Debugging-Zwecke
+\item
+  fordert den Benutzer auf, eine Vermutung einzugeben
+\item
+  vergleicht die beiden Zahlen und gibt das Ergebnis aus: ``Meine Zahl ist niedriger'', ``Meine Zahl ist höher'' oder ``Genau richtig!''
+\end{enumerate}
+
+\hypertarget{lass-uns-eine-zahl-auswuxe4hlen}{%
+\section{Lass uns eine Zahl auswählen}\label{lass-uns-eine-zahl-auswuxe4hlen}}
+
+Beginnen wir damit, nur die ersten zwei Schritte des Programms zu implementieren. Erstelle zuerst eine Variable, die eine Zahl enthält, die der Computer ``ausgesucht'' hat. Wir nennen sie \texttt{number\_picked} (Du kannst auch einen anderen aussagekräftigen Namen verwenden, aber es könnte einfacher sein, wenn wir alle den gleichen Namen verwenden). Um die Dinge am Anfang einfacher zu machen, codieren wir eine beliebige Zahl zwischen 1 und 10 hart (wähle die, die Dir gefällt). Dann lass uns diese ausdrucken, so dass wir die Zahl selbst kennen\footnote{Natürlich wissen wir es, weil wir es hart kodiert haben, aber das wird nicht der Fall sein, wenn der Computer es zufällig generiert, also lassen wir uns für die Zukunft planen}. Verwende die Zeichenkettenformatierung, um die Dinge benutzerfreundlich zu gestalten, z. B. drucke etwas aus wie ``Die Zahl, die ich ausgewählt habe, ist \ldots{}''. Du solltest in der Lage sein, dies mit dem Wissen aus dem \protect\hyperlink{string-formatting}{vorherigen Kapitel} zu tun. Dein Code sollte aus zwei Zeilen bestehen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 1. erstelle Variable und setze ihren Wert}
+\CommentTok{\# 2. gebe den Wert aus}
+\end{Highlighting}
+\end{Shaded}
+
+Probiere diesen Zweizeiler in einem Jupyter Notebook aus (erstelle ein leeres Notebook nur dafür). Wenn Du damit zufrieden bist, kopiere-den Code in \texttt{code01.py} und lies weiter, um zu erfahren, wie Du es dokumentieren und ausführen kannst.
+
+Füge Deinen Code in \texttt{code01.py} ein.
+
+\hypertarget{dokumentiere-deinen-code-1}{%
+\section{Dokumentiere Deinen Code}\label{dokumentiere-deinen-code-1}}
+
+Jetzt, wo Du Deine erste Datei mit einem Python-Programm hast, solltest Du es dokumentieren. Die Dokumentation eines zwei Zeilen langen und einfachen Programms mag albern erscheinen, aber es sollte etwas Automatisches sein. Später wirst Du mehrere Zeilen Kommentare verwenden, um eine einzelne Zeilenfunktion zu dokumentieren. Noch einmal, es geht nicht um den Code, der funktioniert, es geht um den Code, den Du verstehen kannst. In gewisser Weise ist es besser, ein sauberes, gut dokumentiertes Programm zu haben, das momentan nicht korrekt funktioniert, als einen undokumentierten Spaghetti-Code, der funktioniert. Du kannst das Erstere korrigieren und aktualisieren, das Letztere zu warten oder zu aktualisieren\ldots{}
+
+In Python hast Du zwei Möglichkeiten, Kommentare zu schreiben: mehrzeilig und einzeilig
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}Ein }
+\CommentTok{mehrzeiliger }
+\CommentTok{Kommentar}
+\CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}}
+
+\CommentTok{\#  Ein einzeiliger Kommentar.}
+\end{Highlighting}
+\end{Shaded}
+
+Verwende mehrzeilige Kommentare, um die Dokumentation für einzelne Dateien, Funktionen, Klassen, Methoden usw. zu schreiben. Du wirst lernen, wie Du diese Dokumentation im Numpy-Docstring-Stil formatierst, sobald Du Funktionen kennst. In unserem Fall solltest Du Deine \texttt{code01.py}-Datei mit einem mehrzeiligen Kommentar beginnen, der kurz beschreibt, welches Programm sie enthält. Mindestens solltest Du schreiben, dass dies ein \emph{Guess a Number}-Spiel ist. Wahrscheinlich ist es eine gute Idee, zu skizzieren, worum es in dem Spiel geht.
+
+Verwende einzeilige Kommentare, um zu erklären, was in einem bestimmten Codeblock passiert. Du musst nicht jede Zeile kommentieren und Du solltest den Code nicht in menschlicher Sprache replizieren. Ein Kommentar sollte darüber sein, \emph{was} passiert, nicht \emph{wie}. Du hast bereits einen Block Code, also dokumentiere ihn mit einem einzelnen Satz.
+
+Dokumentiere die \texttt{code01.py}.
+
+\hypertarget{debugging}{%
+\section{Ausführen und Debuggen deines Spiels in VS Code}\label{debugging}}
+
+Jetzt, da wir ein zwei Zeilen langes Programm haben, können wir es ausführen und schon anfangen zu lernen, wie man es debuggt. Ja, unser aktuelles Programm ist wahrscheinlich zu einfach, um ein tatsächliches Debugging zu benötigen, aber es ist auch einfach genug, um das Verständnis des Debuggings zu erleichtern. Und das Debuggen ist eine entscheidende Fähigkeit, die ein laufendes Programm von einer Blackbox in etwas transparentes und leichtes\footnote{Oder zumindest leichter.} zu verstehen verwandelt. Weiter unten werde ich beschreiben, wie man in VS Code debuggt, aber du könntest \href{https://code.visualstudio.com/docs/python/debugging}{ein offizielles Handbuch} zu Rate ziehen, falls sich in der Zwischenzeit etwas geändert hat.
+
+Es gibt zwei Möglichkeiten, ein Python-Programm in VS Code auszuführen. Zuerst kannst Du den \emph{``Run Python File in Terminal''} Abspielknopf auf der rechten Seite verwenden. Dies führt dein Programm \emph{ohne} Debugger aus, so dass Du es nur für die tatsächlichen Läufe des finalisierten Codes verwenden solltest. Trotzdem kannst Du versuchen, es auszuführen und zu sehen, ob es das ausgibt, was es sollte.
+
+\includegraphics{images/debug-vs-run.png}
+Die Alternative ist der Debugging-Reiter, der eine kleine Wanze auf dem Run-Knopf hat. Wenn Du ihn auswählst, wird \emph{``Run and Debug''} angezeigt. Klicke auf den Knopf und es werden verschiedene Optionen für verschiedene Arten von Python-Projekten und -Frameworks angeboten. Für unsere Absichten und Zwecke benötigen wir nur \emph{``Python File: Debug the currently active Python file''}. Klicke darauf und es wird Deinen Code ausführen (sollte genau so laufen wie mit dem anderen Knopf).
+
+\begin{figure}
+\centering
+\includegraphics{images/debug-select-debug-configuration.png}
+\caption{Selecting debugging configuration.}
+\end{figure}
+
+Du willst wahrscheinlich nicht die ganze Zeit durch Debugging-Tab → Run and Debug-Knopf → Konfiguration auswählen klicken. Ein besserer Weg ist es, es einmal für alle zu konfigurieren und dann die \textbf{F5}-Taste zu verwenden, um Deinen Code auszuführen. Klicke zunächst auf \emph{``Erstelle eine launch.json-Datei''} und wähle erneut \emph{``Python File: Debug the currently active Python file''} aus. Du wirst sehen, dass eine neue \emph{launch.json} Datei im Editor erscheint, die so aussehen sollte:
+
+\begin{figure}
+\centering
+\includegraphics{images/debug-launch-json.png}
+\caption{Debug configuration in launch.json file.}
+\end{figure}
+
+Das war's! VS Code hat für Dich eine Konfiguration erstellt. Jetzt kannst Du die \emph{launch.json}-Datei schließen und Dein Programm durch einfaches Drücken der \textbf{F5}-Taste ausführen. Versuch es! Wieder einmal sollte es genauso funktionieren wie zuvor, aber warum sind wir dann durch all diese Mühe gegangen? Weil der Debugger die Ausführung Deines Codes \emph{pausiert}, wann immer er auf ein Problem trifft und Dir die Chance gibt, Variablen zu untersuchen, Code-Snippets auszuführen usw. Im Gegensatz dazu wird das Ausführen der Python-Datei im Terminal (die erste Option) nur eine Fehlermeldung ausgeben und das Programm beenden. Außerdem kannst Du \emph{Breakpoints} verwenden, um das Programm an jeder Zeile anzuhalten, was Dir die Möglichkeit gibt, Deinen Code an jeder Stelle, die Du benötigst, zu untersuchen.
+
+Du aktivierst Breakpoints, indem Du links von der Zeilennummer, die Dich interessiert, klickst. Hier habe ich auf Zeile 6 geklickt und Du kannst einen roten Punkt sehen, der einen aktiven Breakpoint anzeigt
+
+\begin{figure}
+\centering
+\includegraphics{images/debug-breakpoint.png}
+\caption{Active breakpoint.}
+\end{figure}
+
+Wenn ich jetzt den Code über \textbf{F5} ausführe, hält das Programm an dieser Zeile \emph{bevor} es sie ausführt.
+
+\begin{figure}
+\centering
+\includegraphics{images/debug-pause.png}
+\caption{Program paused at the breakpoint.}
+\end{figure}
+
+Das gibt mir die Möglichkeit zu sehen, welchen Wert meine Variable \texttt{number\_picked} hat. Sie ist bereits in den lokalen Variablen aufgeführt (oben links). Aber ich habe sie auch zur Liste der beobachteten Variablen (\emph{Watch}, links in der Mitte) hinzugefügt und mir ihren Wert in der \emph{Debug Console} (unten) angesehen, die es mir ermöglicht, \emph{beliebigen} Python-Code auszuführen, während mein Programm angehalten ist. Mach das Gleiche und erkunde selbst diese unterschiedlichen Möglichkeiten. Sieh zum Beispiel, wie du \texttt{number\_picked\ +\ 1} oder \texttt{number\_picked\ *\ number\_picked} im \emph{Watch} Tab und in der \emph{Debug Console} berechnen kannst.
+
+Sobald du fertig bist, den aktuellen Zustand des Programms zu untersuchen, hast du sechs Buttons oben zur Verfügung, um zu entscheiden, was als nächstes zu tun ist (fahre mit der Maus darüber, um Hinweise zu sehen). Sie sind, von links nach rechts
+
+\begin{itemize}
+\tightlist
+\item
+  Fortfahren (\textbf{F5}): Setze das Programm fort.
+\item
+  Step Over (\textbf{F10}): Führt den Code aus, ohne in Funktionen zu gehen (diese und die beiden folgenden Optionen werden klarer, sobald du lernst, Funktionen zu schreiben).
+\item
+  In den Code hineinsteigen (\textbf{F11})
+\item
+  Aus dem Code heraussteigen (\textbf{Shift+F11}).
+\item
+  Das Programm neu starten (\textbf{Ctrl+Shift+F5}).
+\item
+  Das Programm stoppen (\textbf{Shift+F5}).
+\end{itemize}
+
+Um besser zu verstehen, wie das funktioniert, stoppe das Programm (\textbf{Shift+F5}) und setze einen zusätzlichen Haltepunkt in die erste Zeile deines Codes (Zeile \#5 in meinem Programm, die anderen Zeilen sind Kommentare oder leer). Führe das Programm wieder über \textbf{F5} aus und es wird an dieser ersten Zeile pausieren. Kannst du jetzt den Wert der Variable \texttt{number\_picked} ermitteln?
+
+Die Antwort lautet ``nein'', weil diese Variable noch nicht existiert. Denke daran, das Programm pausiert \emph{vor} dem Ausführen der Zeile. Benutze \textbf{F10}, um Schritt für Schritt durch den Code zu gehen und zu sehen, wie die Variable erscheint und die Information ausgegeben wird.
+
+Diese Debugging-Übung war vielleicht nicht notwendig, um Probleme mit deinem aktuellen Code zu lösen, aber sie hat gezeigt, wie das in der Zukunft funktioniert. Zögere nicht, einen Haltepunkt zu setzen, um das Programm zu pausieren und zu überprüfen, ob die Realität (d.h. die tatsächlichen Werte der Variablen) deinen Erwartungen entspricht. Nutze das Durchlaufen des Codes, um die Dinge zu verlangsamen und zu beobachten und zu überlegen.
+
+\hypertarget{input-function}{%
+\section{Einen Spieler nach einer Vermutung fragen}\label{input-function}}
+
+Um das Spiel \emph{Guess the Number} zu spielen, braucht es zwei. Der Computer hat seinen Teil erledigt, indem er eine Zahl ausgewählt hat, jetzt müssen wir einen Spieler bitten, seine Vermutung einzugeben. Dafür verwenden wir die \href{https://docs.python.org/3/library/functions.html\#input}{input()} \emph{Funktion}.
+
+Eine Funktion ist ein isolierter Code, der (optionale) \emph{Eingaben} akzeptiert, eine \emph{Aktion} ausführt und optional einen Wert (\emph{Ausgabe}) zurückgibt. Dies ermöglicht einerseits, den Code in kleinere Blöcke zu unterteilen, die einfacher zu warten sind und andererseits, den gleichen Code wiederzuverwenden. Du hast bereits die \href{https://docs.python.org/3/library/functions.html\#print}{print()} Funktion verwendet, um Dinge auszudrucken, und die \href{https://docs.python.org/3/library/functions.html\#func-str}{str()}, \href{https://docs.python.org/3/library/functions.html\#bool}{bool()}, \href{https://docs.python.org/3/library/functions.html\#int}{int()} und \href{https://docs.python.org/3/library/functions.html\#float}{float()} Funktionen, um Werte zu konvertieren. Bei der \href{https://docs.python.org/3/library/functions.html\#print}{print()} Funktion ist die \emph{Eingabe} eine beliebige Anzahl von Werten (sogar keine, probiere das in Jupiter Notebook aus!), ihre \emph{Aktion} ist es, Dinge auszudrucken, aber sie gibt nichts zurück (keine \emph{Ausgabe}). Die \href{https://docs.python.org/3/library/functions.html\#float}{float()} Funktion nimmt (etwas überraschend) null oder einen Wert als \emph{Eingabe} (versuche, ihr keinen oder mehr als einen in Jupiter Notebook zu geben und sieh den Unterschied), versucht, den gegebenen Wert in float zu konvertieren (wirft einen Fehler, wenn sie das nicht kann), und gibt einen float-Wert als \emph{Ausgabe} zurück.
+
+Ein ähnliches \emph{Eingabe} → \emph{Aktion} → \emph{Ausgabe} Schema gilt für die \href{https://docs.python.org/3/library/functions.html\#input}{input(prompt)} Funktion. Sie akzeptiert optional einen \texttt{prompt} String als Eingabe. Dann druckt sie die \texttt{prompt} Nachricht aus und wartet darauf, dass ein Benutzer einen \emph{String} eingibt, bis dieser \textbf{Enter} drückt. Dann gibt sie diesen \emph{String}-Wert zurück. Dieser letzte Punkt über den \emph{String} ist wichtig, denn in unserem Spiel müssen die Spieler eine \emph{ganze Zahl} und keinen String eingeben. Gehen wir für einen Moment davon aus, dass die Eingabe immer eine gültige Ganzzahl ist, also gib nur gültige Ganzzahlen ein, wenn du das Programm testest! Auf diese Weise können wir sie ohne zusätzliche Prüfungen (die wir in der Zukunft hinzufügen werden) in eine Ganzzahl umwandeln und dieser Wert einer neuen Variable namens \texttt{guess} zuweisen. Du musst also eine einzelne Zuweisungsanweisung mit der \texttt{guess} Variablen auf der linken Seite und dem Aufruf der \href{https://docs.python.org/3/library/functions.html\#input}{input()} Funktion auf der rechten Seite hinzufügen (denke an eine schöne Aufforderungsnachricht), eingehüllt (innerhalb) der Typumwandlung in eine Ganzzahl über \href{https://docs.python.org/3/library/functions.html\#int}{int()}. Teste diesen Code, aber gib wieder nur gültige Ganzzahlen ein, damit die Umwandlung ohne Fehler funktioniert.
+
+Aktualisiere deine \texttt{code01.py}
+
+\hypertarget{if-statement}{%
+\section{\texorpdfstring{Bedingte \emph{if}-Anweisung}{Bedingte if-Anweisung}}\label{if-statement}}
+
+Jetzt haben wir zwei Zahlen: Eine, die der Computer ausgewählt hat (\texttt{number\_picked}), und eine, die der Spieler eingegeben hat (\texttt{guess}). Wir müssen sie vergleichen, um die korrekte Ausgabemeldung zu liefern. Dafür verwenden wir die bedingte \href{https://docs.python.org/3/tutorial/controlflow.html\#if-statements}{if-Anweisung}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ eine\_Bedingung\_ist\_wahr:}
+    \CommentTok{\# Tu etwas}
+\ControlFlowTok{elif}\NormalTok{ eine\_andere\_Bedingung\_ist\_wahr:}
+    \CommentTok{\# Tu etwas anderes}
+\ControlFlowTok{elif}\NormalTok{ noch\_eine\_andere\_Bedingung\_ist\_wahr:}
+    \CommentTok{\# Tu noch etwas anderes}
+\ControlFlowTok{else}\NormalTok{:}
+    \CommentTok{\# Tu etwas nur, wenn alle Bedingungen oben falsch sind.}
+\end{Highlighting}
+\end{Shaded}
+
+Nur der \texttt{if}-Teil ist erforderlich, während \texttt{elif} (kurz für ``else, if'') und \texttt{else} optional sind. So kannst du etwas tun, nur wenn eine Bedingung wahr ist:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ eine\_Bedingung\_ist\_wahr:}
+    \CommentTok{\# Tu etwas, aber ANSONSTEN TU NICHTS }
+    \CommentTok{\# und fahre mit der Codeausführung fort}
+  
+\CommentTok{\# Einige Codezeilen, die nach der if{-}Anweisung ausgeführt werden,}
+\CommentTok{\# unabhängig davon, ob die Bedingung wahr war oder nicht.}
+\end{Highlighting}
+\end{Shaded}
+
+Bevor wir bedingte Anweisungen in unserem Spiel verwenden können, musst du (1) die Bedingungen selbst und (2) die Verwendung von Einrückungen als Mittel zur Gruppierung von Anweisungen verstehen.
+
+\hypertarget{comparisons}{%
+\section{Bedingungen und Vergleiche}\label{comparisons}}
+
+Eine Bedingung ist jeder Ausdruck, der überprüft werden kann, um zu sehen, ob er \texttt{True} oder \texttt{False} ist. Ein einfaches Beispiel für einen solchen Ausdruck sind Vergleiche, die in menschlicher Sprache ausgedrückt werden als: \emph{Ist heute Donnerstag?} \emph{Ist die Antwort (gleich) 42?} \emph{Regnet es und habe ich einen Regenschirm?} Wir werden uns für einen Moment auf solche Vergleiche konzentrieren, aber später wirst Du sehen, dass in Python \emph{jeder} Ausdruck entweder \texttt{True} oder \texttt{False} ist, auch wenn er nicht wie ein Vergleich aussieht\footnote{Dies liegt daran, dass Du jeden Wert über die Funktion \href{https://docs.python.org/3/library/functions.html\#bool}{bool()}, die Du letztes Mal kennengelernt hast, in einen logischen Wert umwandeln kannst und so jeder Wert (umgewandelt) entweder \texttt{True} oder \texttt{False} ist.}.
+
+Für den Vergleich kannst Du die folgenden Operatoren verwenden:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{``A ist gleich B''} wird geschrieben als \texttt{A\ ==\ B}.
+\item
+  \emph{``A ist nicht gleich B''} wird geschrieben als \texttt{A\ !=\ B}.
+\item
+  \emph{``A ist größer als B''} und \emph{``A ist kleiner als B''} sind entsprechend \texttt{A\ \textgreater{}\ B} und \texttt{A\ \textless{}\ B}.
+\item
+  \emph{``A ist größer als oder gleich B''} und \emph{``A ist kleiner als oder gleich B''} sind entsprechend \texttt{A\ \textgreater{}=\ B} und \texttt{A\ \textless{}=\ B} (bitte beachte die Reihenfolge der Symbole, da \texttt{=\textgreater{}} und \texttt{=\textless{}} einen Fehler erzeugen werden).
+\end{itemize}
+
+Löse einige Vergleiche in Übung \#1.
+
+Beachte, dass Python auch einen \href{https://docs.python.org/3/library/operator.html\#operator.is_}{is} Operator hat, der \emph{identisch} mit \texttt{==} \emph{aussehen} kann (z.B. sieht \texttt{x\ ==\ 2} äquivalent zu \texttt{x\ is\ 2} aus). Darüber hinaus funktioniert er in \emph{einigen} Fällen auch auf die gleiche Weise. Es gibt jedoch einen subtilen Unterschied: \texttt{==} überprüft, ob \emph{Werte} identisch sind, während \texttt{is} überprüft, ob \emph{Objekte} (die ``Werte halten'') identisch sind. Du musst Klassen und Objekte verstehen, bevor Du diesen Unterschied schätzen kannst, also behalte vorerst im Hinterkopf, dass Du nur \texttt{==} verwenden solltest (ich werde explizit erwähnen, wann \texttt{is} benötigt wird).
+
+Du kannst den logischen Wert mit dem Operator \texttt{not} \emph{invertieren}, da \texttt{not\ True} \texttt{False} und \texttt{not\ False} \texttt{True} ist. Das bedeutet, dass \texttt{A\ !=\ B} dasselbe ist wie \texttt{not\ A\ ==\ B} und entsprechend ist \texttt{A\ ==\ B} \texttt{not\ A\ !=\ B}. Um zu sehen, wie das funktioniert, betrachte beide Fälle, wenn \texttt{A} tatsächlich gleich \texttt{B} ist und wenn es nicht so ist.
+
+\begin{itemize}
+\tightlist
+\item
+  Wenn A gleich B ist, dann ergibt \texttt{A\ ==\ B} \texttt{True}. Das \texttt{A\ !=\ B} ist dann \texttt{False}, also \texttt{not\ A\ !=\ B} → \texttt{not\ False} → \texttt{True}.
+\item
+  Wenn A nicht gleich B ist, dann ergibt \texttt{A\ ==\ B} \texttt{False}. Das \texttt{A\ !=\ B} ist dann \texttt{True}, also \texttt{not\ A\ !=\ B} → \texttt{not\ True} → \texttt{False}.
+\end{itemize}
+
+Überprüfe diese Inversion selbst in Übung \#2.
+
+Du kannst auch mehrere Vergleiche mit den Operatoren \texttt{and} und/oder\footnote{Wortspiel beabsichtigt} \texttt{or} kombinieren. Wie in der menschlichen Sprache bedeutet \texttt{and}, dass beide Teile wahr sein müssen: \texttt{True\ and\ True} → \texttt{True}, aber \texttt{True\ and\ False} → \texttt{False}, \texttt{False\ and\ True} → \texttt{False}, und \texttt{False\ and\ False} → \texttt{False}. Dasselbe gilt, wenn Du mehr als zwei Bedingungen/Vergleiche über \texttt{and} verknüpfst: \textbf{Alle} müssen wahr sein. Im Fall von \texttt{or} muss nur eine der Aussagen wahr sein, z.B. \texttt{True\ or\ True} → \texttt{True}, \texttt{True\ or\ False} → \texttt{True}, \texttt{False\ or\ True} → \texttt{True}, aber \texttt{False\ or\ False} → \texttt{False}. Auch hier gilt für mehr als zwei Vergleiche/Bedingungen, dass mindestens eine von ihnen wahr sein sollte, damit der gesamte Ausdruck wahr ist.
+
+Mache die Übungen \#3 und \#4.
+
+Ein subtiler, aber wichtiger Punkt: Bedingungen werden von links nach rechts ausgewertet, bis der gesamte Ausdruck auf die eine oder andere Weise aufgelöst ist. Das bedeutet, dass wenn der erste Ausdruck in einem \texttt{and} \texttt{False} ist, der zweite (der Rest von ihnen) \textbf{nie ausgewertet} wird. D.h., wenn sowohl \texttt{erster} als auch \texttt{zweiter} Ausdruck \texttt{True} sein müssen und Du weißt, dass \texttt{erster} Ausdruck bereits \texttt{False} ist, ist der gesamte Ausdruck in jedem Fall \texttt{False}. Das bedeutet, dass es im folgenden Code keinen Fehler geben wird, obwohl die Auswertung von \texttt{int("e123")} allein einen \texttt{ValueError} auslösen würde.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{2} \OperatorTok{*} \DecValTok{2} \OperatorTok{==} \DecValTok{5} \KeywordTok{and} \BuiltInTok{int}\NormalTok{(}\StringTok{"e123"}\NormalTok{) }\OperatorTok{==} \DecValTok{123}
+\CommentTok{\#\textgreater{} False}
+\end{Highlighting}
+\end{Shaded}
+
+Umkehrst Du jedoch die Reihenfolge, so dass \texttt{int("e123")\ ==\ 123} zuerst ausgewertet werden muss, erhältst Du eine Fehlermeldung
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{int}\NormalTok{(}\StringTok{"e123"}\NormalTok{) }\OperatorTok{==} \DecValTok{123} \KeywordTok{and} \DecValTok{2} \OperatorTok{*} \DecValTok{2} \OperatorTok{==} \DecValTok{4}
+\CommentTok{\#\textgreater{} invalid literal for int() with base 10: \textquotesingle{}e123\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+Ähnlich verhält es sich, wenn bei \texttt{or} \emph{irgendein} Ausdruck \texttt{True} ist, musst Du den Rest nicht überprüfen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{2} \OperatorTok{*} \DecValTok{2} \OperatorTok{==} \DecValTok{4} \KeywordTok{or} \BuiltInTok{int}\NormalTok{(}\StringTok{"e123"}\NormalTok{) }\OperatorTok{==} \DecValTok{123}
+\CommentTok{\#\textgreater{} True}
+\end{Highlighting}
+\end{Shaded}
+
+Ist die erste Bedingung jedoch \texttt{False}, müssen wir fortfahren (und stolpern dabei über einen Fehler):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{2} \OperatorTok{*} \DecValTok{2} \OperatorTok{==} \DecValTok{5} \KeywordTok{or} \BuiltInTok{int}\NormalTok{(}\StringTok{"e123"}\NormalTok{) }\OperatorTok{==} \DecValTok{123}
+\CommentTok{\#\textgreater{} invalid literal for int() with base 10: \textquotesingle{}e123\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#5.
+
+Schließlich kannst Du, wie in der einfachen Arithmetik, Klammern \texttt{()} verwenden, um Bedingungen zu gruppieren. So kann die Aussage ``Ich esse immer Schokolade, aber ich esse Spinat nur, wenn ich hungrig bin'' wie folgt geschrieben werden: \texttt{food\ ==\ "chocolate"\ or\ (food\ ==\ "spinach"\ and\ hungry)}. Hier werden \texttt{food\ ==\ "chocolate"} und \texttt{food\ ==\ "spinach"\ and\ hungry} unabhängig voneinander ausgewertet, ihre Werte werden an ihrer Stelle eingesetzt und dann wird die \texttt{and}-Bedingung ausgewertet.
+
+Mache Übung \#6.
+
+Ein letzter Gedanke zu Vergleichen: Zögere nicht, sie in Jupyter Notebook mit verschiedenen Kombinationen von Werten zu testen oder das Programm an der Bedingung über einen Haltepunkt anzuhalten und einen Vergleich in \emph{Watch} oder \emph{Debug Console} auszuwerten.
+
+\hypertarget{indentation}{%
+\section{Gruppieren von Anweisungen über Einrückungen}\label{indentation}}
+
+Lass uns zu einer bedingten if-Anweisung zurückkehren. Sieh dir das folgende Codebeispiel an (und beachte ein \texttt{:} am Ende von \texttt{if\ some\_condition\_is\_true:}), in dem \emph{Anweisung \#1} nur ausgeführt wird, wenn \emph{eine Bedingung} wahr ist, während \emph{Anweisung \#2} danach ausgeführt wird, \emph{unabhängig} von der Bedingung.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ some\_condition\_is\_true:}
+\NormalTok{    Anweisung }\CommentTok{\#1}
+\NormalTok{Anweisung }\CommentTok{\#2 }
+\end{Highlighting}
+\end{Shaded}
+
+Beide Aussagen \#1 und \#2 folgen nach der if-Anweisung. Aber wie erkennt Python, dass die erste nur ausgeführt wird, wenn die Bedingung wahr ist, und die andere immer ausgeführt wird? Die Antwort ist Einrückung: Die \textbf{4 (vier!) Leerzeichen}, die automatisch hinzugefügt werden, wenn du in VS Code auf \textbf{Tab} drückst und entfernt werden, wenn du auf \textbf{Shift+Tab} drückst. Die Einrückung platziert Anweisung \#1 \emph{innerhalb} der if-Anweisung. Daher zeigt die Einrückung an, ob Anweisungen zur gleichen Gruppe gehören und nacheinander ausgeführt werden müssen (gleiche Einrückungsebene für \texttt{if} und \texttt{Anweisung\ \#2}) oder sich innerhalb einer bedingten Anweisung, Schleife, Funktion, Klasse usw. befinden (\texttt{Anweisung\ \#1}). Für komplexeren Code, der zum Beispiel eine if-Anweisung innerhalb einer if-Anweisung innerhalb einer Schleife haben wird, drückst du dies aus, indem du weitere Ebenen der Einrückung hinzufügst. Zum Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# einige Anweisungen außerhalb der Schleife (0 Einrückung)}
+\ControlFlowTok{while}\NormalTok{ Spiel\_ist\_nicht\_vorbei: }\CommentTok{\# (0 Einrückung)}
+    \CommentTok{\# Anweisungen innerhalb der Schleife}
+    \ControlFlowTok{if}\NormalTok{ Taste\_gedrückt: }\CommentTok{\# (Einrückung von 4)}
+        \CommentTok{\# innerhalb der Schleife und if{-}Anweisung}
+        \ControlFlowTok{if}\NormalTok{ Taste }\OperatorTok{==} \StringTok{"Space"}\NormalTok{: }\CommentTok{\# (Einrückung von 8)}
+            \CommentTok{\# innerhalb der Schleife, if{-}Anweisung und einer weiteren if{-}Anweisung}
+\NormalTok{            springen() }\CommentTok{\# (Einrückung von 12)}
+        \ControlFlowTok{else}\NormalTok{: }\CommentTok{\# (Einrückung von 4)}
+            \CommentTok{\# innerhalb der Schleife, if{-}Anweisung und im sonst{-}Teil einer weiteren if{-}Anweisung}
+\NormalTok{            stehen() }\CommentTok{\# (Einrückung von 12)}
+
+    \CommentTok{\# Anweisungen innerhalb der Schleife, aber außerhalb der äußersten if{-}Anweisung}
+\NormalTok{    drucke(Taste) }\CommentTok{\# (Einrückung von 4)}
+
+\CommentTok{\# einige Anweisungen außerhalb der Schleife (0 Einrückung)}
+\end{Highlighting}
+\end{Shaded}
+
+Achte sehr genau auf die Einrückung, denn sie bestimmt, welche Anweisungen zusammen ausgeführt werden! Ein falscher Einrückungsgrad ist leider ein sehr häufiger Fehler.
+
+Mache Übung \#7.
+
+Die \texttt{if} und \texttt{ifelse} Anweisungen werden so lange ausgewertet, bis eine von ihnen sich als \texttt{True} herausstellt. Danach werden alle folgenden \texttt{ifelse} und \texttt{else} Anweisungen einfach ignoriert.
+
+Mache Übung \#8.
+
+\hypertarget{uxfcberpruxfcfung-der-antwort}{%
+\section{Überprüfung der Antwort}\label{uxfcberpruxfcfung-der-antwort}}
+
+Jetzt hast du alle notwendigen Werkzeuge, um die erste Version unseres Spiels zu beenden. Füge deinem \texttt{code01.py} bedingte Anweisungen hinzu, so dass
+
+\begin{itemize}
+\tightlist
+\item
+  wenn die Computerwahl kleiner als die Vermutung des Spielers ist, druckt es \texttt{"Meine\ Zahl\ ist\ niedriger!"}
+\item
+  wenn die Computerwahl größer als die Vermutung des Spielers ist, druckt es \texttt{"Meine\ Zahl\ ist\ höher!"}
+\item
+  wenn die beiden Zahlen identisch sind, druckt es \texttt{"Volltreffer!"}
+\end{itemize}
+
+Speichere zunächst eine Kopie deines ursprünglichen Codes in \texttt{code02.py} und füge dann den Vergleich und das Drucken hinzu.
+::: \{.program\}
+Erweitere dein Programm mit dem Vergleich in \texttt{code02.py}
+:::
+
+Teste, ob dein Code funktioniert. Nutze wieder Breakpoints, wenn du den Kontrollfluss besser verstehen und überprüfen möchtest, ob die Vergleiche so funktionieren, wie du es erwartest.
+
+\hypertarget{using-libraries}{%
+\section{Verwenden von Bibliotheken}\label{using-libraries}}
+
+Unser Spiel ist ``funktionsvollständig'': der Computer wählt eine Zahl, der Spieler macht eine Vermutung, der Computer reagiert entsprechend. Derzeit spielen wir jedoch für beide Seiten. Lass uns den Computer selbst eine zufällige Zahl auswählen. Dafür müssen wir die Funktion \href{https://docs.python.org/3/library/random.html\#random.randint}{randint(a, b)} verwenden. Sie ist Teil jeder Python-Distribution, so dass du sie auch hättest, wenn du eine einfache Python-Distribution installierst, anstatt eine von PsychoPy zu verwenden. Du kannst sie jedoch nicht sofort so verwenden, wie du es mit \texttt{print()} oder \texttt{input()} getan hast. Gib \texttt{randint(1,\ 3)} in dein Jupyter Notebook ein und beobachte den \emph{NameError: name `randint' is not defined}.
+
+Der Grund dafür ist, dass Python unglaublich viele Funktionen hat und das Laden aller gleichzeitig den Speicher mit Dingen verstopfen würde, die du nie zu verwenden beabsichtigt hast. Stattdessen sind sie in \emph{Bibliotheken} verpackt, so dass du nur die Funktionen (oder Bibliotheken) importieren kannst, die du tatsächlich für dein Programm benötigst. Du importierst sie über eine \texttt{import}-Anweisung, die an den Anfang deiner Datei gehört (aber unter dem Kommentar zum Inhalt der Datei). Es gibt mehrere Möglichkeiten, wie du Bibliotheken importieren kannst. Erstens kannst du eine \emph{gesamte} Bibliothek importieren (wie zum Beispiel die \emph{random} Bibliothek, die die Funktion \texttt{randint()} hat, die wir benötigen) und dann ihre Funktionen als \texttt{\textless{}Bibliothek\textgreater{}.\textless{}Funktion\textgreater{}} verwenden. Für \texttt{randint} wäre das
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ random}
+
+\NormalTok{computer\_wahl }\OperatorTok{=}\NormalTok{ random.randint(}\DecValTok{1}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Ich würde dies als bevorzugte Art der Verwendung von Bibliotheken empfehlen, da es dich zwingt, den Namen der Bibliothek explizit zu erwähnen, wenn du eine Funktion aufrufst, d.h. \texttt{random.randint()} statt nur \texttt{randint()}. Dies mag nicht wichtig erscheinen, wenn nur eine Bibliothek importiert wird, aber selbst in einem moderat großen Projekt wirst du viele Bibliotheken importieren, so dass es schwierig wird herauszufinden, zu welcher Bibliothek die Funktion gehört. Noch wichtiger ist, dass verschiedene Bibliotheken Funktionen mit \emph{demselben Namen} haben können. In diesem Fall stammt die Funktion, die du verwendest, aus der \emph{letzten} Bibliothek, die du importiert hast. Aber du wirst das vielleicht nicht bemerken und dies ist eine Art von Fehler, der wirklich schwer aufzuspüren ist. Importiere also immer die gesamte Bibliothek und verwende die \texttt{Bibliothek.} Notation, es sei denn, du hast einen sehr guten Grund, etwas anderes zu tun!
+
+Eine weitere und weniger explizite Option besteht darin, nur \emph{einige} Funktionen zu importieren und sie \emph{ohne} den \texttt{library.} Präfix zu verwenden. Du kannst mehr als eine Funktion importieren, indem du sie alle auflistest.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ random }\ImportTok{import}\NormalTok{ randint, randrange}
+
+\NormalTok{computer\_wahl }\OperatorTok{=}\NormalTok{ randint(}\DecValTok{1}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Du kannst auch eine Bibliothek oder eine Funktion beim Importieren über \texttt{as} \emph{umbenennen}. Kurz gesagt, solltest du dies nicht tun, da die Verwendung eines anderen Namens für eine Bibliothek oder eine Funktion es anderen (und sogar dem zukünftigen Du) erschweren würde, deinen Code zu verstehen. Es gibt jedoch einige ``standardmäßige'' Umbenennungsmuster, die universell verwendet werden und auf die du wahrscheinlich stoßen wirst.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# dies ist die übliche Art, diese zwei Bibliotheken zu importieren}
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{import}\NormalTok{ pandas }\ImportTok{as}\NormalTok{ pd}
+
+\NormalTok{np.}\BuiltInTok{abs}\NormalTok{(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{)}
+
+\CommentTok{\# du kannst auch einzelne Funktionen umbenennen, wenn du unbedingt musst (aber bitte nicht!)}
+\ImportTok{from}\NormalTok{ random }\ImportTok{import}\NormalTok{ randint }\ImportTok{as}\NormalTok{ zufalls\_zahl}
+
+\NormalTok{computer\_wahl }\OperatorTok{=}\NormalTok{ zufalls\_zahl(}\DecValTok{1}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Zum Schluss gibt es noch eine \textbf{sehr schlechte Möglichkeit}, Funktionen aus einer Bibliothek zu importieren: \texttt{from\ random\ import\ *}. Das Sternchen bedeutet, dass du \emph{alle} Funktionen aus der Bibliothek importieren möchtest und sie ohne \texttt{random.} Präfix aufrufen möchtest. Tu das niemals, niemals, niemals\footnote{Habe ich schon niemals gesagt? Niemals!}! Dadurch wird deine Umgebung mit Funktionen gefüllt, von denen du vielleicht nichts weißt, die möglicherweise andere Funktionen überschreiben, Konflikte verursachen etc. Niemals! Ich zeige dir das nur, weil du irgendwann einen Code sehen wirst, der diesen Ansatz verwendet, und du könntest denken, dass das eine gute Idee ist. Es ist eine schreckliche Idee! Importiere die Bibliothek, nicht die Funktionen, damit du explizit zeigen kannst, auf welche Bibliothek du dich verlässt, wenn du eine Funktion aufrufst. Denke immer an den \href{https://www.python.org/dev/peps/pep-0020/}{Zen of Python}: ``Explizit ist besser als implizit.''
+
+\hypertarget{eine-zufallszahl-auswuxe4hlen}{%
+\section{Eine Zufallszahl auswählen}\label{eine-zufallszahl-auswuxe4hlen}}
+
+Jetzt wo du weißt, wie man eine Bibliothek importiert, können wir die Funktion \href{https://docs.python.org/3/library/random.html\#random.randint}{randint()} verwenden. Speichere dafür eine Kopie deines vorherigen Codes in \texttt{code03.py}. Importiere die Bibliothek und verwende \href{https://docs.python.org/3/library/random.html\#random.randint}{randint()}, um eine Zufallszahl zwischen 1 und 10 zu generieren. Lese die Dokumentation zu \href{https://docs.python.org/3/library/random.html\#random.randint}{randint()}, um zu verstehen, wie man es verwendet. Das Lesen von Handbüchern ist ein notwendiger Teil des Programmierens, also ist dies ein guter Zeitpunkt, um das Üben zu beginnen.
+
+Sobald du dies in \texttt{code02.py} implementiert hast, führe es mehrmals aus, um zu überprüfen, dass der Computer tatsächlich unterschiedliche Zufallswerte auswählt. Verwende erneut Breakpoints, wenn du genau überprüfen möchtest, was passiert.
+
+Gib deinen Code in \texttt{code03.py} ein.
+
+Herzlichen Glückwunsch, du hast gerade dein erstes Computerspiel programmiert! Ja, es ist sehr einfach, aber es hat die Schlüsselzutaten: eine zufällige Entscheidung des Computers, Benutzereingabe und Feedback. Beim nächsten Mal wirst du über Schleifen lernen, um mehrere Versuche zu ermöglichen, und wirst damit beginnen, Funktionen zu schreiben, um deinen Code modular und zuverlässig zu machen. In der Zwischenzeit vertiefen wir dein Wissen, indem wir noch ein Spiel programmieren!
+
+\hypertarget{einarmiger-bandit-einzelrundenedition}{%
+\section{Einarmiger Bandit (Einzelrundenedition)}\label{einarmiger-bandit-einzelrundenedition}}
+
+Du weißt alles, was du brauchst, um eine einfache Version eines ``Einarmigen Banditen''-Spiels zu programmieren. Hier ist die Spiellogik:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Importiere die Zufallsbibliothek, damit du die Funktion \texttt{randint} verwenden kannst.
+\item
+  Generiere drei zufällige Ganzzahlen (sagen wir, zwischen 1 und 5) und speichere sie in drei Variablen \texttt{slot1}, \texttt{slot2} und \texttt{slot3}.
+\item
+  Drucke die Zahlen aus, verwende die String-Formatierung, um sie schön aussehen zu lassen.
+\item
+  Zusätzlich,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    wenn alle drei Werte gleich sind, drucke \texttt{"Dreierpasch!"}.
+  \item
+    Wenn nur zwei Zahlen übereinstimmen, drucke \texttt{"Paar!"}.
+  \item
+    Drucke nichts, wenn alle Zahlen unterschiedlich sind.
+  \end{itemize}
+\end{enumerate}
+
+Vergiss nicht, die neue Datei \texttt{code03.py} zu dokumentieren und verwende Breakpoints, um sie zu debuggen, wenn du möchtest.
+
+Gib deinen Code in \texttt{code04.py} ein.
+
+\hypertarget{abgabe-fuxfcr-das-seminar}{%
+\section{Abgabe für das Seminar}\label{abgabe-fuxfcr-das-seminar}}
+
+Für das Seminar gib einen gezippten Ordner mit dem Übungs-Notebook und allen vier Programmen ab.
 
   \bibliography{book.bib}
 

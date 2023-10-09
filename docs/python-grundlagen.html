@@ -24,7 +24,7 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'G-NBXRG6YB3R');
+        gtag('config', 'G-TMHDLSM1CE');
       </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
@@ -56,6 +56,7 @@
 <li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
 <li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
 <li><a class="active" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Guess the Number: eine einzelne Runden Edition</a></li>
 </ul>
 
         <div class="book-extra">
@@ -116,7 +117,7 @@
 <span id="cb5-2"><a href="python-grundlagen.html#cb5-2" tabindex="-1"></a>anzahl_der_beine <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb5-3"><a href="python-grundlagen.html#cb5-3" tabindex="-1"></a>anzahl_der_beine <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb5-4"><a href="python-grundlagen.html#cb5-4" tabindex="-1"></a>anzahl_der_beine</span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Mache Übung #1.</p>
 </div>
 <p>Beachte, dass eine Variable (eine “Kiste mit Namensschild”) erst existiert, nachdem du ihr etwas zugewiesen hast. Der folgende Code erzeugt also einen <code>NameError</code>, die Python-art zu sagen, dass sie noch nie von der Variable <code>anzahl_der_haende</code> gehört hat.</p>
@@ -128,7 +129,7 @@
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="python-grundlagen.html#cb8-1" tabindex="-1"></a>anzahl_der_beine <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span></span>
 <span id="cb8-2"><a href="python-grundlagen.html#cb8-2" tabindex="-1"></a>anzahl_der_beine <span class="op">=</span> <span class="dv">7</span> <span class="op">-</span> <span class="dv">2</span></span>
 <span id="cb8-3"><a href="python-grundlagen.html#cb8-3" tabindex="-1"></a>anzahl_der_beine</span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Mache Übung #2.</p>
 </div>
 </div>
@@ -144,7 +145,7 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="python-grundlagen.html#cb10-1" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">5</span> <span class="op">-</span> <span class="dv">4</span></span></code></pre></div>
 <p>Dann berechnet er den Ausdruck auf der rechten Seite und speichert, <strong>sobald die Berechnung abgeschlossen ist</strong>, diesen neuen Wert in <code>x</code></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="python-grundlagen.html#cb11-1" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">3</span></span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Machen Sie die Übung #3, um sicherzugehen, dass Sie dies verstanden haben.</p>
 </div>
 </div>
@@ -156,7 +157,7 @@
 <p>Unter Berücksichtigung all dessen, wenn die Anzahl der Beine im Spiel konstant bleibt, sollten Sie diese Konstanz betonen und schreiben</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="python-grundlagen.html#cb12-1" tabindex="-1"></a>ANZAHL_DER_BEINE <span class="op">=</span> <span class="dv">2</span></span></code></pre></div>
 <p>Ich empfehle dringend die Verwendung von Konstanten und vermeide das Hardcoding von Werten. Erstens, wenn Sie mehrere identische Werte haben, die verschiedene Dinge bedeuten (2 Beine, 2 Augen, 2 Ohren, 2 Fahrzeuge pro Figur, etc.), wird Ihnen eine <code>2</code> im Code nicht verraten, was diese <code>2</code> bedeutet (die Beine? Die Ohren? Der Punktemultiplikator?). Sie können das natürlich herausfinden, basierend auf dem Code, der diese Nummer verwendet, aber Sie könnten sich diese zusätzliche Mühe ersparen und stattdessen eine ordnungsgemäß benannte Konstante verwenden. Dann lesen Sie einfach ihren Namen und die Bedeutung des Wertes wird offensichtlich, und es ist die Bedeutung und nicht der tatsächliche Wert, der Sie hauptsächlich interessiert. Zweitens, wenn Sie entscheiden, diesen Wert dauerhaft zu <em>ändern</em> (sagen wir, unsere Hauptfigur ist jetzt ein Dreifuß), bedeutet die Verwendung einer Konstante, dass Sie sich nur an einer Stelle Sorgen machen müssen, der Rest des Codes bleibt unverändert. Wenn Sie diese Zahl hart codiert haben, erwartet Sie eine aufregende <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;nicht wirklich&lt;/p&gt;"><sup>10</sup></a> und definitiv lange Suche und Ersetzung im gesamten Code.</p>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Machen Sie die Übung #4.</p>
 </div>
 </div>
@@ -177,7 +178,7 @@
 <span id="cb13-3"><a href="python-grundlagen.html#cb13-3" tabindex="-1"></a><span class="co">'5'</span> <span class="op">+</span> <span class="st">'2'</span></span>
 <span id="cb13-4"><a href="python-grundlagen.html#cb13-4" tabindex="-1"></a><span class="co">'5'</span> <span class="op">+</span> <span class="va">True</span></span>
 <span id="cb13-5"><a href="python-grundlagen.html#cb13-5" tabindex="-1"></a><span class="dv">5</span> <span class="op">+</span> <span class="va">True</span></span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Mache Übung #5.</p>
 </div>
 <p>Überrascht vom letzten? Das liegt daran, dass intern <code>True</code> auch <code>1</code> und <code>False</code> <code>0</code> ist!</p>
@@ -185,7 +186,7 @@
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="python-grundlagen.html#cb14-1" tabindex="-1"></a><span class="bu">str</span>(<span class="dv">10</span> <span class="op">/</span> <span class="dv">2</span>)</span>
 <span id="cb14-2"><a href="python-grundlagen.html#cb14-2" tabindex="-1"></a><span class="bu">str</span>(<span class="fl">2.5</span> <span class="op">+</span> <span class="va">True</span>)</span>
 <span id="cb14-3"><a href="python-grundlagen.html#cb14-3" tabindex="-1"></a><span class="bu">str</span>(<span class="va">True</span>)</span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Mache Übung #6.</p>
 </div>
 <p>Ähnlich können Sie mit der Funktion <a href="https://docs.python.org/3/library/functions.html#bool">bool(&lt;value&gt;)</a> in eine logische/boolesche Variable umwandeln. Die Regeln sind einfach, für numerische Werte ist <code>0</code> gleich <code>False</code>, jeder andere Nicht-Null-Wert wird in <code>True</code> umgewandelt. Für Zeichenketten wird eine leere Zeichenkette <code>''</code> als <code>False</code> bewertet und eine nicht leere Zeichenkette wird in <code>True</code> umgewandelt. Was wäre die Ausgabe in den untenstehenden Beispielen?</p>
@@ -196,7 +197,7 @@
 <span id="cb15-5"><a href="python-grundlagen.html#cb15-5" tabindex="-1"></a><span class="bu">bool</span>(secret_message)</span>
 <span id="cb15-6"><a href="python-grundlagen.html#cb15-6" tabindex="-1"></a></span>
 <span id="cb15-7"><a href="python-grundlagen.html#cb15-7" tabindex="-1"></a><span class="bu">bool</span>(<span class="st">'False'</span>)</span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Mache Übung #7.</p>
 </div>
 <p>Die Umwandlung in Ganzzahlen oder Fließkommazahlen mit <a href="https://docs.python.org/3/library/functions.html#int">int(&lt;value&gt;)</a> bzw. <a href="https://docs.python.org/3/library/functions.html#float">float(&lt;value&gt;)</a> ist komplizierter. Der einfachste Fall ist von logisch auf Ganzzahl/Fließkommazahl, da <code>True</code> Ihnen <code>int(True)</code> ist <code>1</code> und <code>float(True)</code> ist <code>1.0</code> gibt und <code>False</code> gibt Ihnen <code>0</code>/<code>0.0</code>. Beim Umwandeln von Fließkommazahl auf Ganzzahl lässt Python einfach den Bruchteilteil fallen (es rundet nicht richtig!). Bei der Umwandlung einer Zeichenkette muss es sich um eine gültige Zahl des entsprechenden Typs handeln, sonst wird ein Fehler erzeugt. Sie können z. B. eine Zeichenkette wie <code>"123"</code> in eine Ganzzahl oder eine Fließkommazahl umwandeln, aber das funktioniert nicht für <code>"a123"</code>. Darüber hinaus können Sie <code>"123.4"</code> in eine Fließkommazahl umwandeln, aber nicht in eine Ganzzahl, da sie einen Bruchteil enthält. Angesichts all dessen, welche Zellen würden funktionieren und welche Ausgabe würden sie erzeugen?</p>
@@ -204,7 +205,7 @@
 <span id="cb16-2"><a href="python-grundlagen.html#cb16-2" tabindex="-1"></a><span class="bu">int</span>(<span class="op">-</span><span class="fl">3.3</span>)</span>
 <span id="cb16-3"><a href="python-grundlagen.html#cb16-3" tabindex="-1"></a><span class="bu">float</span>(<span class="st">"67.8"</span>)</span>
 <span id="cb16-4"><a href="python-grundlagen.html#cb16-4" tabindex="-1"></a><span class="bu">int</span>(<span class="st">"123+3"</span>)</span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Mache Übung #8.</p>
 </div>
 </div>
@@ -237,7 +238,7 @@
 <span id="cb22-3"><a href="python-grundlagen.html#cb22-3" tabindex="-1"></a>nachtisch <span class="op">=</span> <span class="st">"muffins"</span></span>
 <span id="cb22-4"><a href="python-grundlagen.html#cb22-4" tabindex="-1"></a></span>
 <span id="cb22-5"><a href="python-grundlagen.html#cb22-5" tabindex="-1"></a><span class="bu">print</span>(zähler, abendessen, zähler, nachtisch)</span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Mache Übung #9.</p>
 </div>
 <p>Allerdings möchten Sie wahrscheinlich expliziter sein, wenn Sie die Informationen ausdrucken. Stellen Sie sich zum Beispiel vor, Sie haben diese drei Variablen:</p>
@@ -270,11 +271,11 @@
 <div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="python-grundlagen.html#cb25-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ich hatte </span><span class="sc">%d</span><span class="st"> Pfannkuchen und entweder </span><span class="sc">%d</span><span class="st"> oder </span><span class="sc">%d</span><span class="st"> Steaks zum Abendessen'</span><span class="op">%</span>(<span class="dv">2</span>))</span>
 <span id="cb25-2"><a href="python-grundlagen.html#cb25-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ich hatte </span><span class="sc">%d</span><span class="st"> Pfannkuchen und </span><span class="sc">%d</span><span class="st"> Steaks zum Abendessen'</span><span class="op">%</span>(<span class="dv">7</span>, <span class="dv">10</span>))</span>
 <span id="cb25-3"><a href="python-grundlagen.html#cb25-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ich hatte </span><span class="sc">%d</span><span class="st"> Pfannkuchen und </span><span class="sc">%d</span><span class="st"> Steaks zum Abendessen'</span><span class="op">%</span>(<span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">10</span>))</span></code></pre></div>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Machen Sie Übung #10.</p>
 </div>
 <p>Wie oben erwähnt, haben Sie im Falle von echten Werten zwei Möglichkeiten: <code>%f</code> und <code>%g</code>. Letzterer verwendet die wissenschaftliche Notation (z.B. <code>1e10</code> für <code>10000000000</code>), um eine Darstellung kompakter zu machen.</p>
-<div class="rmdnote practice">
+<div class="practice">
 <p>Machen Sie Übung #11, um ein besseres Gefühl für den Unterschied zu bekommen.</p>
 </div>
 <p>Es gibt noch viel mehr zur Formatierung und Sie können auf <a href="https://pyformat.info/">pyformat.info</a> darüber lesen. Diese Grundlagen sind jedoch ausreichend, um in dem nächsten Kapitel mit der Programmierung unseres ersten Spiels zu beginnen.</p>
@@ -282,24 +283,9 @@
 </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <div class="chapter-nav">
 <div class="prev"><a href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></div>
-<div class="empty"></div>
+<div class="next"><a href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Guess the Number: eine einzelne Runden Edition</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
@@ -328,7 +314,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-06.</p>
+    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-09.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -59,7 +59,7 @@ anzahl_der_beine = 1
 anzahl_der_beine
 ```
 
-::: {.rmdnote .practice}
+::: {.practice}
 Mache Übung #1.
 :::
 
@@ -81,7 +81,7 @@ anzahl_der_beine = 7 - 2
 anzahl_der_beine
 ```
 
-::: {.rmdnote .practice}
+::: {.practice}
 Mache Übung #2.
 :::
 
@@ -104,7 +104,7 @@ Dann berechnet er den Ausdruck auf der rechten Seite und speichert, **sobald die
 x = 3
 ```
 
-::: {.rmdnote .practice}
+::: {.practice}
 Machen Sie die Übung #3, um sicherzugehen, dass Sie dies verstanden haben.
 :::
 
@@ -118,7 +118,7 @@ ANZAHL_DER_BEINE = 2
 
 Ich empfehle dringend die Verwendung von Konstanten und vermeide das Hardcoding von Werten. Erstens, wenn Sie mehrere identische Werte haben, die verschiedene Dinge bedeuten (2 Beine, 2 Augen, 2 Ohren, 2 Fahrzeuge pro Figur, etc.), wird Ihnen eine `2` im Code nicht verraten, was diese `2` bedeutet (die Beine? Die Ohren? Der Punktemultiplikator?). Sie können das natürlich herausfinden, basierend auf dem Code, der diese Nummer verwendet, aber Sie könnten sich diese zusätzliche Mühe ersparen und stattdessen eine ordnungsgemäß benannte Konstante verwenden. Dann lesen Sie einfach ihren Namen und die Bedeutung des Wertes wird offensichtlich, und es ist die Bedeutung und nicht der tatsächliche Wert, der Sie hauptsächlich interessiert. Zweitens, wenn Sie entscheiden, diesen Wert dauerhaft zu _ändern_ (sagen wir, unsere Hauptfigur ist jetzt ein Dreifuß), bedeutet die Verwendung einer Konstante, dass Sie sich nur an einer Stelle Sorgen machen müssen, der Rest des Codes bleibt unverändert. Wenn Sie diese Zahl hart codiert haben, erwartet Sie eine aufregende ^[nicht wirklich] und definitiv lange Suche und Ersetzung im gesamten Code.
 
-::: {.rmdnote .practice}
+::: {.practice}
 Machen Sie die Übung #4.
 :::
 
@@ -139,7 +139,7 @@ Bei der Verwendung einer Variable ist es wichtig, dass Sie wissen, welchen Daten
 5 + True
 ```
 
-::: {.rmdnote .practice}
+::: {.practice}
 Mache Übung #5.
 :::
 
@@ -152,7 +152,7 @@ str(2.5 + True)
 str(True)
 ```
 
-::: {.rmdnote .practice}
+::: {.practice}
 Mache Übung #6.
 :::
 
@@ -168,7 +168,7 @@ bool(secret_message)
 bool('False')
 ```
 
-::: {.rmdnote .practice}
+::: {.practice}
 Mache Übung #7.
 :::
 
@@ -181,7 +181,7 @@ float("67.8")
 int("123+3")
 ```
 
-::: {.rmdnote .practice}
+::: {.practice}
 Mache Übung #8.
 :::
 
@@ -224,7 +224,7 @@ nachtisch = "muffins"
 print(zähler, abendessen, zähler, nachtisch)
 ```
 
-::: {.rmdnote .practice}
+::: {.practice}
 Mache Übung #9.
 :::
 
@@ -260,13 +260,13 @@ print('Ich hatte %d Pfannkuchen und entweder %d oder %d Steaks zum Abendessen'%(
 print('Ich hatte %d Pfannkuchen und %d Steaks zum Abendessen'%(7, 10))
 print('Ich hatte %d Pfannkuchen und %d Steaks zum Abendessen'%(1, 7, 10))
 ```
-::: {.rmdnote .practice}
+::: {.practice}
 Machen Sie Übung #10.
 :::
 
 Wie oben erwähnt, haben Sie im Falle von echten Werten zwei Möglichkeiten: `%f` und `%g`. Letzterer verwendet die wissenschaftliche Notation (z.B. `1e10` für `10000000000`), um eine Darstellung kompakter zu machen.
 
-::: {.rmdnote .practice}
+::: {.practice}
 Machen Sie Übung #11, um ein besseres Gefühl für den Unterschied zu bekommen.
 :::
 
