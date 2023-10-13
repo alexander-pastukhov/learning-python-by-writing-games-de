@@ -1,4 +1,4 @@
-# Guess the Number: eine einzelne Runden Edition {#guess-the-number-single-round}
+# Errate die Zahl: eine einzelne Runden Edition {#guess-the-number-single-round}
 
 Das vorherige Kapitel deckte die Grundlagen von Python ab, sodass Du nun bereit bist, Dein erstes Spiel zu entwickeln! Wir werden es Schritt für Schritt aufbauen, da es viel zu lernen gibt über Eingaben, Bibliotheken, bedingte Aussagen und Einrückungen.
 
