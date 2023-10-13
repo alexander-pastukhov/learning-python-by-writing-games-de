@@ -120,7 +120,7 @@
 
 \title{Lerne Python, indem du Spiele entwickels}
 \author{Alexander (Sasha) Pastukhov}
-\date{2023-10-09}
+\date{2023-10-13}
 
 \begin{document}
 \maketitle
@@ -1159,6 +1159,217 @@ Gib deinen Code in \texttt{code04.py} ein.
 \section{Abgabe für das Seminar}\label{abgabe-fuxfcr-das-seminar}}
 
 Für das Seminar gib einen gezippten Ordner mit dem Übungs-Notebook und allen vier Programmen ab.
+
+\hypertarget{guess-the-number-multi-round}{%
+\chapter{Errate die Zahl: Eine Mehr-Runden-Ausgabe}\label{guess-the-number-multi-round}}
+
+Im vorherigen Kapitel hast Du ein ``Guess the Number''-Spiel programmiert, das nur einen einzigen Versuch erlaubt. Jetzt werden wir es erweitern, um mehrere Versuche zu ermöglichen und werden andere Extras hinzufügen, um es noch spannender zu machen. Erstelle einen neuen Unterordner und lade das \href{notebooks/Guess\%20the\%20number\%20-\%20multi\%20round.ipynb}{Übungs-Notebook} herunter, bevor wir beginnen!
+
+\hypertarget{konzepte-des-kapitels-2}{%
+\section{Konzepte des Kapitels}\label{konzepte-des-kapitels-2}}
+
+\begin{itemize}
+\tightlist
+\item
+  Wiederholen von Code mit \protect\hyperlink{while-loop}{while} Schleife.
+\item
+  Machen in \protect\hyperlink{break}{Notausgang} aus einer Schleife.
+\end{itemize}
+
+\hypertarget{while-loop}{%
+\section{While-Schleife}\label{while-loop}}
+
+Wenn Du etwas wiederholen möchtest, musst Du Schleifen verwenden. Es gibt zwei Arten von Schleifen: die \href{https://docs.python.org/3/reference/compound_stmts.html\#the-while-statement}{while} Schleife, welche wiederholt wird, \emph{während} eine Bedingung wahr ist, und die \href{https://docs.python.org/3/reference/compound_stmts.html\#the-for-statement}{for} Schleife, die über Elemente iteriert (wir werden sie später verwenden).
+
+Die grundlegende Struktur einer \emph{while}-Schleife ist
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Anweisungen vor der Schleife}
+
+\ControlFlowTok{while} \OperatorTok{\textless{}}\NormalTok{Bedingung}\OperatorTok{\textgreater{}}\NormalTok{:}
+    \CommentTok{\# die inneren Anweisungen werden}
+    \CommentTok{\# so lange ausgeführt, wie}
+    \CommentTok{\# die Bedingung wahr ist}
+    
+\CommentTok{\# Anweisungen nach der Schleife}
+\end{Highlighting}
+\end{Shaded}
+
+Die \texttt{\textless{}Bedingung\textgreater{}} hier ist ein Ausdruck, der entweder \texttt{True} oder \texttt{False} ergibt, genau wie in einer \texttt{if...elif...else} \protect\hyperlink{comparisons}{Bedingungsanweisung}. Auch gelten dieselben \protect\hyperlink{indentation}{Einrückungsregeln}, die bestimmen, welcher Code innerhalb der Schleife und welcher außerhalb ist.
+
+Mache Übung \#1.
+
+Lass uns die \emph{while}-Schleife verwenden, um dem Spieler zu erlauben, weiter zu raten, bis er es endlich richtig hat. Du kannst den Code, den Du während des letzten Seminars programmiert hast, kopieren und einfügen oder Du kannst ihn von Grund auf neu erstellen (ich würde Dir dringend empfehlen, Letzteres zu tun!). Die allgemeine Programmstruktur sollte folgende sein
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# importiere die Zufallsbibliothek, damit du die randint Funktion verwenden kannst}
+
+\CommentTok{\# generiere eine zufällige Zahl und speichere sie in der Variablen number\_picked}
+\CommentTok{\# hole die Eingabe des Spielers, konvertiere sie in eine Ganzzahl und speichere sie in der Variablen guess}
+
+\CommentTok{\# während die Vermutung des Spielers nicht gleich dem Wert ist, den der Computer ausgewählt hat:}
+    \CommentTok{\# gib "meine Zahl ist kleiner" oder "meine Zahl ist größer" aus, indem Du die if{-}else Anweisung verwendest}
+    \CommentTok{\# hole die Eingabe des Spielers, konvertiere sie in eine Ganzzahl und speichere sie in der Variablen guess}
+    
+\CommentTok{\# gib "Ganz genau!" aus }
+\CommentTok{\# (denn wenn wir hier angekommen sind, bedeutet das, dass die Vermutung gleich der Wahl des Computers ist)}
+\end{Highlighting}
+\end{Shaded}
+
+Speichere deinen Code in \texttt{code01.py}.
+
+Vergiss nicht, die Datei zu dokumentieren und Breakpoints und Step overs zu verwenden, um den Programmfluss zu erkunden.
+
+\hypertarget{versuche-zuxe4hlen}{%
+\section{Versuche zählen}\label{versuche-zuxe4hlen}}
+
+Jetzt fügen wir eine Variable hinzu, die die Gesamtzahl der Versuche des Spielers zählt. Dazu erstelle eine neue Variable (nennen wir sie \texttt{attempts} oder ähnliches) \emph{vor der Schleife} und initialisiere sie mit \texttt{1} (weil der erste Versuch vor dem Betreten der Schleife vom Spieler gemacht wird). Füge jedes Mal, wenn der Spieler eine Vermutung eingibt, \texttt{1} hinzu. Erweitern Sie nach der Schleife die Nachricht \texttt{"Ganz\ genau!"} um Informationen über die Anzahl der Versuche. Nutze \protect\hyperlink{ux5cux23string-formatting}{String-Formatierung}, um alles schön aussehen zu lassen, z.B.: \texttt{"Ganz\ genau\ und\ du\ hast\ nur\ 5\ Versuche\ gebraucht!"}. Überprüfe, ob die Anzahl der benötigten Versuche mit der Anzahl der vom Programm gemeldeten Versuche übereinstimmt!
+
+Speichere deinen Code in \texttt{code02.py}.
+
+\hypertarget{break}{%
+\section{Abbruch (und Ausstieg)}\label{break}}
+
+Der Code innerhalb der \emph{while}-Schleife wird wiederholt ausgeführt, während die Bedingung \texttt{True} ist und, was wichtig ist, der gesamte Code innerhalb wird ausgeführt, bevor die Bedingung erneut bewertet wird. Manchmal musst du jedoch früher abbrechen, ohne den verbleibenden Code auszuführen. Dafür hat Python eine \href{https://docs.python.org/3/tutorial/controlflow.html\#break-and-continue-statements-and-else-clauses-on-loops}{break} Anweisung, die dazu führt, dass das Programm die Schleife sofort verlässt, ohne den Rest des Codes innerhalb der Schleife auszuführen, so dass das Programm mit dem Code \emph{nach} der Schleife fortfährt.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# dieser Code wird vor der Schleife ausgeführt}
+
+\ControlFlowTok{while} \OperatorTok{\textless{}}\NormalTok{irgendeine\_Bedingung}\OperatorTok{\textgreater{}}\NormalTok{:}
+  \CommentTok{\# dieser Code wird bei jeder Iteration ausgeführt}
+  
+    \ControlFlowTok{if} \OperatorTok{\textless{}}\NormalTok{irgendeine\_andere\_Bedingung}\OperatorTok{\textgreater{}}\NormalTok{:}
+        \ControlFlowTok{break}
+  
+  \CommentTok{\# dieser Code wird bei jeder Iteration ausgeführt, aber nicht, wenn du aus der Schleife herausbrichst}
+
+\CommentTok{\# dieser Code wird nach der Schleife ausgeführt}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#2, um dein Verständnis zu vertiefen.
+
+\hypertarget{begrenzung-der-anzahl-der-versuche-mittels-break}{%
+\section{Begrenzung der Anzahl der Versuche mittels Break}\label{begrenzung-der-anzahl-der-versuche-mittels-break}}
+
+Setzen wir den Spieler unter Druck! Entscheide dich für eine maximale Anzahl an Versuchen, die du erlaubst, und speichere sie als \protect\hyperlink{constants}{KONSTANTE}. Wähle einen passenden Namen (z.B. \texttt{MAX\_ATTEMPTS}) und BEACHTE, GROßBUCHSTABEN für den Namen einer Konstanten! Nun nutze \texttt{break} um die \texttt{while}-Schleife zu verlassen, wenn die aktuelle Versuchszahl größer als \texttt{MAX\_ATTEMPTS} ist. Überlege, wann (innerhalb des Codes innerhalb der Schleife) du dies prüfen solltest.
+
+Speichere deinen Code in \texttt{code03.py}.
+
+\hypertarget{korrekte-end-of-game-nachricht}{%
+\section{Korrekte End-of-Game-Nachricht}\label{korrekte-end-of-game-nachricht}}
+
+Aktualisieren wir die finale Nachricht. Im Moment steht dort ``Ganz genau\ldots{}'', weil wir davon ausgegangen sind, dass das Programm die Schleife nur dann verlässt, wenn der Spieler die richtige Antwort gegeben hat. Bei begrenzten Versuchen ist das nicht unbedingt der Fall. Es gibt jetzt zwei Gründe, warum es die while-Schleife verlassen hat:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Der Spieler hat die richtige Antwort gegeben.
+\item
+  Dem Spieler sind die Versuche ausgegangen.
+\end{enumerate}
+
+Verwende die \texttt{if-else} Bedingungsanweisung, um eine passende Nachricht auszugeben. Zum Beispiel drucke \texttt{"Viel\ Glück\ beim\ nächsten\ Mal!"}, wenn der Spieler verloren hat (die Versuche ausgegangen sind).
+
+Speichere deinen Code in \texttt{code04.py}.
+
+\hypertarget{begrenzung-der-anzahl-der-versuche-ohne-break}{%
+\section{Begrenzung der Anzahl der Versuche ohne Break}\label{begrenzung-der-anzahl-der-versuche-ohne-break}}
+
+Obwohl es meine Idee war, die \texttt{break} Anweisung hinzuzufügen, solltest du sie sparsam verwenden. Ohne \texttt{break} gibt es eine \emph{einzige} Stelle im Code, die du überprüfen musst, um zu verstehen, wann das Programm die Schleife verlassen wird: die Bedingung. Wenn du jedoch ein \texttt{break} hinzufügst, hast du jetzt \emph{zwei} Stellen, die geprüft werden müssen. Und jedes zusätzliche \texttt{break} fügt weitere hinzu. Das bedeutet aber nicht, dass du sie um jeden Preis vermeiden solltest! Du \emph{solltest} sie verwenden, wenn dadurch der Code leichter zu verstehen ist. Aber überprüfe immer, ob eine modifizierte Bedingung auch den Trick tun könnte.
+
+Probieren wir genau das aus. Ändere deinen Code so ab, dass er \emph{ohne} die \texttt{break} Anweisung funktioniert. Du brauchst eine kompliziertere Bedingung für deine while-Schleife, so dass sie sich wiederholt, solange die Vermutung des Spielers falsch ist und die Anzahl der Versuche noch kleiner ist als die maximal erlaubte. Teste, ob dein Code sowohl funktioniert, wenn du gewinnst als auch wenn du verlierst.
+
+Speichere deinen Code in \texttt{code05.py}.
+
+\hypertarget{verbleibende-versuche-anzeigen}{%
+\section{Verbleibende Versuche anzeigen}\label{verbleibende-versuche-anzeigen}}
+
+Es geht alles um die Benutzeroberfläche! Ändere die Eingabeaufforderung so, dass sie die Anzahl der \emph{verbleibenden} Versuche enthält. Z.B. \texttt{"Bitte\ gebe\ eine\ Vermutung\ ein,\ du\ hast\ noch\ X\ Versuche\ übrig"}.
+
+Speichere deinen Code in \texttt{code06.py}.
+
+\hypertarget{guess-the-number-repeat-game}{%
+\section{Wiederholung des Spiels}\label{guess-the-number-repeat-game}}
+
+Lass uns dem Spieler die Option geben, noch einmal zu spielen. Das bedeutet, dass wir \emph{allen} aktuellen Code in eine weitere \texttt{while}-Schleife packen (das nennt man \emph{verschachtelte Schleifen}), die so lange wiederholt wird, wie der Spieler weiterspielen möchte. Der Code sollte folgendermaßen aussehen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# importiere die random Bibliothek, damit du die Funktion randint verwenden kannst}
+
+\CommentTok{\# definiere MAX\_ATTEMPTS}
+
+\CommentTok{\# definiere eine Variable namens "want\_to\_play" und setze sie auf True}
+\CommentTok{\# solange der Spieler noch spielen möchte}
+  
+  \CommentTok{\# dein aktueller funktionierender Spielcode kommt hierher}
+  
+  \CommentTok{\# frage den Benutzer mit der input{-}Funktion, z.B. "Möchtest du nochmal spielen? J/N"}
+  \CommentTok{\# want\_to\_play sollte True sein, wenn die Benutzereingabe gleich "J" oder "j" ist}
+  
+\CommentTok{\# allerletzte Nachricht, zum Beispiel "Vielen Dank fürs Spielen!"}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Achte besonders auf die Einrückungen, um den Code richtig zu gruppieren!}
+
+Setze deinen Code in \texttt{code07.py}.
+
+\hypertarget{du-benuxf6tigst-keinen-vergleich-wenn-du-bereits-den-wert-hast}{%
+\section{Du benötigst keinen Vergleich, wenn du bereits den Wert hast}\label{du-benuxf6tigst-keinen-vergleich-wenn-du-bereits-den-wert-hast}}
+
+In deinem aktualisierten Code hast du eine Variable \texttt{want\_to\_play}, die entweder \texttt{True} oder \texttt{False} ist. Sie wird in der Schleife verwendet, die sich wiederholt, solange ihr Wert \texttt{True} ist. Manchmal schreiben Leute \texttt{want\_to\_play\ ==\ True}, um das auszudrücken. Obwohl es technisch korrekt und mit Sicherheit korrekt funktionieren wird, ist es auch redundant. Da \texttt{want\_to\_play} nur \texttt{True} oder \texttt{False} sein kann, verwandelt sich dieser Vergleich in \texttt{True\ ==\ True} (was natürlich \texttt{True} ist) oder \texttt{False\ ==\ True} (was \texttt{False} ist). Das Vergleichen eines jeden Werts mit \texttt{True} ergibt genau denselben Wert. Daher kannst du einfach \texttt{while\ want\_to\_play:} schreiben und den logischen Wert direkt verwenden.
+
+\hypertarget{bestes-ergebnis}{%
+\section{Bestes Ergebnis}\label{bestes-ergebnis}}
+
+Ein ``richtiges'' Spiel behält normalerweise die Leistung der Spieler im Auge. Lass uns die geringste Anzahl von Versuchen aufzeichnen, die der Spieler benötigt hat, um die Zahl zu erraten. Dazu erstellst du eine neue Variable \texttt{fewest\_attempts} und setzt sie auf \texttt{MAX\_ATTEMPTS} (das ist so schlecht, wie der Spieler sein kann). Überlege, wo du sie erstellen musst. Du solltest sie nach jeder Spielrunde aktualisieren. Füge die Information über ``Bisher das Beste'' in die finale Rundennachricht ein.
+
+Setze deinen Code in \texttt{code08.py}.
+
+\hypertarget{zuxe4hlen-der-spielrunden}{%
+\section{Zählen der Spielrunden}\label{zuxe4hlen-der-spielrunden}}
+
+Lass uns zählen, wie oft der Spieler das Spiel gespielt hat. Die Idee und Umsetzung ist dieselbe wie beim Zählen der Versuche. Erstelle eine neue Variable, initialisiere sie auf 0, erhöhe sie um 1, wann immer eine neue Runde beginnt. Füge die Gesamtanzahl der gespielten Spiele in die allerletzte Nachricht ein, z.B. ``Danke, dass du das Spiel \emph{X} Mal gespielt hast!''
+
+Setze deinen Code in \texttt{code09.py}.
+
+\hypertarget{einarmiger-bandit-mit-mehreren-runden}{%
+\section{Einarmiger Bandit mit mehreren Runden}\label{einarmiger-bandit-mit-mehreren-runden}}
+
+Am Ende des vorherigen Kapitels hast du ein einarmiger Banditen-Spiel mit einer einzigen Runde programmiert. Du weißt bereits alles, was du brauchst, um eine Version mit mehreren Runden zu implementieren, und ihre Struktur ähnelt der des Mehr-Runden-Zahlenraten-Spiels, das du gerade implementiert hast, ist aber einfacher.
+
+Lass den Spieler mit einem Anfangspot an Geld starten, sagen wir 10 Münzen. Jede Runde kostet 1 Münze, bei drei gleichen bekommt man 10 Münzen ausgezahlt, während man bei einem Paar 2 Münzen ausgezahlt bekommt (du kannst die Auszahlungen nach Belieben ändern). In jeder Runde:
+
+\begin{itemize}
+\tightlist
+\item
+  Nimm eine Münze aus dem Topf (Preis für das Spiel).
+\item
+  Würfle die Würfel (das hast du bereits implementiert).
+\item
+  Informiere den Spieler über das Ergebnis (das hast du auch schon implementiert).
+\item
+  Füge Münzen zum Topf hinzu, falls nötig.
+\item
+  Drucke die Anzahl der im Topf verbliebenen Münzen aus.
+\item
+  Frage den Spieler, ob er weitermachen möchte.
+\end{itemize}
+
+Sonderfall: Wenn dem Spieler die Münzen ausgehen, ist das Spiel definitiv vorbei.
+
+Setze deinen Code in \texttt{code10.py}.
+
+\hypertarget{abschluss}{%
+\section{Abschluss}\label{abschluss}}
+
+Sehr gut, du hast jetzt zwei richtige funktionierende Computerspiele mit Spielrunden, begrenzten Versuchen, Bestleistung und vielem mehr! Pack den Ordner in eine Zip-Datei und reiche sie ein.
 
   \bibliography{book.bib}
 

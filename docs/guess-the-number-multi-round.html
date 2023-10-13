@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 6 Errate die Zahl: Eine Mehr-Runden-Ausgabe | Lerne Python, indem du Spiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="Im vorherigen Kapitel hast Du ein “Guess the Number”-Spiel programmiert, das nur einen einzigen Versuch erlaubt. Jetzt werden wir es erweitern, um mehrere Versuche zu ermöglichen und werden andere...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 6 Errate die Zahl: Eine Mehr-Runden-Ausgabe | Lerne Python, indem du Spiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/guess-the-number-multi-round.html">
+<meta property="og:description" content="Im vorherigen Kapitel hast Du ein “Guess the Number”-Spiel programmiert, das nur einen einzigen Versuch erlaubt. Jetzt werden wir es erweitern, um mehrere Versuche zu ermöglichen und werden andere...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 6 Errate die Zahl: Eine Mehr-Runden-Ausgabe | Lerne Python, indem du Spiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="Im vorherigen Kapitel hast Du ein “Guess the Number”-Spiel programmiert, das nur einen einzigen Versuch erlaubt. Jetzt werden wir es erweitern, um mehrere Versuche zu ermöglichen und werden andere...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Spiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Guess the Number: eine einzelne Runden Edition</a></li>
+<li><a class="active" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="guess-the-number-multi-round" class="section level1" number="6">
+<h1>
+<span class="header-section-number">Kapitel 6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe<a class="anchor" aria-label="anchor" href="#guess-the-number-multi-round"><i class="fas fa-link"></i></a>
+</h1>
+<p>Im vorherigen Kapitel hast Du ein “Guess the Number”-Spiel programmiert, das nur einen einzigen Versuch erlaubt. Jetzt werden wir es erweitern, um mehrere Versuche zu ermöglichen und werden andere Extras hinzufügen, um es noch spannender zu machen. Erstelle einen neuen Unterordner und lade das <a href="notebooks/Guess%20the%20number%20-%20multi%20round.ipynb">Übungs-Notebook</a> herunter, bevor wir beginnen!</p>
+<div id="konzepte-des-kapitels-2" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> Konzepte des Kapitels<a class="anchor" aria-label="anchor" href="#konzepte-des-kapitels-2"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Wiederholen von Code mit <a href="guess-the-number-multi-round.html#while-loop">while</a> Schleife.</li>
+<li>Machen in <a href="guess-the-number-multi-round.html#break">Notausgang</a> aus einer Schleife.</li>
+</ul>
+</div>
+<div id="while-loop" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> While-Schleife<a class="anchor" aria-label="anchor" href="#while-loop"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wenn Du etwas wiederholen möchtest, musst Du Schleifen verwenden. Es gibt zwei Arten von Schleifen: die <a href="https://docs.python.org/3/reference/compound_stmts.html#the-while-statement">while</a> Schleife, welche wiederholt wird, <em>während</em> eine Bedingung wahr ist, und die <a href="https://docs.python.org/3/reference/compound_stmts.html#the-for-statement">for</a> Schleife, die über Elemente iteriert (wir werden sie später verwenden).</p>
+<p>Die grundlegende Struktur einer <em>while</em>-Schleife ist</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="guess-the-number-multi-round.html#cb39-1" tabindex="-1"></a><span class="co"># Anweisungen vor der Schleife</span></span>
+<span id="cb39-2"><a href="guess-the-number-multi-round.html#cb39-2" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="guess-the-number-multi-round.html#cb39-3" tabindex="-1"></a><span class="cf">while</span> <span class="op">&lt;</span>Bedingung<span class="op">&gt;</span>:</span>
+<span id="cb39-4"><a href="guess-the-number-multi-round.html#cb39-4" tabindex="-1"></a>    <span class="co"># die inneren Anweisungen werden</span></span>
+<span id="cb39-5"><a href="guess-the-number-multi-round.html#cb39-5" tabindex="-1"></a>    <span class="co"># so lange ausgeführt, wie</span></span>
+<span id="cb39-6"><a href="guess-the-number-multi-round.html#cb39-6" tabindex="-1"></a>    <span class="co"># die Bedingung wahr ist</span></span>
+<span id="cb39-7"><a href="guess-the-number-multi-round.html#cb39-7" tabindex="-1"></a>    </span>
+<span id="cb39-8"><a href="guess-the-number-multi-round.html#cb39-8" tabindex="-1"></a><span class="co"># Anweisungen nach der Schleife</span></span></code></pre></div>
+<p>Die <code>&lt;Bedingung&gt;</code> hier ist ein Ausdruck, der entweder <code>True</code> oder <code>False</code> ergibt, genau wie in einer <code>if...elif...else</code> <a href="guess-the-number-single-round.html#comparisons">Bedingungsanweisung</a>. Auch gelten dieselben <a href="guess-the-number-single-round.html#indentation">Einrückungsregeln</a>, die bestimmen, welcher Code innerhalb der Schleife und welcher außerhalb ist.</p>
+<div class="practice">
+<p>Mache Übung #1.</p>
+</div>
+<p>Lass uns die <em>while</em>-Schleife verwenden, um dem Spieler zu erlauben, weiter zu raten, bis er es endlich richtig hat. Du kannst den Code, den Du während des letzten Seminars programmiert hast, kopieren und einfügen oder Du kannst ihn von Grund auf neu erstellen (ich würde Dir dringend empfehlen, Letzteres zu tun!). Die allgemeine Programmstruktur sollte folgende sein</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="guess-the-number-multi-round.html#cb40-1" tabindex="-1"></a><span class="co"># importiere die Zufallsbibliothek, damit du die randint Funktion verwenden kannst</span></span>
+<span id="cb40-2"><a href="guess-the-number-multi-round.html#cb40-2" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="guess-the-number-multi-round.html#cb40-3" tabindex="-1"></a><span class="co"># generiere eine zufällige Zahl und speichere sie in der Variablen number_picked</span></span>
+<span id="cb40-4"><a href="guess-the-number-multi-round.html#cb40-4" tabindex="-1"></a><span class="co"># hole die Eingabe des Spielers, konvertiere sie in eine Ganzzahl und speichere sie in der Variablen guess</span></span>
+<span id="cb40-5"><a href="guess-the-number-multi-round.html#cb40-5" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="guess-the-number-multi-round.html#cb40-6" tabindex="-1"></a><span class="co"># während die Vermutung des Spielers nicht gleich dem Wert ist, den der Computer ausgewählt hat:</span></span>
+<span id="cb40-7"><a href="guess-the-number-multi-round.html#cb40-7" tabindex="-1"></a>    <span class="co"># gib "meine Zahl ist kleiner" oder "meine Zahl ist größer" aus, indem Du die if-else Anweisung verwendest</span></span>
+<span id="cb40-8"><a href="guess-the-number-multi-round.html#cb40-8" tabindex="-1"></a>    <span class="co"># hole die Eingabe des Spielers, konvertiere sie in eine Ganzzahl und speichere sie in der Variablen guess</span></span>
+<span id="cb40-9"><a href="guess-the-number-multi-round.html#cb40-9" tabindex="-1"></a>    </span>
+<span id="cb40-10"><a href="guess-the-number-multi-round.html#cb40-10" tabindex="-1"></a><span class="co"># gib "Ganz genau!" aus </span></span>
+<span id="cb40-11"><a href="guess-the-number-multi-round.html#cb40-11" tabindex="-1"></a><span class="co"># (denn wenn wir hier angekommen sind, bedeutet das, dass die Vermutung gleich der Wahl des Computers ist)</span></span></code></pre></div>
+<div class="program">
+<p>Speichere deinen Code in <code>code01.py</code>.</p>
+</div>
+<p>Vergiss nicht, die Datei zu dokumentieren und Breakpoints und Step overs zu verwenden, um den Programmfluss zu erkunden.</p>
+</div>
+<div id="versuche-zählen" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> Versuche zählen<a class="anchor" aria-label="anchor" href="#versuche-z%C3%A4hlen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt fügen wir eine Variable hinzu, die die Gesamtzahl der Versuche des Spielers zählt. Dazu erstelle eine neue Variable (nennen wir sie <code>attempts</code> oder ähnliches) <em>vor der Schleife</em> und initialisiere sie mit <code>1</code> (weil der erste Versuch vor dem Betreten der Schleife vom Spieler gemacht wird). Füge jedes Mal, wenn der Spieler eine Vermutung eingibt, <code>1</code> hinzu. Erweitern Sie nach der Schleife die Nachricht <code>"Ganz genau!"</code> um Informationen über die Anzahl der Versuche. Nutze <a href="#id_#string-formatting">String-Formatierung</a>, um alles schön aussehen zu lassen, z.B.: <code>"Ganz genau und du hast nur 5 Versuche gebraucht!"</code>. Überprüfe, ob die Anzahl der benötigten Versuche mit der Anzahl der vom Programm gemeldeten Versuche übereinstimmt!</p>
+<div class="program">
+<p>Speichere deinen Code in <code>code02.py</code>.</p>
+</div>
+</div>
+<div id="break" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> Abbruch (und Ausstieg)<a class="anchor" aria-label="anchor" href="#break"><i class="fas fa-link"></i></a>
+</h2>
+<p>Der Code innerhalb der <em>while</em>-Schleife wird wiederholt ausgeführt, während die Bedingung <code>True</code> ist und, was wichtig ist, der gesamte Code innerhalb wird ausgeführt, bevor die Bedingung erneut bewertet wird. Manchmal musst du jedoch früher abbrechen, ohne den verbleibenden Code auszuführen. Dafür hat Python eine <a href="https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops">break</a> Anweisung, die dazu führt, dass das Programm die Schleife sofort verlässt, ohne den Rest des Codes innerhalb der Schleife auszuführen, so dass das Programm mit dem Code <em>nach</em> der Schleife fortfährt.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="guess-the-number-multi-round.html#cb41-1" tabindex="-1"></a><span class="co"># dieser Code wird vor der Schleife ausgeführt</span></span>
+<span id="cb41-2"><a href="guess-the-number-multi-round.html#cb41-2" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="guess-the-number-multi-round.html#cb41-3" tabindex="-1"></a><span class="cf">while</span> <span class="op">&lt;</span>irgendeine_Bedingung<span class="op">&gt;</span>:</span>
+<span id="cb41-4"><a href="guess-the-number-multi-round.html#cb41-4" tabindex="-1"></a>  <span class="co"># dieser Code wird bei jeder Iteration ausgeführt</span></span>
+<span id="cb41-5"><a href="guess-the-number-multi-round.html#cb41-5" tabindex="-1"></a>  </span>
+<span id="cb41-6"><a href="guess-the-number-multi-round.html#cb41-6" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">&lt;</span>irgendeine_andere_Bedingung<span class="op">&gt;</span>:</span>
+<span id="cb41-7"><a href="guess-the-number-multi-round.html#cb41-7" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb41-8"><a href="guess-the-number-multi-round.html#cb41-8" tabindex="-1"></a>  </span>
+<span id="cb41-9"><a href="guess-the-number-multi-round.html#cb41-9" tabindex="-1"></a>  <span class="co"># dieser Code wird bei jeder Iteration ausgeführt, aber nicht, wenn du aus der Schleife herausbrichst</span></span>
+<span id="cb41-10"><a href="guess-the-number-multi-round.html#cb41-10" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="guess-the-number-multi-round.html#cb41-11" tabindex="-1"></a><span class="co"># dieser Code wird nach der Schleife ausgeführt</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #2, um dein Verständnis zu vertiefen.</p>
+</div>
+</div>
+<div id="begrenzung-der-anzahl-der-versuche-mittels-break" class="section level2" number="6.5">
+<h2>
+<span class="header-section-number">6.5</span> Begrenzung der Anzahl der Versuche mittels Break<a class="anchor" aria-label="anchor" href="#begrenzung-der-anzahl-der-versuche-mittels-break"><i class="fas fa-link"></i></a>
+</h2>
+<p>Setzen wir den Spieler unter Druck! Entscheide dich für eine maximale Anzahl an Versuchen, die du erlaubst, und speichere sie als <a href="python-grundlagen.html#constants">KONSTANTE</a>. Wähle einen passenden Namen (z.B. <code>MAX_ATTEMPTS</code>) und BEACHTE, GROßBUCHSTABEN für den Namen einer Konstanten! Nun nutze <code><a href="https://rdrr.io/r/base/Control.html">break</a></code> um die <code>while</code>-Schleife zu verlassen, wenn die aktuelle Versuchszahl größer als <code>MAX_ATTEMPTS</code> ist. Überlege, wann (innerhalb des Codes innerhalb der Schleife) du dies prüfen solltest.</p>
+<div class="program">
+<p>Speichere deinen Code in <code>code03.py</code>.</p>
+</div>
+</div>
+<div id="korrekte-end-of-game-nachricht" class="section level2" number="6.6">
+<h2>
+<span class="header-section-number">6.6</span> Korrekte End-of-Game-Nachricht<a class="anchor" aria-label="anchor" href="#korrekte-end-of-game-nachricht"><i class="fas fa-link"></i></a>
+</h2>
+<p>Aktualisieren wir die finale Nachricht. Im Moment steht dort “Ganz genau…”, weil wir davon ausgegangen sind, dass das Programm die Schleife nur dann verlässt, wenn der Spieler die richtige Antwort gegeben hat. Bei begrenzten Versuchen ist das nicht unbedingt der Fall. Es gibt jetzt zwei Gründe, warum es die while-Schleife verlassen hat:</p>
+<ol style="list-style-type: decimal">
+<li>Der Spieler hat die richtige Antwort gegeben.</li>
+<li>Dem Spieler sind die Versuche ausgegangen.</li>
+</ol>
+<p>Verwende die <code>if-else</code> Bedingungsanweisung, um eine passende Nachricht auszugeben. Zum Beispiel drucke <code>"Viel Glück beim nächsten Mal!"</code>, wenn der Spieler verloren hat (die Versuche ausgegangen sind).</p>
+<div class="program">
+<p>Speichere deinen Code in <code>code04.py</code>.</p>
+</div>
+</div>
+<div id="begrenzung-der-anzahl-der-versuche-ohne-break" class="section level2" number="6.7">
+<h2>
+<span class="header-section-number">6.7</span> Begrenzung der Anzahl der Versuche ohne Break<a class="anchor" aria-label="anchor" href="#begrenzung-der-anzahl-der-versuche-ohne-break"><i class="fas fa-link"></i></a>
+</h2>
+<p>Obwohl es meine Idee war, die <code><a href="https://rdrr.io/r/base/Control.html">break</a></code> Anweisung hinzuzufügen, solltest du sie sparsam verwenden. Ohne <code><a href="https://rdrr.io/r/base/Control.html">break</a></code> gibt es eine <em>einzige</em> Stelle im Code, die du überprüfen musst, um zu verstehen, wann das Programm die Schleife verlassen wird: die Bedingung. Wenn du jedoch ein <code><a href="https://rdrr.io/r/base/Control.html">break</a></code> hinzufügst, hast du jetzt <em>zwei</em> Stellen, die geprüft werden müssen. Und jedes zusätzliche <code><a href="https://rdrr.io/r/base/Control.html">break</a></code> fügt weitere hinzu. Das bedeutet aber nicht, dass du sie um jeden Preis vermeiden solltest! Du <em>solltest</em> sie verwenden, wenn dadurch der Code leichter zu verstehen ist. Aber überprüfe immer, ob eine modifizierte Bedingung auch den Trick tun könnte.</p>
+<p>Probieren wir genau das aus. Ändere deinen Code so ab, dass er <em>ohne</em> die <code><a href="https://rdrr.io/r/base/Control.html">break</a></code> Anweisung funktioniert. Du brauchst eine kompliziertere Bedingung für deine while-Schleife, so dass sie sich wiederholt, solange die Vermutung des Spielers falsch ist und die Anzahl der Versuche noch kleiner ist als die maximal erlaubte. Teste, ob dein Code sowohl funktioniert, wenn du gewinnst als auch wenn du verlierst.</p>
+<div class="program">
+<p>Speichere deinen Code in <code>code05.py</code>.</p>
+</div>
+</div>
+<div id="verbleibende-versuche-anzeigen" class="section level2" number="6.8">
+<h2>
+<span class="header-section-number">6.8</span> Verbleibende Versuche anzeigen<a class="anchor" aria-label="anchor" href="#verbleibende-versuche-anzeigen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Es geht alles um die Benutzeroberfläche! Ändere die Eingabeaufforderung so, dass sie die Anzahl der <em>verbleibenden</em> Versuche enthält. Z.B. <code>"Bitte gebe eine Vermutung ein, du hast noch X Versuche übrig"</code>.</p>
+<div class="program">
+<p>Speichere deinen Code in <code>code06.py</code>.</p>
+</div>
+</div>
+<div id="guess-the-number-repeat-game" class="section level2" number="6.9">
+<h2>
+<span class="header-section-number">6.9</span> Wiederholung des Spiels<a class="anchor" aria-label="anchor" href="#guess-the-number-repeat-game"><i class="fas fa-link"></i></a>
+</h2>
+<p>Lass uns dem Spieler die Option geben, noch einmal zu spielen. Das bedeutet, dass wir <em>allen</em> aktuellen Code in eine weitere <code>while</code>-Schleife packen (das nennt man <em>verschachtelte Schleifen</em>), die so lange wiederholt wird, wie der Spieler weiterspielen möchte. Der Code sollte folgendermaßen aussehen:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="guess-the-number-multi-round.html#cb42-1" tabindex="-1"></a><span class="co"># importiere die random Bibliothek, damit du die Funktion randint verwenden kannst</span></span>
+<span id="cb42-2"><a href="guess-the-number-multi-round.html#cb42-2" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="guess-the-number-multi-round.html#cb42-3" tabindex="-1"></a><span class="co"># definiere MAX_ATTEMPTS</span></span>
+<span id="cb42-4"><a href="guess-the-number-multi-round.html#cb42-4" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="guess-the-number-multi-round.html#cb42-5" tabindex="-1"></a><span class="co"># definiere eine Variable namens "want_to_play" und setze sie auf True</span></span>
+<span id="cb42-6"><a href="guess-the-number-multi-round.html#cb42-6" tabindex="-1"></a><span class="co"># solange der Spieler noch spielen möchte</span></span>
+<span id="cb42-7"><a href="guess-the-number-multi-round.html#cb42-7" tabindex="-1"></a>  </span>
+<span id="cb42-8"><a href="guess-the-number-multi-round.html#cb42-8" tabindex="-1"></a>  <span class="co"># dein aktueller funktionierender Spielcode kommt hierher</span></span>
+<span id="cb42-9"><a href="guess-the-number-multi-round.html#cb42-9" tabindex="-1"></a>  </span>
+<span id="cb42-10"><a href="guess-the-number-multi-round.html#cb42-10" tabindex="-1"></a>  <span class="co"># frage den Benutzer mit der input-Funktion, z.B. "Möchtest du nochmal spielen? J/N"</span></span>
+<span id="cb42-11"><a href="guess-the-number-multi-round.html#cb42-11" tabindex="-1"></a>  <span class="co"># want_to_play sollte True sein, wenn die Benutzereingabe gleich "J" oder "j" ist</span></span>
+<span id="cb42-12"><a href="guess-the-number-multi-round.html#cb42-12" tabindex="-1"></a>  </span>
+<span id="cb42-13"><a href="guess-the-number-multi-round.html#cb42-13" tabindex="-1"></a><span class="co"># allerletzte Nachricht, zum Beispiel "Vielen Dank fürs Spielen!"</span></span></code></pre></div>
+<p><strong>Achte besonders auf die Einrückungen, um den Code richtig zu gruppieren!</strong></p>
+<div class="program">
+<p>Setze deinen Code in <code>code07.py</code>.</p>
+</div>
+</div>
+<div id="du-benötigst-keinen-vergleich-wenn-du-bereits-den-wert-hast" class="section level2" number="6.10">
+<h2>
+<span class="header-section-number">6.10</span> Du benötigst keinen Vergleich, wenn du bereits den Wert hast<a class="anchor" aria-label="anchor" href="#du-ben%C3%B6tigst-keinen-vergleich-wenn-du-bereits-den-wert-hast"><i class="fas fa-link"></i></a>
+</h2>
+<p>In deinem aktualisierten Code hast du eine Variable <code>want_to_play</code>, die entweder <code>True</code> oder <code>False</code> ist. Sie wird in der Schleife verwendet, die sich wiederholt, solange ihr Wert <code>True</code> ist. Manchmal schreiben Leute <code>want_to_play == True</code>, um das auszudrücken. Obwohl es technisch korrekt und mit Sicherheit korrekt funktionieren wird, ist es auch redundant. Da <code>want_to_play</code> nur <code>True</code> oder <code>False</code> sein kann, verwandelt sich dieser Vergleich in <code>True == True</code> (was natürlich <code>True</code> ist) oder <code>False == True</code> (was <code>False</code> ist). Das Vergleichen eines jeden Werts mit <code>True</code> ergibt genau denselben Wert. Daher kannst du einfach <code>while want_to_play:</code> schreiben und den logischen Wert direkt verwenden.</p>
+</div>
+<div id="bestes-ergebnis" class="section level2" number="6.11">
+<h2>
+<span class="header-section-number">6.11</span> Bestes Ergebnis<a class="anchor" aria-label="anchor" href="#bestes-ergebnis"><i class="fas fa-link"></i></a>
+</h2>
+<p>Ein “richtiges” Spiel behält normalerweise die Leistung der Spieler im Auge. Lass uns die geringste Anzahl von Versuchen aufzeichnen, die der Spieler benötigt hat, um die Zahl zu erraten. Dazu erstellst du eine neue Variable <code>fewest_attempts</code> und setzt sie auf <code>MAX_ATTEMPTS</code> (das ist so schlecht, wie der Spieler sein kann). Überlege, wo du sie erstellen musst. Du solltest sie nach jeder Spielrunde aktualisieren. Füge die Information über “Bisher das Beste” in die finale Rundennachricht ein.</p>
+<div class="program">
+<p>Setze deinen Code in <code>code08.py</code>.</p>
+</div>
+</div>
+<div id="zählen-der-spielrunden" class="section level2" number="6.12">
+<h2>
+<span class="header-section-number">6.12</span> Zählen der Spielrunden<a class="anchor" aria-label="anchor" href="#z%C3%A4hlen-der-spielrunden"><i class="fas fa-link"></i></a>
+</h2>
+<p>Lass uns zählen, wie oft der Spieler das Spiel gespielt hat. Die Idee und Umsetzung ist dieselbe wie beim Zählen der Versuche. Erstelle eine neue Variable, initialisiere sie auf 0, erhöhe sie um 1, wann immer eine neue Runde beginnt. Füge die Gesamtanzahl der gespielten Spiele in die allerletzte Nachricht ein, z.B. “Danke, dass du das Spiel <em>X</em> Mal gespielt hast!”</p>
+<div class="program">
+<p>Setze deinen Code in <code>code09.py</code>.</p>
+</div>
+</div>
+<div id="einarmiger-bandit-mit-mehreren-runden" class="section level2" number="6.13">
+<h2>
+<span class="header-section-number">6.13</span> Einarmiger Bandit mit mehreren Runden<a class="anchor" aria-label="anchor" href="#einarmiger-bandit-mit-mehreren-runden"><i class="fas fa-link"></i></a>
+</h2>
+<p>Am Ende des vorherigen Kapitels hast du ein einarmiger Banditen-Spiel mit einer einzigen Runde programmiert. Du weißt bereits alles, was du brauchst, um eine Version mit mehreren Runden zu implementieren, und ihre Struktur ähnelt der des Mehr-Runden-Zahlenraten-Spiels, das du gerade implementiert hast, ist aber einfacher.</p>
+<p>Lass den Spieler mit einem Anfangspot an Geld starten, sagen wir 10 Münzen. Jede Runde kostet 1 Münze, bei drei gleichen bekommt man 10 Münzen ausgezahlt, während man bei einem Paar 2 Münzen ausgezahlt bekommt (du kannst die Auszahlungen nach Belieben ändern). In jeder Runde:</p>
+<ul>
+<li>Nimm eine Münze aus dem Topf (Preis für das Spiel).</li>
+<li>Würfle die Würfel (das hast du bereits implementiert).</li>
+<li>Informiere den Spieler über das Ergebnis (das hast du auch schon implementiert).</li>
+<li>Füge Münzen zum Topf hinzu, falls nötig.</li>
+<li>Drucke die Anzahl der im Topf verbliebenen Münzen aus.</li>
+<li>Frage den Spieler, ob er weitermachen möchte.</li>
+</ul>
+<p>Sonderfall: Wenn dem Spieler die Münzen ausgehen, ist das Spiel definitiv vorbei.</p>
+<div class="program">
+<p>Setze deinen Code in <code>code10.py</code>.</p>
+</div>
+</div>
+<div id="abschluss" class="section level2" number="6.14">
+<h2>
+<span class="header-section-number">6.14</span> Abschluss<a class="anchor" aria-label="anchor" href="#abschluss"><i class="fas fa-link"></i></a>
+</h2>
+<p>Sehr gut, du hast jetzt zwei richtige funktionierende Computerspiele mit Spielrunden, begrenzten Versuchen, Bestleistung und vielem mehr! Pack den Ordner in eine Zip-Datei und reiche sie ein.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Guess the Number: eine einzelne Runden Edition</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#guess-the-number-multi-round"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="nav-link" href="#konzepte-des-kapitels-2"><span class="header-section-number">6.1</span> Konzepte des Kapitels</a></li>
+<li><a class="nav-link" href="#while-loop"><span class="header-section-number">6.2</span> While-Schleife</a></li>
+<li><a class="nav-link" href="#versuche-z%C3%A4hlen"><span class="header-section-number">6.3</span> Versuche zählen</a></li>
+<li><a class="nav-link" href="#break"><span class="header-section-number">6.4</span> Abbruch (und Ausstieg)</a></li>
+<li><a class="nav-link" href="#begrenzung-der-anzahl-der-versuche-mittels-break"><span class="header-section-number">6.5</span> Begrenzung der Anzahl der Versuche mittels Break</a></li>
+<li><a class="nav-link" href="#korrekte-end-of-game-nachricht"><span class="header-section-number">6.6</span> Korrekte End-of-Game-Nachricht</a></li>
+<li><a class="nav-link" href="#begrenzung-der-anzahl-der-versuche-ohne-break"><span class="header-section-number">6.7</span> Begrenzung der Anzahl der Versuche ohne Break</a></li>
+<li><a class="nav-link" href="#verbleibende-versuche-anzeigen"><span class="header-section-number">6.8</span> Verbleibende Versuche anzeigen</a></li>
+<li><a class="nav-link" href="#guess-the-number-repeat-game"><span class="header-section-number">6.9</span> Wiederholung des Spiels</a></li>
+<li><a class="nav-link" href="#du-ben%C3%B6tigst-keinen-vergleich-wenn-du-bereits-den-wert-hast"><span class="header-section-number">6.10</span> Du benötigst keinen Vergleich, wenn du bereits den Wert hast</a></li>
+<li><a class="nav-link" href="#bestes-ergebnis"><span class="header-section-number">6.11</span> Bestes Ergebnis</a></li>
+<li><a class="nav-link" href="#z%C3%A4hlen-der-spielrunden"><span class="header-section-number">6.12</span> Zählen der Spielrunden</a></li>
+<li><a class="nav-link" href="#einarmiger-bandit-mit-mehreren-runden"><span class="header-section-number">6.13</span> Einarmiger Bandit mit mehreren Runden</a></li>
+<li><a class="nav-link" href="#abschluss"><span class="header-section-number">6.14</span> Abschluss</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/04-guess-the-number-multi-round.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/04-guess-the-number-multi-round.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-13.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>
