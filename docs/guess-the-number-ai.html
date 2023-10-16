@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 7 Guess the Number: KI ist dran | Lerne Python, indem du Spiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="Lass uns das Spiel Rate die Zahl noch einmal programmieren18 aber die Rollen umkehren. Jetzt wählst du eine Zahl und der Computer wird versuchen, sie zu erraten. Denke über den Algorithmus nach,...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 7 Guess the Number: KI ist dran | Lerne Python, indem du Spiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/guess-the-number-ai.html">
+<meta property="og:description" content="Lass uns das Spiel Rate die Zahl noch einmal programmieren18 aber die Rollen umkehren. Jetzt wählst du eine Zahl und der Computer wird versuchen, sie zu erraten. Denke über den Algorithmus nach,...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 7 Guess the Number: KI ist dran | Lerne Python, indem du Spiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="Lass uns das Spiel Rate die Zahl noch einmal programmieren18 aber die Rollen umkehren. Jetzt wählst du eine Zahl und der Computer wird versuchen, sie zu erraten. Denke über den Algorithmus nach,...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/psychopy-python-favicon.svg">
+<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Spiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
+<li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="active" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="guess-the-number-ai" class="section level1" number="7">
+<h1>
+<span class="header-section-number">Kapitel 7</span> Guess the Number: KI ist dran<a class="anchor" aria-label="anchor" href="#guess-the-number-ai"><i class="fas fa-link"></i></a>
+</h1>
+<p>Lass uns das Spiel Rate die Zahl <em>noch einmal</em> programmieren<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Das ist das letzte Mal, versprochen!&lt;/p&gt;"><sup>18</sup></a> aber die Rollen <em>umkehren</em>. Jetzt wählst <em>du</em> eine Zahl und der Computer wird versuchen, sie zu erraten. Denke über den Algorithmus nach, den ein Computer dafür verwenden könnte, bevor du den nächsten Absatz liest<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Du solltest dir vorstellen, dass ich Dora die Entdeckerin bin, die dich dabei beobachtet, wie du nachdenkst.&lt;/p&gt;"><sup>19</sup></a>.</p>
+<p>Der optimale Weg, dies zu tun, besteht darin, die Mitte des Intervalls für eine Vermutung zu verwenden. Auf diese Weise schließt du <em>die Hälfte</em> der Zahlen aus, die entweder größer oder kleiner sind als deine Vermutung (oder du errätst die Zahl korrekt, natürlich). Wenn du also weißt, dass die Zahl zwischen 1 und 10 liegt, solltest du die Dinge in der Mitte teilen, also 5 oder 6 wählen, da du nicht 5,5 wählen kannst (wir gehen davon aus, dass du nur ganze Zahlen verwenden kannst). Wenn dein Gegner dir sagt, dass seine Zahl größer ist als deine Wahl, weißt du, dass sie irgendwo zwischen deiner Vermutung und der ursprünglichen Obergrenze liegen muss, z. B. zwischen 5 und 10. Umgekehrt, wenn der Gegner “niedriger” antwortet, liegt die Zahl zwischen der unteren Grenze und deiner Vermutung, z. B. zwischen 1 und 5. Bei deinem nächsten Versuch teilst du das neue Intervall und wiederholst dies, bis du entweder die richtige Zahl errätst oder nur noch ein Intervall mit nur einer Zahl übrig hast. Dann musst du nicht mehr raten.</p>
+<p>Um dieses Programm zu implementieren, musst du Funktionen kennen lernen, wie man sie dokumentiert und wie man eigene Bibliotheken verwendet. Hol dir das <a href="notebooks/Guess%20the%20number%20-%20AI.ipynb">Übungsnotebook</a>, bevor wir anfangen!</p>
+<div id="konzepte-des-kapitels." class="section level2" number="7.1">
+<h2>
+<span class="header-section-number">7.1</span> Konzepte des Kapitels.<a class="anchor" aria-label="anchor" href="#konzepte-des-kapitels."><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Schreiben deiner eigenen <a href="guess-the-number-ai.html#function">Funktionen</a>.</li>
+<li>Verstehen von variablen <a href="#scopes-for-immutable-values">Bereichen</a>.</li>
+<li>Annahme von <a href="guess-the-number-ai.html#numpy-docstring">standardisierten Wegen</a>, um deinen Code zu dokumentieren.</li>
+<li>Verwendung deiner eigenen <a href="#using-you-own-libraries">Bibliotheken</a>.</li>
+</ul>
+</div>
+<div id="guess-the-number-players-response" class="section level2" number="7.2">
+<h2>
+<span class="header-section-number">7.2</span> Spielerantwort<a class="anchor" aria-label="anchor" href="#guess-the-number-players-response"><i class="fas fa-link"></i></a>
+</h2>
+<p>Lass uns warm werden, indem wir einen Code schreiben, der es einem Spieler ermöglicht, auf den Tipp des Computers zu reagieren. Denke daran, es gibt nur drei Möglichkeiten: deine Zahl ist größer, kleiner oder gleich der Vermutung des Computers. Ich würde vorschlagen, die Symbole <code>&gt;</code>, <code>&lt;</code> und <code>=</code> zu verwenden, um dies zu kommunizieren. Du musst den Code schreiben, der den Spieler auffordert, seine Antwort einzugeben, bis er eines dieser Symbole eingibt. D.h., die Aufforderung zur Eingabe sollte wiederholt werden, wenn sie etwas anderes eingeben. Du musst also definitiv die <a href="https://docs.python.org/3/library/functions.html#input">input([prompt])</a> und eine <a href="guess-the-number-multi-round.html#while-loop">while</a> Schleife verwenden. Überlege dir eine nützliche und informative Aufforderungsnachricht dafür. Teste, ob es funktioniert. Breakpoints können hier sehr hilfreich sein.</p>
+<div class="program">
+<p>Füge deinen Code in <code>code01.py</code> ein.</p>
+</div>
+</div>
+<div id="function" class="section level2" number="7.3">
+<h2>
+<span class="header-section-number">7.3</span> Funktionen<a class="anchor" aria-label="anchor" href="#function"><i class="fas fa-link"></i></a>
+</h2>
+<p>Du weißt bereits, wie man Funktionen verwendet, jetzt ist es an der Zeit, mehr darüber zu lernen, warum du dich darum kümmern solltest. Der Zweck einer Funktion besteht darin, bestimmten Code, der eine einzige Berechnung durchführt, zu isolieren und ihn somit testbar und wiederverwendbar zu machen. Lass uns den letzten Satz Stück für Stück anhand von Beispielen durchgehen.</p>
+<div id="eine-funktion-führt-eine-einzige-berechnung-durch" class="section level3" number="7.3.1">
+<h3>
+<span class="header-section-number">7.3.1</span> Eine Funktion führt eine einzige Berechnung durch<a class="anchor" aria-label="anchor" href="#eine-funktion-f%C3%BChrt-eine-einzige-berechnung-durch"><i class="fas fa-link"></i></a>
+</h3>
+<p>Ich habe dir bereits <a href="programming-tips.html#programming-tips">erzählt</a>, dass das Lesen von Code einfach ist, weil jede Aktion für Computer auf einfache und klare Weise ausgedrückt werden muss. Allerdings können <em>viele</em> einfache Dinge sehr überwältigend und verwirrend sein. Denke an den finalen Code vom letzten Seminar: Wir hatten zwei Schleifen mit bedingten Anweisungen, die darin verschachtelt waren. Füge ein paar mehr hinzu und du hast so viele Zweige zu verfolgen, dass du nie ganz sicher sein kannst, was passieren wird. Das liegt daran, dass unsere Wahrnehmung und unser Arbeitsgedächtnis, die du benutzt, um alle Zweige zu verfolgen, auf nur etwa vier Elemente beschränkt sind<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Die offizielle magische Zahl ist &lt;a href="https://de.wikipedia.org/wiki/Magische_Zahl_7_plus_oder_minus_2"&gt;7±2&lt;/a&gt; aber wenn man das Originalpapier liest, stellt man fest, dass dies für die meisten von uns eher vier sind&lt;/p&gt;'><sup>20</sup></a>.</p>
+<p>Daher sollte eine Funktion <em>eine</em> Berechnung / Aktion durchführen, die konzeptionell klar ist und deren Zweck direkt aus ihrem Namen oder höchstens aus einem einzelnen Satz, der sie beschreibt, verstanden werden sollte<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Dies ist ähnlich wie beim wissenschaftlichen Schreiben, wo ein einzelner Absatz eine einzelne Idee vermittelt. Mir hilft es, zuerst die Idee des Absatzes in einem einzigen Satz zu schreiben, bevor ich den Absatz selbst schreibe. Wenn ein Satz nicht ausreicht, muss ich den Text in mehrere Absätze aufteilen.&lt;/p&gt;"><sup>21</sup></a>. Der Name einer Funktion sollte typischerweise ein <em>Verb</em> sein, denn es geht darum, eine Aktion auszuführen. Wenn du mehr als einen Satz brauchst, um zu erklären, was die Funktion tut, solltest du erwägen, den Code weiter aufzuteilen. Das bedeutet nicht, dass die gesamte Beschreibung/Dokumentation in einen einzigen Satz passen muss. Die vollständige Beschreibung kann lang sein, insbesondere wenn die zugrunde liegende Berechnung komplex ist und es viele Parameter zu berücksichtigen gibt. Dies sind jedoch optionale Details, die dem Leser sagen, <em>wie</em> die Funktion ihre Aufgabe erledigt oder wie ihr Verhalten verändert werden kann. Trotzdem sollten sie in der Lage sein, zu verstehen, <em>was</em> die Aufgabe ist, nur aus dem Namen oder aus einem einzigen Satz. Ich wiederhole mich und betone dies so sehr, weil konzeptionell einfache Funktionen, die nur eine Aufgabe erfüllen, die Grundlage für einen klaren, robusten, wiederverwendbaren Code sind. Und das zukünftige Du wird sehr dankbar sein, dass es mit dem einfach zu verstehenden, isolierten, zuverlässigen Code arbeiten muss, den du geschrieben hast.</p>
+</div>
+<div id="funktion-isoliert-code-vom-rest-des-programms" class="section level3" number="7.3.2">
+<h3>
+<span class="header-section-number">7.3.2</span> Funktion isoliert Code vom Rest des Programms<a class="anchor" aria-label="anchor" href="#funktion-isoliert-code-vom-rest-des-programms"><i class="fas fa-link"></i></a>
+</h3>
+<p>Isolierung bedeutet, dass dein Code in einem separaten Bereich ausgeführt wird, in dem nur Funktionselemente (begrenzte Anzahl von Werten, die du von außen mit fester Bedeutung übergibst) und lokale Variablen, die du innerhalb der Funktion definierst, existieren. Du hast keinen Zugriff auf Variablen, die im außenstehenden Skript definiert sind<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Das ist streng genommen nicht wahr, aber das wird uns erst betreffen, wenn wir zu so genannten “veränderlichen” Objekten wie Listen oder Wörterbüchern kommen.&lt;/p&gt;"><sup>22</sup></a> oder auf Variablen, die in anderen Funktionen definiert sind. Umgekehrt haben weder das globale Skript noch andere Funktionen Zugriff auf Variablen und Werte, die du innen verwendest. Das bedeutet, dass du nur den Code <em>innerhalb</em> der Funktion studieren musst, um zu verstehen, wie sie funktioniert. Entsprechend sollte der Code, den du schreibst, <em>unabhängig</em> von jedem globalen Kontext sein, in dem die Funktion verwendet werden kann. Die Isolierung ist sowohl praktisch (kein Zugriff auf Variablen von außen während der Laufzeit bedeutet weniger Chancen, dass Dinge schrecklich schief gehen) als auch konzeptionell (kein weiterer Kontext ist erforderlich, um den Code zu verstehen).</p>
+</div>
+<div id="funktion-macht-code-einfacher-zu-testen" class="section level3" number="7.3.3">
+<h3>
+<span class="header-section-number">7.3.3</span> Funktion macht Code einfacher zu testen<a class="anchor" aria-label="anchor" href="#funktion-macht-code-einfacher-zu-testen"><i class="fas fa-link"></i></a>
+</h3>
+<p>Du kannst sogar mäßig komplexe Programme nur dann erstellen, wenn du sicher sein kannst, was individuelle Codeabschnitte unter jeder möglichen Bedingung tun. Erzeugen sie die richtigen Ergebnisse? Scheitern sie deutlich und heben sie einen richtigen Fehler hervor, wenn die Eingaben falsch sind? Verwenden sie bei Bedarf Standardwerte? Wenn du jedoch alle Teile zusammen testest, bedeutet das eine extreme Anzahl von Durchläufen, da du alle möglichen Kombinationen von Bedingungen für einen Teil testen musst, gegeben alle möglichen Bedingungen für einen anderen Teil usw. Funktionen machen dein Leben viel einfacher. Da sie einen einzigen Einstiegspunkt, eine feste Anzahl von Parametern, einen einzigen Rückgabewert und Isolation (siehe oben) haben, kannst du sie unabhängig von anderen Funktionen und dem Rest des Codes einzeln testen. Dies nennt man <em>Unit Testing</em> und es ist ein intensiver Einsatz von <a href="https://docs.python.org/3/library/unittest.html">automatischem Unit Testing</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Es ist normal, mehr Code für Tests zu haben als für das eigentliche Programm.&lt;/p&gt;"><sup>23</sup></a> das sicherstellt, dass der Code für die absolute Mehrheit der Programme und Apps, die du verwendest, zuverlässig ist<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Man braucht trotzdem noch Tests für das integrierte System, aber das Testen einzelner Funktionen ist eine klare Voraussetzung.&lt;/p&gt;"><sup>24</sup></a>.</p>
+</div>
+<div id="funktion-macht-code-wiederverwendbar" class="section level3" number="7.3.4">
+<h3>
+<span class="header-section-number">7.3.4</span> Funktion macht Code wiederverwendbar<a class="anchor" aria-label="anchor" href="#funktion-macht-code-wiederverwendbar"><i class="fas fa-link"></i></a>
+</h3>
+<p>Manchmal wird dies als Hauptgrund angegeben, Funktionen zu verwenden. Wenn du den Code in eine Funktion umwandelst, bedeutet das, dass du die Funktion aufrufen kannst, anstatt den Code zu kopieren und einzufügen. Der letztere Ansatz ist eine schreckliche Idee, da es bedeutet, dass du denselben Code an vielen Stellen pflegen musst und du vielleicht nicht einmal sicher bist, an wie vielen. Das ist ein Problem, selbst wenn der Code extrem einfach ist. Hier definieren wir einen <em>standardisierten</em> Weg, ein Initial zu berechnen, indem wir das erste Symbol aus einer Zeichenkette nehmen (du wirst später mehr über Indexierung und Slicing erfahren). Der Code ist so einfach wie möglich.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="guess-the-number-ai.html#cb43-1" tabindex="-1"></a>...</span>
+<span id="cb43-2"><a href="guess-the-number-ai.html#cb43-2" tabindex="-1"></a>initial <span class="op">=</span> <span class="st">"test"</span>[<span class="dv">0</span>]</span>
+<span id="cb43-3"><a href="guess-the-number-ai.html#cb43-3" tabindex="-1"></a>...</span>
+<span id="cb43-4"><a href="guess-the-number-ai.html#cb43-4" tabindex="-1"></a>initial_for_file <span class="op">=</span> filename[<span class="dv">0</span>]</span>
+<span id="cb43-5"><a href="guess-the-number-ai.html#cb43-5" tabindex="-1"></a>...</span>
+<span id="cb43-6"><a href="guess-the-number-ai.html#cb43-6" tabindex="-1"></a>initial_for_website <span class="op">=</span> first_name[<span class="dv">0</span>]</span>
+<span id="cb43-7"><a href="guess-the-number-ai.html#cb43-7" tabindex="-1"></a>...</span></code></pre></div>
+<p>Stell dir vor, du hast beschlossen, es zu ändern und die ersten <em>zwei</em> Symbole zu verwenden. Wiederum ist die Berechnung nicht kompliziert, verwende einfach <code>[0]</code> ersetzen mit <code>[:2]</code>. Du musst es aber für <em>allen</em> Code tun, der diese Berechnung durchführt. Und du kannst die Option <em>Alles Ersetzen</em> nicht verwenden, weil du manchmal das erste Element für andere Zwecke verwenden könntest. Und wenn du den Code bearbeitest, wirst du zwangsläufig einige Stellen vergessen (ich mache das die ganze Zeit), was die Dinge noch inkonsistenter und verwirrender macht. Code in eine Funktion zu verwandeln bedeutet, dass du nur an <em>einer</em> Stelle ändern und testen musst. Hier ist der ursprüngliche Code, der über eine Funktion implementiert wurde.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="guess-the-number-ai.html#cb44-1" tabindex="-1"></a><span class="kw">def</span> generate_initial(full_string):</span>
+<span id="cb44-2"><a href="guess-the-number-ai.html#cb44-2" tabindex="-1"></a>    <span class="co">"""Erzeugt ein Initial mit dem ersten Symbol.</span></span>
+<span id="cb44-3"><a href="guess-the-number-ai.html#cb44-3" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb44-4"><a href="guess-the-number-ai.html#cb44-4" tabindex="-1"></a><span class="co">    Parameter</span></span>
+<span id="cb44-5"><a href="guess-the-number-ai.html#cb44-5" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb44-6"><a href="guess-the-number-ai.html#cb44-6" tabindex="-1"></a><span class="co">    full_string : str</span></span>
+<span id="cb44-7"><a href="guess-the-number-ai.html#cb44-7" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb44-8"><a href="guess-the-number-ai.html#cb44-8" tabindex="-1"></a><span class="co">    Gibt zurück</span></span>
+<span id="cb44-9"><a href="guess-the-number-ai.html#cb44-9" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb44-10"><a href="guess-the-number-ai.html#cb44-10" tabindex="-1"></a><span class="co">    str : einzelnes Symbol</span></span>
+<span id="cb44-11"><a href="guess-the-number-ai.html#cb44-11" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb44-12"><a href="guess-the-number-ai.html#cb44-12" tabindex="-1"></a>    <span class="cf">return</span> full_string[<span class="dv">0</span>]</span>
+<span id="cb44-13"><a href="guess-the-number-ai.html#cb44-13" tabindex="-1"></a></span>
+<span id="cb44-14"><a href="guess-the-number-ai.html#cb44-14" tabindex="-1"></a>...</span>
+<span id="cb44-15"><a href="guess-the-number-ai.html#cb44-15" tabindex="-1"></a>initial <span class="op">=</span> generate_initial(<span class="st">"test"</span>)</span>
+<span id="cb44-16"><a href="guess-the-number-ai.html#cb44-16" tabindex="-1"></a>...</span>
+<span id="cb44-17"><a href="guess-the-number-ai.html#cb44-17" tabindex="-1"></a>initial_for_file <span class="op">=</span> generate_initial(filename)</span>
+<span id="cb44-18"><a href="guess-the-number-ai.html#cb44-18" tabindex="-1"></a>...</span>
+<span id="cb44-19"><a href="guess-the-number-ai.html#cb44-19" tabindex="-1"></a>initial_for_website <span class="op">=</span> generate_initial(first_name)</span>
+<span id="cb44-20"><a href="guess-the-number-ai.html#cb44-20" tabindex="-1"></a>...</span></code></pre></div>
+<p>and here is the “alternative” initial computation. Note that the code that uses the function <em>stays the same</em>
+und hier ist die “alternative” Initialberechnung. Beachte, dass der Code, der die Funktion verwendet, <em>gleich bleibt</em></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="guess-the-number-ai.html#cb45-1" tabindex="-1"></a><span class="kw">def</span> generate_initial(full_string):</span>
+<span id="cb45-2"><a href="guess-the-number-ai.html#cb45-2" tabindex="-1"></a>    <span class="co">"""Erzeugt ein Initial mit den ersten ZWEI Symbolen.</span></span>
+<span id="cb45-3"><a href="guess-the-number-ai.html#cb45-3" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb45-4"><a href="guess-the-number-ai.html#cb45-4" tabindex="-1"></a><span class="co">    Parameter</span></span>
+<span id="cb45-5"><a href="guess-the-number-ai.html#cb45-5" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb45-6"><a href="guess-the-number-ai.html#cb45-6" tabindex="-1"></a><span class="co">    full_string : str</span></span>
+<span id="cb45-7"><a href="guess-the-number-ai.html#cb45-7" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb45-8"><a href="guess-the-number-ai.html#cb45-8" tabindex="-1"></a><span class="co">    Gibt zurück</span></span>
+<span id="cb45-9"><a href="guess-the-number-ai.html#cb45-9" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb45-10"><a href="guess-the-number-ai.html#cb45-10" tabindex="-1"></a><span class="co">    str : zwei Symbole lang</span></span>
+<span id="cb45-11"><a href="guess-the-number-ai.html#cb45-11" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb45-12"><a href="guess-the-number-ai.html#cb45-12" tabindex="-1"></a>    <span class="cf">return</span> full_string[:<span class="dv">2</span>]</span>
+<span id="cb45-13"><a href="guess-the-number-ai.html#cb45-13" tabindex="-1"></a></span>
+<span id="cb45-14"><a href="guess-the-number-ai.html#cb45-14" tabindex="-1"></a>...</span>
+<span id="cb45-15"><a href="guess-the-number-ai.html#cb45-15" tabindex="-1"></a>initial <span class="op">=</span> generate_initial(<span class="st">"test"</span>)</span>
+<span id="cb45-16"><a href="guess-the-number-ai.html#cb45-16" tabindex="-1"></a>...</span>
+<span id="cb45-17"><a href="guess-the-number-ai.html#cb45-17" tabindex="-1"></a>initial_for_file <span class="op">=</span> generate_initial(filename)</span>
+<span id="cb45-18"><a href="guess-the-number-ai.html#cb45-18" tabindex="-1"></a>...</span>
+<span id="cb45-19"><a href="guess-the-number-ai.html#cb45-19" tabindex="-1"></a>initial_for_website <span class="op">=</span> generate_initial(first_name)</span>
+<span id="cb45-20"><a href="guess-the-number-ai.html#cb45-20" tabindex="-1"></a>...</span></code></pre></div>
+<p>Daher ist es besonders nützlich, Code in eine Funktion umzuwandeln, wenn der wiederverwendete Code komplex ist, aber es zahlt sich sogar aus, wenn die Berechnung so einfach und trivial ist wie im obigen Beispiel. Mit einer Funktion musst du dir nur um einen einzigen Codeblock Gedanken machen und du kannst sicher sein, dass die gleiche Berechnung immer dann ausgeführt wird, wenn du die Funktion aufrufst (und dass dies nicht mehrere Kopien des Codes sind, die möglicherweise identisch sind oder nicht).</p>
+<p>Beachte, dass ich den wiederverwendbaren Code als den letzten und den am wenigsten wichtigen Grund zur Verwendung von Funktionen putze. Dies liegt daran, dass die anderen drei Gründe weitaus wichtiger sind. Konzeptuell klaren, isolierten und testbaren Code zu haben, ist vorteilhaft, selbst wenn du diese Funktion nur einmal aufrufst. Es erleichert das Verständnis und das Testen des Codes und hilft dir, seine Komplexität zu reduzieren, indem du Codeblöcke durch deren Bedeutung ersetzt. Sieh dir das folgende Beispiel an. Der erste Code nimmt das erste Symbol, aber diese Aktion (das erste Symbol nehmen) <em>bedeutet</em> an sich nichts, es ist nur eine mechanische Berechnung. Es ist nur der ursprüngliche Kontext <code>initial_for_file = filename[0]</code> oder zusätzliche Kommentare, die ihm seine Bedeutung geben. Im Gegensatz dazu sagt dir das Aufrufen einer Funktion namens <em>compute_initial</em> was passiert, da es den Zweck eindeutig macht. Ich vermute, dass der zukünftige Du sehr pro-Eindeutigkeit und anti-Verwirrung ist.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="guess-the-number-ai.html#cb46-1" tabindex="-1"></a><span class="cf">if</span> filename[<span class="dv">0</span>] <span class="op">==</span> <span class="st">"A"</span>:</span>
+<span id="cb46-2"><a href="guess-the-number-ai.html#cb46-2" tabindex="-1"></a>    ...</span>
+<span id="cb46-3"><a href="guess-the-number-ai.html#cb46-3" tabindex="-1"></a>    </span>
+<span id="cb46-4"><a href="guess-the-number-ai.html#cb46-4" tabindex="-1"></a><span class="cf">if</span> compute_initial(filename) <span class="op">==</span> <span class="st">"A"</span>:</span>
+<span id="cb46-5"><a href="guess-the-number-ai.html#cb46-5" tabindex="-1"></a>    ...</span></code></pre></div>
+</div>
+</div>
+<div id="funktionen-in-python" class="section level2" number="7.4">
+<h2>
+<span class="header-section-number">7.4</span> Funktionen in Python<a class="anchor" aria-label="anchor" href="#funktionen-in-python"><i class="fas fa-link"></i></a>
+</h2>
+<div id="definieren-einer-funktion-in-python" class="section level3" number="7.4.1">
+<h3>
+<span class="header-section-number">7.4.1</span> Definieren einer Funktion in Python<a class="anchor" aria-label="anchor" href="#definieren-einer-funktion-in-python"><i class="fas fa-link"></i></a>
+</h3>
+<p>Eine Funktion in Python sieht so aus (beachte die Einrückung und <code>:</code> am Ende der ersten Zeile)</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="guess-the-number-ai.html#cb47-1" tabindex="-1"></a><span class="kw">def</span> <span class="op">&lt;</span>funktionsname<span class="op">&gt;</span>(param1, param2, ...):</span>
+<span id="cb47-2"><a href="guess-the-number-ai.html#cb47-2" tabindex="-1"></a>    einige interne Berechnung</span>
+<span id="cb47-3"><a href="guess-the-number-ai.html#cb47-3" tabindex="-1"></a>    <span class="cf">if</span> bedingung:</span>
+<span id="cb47-4"><a href="guess-the-number-ai.html#cb47-4" tabindex="-1"></a>        <span class="cf">return</span> ein Wert</span>
+<span id="cb47-5"><a href="guess-the-number-ai.html#cb47-5" tabindex="-1"></a>    <span class="cf">return</span> ein anderer Wert</span></code></pre></div>
+<p>Die Parameter sind optional, ebenso der Rückgabewert. Die minimalste Funktion wäre daher</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="guess-the-number-ai.html#cb48-1" tabindex="-1"></a><span class="kw">def</span> minimal_function():</span>
+<span id="cb48-2"><a href="guess-the-number-ai.html#cb48-2" tabindex="-1"></a>    <span class="cf">pass</span> <span class="co"># pass bedeutet "mache nichts"</span></span></code></pre></div>
+<p>Du musst deine Funktion (einmal!) definieren, bevor du sie aufrufst (ein- oder mehrmals). Du solltest also Funktionen <em>vor</em> dem Code erstellen, der sie verwendet.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="guess-the-number-ai.html#cb49-1" tabindex="-1"></a><span class="kw">def</span> do_something():</span>
+<span id="cb49-2"><a href="guess-the-number-ai.html#cb49-2" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb49-3"><a href="guess-the-number-ai.html#cb49-3" tabindex="-1"></a><span class="co">    Das ist eine Funktion namens "do_something". Sie macht eigentlich nichts.</span></span>
+<span id="cb49-4"><a href="guess-the-number-ai.html#cb49-4" tabindex="-1"></a><span class="co">    Sie benötigt keine Eingabe und gibt keinen Wert zurück.</span></span>
+<span id="cb49-5"><a href="guess-the-number-ai.html#cb49-5" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb49-6"><a href="guess-the-number-ai.html#cb49-6" tabindex="-1"></a>    <span class="cf">return</span></span>
+<span id="cb49-7"><a href="guess-the-number-ai.html#cb49-7" tabindex="-1"></a>    </span>
+<span id="cb49-8"><a href="guess-the-number-ai.html#cb49-8" tabindex="-1"></a><span class="kw">def</span> another_function():</span>
+<span id="cb49-9"><a href="guess-the-number-ai.html#cb49-9" tabindex="-1"></a>    ...</span>
+<span id="cb49-10"><a href="guess-the-number-ai.html#cb49-10" tabindex="-1"></a>    <span class="co"># Wir rufen sie in einer anderen Funktion auf.</span></span>
+<span id="cb49-11"><a href="guess-the-number-ai.html#cb49-11" tabindex="-1"></a>    do_something()</span>
+<span id="cb49-12"><a href="guess-the-number-ai.html#cb49-12" tabindex="-1"></a>    ...</span>
+<span id="cb49-13"><a href="guess-the-number-ai.html#cb49-13" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="guess-the-number-ai.html#cb49-14" tabindex="-1"></a><span class="co"># Das ist ein Funktionsaufruf (wir verwenden diese Funktion)</span></span>
+<span id="cb49-15"><a href="guess-the-number-ai.html#cb49-15" tabindex="-1"></a>do_something()</span>
+<span id="cb49-16"><a href="guess-the-number-ai.html#cb49-16" tabindex="-1"></a></span>
+<span id="cb49-17"><a href="guess-the-number-ai.html#cb49-17" tabindex="-1"></a><span class="co"># Und wir verwenden sie noch einmal!</span></span>
+<span id="cb49-18"><a href="guess-the-number-ai.html#cb49-18" tabindex="-1"></a>do_something()</span>
+<span id="cb49-19"><a href="guess-the-number-ai.html#cb49-19" tabindex="-1"></a></span>
+<span id="cb49-20"><a href="guess-the-number-ai.html#cb49-20" tabindex="-1"></a><span class="co"># Und wieder, aber durch einen another_function Aufruf</span></span>
+<span id="cb49-21"><a href="guess-the-number-ai.html#cb49-21" tabindex="-1"></a>another_function()</span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #1.</p>
+</div>
+<p>Du musst auch im Hinterkopf behalten, dass das erneute Definieren einer Funktion (oder das Definieren einer technisch anderen Funktion, die den gleichen Namen hat) die ursprüngliche Definition <em>überschreibt</em>, so dass nur die <em>neueste</em> Version davon beibehalten und verwendet werden kann.</p>
+<div class="practice">
+<p>Mache Übung #2.</p>
+</div>
+<p>Obwohl das Beispiel in der Übung das Problem leicht erkennen lässt, kann es in einem großen Code, der sich über mehrere Dateien erstreckt und verschiedene Bibliotheken verwendet, nicht so einfach sein, das gleiche Problem zu lösen!</p>
+</div>
+<div id="funktionsargumente" class="section level3" number="7.4.2">
+<h3>
+<span class="header-section-number">7.4.2</span> Funktionsargumente<a class="anchor" aria-label="anchor" href="#funktionsargumente"><i class="fas fa-link"></i></a>
+</h3>
+<p>Einige Funktionen benötigen möglicherweise keine Argumente (auch Parameter genannt), da sie eine feste Aktion ausführen:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="guess-the-number-ai.html#cb50-1" tabindex="-1"></a><span class="kw">def</span> ping():</span>
+<span id="cb50-2"><a href="guess-the-number-ai.html#cb50-2" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb50-3"><a href="guess-the-number-ai.html#cb50-3" tabindex="-1"></a><span class="co">    Maschine, die "ping!" macht.</span></span>
+<span id="cb50-4"><a href="guess-the-number-ai.html#cb50-4" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb50-5"><a href="guess-the-number-ai.html#cb50-5" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"ping!"</span>)</span></code></pre></div>
+<p>Du musst jedoch möglicherweise Informationen an die Funktion über Argumente weitergeben, um zu beeinflussen, wie die Funktion ihre Aktion ausführt. In Python listest du einfach Argumente innerhalb der runden Klammern nach dem Funktionsnamen auf (es gibt noch mehr Optionen und Funktionen, aber wir halten es zunächst einfach). Beispielsweise könnten wir eine Funktion schreiben, die das Alter einer Person berechnet und ausgibt, basierend auf zwei Parametern 1) ihrem Geburtsjahr, 2) dem aktuellen Jahr:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="guess-the-number-ai.html#cb51-1" tabindex="-1"></a><span class="kw">def</span> print_age(birth_year, current_year):</span>
+<span id="cb51-2"><a href="guess-the-number-ai.html#cb51-2" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb51-3"><a href="guess-the-number-ai.html#cb51-3" tabindex="-1"></a><span class="co">    Gibt das Alter aus, gegeben das Geburtsjahr und das aktuelle Jahr.</span></span>
+<span id="cb51-4"><a href="guess-the-number-ai.html#cb51-4" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb51-5"><a href="guess-the-number-ai.html#cb51-5" tabindex="-1"></a><span class="co">    Parameter</span></span>
+<span id="cb51-6"><a href="guess-the-number-ai.html#cb51-6" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb51-7"><a href="guess-the-number-ai.html#cb51-7" tabindex="-1"></a><span class="co">    birth_year : int</span></span>
+<span id="cb51-8"><a href="guess-the-number-ai.html#cb51-8" tabindex="-1"></a><span class="co">    current_year : int</span></span>
+<span id="cb51-9"><a href="guess-the-number-ai.html#cb51-9" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb51-10"><a href="guess-the-number-ai.html#cb51-10" tabindex="-1"></a>    <span class="bu">print</span>(current_year <span class="op">-</span> birth_year)</span></code></pre></div>
+<p>Es ist eine <strong>sehr gute Idee</strong>, Funktionen, Parametern und Variablen aussagekräftige Namen zu geben. Der folgende Code wird genau das gleiche Ergebnis liefern, aber das Verständnis <em>warum</em> und <em>wofür</em> es das tut, was es tut, wäre viel schwieriger (also benutze <strong>immer</strong> aussagekräftige Namen!):</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="guess-the-number-ai.html#cb52-1" tabindex="-1"></a><span class="kw">def</span> x(a, b):</span>
+<span id="cb52-2"><a href="guess-the-number-ai.html#cb52-2" tabindex="-1"></a>    <span class="bu">print</span>(b <span class="op">-</span> a)</span></code></pre></div>
+<p>Wenn du eine Funktion aufrufst, musst du die korrekte Anzahl von Parametern übergeben und sie in der <em>richtigen Reihenfolge</em> übergeben, ein weiterer Grund für Funktionen Argumente, aussagekräftige Namen zu haben<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Dies ist auch nicht streng wahr, aber du musst warten, bis du über benannte Parameter und Standardwerte lernst&lt;/p&gt;"><sup>25</sup></a>.</p>
+<div class="practice">
+<p>Mache Übung #3.</p>
+</div>
+<p>Wenn du eine Funktion aufrufst, werden die Werte, die du an die Funktion <em>übermittelst</em>, den Parametern zugewiesen und sie werden als <em>lokale</em> Variablen verwendet (mehr darüber später). Es spielt jedoch keine Rolle, <em>wie</em> du diese Werte erlangt hast, ob sie in einer Variable waren, hart codiert wurden oder von einer anderen Funktion zurückgegeben wurden. Wenn du numerische, logische oder Zeichenkettenwerte (<em>unveränderliche</em> Typen) verwendest, kannst du davon ausgehen, dass jede Verbindung zur ursprünglichen Variablen oder Funktion, die sie erzeugt hat, verschwunden ist (wir werden uns später um <em>veränderliche</em> Typen wie Listen kümmern). Wenn du also eine Funktion schreibst oder ihren Code liest, gehst du einfach davon aus, dass sie bei dem Aufruf auf einen bestimmten Wert gesetzt wurde und du kannst den Kontext, in dem dieser Aufruf gemacht wurde, ignorieren.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="guess-the-number-ai.html#cb53-1" tabindex="-1"></a><span class="co"># hart codiert</span></span>
+<span id="cb53-2"><a href="guess-the-number-ai.html#cb53-2" tabindex="-1"></a>print_age(<span class="dv">1976</span>, <span class="dv">2020</span>)</span>
+<span id="cb53-3"><a href="guess-the-number-ai.html#cb53-3" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="guess-the-number-ai.html#cb53-4" tabindex="-1"></a><span class="co"># mit Werten aus Variablen</span></span>
+<span id="cb53-5"><a href="guess-the-number-ai.html#cb53-5" tabindex="-1"></a>i_was_born <span class="op">=</span> <span class="dv">1976</span></span>
+<span id="cb53-6"><a href="guess-the-number-ai.html#cb53-6" tabindex="-1"></a>today_is <span class="op">=</span> <span class="dv">2023</span></span>
+<span id="cb53-7"><a href="guess-the-number-ai.html#cb53-7" tabindex="-1"></a>print_age(i_was_born, today_is)</span>
+<span id="cb53-8"><a href="guess-the-number-ai.html#cb53-8" tabindex="-1"></a></span>
+<span id="cb53-9"><a href="guess-the-number-ai.html#cb53-9" tabindex="-1"></a><span class="co"># mit Wert aus einer Funktion</span></span>
+<span id="cb53-10"><a href="guess-the-number-ai.html#cb53-10" tabindex="-1"></a><span class="kw">def</span> get_current_year():</span>
+<span id="cb53-11"><a href="guess-the-number-ai.html#cb53-11" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2023</span></span>
+<span id="cb53-12"><a href="guess-the-number-ai.html#cb53-12" tabindex="-1"></a></span>
+<span id="cb53-13"><a href="guess-the-number-ai.html#cb53-13" tabindex="-1"></a>print_age(<span class="dv">1976</span>, get_current_year())</span></code></pre></div>
+</div>
+<div id="rückgabewert-der-funktionen-ausgabe" class="section level3" number="7.4.3">
+<h3>
+<span class="header-section-number">7.4.3</span> Rückgabewert der Funktionen (Ausgabe)<a class="anchor" aria-label="anchor" href="#r%C3%BCckgabewert-der-funktionen-ausgabe"><i class="fas fa-link"></i></a>
+</h3>
+<p>Deine Funktion kann eine Aktion ausführen, ohne einen Wert an den Aufrufer zurückzugeben (das ist es, was unsere Funktion <code>print_age</code> getan hat). Du könntest jedoch den Wert stattdessen zurückgeben müssen. Um die Dinge allgemeiner zu gestalten, möchten wir vielleicht eine neue Funktion namens <code>compute_age</code> schreiben, die das Alter zurückgibt, anstatt es zu drucken (wir können es immer selbst drucken).</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="guess-the-number-ai.html#cb54-1" tabindex="-1"></a><span class="kw">def</span> compute_age(birth_year, current_year):</span>
+<span id="cb54-2"><a href="guess-the-number-ai.html#cb54-2" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb54-3"><a href="guess-the-number-ai.html#cb54-3" tabindex="-1"></a><span class="co">    Berechnet das Alter, gegeben das Geburtsjahr und das aktuelle Jahr.</span></span>
+<span id="cb54-4"><a href="guess-the-number-ai.html#cb54-4" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="guess-the-number-ai.html#cb54-5" tabindex="-1"></a><span class="co">    Parameter</span></span>
+<span id="cb54-6"><a href="guess-the-number-ai.html#cb54-6" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb54-7"><a href="guess-the-number-ai.html#cb54-7" tabindex="-1"></a><span class="co">    birth_year : int</span></span>
+<span id="cb54-8"><a href="guess-the-number-ai.html#cb54-8" tabindex="-1"></a><span class="co">    current_year : int</span></span>
+<span id="cb54-9"><a href="guess-the-number-ai.html#cb54-9" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb54-10"><a href="guess-the-number-ai.html#cb54-10" tabindex="-1"></a><span class="co">    Gibt zurück</span></span>
+<span id="cb54-11"><a href="guess-the-number-ai.html#cb54-11" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb54-12"><a href="guess-the-number-ai.html#cb54-12" tabindex="-1"></a><span class="co">    int : age</span></span>
+<span id="cb54-13"><a href="guess-the-number-ai.html#cb54-13" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb54-14"><a href="guess-the-number-ai.html#cb54-14" tabindex="-1"></a>    <span class="cf">return</span> current_year <span class="op">-</span> birth_year</span></code></pre></div>
+<p>Beachte, dass selbst wenn eine Funktion den Wert zurückgibt, dieser nur beibehalten wird, wenn er tatsächlich verwendet wird (in einer Variablen gespeichert, als Wert verwendet etc.). Ein einfacher Aufruf speichert den zurückgegebenen Wert also nicht irgendwo!</p>
+<div class="practice">
+<p>Mache Übung #4.</p>
+</div>
+</div>
+<div id="anwendungsbereiche-für-unveränderbare-werte" class="section level3" number="7.4.4">
+<h3>
+<span class="header-section-number">7.4.4</span> Anwendungsbereiche (für unveränderbare Werte)<a class="anchor" aria-label="anchor" href="#anwendungsbereiche-f%C3%BCr-unver%C3%A4nderbare-werte"><i class="fas fa-link"></i></a>
+</h3>
+<p>Wie wir oben besprochen haben, isoliert das Umwandeln von Code in eine Funktion ihn, sodass er in seinem eigenen <em>Anwendungsbereich</em> läuft. In Python existiert jede Variable in dem <em>Anwendungsbereich</em>, in dem sie definiert wurde. Wenn sie im <em>globalen</em> Skript definiert wurde, existiert sie in diesem <em>globalen</em> Anwendungsbereich als <em>globale</em> Variable. Sie ist jedoch nicht zugänglich (zumindest nicht ohne besondere Anstrengungen über einen <code>global</code> Operator) innerhalb einer Funktion. Umgekehrt existieren die Parameter einer Funktion und alle <em>innerhalb einer Funktion</em> definierten Variablen nur <strong>innerhalb dieser Funktion</strong>. Sie sind für die Außenwelt vollkommen unsichtbar und können nicht von einem globalen Skript oder von einer anderen Funktion aus abgerufen werden. Ebenso haben alle Änderungen, die du am Funktionsparameter oder an der lokalen Variable vornimmst, keinerlei Auswirkungen auf die Außenwelt.</p>
+<p>Der Zweck von Anwendungsbereichen besteht darin, einzelne Codeabschnitte voneinander zu isolieren, sodass das Ändern von Variablen innerhalb eines Anwendungsbereichs keine Auswirkungen auf alle anderen Anwendungsbereiche hat. Das bedeutet, dass du beim Schreiben oder Debuggen des Codes keine Angst vor Code in anderen Anwendungsbereichen haben musst und dich nur auf den Code konzentrieren musst, an dem du arbeitest. Da Anwendungsbereiche isoliert sind, können sie <em>gleichnamige Variablen</em> haben, die jedoch keine Beziehung zueinander haben, da sie in ihren eigenen parallelen Universen existieren<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Es ist wie zwei Personen mit identischen Namen, immer noch unterschiedliche Personen.&lt;/p&gt;"><sup>26</sup></a>. Wenn du also wissen möchten, welchen Wert eine Variable hat, musst du nur innerhalb des Anwendungsbereichs schauen und alle anderen Anwendungsbereiche ignorieren (auch wenn die Namen übereinstimmen!).</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="guess-the-number-ai.html#cb55-1" tabindex="-1"></a><span class="co"># dies ist die Variable `x` im globalen Anwendungsbereich</span></span>
+<span id="cb55-2"><a href="guess-the-number-ai.html#cb55-2" tabindex="-1"></a>x  <span class="op">=</span> <span class="dv">5</span> </span>
+<span id="cb55-3"><a href="guess-the-number-ai.html#cb55-3" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="guess-the-number-ai.html#cb55-4" tabindex="-1"></a><span class="kw">def</span> f1():</span>
+<span id="cb55-5"><a href="guess-the-number-ai.html#cb55-5" tabindex="-1"></a>  <span class="co"># Das ist die Variable `x` im Anwendungsbereich der Funktion f1</span></span>
+<span id="cb55-6"><a href="guess-the-number-ai.html#cb55-6" tabindex="-1"></a>  <span class="co"># Sie hat den gleichen Namen wie die globale Variable, aber</span></span>
+<span id="cb55-7"><a href="guess-the-number-ai.html#cb55-7" tabindex="-1"></a>  <span class="co"># hat keine Beziehung zu ihr: viele Leute heißen Sasha, </span></span>
+<span id="cb55-8"><a href="guess-the-number-ai.html#cb55-8" tabindex="-1"></a>  <span class="co"># sind aber immer noch unterschiedliche Personen. Was auch immer</span></span>
+<span id="cb55-9"><a href="guess-the-number-ai.html#cb55-9" tabindex="-1"></a>  <span class="co"># mit `x` in f1 passiert, bleibt im Anwendungsbereich von f1.</span></span>
+<span id="cb55-10"><a href="guess-the-number-ai.html#cb55-10" tabindex="-1"></a>  x <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb55-11"><a href="guess-the-number-ai.html#cb55-11" tabindex="-1"></a></span>
+<span id="cb55-12"><a href="guess-the-number-ai.html#cb55-12" tabindex="-1"></a>  </span>
+<span id="cb55-13"><a href="guess-the-number-ai.html#cb55-13" tabindex="-1"></a><span class="kw">def</span> f2(x):</span>
+<span id="cb55-14"><a href="guess-the-number-ai.html#cb55-14" tabindex="-1"></a>  <span class="co"># Dies ist der Parameter `x` im Anwendungsbereich der Funktion f2.</span></span>
+<span id="cb55-15"><a href="guess-the-number-ai.html#cb55-15" tabindex="-1"></a>  <span class="co"># Wieder keine Beziehung zu anderen globalen oder lokalen Variablen.</span></span>
+<span id="cb55-16"><a href="guess-the-number-ai.html#cb55-16" tabindex="-1"></a>  <span class="co"># Es ist ein völlig getrenntes Objekt, es passiert einfach, </span></span>
+<span id="cb55-17"><a href="guess-the-number-ai.html#cb55-17" tabindex="-1"></a>  <span class="co"># dass es den gleichen Namen hat (wieder einfach Namensvettern)</span></span>
+<span id="cb55-18"><a href="guess-the-number-ai.html#cb55-18" tabindex="-1"></a>  <span class="bu">print</span>(x)</span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #5.</p>
+</div>
+</div>
+</div>
+<div id="spielerantwort-als-funktion" class="section level2" number="7.5">
+<h2>
+<span class="header-section-number">7.5</span> Spielerantwort als Funktion<a class="anchor" aria-label="anchor" href="#spielerantwort-als-funktion"><i class="fas fa-link"></i></a>
+</h2>
+<p>Lassen wir all diese Theorie über Funktionen in die Praxis umsetzen. Verwende den Code, den du erstellt hast, um die <a href="guess-the-number-ai.html#guess-the-number-players-response">Spielerantwort</a> zu erhalten und verwandle ihn in eine Funktion. Sie sollte keine Parameter haben (zumindest vorerst) und sollte die Spielerantwort zurückgeben. Ich schlage vor, dass du sie <code>input_response</code> (oder so ähnlich) nennst. Überprüfe, ob der Code funktioniert, indem du diese Funktion aus dem Hauptskript aufrufst.</p>
+<div class="program">
+<p>Füge deinen Code in <code>code02.py</code> ein.</p>
+</div>
+</div>
+<div id="eine-funktion-debuggen" class="section level2" number="7.6">
+<h2>
+<span class="header-section-number">7.6</span> Eine Funktion debuggen<a class="anchor" aria-label="anchor" href="#eine-funktion-debuggen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da du deine erste Funktion hast, kannst du den Sinn von drei Schritt über/Schritt in/Schritt heraus-Tasten verstehen, die dir der Debugger anbietet. Kopiere den folgenden Code in eine separate Datei (nenne sie zum Beispiel <code>test01.py</code>).</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb56-1"><a href="guess-the-number-ai.html#cb56-1" tabindex="-1"></a><span class="kw">def</span> f1(x, y):</span>
+<span id="cb56-2"><a href="guess-the-number-ai.html#cb56-2" tabindex="-1"></a>  <span class="cf">return</span> x <span class="op">/</span> y</span>
+<span id="cb56-3"><a href="guess-the-number-ai.html#cb56-3" tabindex="-1"></a>  </span>
+<span id="cb56-4"><a href="guess-the-number-ai.html#cb56-4" tabindex="-1"></a><span class="kw">def</span> f2(x, y):</span>
+<span id="cb56-5"><a href="guess-the-number-ai.html#cb56-5" tabindex="-1"></a>  x <span class="op">=</span> x <span class="op">+</span> <span class="dv">5</span></span>
+<span id="cb56-6"><a href="guess-the-number-ai.html#cb56-6" tabindex="-1"></a>  y <span class="op">=</span> y <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb56-7"><a href="guess-the-number-ai.html#cb56-7" tabindex="-1"></a>  <span class="cf">return</span> f1(x, y)</span>
+<span id="cb56-8"><a href="guess-the-number-ai.html#cb56-8" tabindex="-1"></a>  </span>
+<span id="cb56-9"><a href="guess-the-number-ai.html#cb56-9" tabindex="-1"></a>z <span class="op">=</span> f2(<span class="dv">4</span>, <span class="dv">2</span>)</span>
+<span id="cb56-10"><a href="guess-the-number-ai.html#cb56-10" tabindex="-1"></a><span class="bu">print</span>(z)</span></code></pre></div>
+<p>Setze zuerst einen Breakpoint auf die Zeile im Hauptskript, die die Funktion <code>f2()</code> aufruft. Starte den Debugger über <strong>F5</strong> und das Programm wird an dieser Zeile anhalten. Wenn du nun <strong>F10</strong> drückst (Schritt über), geht das Programm zur nächsten Zeile <code>print(z)</code>. Wenn du aber stattdessen <strong>F11</strong> drückst (Schritt hinein), wird das Programm <em>in</em> die Funktion hineingehen und zur Zeile <code>x = x + 5</code> gehen. Innerhalb der Funktion hast du die gleichen beiden Möglichkeiten, die wir gerade angeschaut haben, aber du kannst auch <strong>Shift+F11</strong> drücken, um aus der Funktion herauszugehen. Hier wird das Programm den gesamten Code durchlaufen, bis du die nächste Zeile <em>außerhalb</em> der Funktion erreichst (du solltest wieder bei <code>print(z)</code> ankommen). Experimentiere mit dem Setzen von Breakpoints an verschiedenen Zeilen und dem Über-/Hinein-/Herausschreiten, um dich mit diesen nützlichen Debugging-Tools vertraut zu machen.</p>
+<p>Setze nun den Breakpoint innerhalb der <code>f1()</code> Funktion und führe den Code über <strong>F5</strong> aus. Schau dir die linke Fensterseite an, du wirst einen <em>Call Stack</em> Reiter sehen. Während die gelb hervorgehobene Zeile im Editor zeigt, wo du gerade bist (sollte innerhalb der <code>f1()</code> Funktion sein), zeigt der <em>Call Stack</em> dir, wie du dorthin gekommen bist. In diesem Fall sollte es zeigen:</p>
+<div class="inline-table"><table class="table table-sm"><tbody>
+<tr class="odd">
+<td align="left">f1</td>
+<td align="left">test01.py</td>
+<td>2:1</td>
+</tr>
+<tr class="even">
+<td align="left">f2</td>
+<td align="left">test01.py</td>
+<td>7:1</td>
+</tr>
+<tr class="odd">
+<td align="left">&lt;module&gt;</td>
+<td align="left">test01.py</td>
+<td>9:1</td>
+</tr>
+</tbody></table></div>
+<p>Die Aufrufe sind von unten nach oben gestapelt, das bedeutet, dass eine Funktion im Hauptmodul in Zeile 9 aufgerufen wurde, du in der Funktion <code>f2</code> in Zeile 7 gelandet bist und dann in der Funktion <code>f1</code> und in Zeile 2. Experimentiere mit dem Ein- und Austreten aus Funktionen und behalte dabei den <em>Call Stack</em> im Auge. Du wirst diese Informationen vielleicht nicht oft benötigen, aber sie könnten in unseren späteren Projekten mit mehreren verschachtelten Funktionsaufrufen nützlich sein.</p>
+</div>
+<div id="numpy-docstring" class="section level2" number="7.7">
+<h2>
+<span class="header-section-number">7.7</span> Deine Funktion dokumentieren<a class="anchor" aria-label="anchor" href="#numpy-docstring"><i class="fas fa-link"></i></a>
+</h2>
+<p>Eine Funktion zu schreiben, ist nur die halbe Arbeit. Du musst sie dokumentieren! <a href="programming-tips.html#programming-tips">Erinnere dich</a>, das ist eine gute Gewohnheit, die deinen Code einfach zu benutzen und wiederzuverwenden macht. Es gibt verschiedene Möglichkeiten, den Code zu dokumentieren, aber wir werden die <a href="https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard">NumPy Docstring Konvention</a> verwenden. Hier ist ein Beispiel für eine solche dokumentierte Funktion</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb57-1"><a href="guess-the-number-ai.html#cb57-1" tabindex="-1"></a><span class="kw">def</span> generate_initial(full_string):</span>
+<span id="cb57-2"><a href="guess-the-number-ai.html#cb57-2" tabindex="-1"></a>    <span class="co">"""Erzeugt eine Initiale mit dem ersten Symbol.</span></span>
+<span id="cb57-3"><a href="guess-the-number-ai.html#cb57-3" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb57-4"><a href="guess-the-number-ai.html#cb57-4" tabindex="-1"></a><span class="co">    Parameter</span></span>
+<span id="cb57-5"><a href="guess-the-number-ai.html#cb57-5" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb57-6"><a href="guess-the-number-ai.html#cb57-6" tabindex="-1"></a><span class="co">    full_string : str</span></span>
+<span id="cb57-7"><a href="guess-the-number-ai.html#cb57-7" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb57-8"><a href="guess-the-number-ai.html#cb57-8" tabindex="-1"></a><span class="co">    Gibt zurück</span></span>
+<span id="cb57-9"><a href="guess-the-number-ai.html#cb57-9" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb57-10"><a href="guess-the-number-ai.html#cb57-10" tabindex="-1"></a><span class="co">    str : Einzelnes Symbol</span></span>
+<span id="cb57-11"><a href="guess-the-number-ai.html#cb57-11" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb57-12"><a href="guess-the-number-ai.html#cb57-12" tabindex="-1"></a>    <span class="cf">return</span> full_string[<span class="dv">0</span>]</span></code></pre></div>
+<p>Schau dir das <a href="https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard">Handbuch</a> an und dokumentiere die <code>input_response</code> Funktion. Du wirst den Abschnitt <code>Parameter</code> nicht benötigen, da sie derzeit keine Eingaben akzeptiert.</p>
+<div class="program">
+<p>Aktualisiere deinen Code in <code>code02.py</code>.</p>
+</div>
+</div>
+<div id="verwendung-der-aufforderung" class="section level2" number="7.8">
+<h2>
+<span class="header-section-number">7.8</span> Verwendung der Aufforderung<a class="anchor" aria-label="anchor" href="#verwendung-der-aufforderung"><i class="fas fa-link"></i></a>
+</h2>
+<p>In der Zukunft werden wir nach einer bestimmten Zahl fragen, die eine aktuelle Vermutung des Computers ist, daher können wir keine feste Aufforderungsnachricht verwenden. Ändere die <code>input_response</code> Funktion, indem du einen <code>guess</code> Parameter hinzufügst. Dann ändere die Aufforderung, die du für die <a href="https://docs.python.org/3/library/functions.html#input">input()</a> verwendet hast, um den Wert in diesem Parameter einzuschließen. Aktualisiere die Dokumentation der Funktionen. Teste es, indem du mit verschiedenen Werten für den <code>guess</code> Parameter aufrufst und eine unterschiedliche Aufforderung zur Antwort siehst.</p>
+<div class="program">
+<p>Gib deinen Code in <code>code03.py</code> ein.</p>
+</div>
+</div>
+<div id="aufteilen-des-intervalls-in-der-mitte" class="section level2" number="7.9">
+<h2>
+<span class="header-section-number">7.9</span> Aufteilen des Intervalls in der Mitte<a class="anchor" aria-label="anchor" href="#aufteilen-des-intervalls-in-der-mitte"><i class="fas fa-link"></i></a>
+</h2>
+<p>Lass uns ein bisschen mehr üben, Funktionen zu schreiben. Denke daran, dass der Computer die Mitte des Intervalls als Vermutung verwenden sollte. Erstelle eine Funktion (nennen wir sie <code>split_interval()</code> oder so ähnlich), die zwei Parameter – <code>lower_limit</code> und <code>upper_limit</code> - entgegennimmt und <em>eine Ganzzahl</em> zurückgibt, die der Mitte des Intervalls am nächsten liegt. Der einzige knifflige Teil ist, wie du eine potentiell Gleitkommazahl (z.B. wenn du versuchst, sie für das Intervall 1..10 zu finden) in eine Ganzzahl umwandelst. Du kannst dafür die Funktion <a href="https://docs.python.org/3/library/functions.html#int">int()</a> verwenden. Lies jedoch die Dokumentation sorgfältig durch, da sie <em>keine</em> korrekte Rundung durchführt (was tut sie? Lies die Dokumentation!). Du solltest daher die Zahl auf die nächste Ganzzahl <a href="https://docs.python.org/3/library/functions.html#round">round()</a> runden, bevor du sie umwandelst.</p>
+<p>Schreibe eine Funktion, dokumentiere sie und teste sie, indem du überprüfst, ob die Zahlen korrekt sind.</p>
+<div class="program">
+<p>Gib deine <code>split_interval()</code> Funktion und den Testcode in <code>code04.py</code> ein.</p>
+</div>
+</div>
+<div id="einzelne-runde" class="section level2" number="7.10">
+<h2>
+<span class="header-section-number">7.10</span> Einzelne Runde<a class="anchor" aria-label="anchor" href="#einzelne-runde"><i class="fas fa-link"></i></a>
+</h2>
+<p>Du hast beide Funktionen, die du brauchst, also lass uns den Code schreiben, um das Spiel zu initialisieren und eine einzelne Runde zu spielen. Die Initialisierung läuft darauf hinaus, zwei Variablen zu erstellen, die den unteren und oberen Grenzwerten des Spielbereichs entsprechen (wir haben bisher 1 bis 10 verwendet, aber das kannst du natürlich immer ändern). Als nächstes sollte der Computer eine Vermutung generieren (dafür hast du deine <code>split_interval()</code> Funktion) und den Spieler nach der Vermutung fragen (das ist die <code>input_response()</code> Funktion). Sobald du die Antwort hast (in einer separaten Variable gespeichert, denke dir selbst einen Namen aus), aktualisiere entweder die obere oder untere Grenze mit einem <a href="guess-the-number-single-round.html#if-statement">if..elif..else</a> Ausdruck, basierend auf der Antwort des Spielers (wenn der Spieler gesagt hat, dass seine Zahl höher ist, bedeutet das, dass das neue Intervall von <code>guess</code> bis <code>upper_limit</code> reicht, und umgekehrt, wenn sie niedriger ist). Drucke eine freudige Nachricht aus, wenn die Vermutung des Computers richtig war.</p>
+<div class="program">
+<p>Gib beide Funktionen und den Skriptcode in <code>code05.py</code> ein.</p>
+</div>
+</div>
+<div id="mehrere-runden" class="section level2" number="7.11">
+<h2>
+<span class="header-section-number">7.11</span> Mehrere Runden<a class="anchor" aria-label="anchor" href="#mehrere-runden"><i class="fas fa-link"></i></a>
+</h2>
+<p>Erweitere das Spiel, so dass der Computer so lange rät, bis er schließlich gewinnt. Du weißt bereits, wie man die <a href="guess-the-number-multi-round.html#while-loop">while</a> Schleife verwendet, überlege nur, wie du die Antwort des Teilnehmers als eine Schleifenbedingungsvariable verwenden kannst. Denke auch über den Anfangswert dieser Variable nach und wie du sie verwenden kannst, um <code>input_response()</code> nur an einer Stelle aufzurufen.</p>
+<div class="program">
+<p>Gib den aktualisierten Code in <code>code06.py</code> ein.</p>
+</div>
+</div>
+<div id="nochmal-spielen" class="section level2" number="7.12">
+<h2>
+<span class="header-section-number">7.12</span> Nochmal spielen<a class="anchor" aria-label="anchor" href="#nochmal-spielen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Ändere den Code so, dass du dieses Spiel mehrere Male spielen kannst. Du weißt bereits, wie das geht und das Einzige, was du beachten musst, ist, wo genau du die Initialisierung vor jedem Spiel durchführen sollst. Da du das schon für das letzte Spiel implementiert hast, könntest du versucht sein zu sehen, wie du es gemacht hast oder sogar den Code zu kopieren und einzufügen. Allerdings würde ich empfehlen, es von Grund auf neu zu schreiben. Denke daran, dein Ziel ist es nicht, ein Programm zu schreiben, sondern zu lernen, wie man das macht und daher ist der Weg wichtiger als das Ziel.</p>
+<div class="program">
+<p>Gib den aktualisierten Code in <code>code07.py</code> ein.</p>
+</div>
+</div>
+<div id="bester-punktestand" class="section level2" number="7.13">
+<h2>
+<span class="header-section-number">7.13</span> Bester Punktestand<a class="anchor" aria-label="anchor" href="#bester-punktestand"><i class="fas fa-link"></i></a>
+</h2>
+<p>Füge den Code hinzu, um die Anzahl der Versuche zu zählen, die der Computer in jeder Runde benötigt hat, und melde den besten Punktestand (wenigste Anzahl von Versuchen), nachdem das Spiel vorbei ist. Du wirst eine Variable brauchen, um die Anzahl der Versuche zu zählen, und eine, um den besten Punktestand zu speichern. Versuche erneut, es zu schreiben, ohne auf dein vorheriges Spiel zu schauen.</p>
+<div class="program">
+<p>Gib den aktualisierten Code in <code>code08.py</code> ein.</p>
+</div>
+</div>
+<div id="verwenden-deiner-eigenen-bibliotheken" class="section level2" number="7.14">
+<h2>
+<span class="header-section-number">7.14</span> Verwenden deiner eigenen Bibliotheken<a class="anchor" aria-label="anchor" href="#verwenden-deiner-eigenen-bibliotheken"><i class="fas fa-link"></i></a>
+</h2>
+<p>Du weißt bereits, wie man <a href="guess-the-number-single-round.html#using-libraries">bestehende Bibliotheken verwendet</a>, aber du kannst auch deine eigenen erstellen und verwenden. Nimm die beiden Funktionen, die du entwickelt hast, und lege sie in eine neue Datei namens <code>utils.py</code> (vergiss nicht, einen mehrzeiligen Kommentar am Anfang der Datei hinzuzufügen, um dich daran zu erinnern, was drin ist!). Kopiere den verbleibenden Code (das globale Skript) in <code>code09.py</code>. Es wird in seinem aktuellen Zustand nicht funktionieren, da es die beiden Funktionen nicht finden wird (versuche es, um die Fehlermeldung zu sehen), daher musst du aus deinem eigenen Modul <code>utils</code> importieren. Das Importieren funktioniert genau so wie bei anderen Bibliotheken. Beachte, dass der Name deines Moduls <code>utils</code> ist (ohne die Endung), auch wenn deine Datei <code>utils.py</code> heißt.</p>
+<div class="program">
+<p>Gib die Funktionen in <code>utils.py</code> ein, den verbleibenden Code in <code>code09.py</code>.</p>
+</div>
+</div>
+<div id="keep-imports-tidy" class="section level2" number="7.15">
+<h2>
+<span class="header-section-number">7.15</span> Ordnung muss sein!<a class="anchor" aria-label="anchor" href="#keep-imports-tidy"><i class="fas fa-link"></i></a>
+</h2>
+<p>Bisher hast du höchstens eine Bibliothek importiert. Da Python jedoch hoch modular ist, ist es sehr verbreitet, viele Importe in einer einzelnen Datei zu haben. Es gibt einige Regeln, die es einfacher machen, die Importe zu verfolgen. Wenn du Bibliotheken importierst, sollten alle Import-Anweisungen oben in deiner Datei stehen und du solltest vermeiden, sie in zufälliger Reihenfolge zu platzieren. Die empfohlene Reihenfolge ist 1) Systembibliotheken, wie <code>os</code> oder <code>random</code>; 2) Drittanbieter-Bibliotheken, wie <code>psychopy</code>; 3) deine Projektmodule. Und innerhalb jedes Abschnitts solltest du die Bibliotheken <em>alphabetisch</em> anordnen, sodass beispielsweise</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb58-1"><a href="guess-the-number-ai.html#cb58-1" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb58-2"><a href="guess-the-number-ai.html#cb58-2" tabindex="-1"></a><span class="im">import</span> random</span></code></pre></div>
+<p>Das mag für unseren einfachen Code nicht besonders nützlich aussehen, aber wenn deine Projekte wachsen, musst du mehr und mehr Bibliotheken einbeziehen. Wenn du sie in dieser Reihenfolge hältst, ist es einfach zu verstehen, welche Bibliotheken du verwendest und welche nicht standardmäßig sind. Die alphabetische Reihenfolge bedeutet, dass du schnell überprüfen kannst, ob eine Bibliothek enthalten ist, da du schnell den Ort finden kannst, an dem ihre Import-Anweisung erscheinen sollte.</p>
+</div>
+<div id="videospiele-mit-video" class="section level2" number="7.16">
+<h2>
+<span class="header-section-number">7.16</span> Videospiele mit Video<a class="anchor" aria-label="anchor" href="#videospiele-mit-video"><i class="fas fa-link"></i></a>
+</h2>
+<p>Reiche deine Dateien ein und mach dich bereit für mehr Aufregung, denn wir wechseln zu “richtigen” Videospielen mit PsychoPy.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#guess-the-number-ai"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+<li><a class="nav-link" href="#konzepte-des-kapitels."><span class="header-section-number">7.1</span> Konzepte des Kapitels.</a></li>
+<li><a class="nav-link" href="#guess-the-number-players-response"><span class="header-section-number">7.2</span> Spielerantwort</a></li>
+<li>
+<a class="nav-link" href="#function"><span class="header-section-number">7.3</span> Funktionen</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#eine-funktion-f%C3%BChrt-eine-einzige-berechnung-durch"><span class="header-section-number">7.3.1</span> Eine Funktion führt eine einzige Berechnung durch</a></li>
+<li><a class="nav-link" href="#funktion-isoliert-code-vom-rest-des-programms"><span class="header-section-number">7.3.2</span> Funktion isoliert Code vom Rest des Programms</a></li>
+<li><a class="nav-link" href="#funktion-macht-code-einfacher-zu-testen"><span class="header-section-number">7.3.3</span> Funktion macht Code einfacher zu testen</a></li>
+<li><a class="nav-link" href="#funktion-macht-code-wiederverwendbar"><span class="header-section-number">7.3.4</span> Funktion macht Code wiederverwendbar</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#funktionen-in-python"><span class="header-section-number">7.4</span> Funktionen in Python</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#definieren-einer-funktion-in-python"><span class="header-section-number">7.4.1</span> Definieren einer Funktion in Python</a></li>
+<li><a class="nav-link" href="#funktionsargumente"><span class="header-section-number">7.4.2</span> Funktionsargumente</a></li>
+<li><a class="nav-link" href="#r%C3%BCckgabewert-der-funktionen-ausgabe"><span class="header-section-number">7.4.3</span> Rückgabewert der Funktionen (Ausgabe)</a></li>
+<li><a class="nav-link" href="#anwendungsbereiche-f%C3%BCr-unver%C3%A4nderbare-werte"><span class="header-section-number">7.4.4</span> Anwendungsbereiche (für unveränderbare Werte)</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#spielerantwort-als-funktion"><span class="header-section-number">7.5</span> Spielerantwort als Funktion</a></li>
+<li><a class="nav-link" href="#eine-funktion-debuggen"><span class="header-section-number">7.6</span> Eine Funktion debuggen</a></li>
+<li><a class="nav-link" href="#numpy-docstring"><span class="header-section-number">7.7</span> Deine Funktion dokumentieren</a></li>
+<li><a class="nav-link" href="#verwendung-der-aufforderung"><span class="header-section-number">7.8</span> Verwendung der Aufforderung</a></li>
+<li><a class="nav-link" href="#aufteilen-des-intervalls-in-der-mitte"><span class="header-section-number">7.9</span> Aufteilen des Intervalls in der Mitte</a></li>
+<li><a class="nav-link" href="#einzelne-runde"><span class="header-section-number">7.10</span> Einzelne Runde</a></li>
+<li><a class="nav-link" href="#mehrere-runden"><span class="header-section-number">7.11</span> Mehrere Runden</a></li>
+<li><a class="nav-link" href="#nochmal-spielen"><span class="header-section-number">7.12</span> Nochmal spielen</a></li>
+<li><a class="nav-link" href="#bester-punktestand"><span class="header-section-number">7.13</span> Bester Punktestand</a></li>
+<li><a class="nav-link" href="#verwenden-deiner-eigenen-bibliotheken"><span class="header-section-number">7.14</span> Verwenden deiner eigenen Bibliotheken</a></li>
+<li><a class="nav-link" href="#keep-imports-tidy"><span class="header-section-number">7.15</span> Ordnung muss sein!</a></li>
+<li><a class="nav-link" href="#videospiele-mit-video"><span class="header-section-number">7.16</span> Videospiele mit Video</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/05-guess-the-number-ai.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/05-guess-the-number-ai.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-16.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>
