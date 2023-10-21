@@ -13,7 +13,7 @@ Today we will program a game in which computer tries to guess an animal that you
 ## Game structure
 The way the game is played is very simple: On each turn computer asks you whether an animal has a certain property or if it is a specific animal. It starts knowing only about one animal, say, "dog". So, it asks you "Is the animal you are thinking of is a dog?". If it is, game is over and you can do it again. However, if it is not a dog then the computer asks "Who is it?", let say you answer "Duck" and then computer also asks you "What does duck do?" and you answer "quack". The important bit here is that computer uses this information the next time you play the game. It starts by asking "does the animal quack?", if yes, it guess "Duck", if not it falls back on the only animal it has left and guess "Dog". If it is not a dog, it asks you again "Who is it?", you say "Cat". "What does cat do?", "meow". Below you can see the decision tree that the computer can use on each round and how it adds the information it learned from it failures.
 
-![Decision tree.](images/guess-the-animal-decision-tree.png)
+![Decision tree growing over rounds.](images/guess-the-animal-decision-tree.png){width=100%}
  
 
 ## Dictionaries {#dictionaries}
@@ -66,7 +66,7 @@ Put your code into _code02.py_.
 ## Recursion
 Our trees have many nodes at different depths but when we need to act on a node (ask a relevant question), the only thing that matters is the node itself, not the tree it belongs to or where it is within this tree. E.g., look at the figure below for a full and trunkated decision trees. Once we are at the node "meow?", it makes no difference whether we arrived to it from some upper-level node or it was the top node itself, the question we ask and the decision we make is the same. Similarly, once we are at the node `"cat"`, it makes no difference to us whether we ended up where after a long exploration or it was the only node that we have.
 
-![Truncated decision tree.](images/guess-the-animal-truncated.png)
+![Truncated decision tree.](images/guess-the-animal-truncated.png){width=100%}
 
 This means that we need just one function that will act on the node and that the _same_ function will be applied to a relevant subnode for the _action_ node. I.e., the function will call itself! This is called a recursion and a classic example^[Actually, it is somewhat misleading, as you do not need recursion for factorial, a for loop will suffice, but this a nice and simple toy example, so we'll walk with the crowd on this one.] to illustrate the concept is computation of a [factorial](https://en.wikipedia.org/wiki/Factorial):
 $$!n = n \times (n - 1) \times (n - 2) \times ...\times3\times2\times1$$
@@ -89,7 +89,7 @@ Implement and test function in exercise 2.
 ## Exploring the decision tree
 Let us apply the same idea of a recursion to explore the decision tree while playing the game. For now, hardcode the decision tree shown in the figure below 
 
-![Three animals decision tree.](images/guess-the-animal-three.png)
+![Decision tree for three animals.](images/guess-the-animal-three.png){width=100%}
 
 Next, we need to convert the code from _code02.py_ that used a single node to a function. Extend it, so that if the node is an _action_ node, the function goes one level deeper by applying itself the corresponding "yes" or "no" subtree (that is determined by player's response). Call it `explore_tree`. It should have just a single parameter (the current node) and it does not need to return any value. Once implemented, call it starting with hardcoded tree and test by giving different answers. The tree is small, so you should be able to quickly try all paths. There should be positive "yay!", if at the end you agree that computer's guess about an animal was correct and no output, if you said "no".
 
@@ -226,7 +226,7 @@ Confusing? You bet! If you feel overwhelmed by this whole immutable/mutable, tup
 ## Extending the tree
 Each node that we have in a tree is a [dictionary](https://docs.python.org/3/library/stdtypes.html#dict), which is mutable and that is makes easy if a bit confusing. The good thing is, we can modify tree from inside the function. As I showed you above, you are not passing a dictionary itself to the function, you a passing a _reference_ to it, so anything you do to any dictionary within the tree will be applied to the global tree itself. The confusing bit is that we need to keep in mind that we are always with a _reference_, so simple copy won't do us any good. We have two options illustrated in the figure below. The original tree has just one node represented by <span style="color=red;">Dict #1.</span>. When we extend the tree that node must move down and become a leaf of an action node that now becomes the starting point. The can create a new action node dictionary (_Dict #2_), a new animal node for the cat (_Dict #3_) and arrange them as in option #1. However, in this case, we need to make sure that reference in `tree` variable is updated, so that it now points to _Dict #2_. Alternatively, we can keep <span style="color=red;">Dict #1.</span> as the top node but completely replace its content turning it into an action node. The original information will be copied to a new _Dict #3_. Let us try both of these approaches, starting with 
 
-![Two options for extending tree.](images/guess-the-animal-extend.png)
+![Two options for extending tree.](images/guess-the-animal-extend.png){width=100%}
 
 
 ## Extending the tree via returning new reference
@@ -274,7 +274,7 @@ print(dict1 == dict2)
 print(id(dict1), id(dict2), dict1 is dict2)
 ```
 
-Alternatively, you can create a either a shallow [copy](https://docs.python.org/3/library/copy.html#copy.copy) or [deep copy](https://docs.python.org/3/library/copy.html#copy.deepcopy) of an object using [copy](https://docs.python.org/3/library/copy.html) library. The former --- [copy](https://docs.python.org/3/library/copy.html#copy.copy) --- makes a "shallow" copy by copying the context "as is". In this case, a reference to another object is copied as is and still points to the same object. The [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) goes, well, deeper and creates copy for every copy our object references. The latter is more computationally expensive (you make copies of _everything_!) but is guaranteed to create a copy with no hidden ties to the original. So, when in doubt, go for the [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy). In our case, there is no difference as our original dictionary has just two immutable string, so both [copy](https://docs.python.org/3/library/copy.html) and [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) would do the same.
+Alternatively, you can create a either a shallow [copy](https://docs.python.org/3/library/copy.html#copy.copy) or [deep copy](https://docs.python.org/3/library/copy.html#copy.deepcopy) of an object using [copy](https://docs.python.org/3/library/copy.html) library. The former --- [copy](https://docs.python.org/3/library/copy.html#copy.copy) --- makes a "shallow" copy by copying the context "as is". In this case, a reference to another object is copied as is and still points to the same object. The [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) goes, well, deeper and creates copy for object that the original references. The latter is more computationally expensive (you make copies of _everything_!) but is guaranteed to create a copy with no hidden ties to the original. So, when in doubt, go for the [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy). In our case, there is no difference as our original dictionary has just two immutable string, so both [copy](https://docs.python.org/3/library/copy.html) and [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) would do the same.
 
 In our code, use the latter option via [copy](https://docs.python.org/3/library/copy.html) library.
 
@@ -321,11 +321,30 @@ In our program, we need to [load](https://docs.python.org/3/library/pickle.html#
 Note that we need an _initial_ tree, created even before the first run of the program. Create that tree (single animal node) and [dump](https://docs.python.org/3/library/pickle.html#pickle.dump) into the file in a separate script or a Jupyter cell.
 
 ::: {.program}
-Implement program _code07.py_.
+Implement program in _code07.py_.
 :::
 
 ## Saving tree for future use via JSON {#json}
 Pickle is a Python-specific serialization format, so you won't be able to use this tree elsewhere (you cannot give to your friend who uses R or C). Plus, it is a _binary_ (so, not human readble) and **not a secure** format (see big red warning at the top of [official documentation](https://docs.python.org/3/library/pickle.html)), so you should never trust a pickle file unless it is your own. 
 
-An alternative way are [JSON](https://en.wikipedia.org/wiki/JSON) files that are widely used in interactive Web (JSON stands for JavaScript Object Notation), are human readble (it is a text file you can open in any editor), and are supported by any other software (any language your friend uses will have a JSON library to work with your file).
+An alternative way are [JSON](https://en.wikipedia.org/wiki/JSON) files that are widely used in interactive Web (JSON stands for JavaScript Object Notation), are human readable (it is a text file you can open in any editor), and are supported by any other software (any language your friend uses will have a JSON library to work with your file).
 
+Using JSON is very similar to using pickle:
+```{python}
+import json
+
+dict1 = {"a": 1}
+print(dict1)
+
+# dumping dictionary to a file
+with open("dict1.json", "w") as json_file:
+  json.dump(dict1, json_file)
+
+# loading a dictionary from a file
+with open("dict1.json", "r") as json_file:
+  dict2 = json.load(json_file)
+print(dict2)
+```
+::: {.program}
+Implement program in _code08.py_.
+:::
