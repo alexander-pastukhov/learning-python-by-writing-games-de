@@ -186,8 +186,18 @@ Put your code into _code02.py_.
 :::
 
 ## Recursion
-Our two kinds of nodes differ in what happens next. _Animal_ nodes are easy, they are the final leaf nodes, so the tree exploration stop where. We either got it right or not. In contrast, the _action_ nodes just tell us which subtree we need to work on next, asking the node-appropriate question. The important thing here is that although we go one level deeper, nothing really changes in terms of what we are actually doing. E.g., look at the figure below for a full and trunkated decision trees. Once we are at the node "meow?", it makes no difference whether we arrived to it from some upper-level node or it was the top node itself, the question we ask and the decision we make is the same. Similarly, once we are at the node `"cat"`, it makes no difference to us whether we ended up where after a long exploration or it was the only node that we have.
+Our trees have many nodes at different depths but when we need to act on a node (ask a relevant question), the only thing that matters is the node itself, not the tree it belongs to or where it is within this tree. E.g., look at the figure below for a full and trunkated decision trees. Once we are at the node "meow?", it makes no difference whether we arrived to it from some upper-level node or it was the top node itself, the question we ask and the decision we make is the same. Similarly, once we are at the node `"cat"`, it makes no difference to us whether we ended up where after a long exploration or it was the only node that we have.
 
 ![Truncated decision tree.](images/guess-the-animal-truncated.png)
 
-This means that we need just one function that will act on the node and that the _same_ function will be applied to a relevant subtree (for the _action_ node). I.e., the function will call itself! This is called a recursion and a classic^[Actually, it is somewhat misleading, as you do not need recursion for factorial, a for loop will suffice, but this a nice and simple toy example, so we'll walk with the crowd on this one.] example to illustrate the concept is computation of a [factorial](https://en.wikipedia.org/wiki/Factorial) $!n = n \times (n - 1) \times (n - 2) \times ...\times3\times2\times1$.
+This means that we need just one function that will act on the node and that the _same_ function will be applied to a relevant subnode for the _action_ node. I.e., the function will call itself! This is called a recursion and a classic example^[Actually, it is somewhat misleading, as you do not need recursion for factorial, a for loop will suffice, but this a nice and simple toy example, so we'll walk with the crowd on this one.] to illustrate the concept is computation of a [factorial](https://en.wikipedia.org/wiki/Factorial) $!n = n \times (n - 1) \times (n - 2) \times ...\times3\times2\times1$.
+
+
+
+
+
+
+
+
+
+Our two kinds of nodes differ in what happens next. _Animal_ nodes are easy, they are the final leaf nodes, so the tree exploration stop where. We either got it right or not. In contrast, the _action_ nodes just tell us which subtree we need to work on next, asking the node-appropriate question. The important thing here is that although we go one level deeper, nothing really changes in terms of what we are actually doing.
