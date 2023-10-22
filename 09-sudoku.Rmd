@@ -159,8 +159,33 @@ print(zeros_matrix_3_by_2)
 
 ::: {.practice}
 Martix filled with 7.
-Do exercise #4.
+Do exercise #5.
 :::
 
 ## Creating random arrays of a certain shape
-NumPy has a module for generating random number --- [numpy.random](https://numpy.org/doc/stable/reference/random/index.html#module-numpy.random) --- that is conceptually similar to the [random](https://docs.python.org/3/library/random.html) but allows you to generate arrays rather than single values. For convenience, the names are kept the same. E.g., function [randint]()
+NumPy has a module for generating random number --- [numpy.random](https://numpy.org/doc/stable/reference/random/index.html#module-numpy.random) --- that is conceptually similar to the [random](https://docs.python.org/3/library/random.html) but allows you to generate arrays rather than single values. For convenience, the names are kept the same. E.g., function [random.randint](https://docs.python.org/3/library/random.html#random.randint) that generates a single random integer has its twin brother [numpy.random.randint](https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html) that accepts same parameters and, by default also generates a single value. However, you can generate the whole vector / matrix / tensor of random numbers in one go by spezifying its `size`. Confusingly, the parameter is called `size` even though it refers to the "output shape".
+
+::: {.practice}
+Generate random 4x5 matrix with normally distributed numbers with mean of 3 and standard deviation of 1. 
+Do exercise #6.
+:::
+
+## Creating arrays with sequences
+Similar to creating a range of integer values via [range](https://docs.python.org/3/library/functions.html#func-range), you can create a vector of integer values via [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html)^[The name is confusing, but apparently this is a short for "array range"], although this is equivalent to `np.array(range(...))`:
+
+```{python}
+print(np.arange(5))
+print(np.array(range(5)))
+```
+However, NumPy also has a handy function called [linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html) that allows you generate sequence of _float_ numbers. 
+
+::: {.practice}
+Generate random 4x5 matrix with normally distributed numbers with mean of 3 and standard deviation of 1. 
+Do exercise #7.
+:::
+
+## Stacking array to create a matrix
+The [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html) function will be useful for us to generate a sequence of integers from 1 to 9. However, note that in both cases you can only generate a vector but not a matrix that we need! The solution in this case is to [stack](https://numpy.org/doc/stable/reference/generated/numpy.stack.html) individual vectors.
+
+
+
