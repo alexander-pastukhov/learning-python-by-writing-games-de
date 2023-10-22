@@ -185,7 +185,42 @@ Do exercise #7.
 :::
 
 ## Stacking array to create a matrix
-The [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html) function will be useful for us to generate a sequence of integers from 1 to 9. However, note that in both cases you can only generate a vector but not a matrix that we need! The solution in this case is to [stack](https://numpy.org/doc/stable/reference/generated/numpy.stack.html) individual vectors.
+The [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html) function will be useful for us to generate a sequence of integers from 1 to 9. However, note that in both cases you can only generate a vector but not a matrix that we need! The solution in this case is to [stack](https://numpy.org/doc/stable/reference/generated/numpy.stack.html) individual vectors. When stacking, shapes of individual vectors starts to play a very important role. Unlike lists, that only have [length](https://docs.python.org/3/library/functions.html#len), all arrays including vectors have also [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html): information about each dimension.
+
+Things are easy for truly one dimensional arrays. These are arrays created from lists or via functions such as [zeros](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html) or [linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html). If you look at their [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html), you will see just one dimension.
+
+```{python}
+print(np.array([10, 20, 30]).shape)
+print(np.zeros(5).shape)
+```
+
+These vectors do not have "orientation" (more on this later), so when you combine these arrays into a matrix you can use them as rows (stacking along `axis=0`, the default, see also [vstack](https://numpy.org/doc/stable/reference/generated/numpy.vstack.html)) or as columns (stacking along `axis=1`, see also [hstack](https://numpy.org/doc/stable/reference/generated/numpy.hstack.html)). 
 
 
+```{python}
+one_d_vector = np.arange(5)
+
+# Stacking vertically: vectors are used as rows
+print(np.stack([one_d_vector, one_d_vector]))
+print(np.stack([one_d_vector, one_d_vector]).shape)
+
+# Stacking horizontally: vectors are used as columns
+print(np.stack([one_d_vector, one_d_vector], axis=1))
+print(np.stack([one_d_vector, one_d_vector], axis=1).shape)
+```
+
+
+First, they can be either column or row vectors. A column vector is "vertical" relative to a 2D matrix, i.e., it correspond to a single column with values  distributed across the rows. Conversely, a row vector is "horizontal" and corresponds to a row of a matrix with its values going along columns. You can convert one to the another via [transpose](https://numpy.org/doc/stable/reference/generated/numpy.transpose.html) function.
+The difference between column and row vectors is extremely important role for linear algebra but in our case it determines the axis along which we can stack vectors to create a matrix. If vectors are column vectors, we need to stack them horizontaly, whereas for row vectors --- vertically.
+
+
+
+If you specify a single 
+```{python}
+np.array([1, 2, 3]).shape
+
+column_vector = np.arange(5)
+np.stack([column_vector, column_vector], axis=0)
+
+```
 
