@@ -184,7 +184,7 @@ Generate random 4x5 matrix with normally distributed numbers with mean of 3 and 
 Do exercise #7.
 :::
 
-## Stacking array to create a matrix
+## Stacking array to create a matrix {#stack}
 The [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html) function will be useful for us to generate a sequence of integers from 1 to 9. However, note that in both cases you can only generate a vector but not a matrix that we need! The solution in this case is to [stack](https://numpy.org/doc/stable/reference/generated/numpy.stack.html) individual vectors. When stacking, shapes of individual vectors starts to play a very important role. Unlike lists, that only have [length](https://docs.python.org/3/library/functions.html#len), all arrays including vectors have also [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html): information about each dimension.
 
 Things are easy for truly one dimensional arrays. These are arrays created from lists or via functions such as [zeros](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html) or [linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html). If you look at their [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html), you will see just one dimension.
@@ -194,7 +194,7 @@ print(np.array([10, 20, 30]).shape)
 print(np.zeros(5).shape)
 ```
 
-These vectors do not have "orientation" (more on this later), so when you combine these arrays into a matrix you can use them as rows (stacking along `axis=0`, the default, see also [vstack](https://numpy.org/doc/stable/reference/generated/numpy.vstack.html)) or as columns (stacking along `axis=1`, see also [hstack](https://numpy.org/doc/stable/reference/generated/numpy.hstack.html)). 
+These vectors do not have "orientation" (if you know linear algebra you would expect either column or rows vectors), so when you combine these arrays into a matrix you can use them as rows (stacking along `axis=0`, the default, see also [vstack](https://numpy.org/doc/stable/reference/generated/numpy.vstack.html)) or as columns (stacking along `axis=1`, see also [hstack](https://numpy.org/doc/stable/reference/generated/numpy.hstack.html)). 
 
 
 ```{python}
@@ -209,18 +209,76 @@ print(np.stack([one_d_vector, one_d_vector], axis=1))
 print(np.stack([one_d_vector, one_d_vector], axis=1).shape)
 ```
 
+::: {.practice}
+Generate single Sudoku ordered row and stack it horizontally and vertically. 
+Do exercise #8.
+:::
 
-First, they can be either column or row vectors. A column vector is "vertical" relative to a 2D matrix, i.e., it correspond to a single column with values  distributed across the rows. Conversely, a row vector is "horizontal" and corresponds to a row of a matrix with its values going along columns. You can convert one to the another via [transpose](https://numpy.org/doc/stable/reference/generated/numpy.transpose.html) function.
-The difference between column and row vectors is extremely important role for linear algebra but in our case it determines the axis along which we can stack vectors to create a matrix. If vectors are column vectors, we need to stack them horizontaly, whereas for row vectors --- vertically.
+## Repeating and tiling
+In the exercise above, you stacked nine arrays but they were all identical. NumPy provides a solution for such repeated values in [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) and [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) functions. They both repeat values requested number of times but there are couple of important differences. First, [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) repeats each value N times before going to the next value, whereas [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) repeats N times the entire sequence in order.
 
-
-
-If you specify a single 
 ```{python}
-np.array([1, 2, 3]).shape
-
-column_vector = np.arange(5)
-np.stack([column_vector, column_vector], axis=0)
-
+print(np.repeat(np.arange(5), 2))
+print(np.tile(np.arange(5), 2))
 ```
+Second, you can decide on the direction the values are repeated similar to how it is determined during [stacking](#stack). However, the specifics are different for the two functions. For [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) you specify `axis` as in [stacking](#stack). For [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) you specify repetitions (`reps` parameter) and you can specify repetitions _per axis_. 
+
+```{python}
+# Stack repeated array by row
+np.repeat(one_d_vector, 2, axis=0)
+
+# Tile array twice by row, thrice by column
+np.tile(one_d_vector, (2, 3))
+```
+
+::: {.practice}
+Generate single Sudoku via repeat and tile. 
+Do exercise #9.
+:::
+
+```{python}
+a_matrix = np.tile(one_d_vector, (2, 3))
+a_matrix
+```
+
+## Geneating Sudoku via brute force: order and chaos
+Our first take on generating Sudoku will be conceptually simple but very inefficient: We will create an ordered matrix (by row or by column), shuffle it (by row or by column), and then check if, accidentally, we ended up with a valid Sudoku. If not, rinse and repeat until we have one.
+
+You already know how to create an ordered matrix that has 1..9 rows or columns. To randomize it, use [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) that shuffles an array or a _part of_ an array _in place_. The latter part means that the function does not return any value and the array you supplied (by reference, remember [mutable objects and functions](#mutable-objects)?).
+
+```{python}
+# shuffle the entire array
+an_array = np.arange(5)
+np.random.shuffle(an_array)
+print(an_array)
+
+# shuffle part of an array
+an_array = np.arange(5)
+np.random.shuffle(an_array[:3])
+print(an_array)
+```
+
+Write the code that creates an ordered matrix by row (so, each row goes from 1 till 9 but each column has a single number in it) and write the code that shuffles just one row (put its index in `irow` variable). Change `irow` value to test that your code works.
+
+::: {.program}
+Write code for creating matrix<br/>
+and shuffling one row in exercise #10.
+:::
+
+Once a single row code works, modify that it shuffle all rows but one at a time (you can shuffle the entire matrix but then even rows will most likely be invalid). Once the shuffling code works, turn it into a function `shuffle_by_row`. Just like [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) it does not need to return anything, as the shuffling occurs in place. Write the code that generates an ordered-by-row matrix, shuffle it by row and prints it out.
+
+::: {.program}
+Put `shuffle_by_row` into _utils.py_<br/>
+Write program in _code01.py_
+:::
+
+We are here to learn, so to solidify your skills program the same routine by both stacking and shuffling the matrix _by column_ (create a separate function `shuffle_by_column` for this).
+
+::: {.program}
+Put `shuffle_by_column` into _utils.py_<br/>
+Write program in _code02.py_
+:::
+
+## Is this row even valid?
+
 
