@@ -155,26 +155,34 @@ The wise people who created Python were acutely aware of the problem that the _v
 i_am_a_tuple = (1, 2, 3)
 ```
 You can loop over it, e.g.,
-```{python}
+
+```python
 i_am_a_tuple = (1, 2, 3)
 for number in i_am_a_tuple:
     print(number)
+#> 1
+#> 2
+#> 3
 ```
 
 but, as I said, appending will throw a mistake
-```{python error = TRUE}
+
+```python
 i_am_a_tuple = (1, 2, 3)
 
 # throws AttributeError: 'tuple' object has no attribute 'append'
 i_am_a_tuple.append(4)
+#> 'tuple' object has no attribute 'append'
 ```
 
 Same goes for trying to change it
-```{python error=TRUE}
+
+```python
 i_am_a_tuple = (1, 2, 3)
 
 # throws TypeError: 'tuple' object does not support item assignment
 i_am_a_tuple[1] = 1 
+#> 'tuple' object does not support item assignment
 ```
 
 This means that when you need to pass a list of values to a function and you want them to have no link to the original variable, you should instead pass _a tuple of values_ to the function. The function still has a list of values but the link to the original list object is now broken. You can turn a list into a tuple using `tuple()`. Keeping in mind that `tuple()` creates a frozen copy of the list, what will happen below?
@@ -205,12 +213,14 @@ Do exercise #8.
 Here, `y = list(x)` created a new list (which was a carbon copy of the one with the "x" sticker on it) and the "y" sticker was put on that new list, while the "x" remained hanging on the original.
 
 If you feel your head spinning then, unfortunately, I have to tell that it gets even worse. The following paragraph covers fairly advanced scenario but I want you to know about it, as things work extremely counterintuitively and I personally have been caught by this issue a few times and it always took me _forever_ to figure out the problem. Thus, I want you to be at least aware of it. What if you have a tuple (immutable!) that contains a list (mutable) inside? As I told you before, you cannot modify the item itself but that item is merely a reference to list (a sticker on a _mutable_ object!), so even though tuple is immutable, you can still fiddle with the list itself. Moreover, making a copy of a tuple will merely make a copy of a reference that still points to the same list! So, you could be thinking that since it is all tuples everything is immutatable and well-behaving and be caught out by that^[If this makes you want to scream, tell me and will do it together.]. Here is an example of such a mess:
-```{python error = TRUE}
+
+```python
 tuple_1 = tuple([1, ["A", "B"], 2])
 tuple_2 = tuple_1
 
 # This (correctly) does not work
 tuple_1[0] = ["C", "D"]
+#> 'tuple' object does not support item assignment
 
 # But we can change first element of the list to "C" and second to "D"
 # Reference to the list is frozen, but the list itself is mutable!
@@ -218,7 +228,9 @@ tuple_1[1][0] = "C"
 tuple_2[1][1] = "D"
 
 print(tuple_1)
+#> (1, ['C', 'D'], 2)
 print(tuple_2)
+#> (1, ['C', 'D'], 2)
 ```
 
 Confusing? You bet! If you feel overwhelmed by this whole immutable/mutable, tuple/list, copy/reference confusion, you are just being a normal human being. I understand the (computational) reasons for doing things this way, I am aware of this difference and how useful this can be but it still catches me by surprise from time to time! So, the word of advice, be careful and double-check your code using debugger whenever you are assigning list or dictionaries, passing them to functions, making copies, having lists inside lists, etc. Be aware that things may not work as you think they should!
@@ -250,28 +262,34 @@ The second option (see illustration above) is simpler (we do not need to return 
 
 Important catch, remember, `tree` is a _reference_, so writing `no_animal = tree` to store original information in a new node will do you no good, as it will mean that both `tree` and `no_animal` will refer to the same dictionary. Do `no_animal = tree` and then print out the [id](https://docs.python.org/3/library/functions.html#id) for both (the same) and write `tree is no_animal` (`is` checks whether two objects are identical, i.e., same objects, so it will  be `True`). Oddly enough, once you write `tree["no"] = no_animal` after that it will reference _itself_ (`tree is tree["no"]` will be `True`)! 
 
-```{python}
+
+```python
 # assignment copies reference but object is the same
 dict1 = {"a": 1}
 dict2 = dict1
 print(id(dict1), id(dict2), dict1 is dict2)
+#> 2159891769600 2159891769600 True
 
 # object references itself!
 dict1["a"] = dict1
 print(id(dict1), id(dict1["a"]), dict1 is dict1["a"])
+#> 2159891769600 2159891769600 True
 ```
 
 There are two ways to solve this problem. You can create a new dictionary assigning _field_ values one by one. Since field values are immutable strings, this will create a _different_ object with same _content_. 
 
-```{python}
+
+```python
 dict1 = {"a": 1}
 dict2 = {"a" : dict1["a"]}
 
 # same content!
 print(dict1 == dict2)
+#> True
 
 # different objects
 print(id(dict1), id(dict2), dict1 is dict2)
+#> 2159891936256 2159891936960 False
 ```
 
 Alternatively, you can create a either a shallow [copy](https://docs.python.org/3/library/copy.html#copy.copy) or [deep copy](https://docs.python.org/3/library/copy.html#copy.deepcopy) of an object using [copy](https://docs.python.org/3/library/copy.html) library. The former --- [copy](https://docs.python.org/3/library/copy.html#copy.copy) --- makes a "shallow" copy by copying the context "as is". In this case, a reference to another object is copied as is and still points to the same object. The [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) goes, well, deeper and creates copy for object that the original references. The latter is more computationally expensive (you make copies of _everything_!) but is guaranteed to create a copy with no hidden ties to the original. So, when in doubt, go for the [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy). In our case, there is no difference as our original dictionary has just two immutable string, so both [copy](https://docs.python.org/3/library/copy.html) and [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) would do the same.
@@ -300,11 +318,13 @@ Update loop in code _code06.py_.
 ## Saving tree for future use via pickle {#pickle}
 Our game works, our decision tree grows with every round but the problem is that we start from scratch every time with start the program. This is wasteful and no fun, so we should save our tree at the end of each game and load it again whenever the program starts again. One option is to use [pickle](https://docs.python.org/3/library/pickle.html) library that allows you to [dump](https://docs.python.org/3/library/pickle.html#pickle.dump) and [load](https://docs.python.org/3/library/pickle.html#pickle.load) Python objects. Here's how it works (use the unfamiliar `with open("dict1.p", "wb") as pickle_file:` as):
 
-```{python}
+
+```python
 import pickle
 
 dict1 = {"a": 1}
 print(dict1)
+#> {'a': 1}
 
 # dumping dictionary to a file
 with open("dict1.p", "wb") as pickle_file:
@@ -314,6 +334,7 @@ with open("dict1.p", "wb") as pickle_file:
 with open("dict1.p", "rb") as pickle_file:
   dict2 = pickle.load(pickle_file)
 print(dict2)
+#> {'a': 1}
 ```
 
 In our program, we need to [load](https://docs.python.org/3/library/pickle.html#pickle.load) the tree from a file (I called it `animal_tree.p`) at the beginning and [dump](https://docs.python.org/3/library/pickle.html#pickle.dump) either at the end (once the player does not want to play anymore) or after each round (this means that the latest version of the tree would be saved _even_ if the player exits via emergency interrupt).
@@ -330,11 +351,13 @@ Pickle is a Python-specific serialization format, so you won't be able to use th
 An alternative way are [JSON](https://en.wikipedia.org/wiki/JSON) files that are widely used in interactive Web (JSON stands for JavaScript Object Notation), are human readable (it is a text file you can open in any editor), and are supported by any other software (any language your friend uses will have a JSON library to work with your file).
 
 Using JSON is very similar to using pickle:
-```{python}
+
+```python
 import json
 
 dict1 = {"a": 1}
 print(dict1)
+#> {'a': 1}
 
 # dumping dictionary to a file
 with open("dict1.json", "w") as json_file:
@@ -344,6 +367,7 @@ with open("dict1.json", "w") as json_file:
 with open("dict1.json", "r") as json_file:
   dict2 = json.load(json_file)
 print(dict2)
+#> {'a': 1}
 ```
 ::: {.program}
 Implement program in _code08.py_.

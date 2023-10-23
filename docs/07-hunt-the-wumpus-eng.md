@@ -9,7 +9,8 @@ As before, we will start with a very basic program and will build it step-by-ste
 
 ## A system of caves
 In our game, the player will wander through a systems of caves with each cave being connected to three other caves. The cave layout will be a _CONSTANT_, so we will define at the beginning of the program as follows.
-```{python eval = FALSE}
+
+```python
 CONNECTED_CAVES = [[1, 4, 5], [2, 0, 7], [3, 1, 9], [4, 2, 11], 
                    [0, 3, 13], [6, 14, 0], [7, 5, 15], [8, 6, 1], 
                    [9, 7, 16], [10, 8, 2], [11, 9, 17], [12, 10, 3], 
@@ -22,7 +23,8 @@ Let us decipher this. You have a list of twenty elements (caves). Inside each el
 To allow the player to wander, we need to know where they are to begin with. Let us define a new variable called, simply, `player_location` and assign a random integer with a _valid_ cave index. Think about the lowest valid index you can have in Python (this you need to hardcode). To compute the highest possible valid index, you need to know the total number of the caves, i.e., length --- [len()](https://docs.python.org/3/library/functions.html#len) --- of the list. Remember, the indexes in Python are zero-based, so think how to compute highest valid index from the length! Use these two indexes and put the player into a random cave. For this, you can use [randint](https://docs.python.org/3/library/random.html#random.randint) function. Look at previous chapters, if you forgot how to use it. 
 
 Our player needs to know where they can go, so on each turn we will need to print out the information about which cave the player is in and about the connecting cave (use [string formatting](#string-formatting) to make this look nice). Let this be our first code snippet for the game. The code should look like this
-```{python eval=FALSE}
+
+```python
 # import randint
 
 # define CONNECTED_CAVES (simply copy-paste the definition)
@@ -40,7 +42,8 @@ Put your code into _code01.py_.
 ## Wandering around
 Now that the player can "see" where they are, let them wander! Use `input()` function to ask for the index of the cave the player wants to go to and "move" the player to that cave (which variable do you need to modify?). Remember that `input()` returns a string, so you will need to explicitly convert it to an integer (see [Guess-the-Number](#guess-the-number-single-round) game, if you forgot how to do it). For now, enter only valid numbers, as we will add checks later. To make wandering continuous, put it inside the [while loop](#while-loop), so that player wanders until they get to the cave #5 (index `4`!). We will have more sensible game-over conditions later on but this will allow you to exit the game without interrupting it from outside. The code should look like this (remember to watch your indentations!).
 
-```{python eval=FALSE}
+
+```python
 # import randint function
 
 # define CONNECTED_CAVES (simply copy-paste the definition)
@@ -61,21 +64,27 @@ Put your code into _code02.py_.
 ## Checking whether a value is _in_ the list[#in-collection]
 Right now we trust the player (well, you) to enter the correct index for the cave. Thus, the program will move a player to a new cave even if you enter an index of the cave that is not connected to the current one. Even worse, it will try to move the player to an undefined cave, if you enter an index larger than 19. To check whether an entered index matches one of the connected cave, you need to use [<value> in <list>](https://docs.python.org/3/tutorial/datastructures.html#more-on-conditions) conditional statement. The idea is straightforward, if the value is in the list, the statement is `True`, if not, it is `False`. 
 
-```{python}
+
+```python
 x = [1, 2, 3]
 print(1 in x)
+#> True
 print(4 in x)
+#> False
 ```
 
 Note that you can check _one_ value/object at a time. Because a list is also a single object, you will be checking whether it is an element of the other list, not whether all or some of it elements are in it.
 
-```{python}
+
+```python
 x = [1, 2, [3, 4]]
 # This is False because x has no element [1, 2], only 1, and 2 (separately)
 print([1, 2] in x)
+#> False
 
 # This is True because x has [3, 4] element
 print([3, 4] in x)
+#> True
 ```
 
 ::: {.practice}
@@ -123,14 +132,18 @@ Update your code in _code05.py_.
 
 So far, we had only the player to keep the track of and we were doing it by storing their location in the `player_location` variable. However, as we will add more game objects (bottomless pits, bats, the Wumpus), we need to keep the track of who-is-where, so that we don't place them in an already occupied cave. We will use this as an opportunity to learn about [sets](https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset): an _unordered_ collection of _unique_ elements. These are an implementation of [mathematical sets](https://en.wikipedia.org/wiki/Set_(mathematics)) and have properties useful for our required bookkeeping. You create a set via [set()](https://docs.python.org/3/library/stdtypes.html#set) function and it can be either an empty set (to which you can `.add()`) or it can convert a list (or a tuple) into a set but it will drop all duplicates.
 
-```{python}
+
+```python
 # starting from an empty set
 a_set = set()
 a_set.add(1)
 print(a_set)
+#> {1}
 a_set.intersection()
+#> {1}
 # converting a list to a set
 print(set([1, 2, 2, 3]))
+#> {1, 2, 3}
 ```
 
 If you have two sets, you can perform various operations to find [union](https://docs.python.org/3/library/stdtypes.html#frozenset.union), [intersection](https://docs.python.org/3/library/stdtypes.html#frozenset.intersection), or [difference](https://docs.python.org/3/library/stdtypes.html#frozenset.difference) between two sets (see _Basic operations_ in the [wikipedia](https://en.wikipedia.org/wiki/Set_(mathematics)).
@@ -140,9 +153,11 @@ Do exercise #3.
 :::
 
 Note that the set is _unordered_, so you cannot access its individual elements. However, you can check whether a value is [in](#in-collection) the set the same way you do with lists
-```{python}
+
+```python
 a_set = set([1, 2, 3, 3])
 3 in a_set
+#> True
 ```
 
 

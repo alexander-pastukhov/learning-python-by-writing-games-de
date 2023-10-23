@@ -40,21 +40,27 @@ Do exercise #4.
 :::
 
 Slicing can be extended by specifying a `step` via `start:stop:step` notation. `step` can be negative, allowing you to build indexes in the reverse order:
-```{python}
+
+```python
 my_pretty_numbers = [1, 2, 3, 4, 5, 6, 7]
 my_pretty_numbers[4:0:-1]
+#> [5, 4, 3, 2]
 ```
 
 However, you must pay attention to the sign of the step. If it goes in the wrong direction then `stop` cannot be reached, Python will return an empty list.
-```{python}
+
+```python
 my_pretty_numbers = [1, 2, 3, 4, 5, 6, 7]
 my_pretty_numbers[4:0:1]
+#> []
 ```
 
 Steps can be combined with omitted and negative indexes. To get every _odd_ element of the list, you write `my_pretty_numbers[::2]`:  
-```{python}
+
+```python
 my_pretty_numbers = [1, 2, 3, 4, 5, 6, 7]
 my_pretty_numbers[::2]
+#> [1, 3, 5, 7]
 ```
 
 ::: {.practice}
@@ -68,26 +74,34 @@ Do exercise #6.
 :::
 
 In Python lists are dynamic, so you can always add or remove elements to it, see [the list of methods](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists). You can add a new item to the of the end of the list via `.append(<new_value>)` method
-```{python}
+
+```python
 my_pretty_numbers = [1, 2, 3, 4, 5, 6, 7]
 my_pretty_numbers.append(10)
 my_pretty_numbers
+#> [1, 2, 3, 4, 5, 6, 7, 10]
 ```
 
 Or, you can `insert(<index>, <new_value>)` _before_ an element with that index. Unfortunately, this means that you can use an arbitrary large index and it will insert a new value as a _last_ element without generating an error.
-```{python}
+
+```python
 my_pretty_numbers = [1, 2, 3, 4, 5, 6, 7]
 my_pretty_numbers.insert(2, 10)
 my_pretty_numbers.insert(500, 20)
 my_pretty_numbers
+#> [1, 2, 10, 3, 4, 5, 6, 7, 20]
 ```
 
 You can remove an item using its index via `pop(<index>)`, note that the item is _returned_ as well. If you omit the index, `pop()` removes the _last_ element of the list. Here, you can only use valid indexes.
-```{python}
+
+```python
 my_pretty_numbers = [1, 2, 3, 4, 5, 6, 7]
 my_pretty_numbers.pop(-1)
+#> 7
 my_pretty_numbers.pop(3)
+#> 4
 my_pretty_numbers
+#> [1, 2, 3, 5, 6]
 ```
 
 ::: {.practice}
@@ -113,13 +127,23 @@ Put your code into _code02.py_.
 ## For loop{#for-loop}
 In the code above, we needed to iterate over three moles (circles) that we had in a list. Python has a tool just for that: a
 [for loop](https://docs.python.org/3/tutorial/controlflow.html?highlight=loop#for-statements) that iterates over the items in any sequence (our list is a sequence!). Here is an example:
-```{python}
+
+```python
 numbers = [2, 4, 42]
 for a_number in numbers:
     print("Value of a_number variable on this iteration is %d"%(a_number))
     a_number = a_number + 3
     print("  Now we incremented it by 3: %d"%(a_number))
     print("  Now we use in a formula a_number / 10: %g"%(a_number / 10))
+#> Value of a_number variable on this iteration is 2
+#>   Now we incremented it by 3: 5
+#>   Now we use in a formula a_number / 10: 0.5
+#> Value of a_number variable on this iteration is 4
+#>   Now we incremented it by 3: 7
+#>   Now we use in a formula a_number / 10: 0.7
+#> Value of a_number variable on this iteration is 42
+#>   Now we incremented it by 3: 45
+#>   Now we use in a formula a_number / 10: 4.5
 ```
 
 Here, the code inside the `for` loop is repeated three times because there are three items in the list. On each iteration, next value from the list gets assigned to a temporary variable `a_number` (see the output). Once the value is assigned to a variable, you can use it just like any variable. You can print it out (first `print`), you can modify it (second line within  the loop), use its value for when calling other functions, etc. To better appreciate this, copy-paste this code into a temporary file (call it `test01.py`), put a [breakpoint](#debugging) onto the first `print` statement and then use **F10** to step through the loop and see how value of `a_number` variable changes on each iteration and then it gets modified in the second line within the loop.
@@ -139,15 +163,22 @@ Put your code into _code03.py_.
 
 ## range() function: Repeating code N times{#range}
 Sometimes, you might need to repeat the code several times. For example, imagine that you have 40 trials in an experiment. Thus, you need to repeat a trial-related code 40 times. You can, of course, build a list 40 items long by hand and iterate over it but Python has a handy [range()](https://docs.python.org/3/tutorial/controlflow.html?highlight=loop#the-range-function) function for that. `range(N)` yields N integers from 0 to N-1 (same up-to-but-not-including rule as for slicing) that you can iterate over in a for loop. 
-```{python}
+
+```python
 for x in range(3):
     print("Value of x is %d"%(x))
+#> Value of x is 0
+#> Value of x is 1
+#> Value of x is 2
 ```
 
 You can modify [range()](https://docs.python.org/3/library/stdtypes.html#range) function behavior by providing a starting value and a step size. But in its simplest form `range(N)` is a handy tool to repeat the code that many times. Note that while you always need to have a temporary variable in a `for` loop, sometimes you may not use it at all. In cases like this, you should use `_` (underscore symbol) as a variable name to indicate the lack of use.
-```{python}
+
+```python
 for _ in range(2):
     print("I will be repeated twice!")
+#> I will be repeated twice!
+#> I will be repeated twice!
 ```
 
 Alternatively, you can use `range()` to loop through indexes of a list (remember, you can always access an individual list item via `var[index]`). Do exactly that^[Note, this is not a _better_ way but an _alternative_ way to do this.]! Modify your code to use [range()]((https://docs.python.org/3/library/stdtypes.html#range)) function in the for loop (how can you compute the number of iterations you need from the length of the list?), use temporary variable as an _index_ for the list to draw each item^[Style hint: if a variable is an _index_ of something, I tend to call it `isomething`. E.g., if it holds an index to a current mole, I would call it `imole`. This is _my_ way of doing it. Others use `i_` prefix or an `_i` suffix. But either way, it is a useful naming convention. Remember, the easier it is to understand the meaning of a variable from its name, the easier it is for you to read and modify the code.]. When in doubt, put a breakpoint inside (or just before) the loop and step through your code to understand what values a temporary loop variable gets and how it is used.
@@ -161,10 +192,14 @@ Put your code into _code04.py_.
 
 ## Looping over both index and item via  list enumeration  {#enumerate}
 It happens fairly often that you need to loop over both indexes and items of the list, so Python has a handy function for this: [enumerate()](https://docs.python.org/3/library/functions.html#enumerate)! If, instead of iterating over a list, you iterate over [enumerate(<list>)](https://docs.python.org/3/library/functions.html#enumerate), you get a tuple with both `(index, value)`. Here is an example:
-```{python}
+
+```python
 letters = ['a', 'b', 'c']
 for index, letter in enumerate(letters):
     print('%d: %s'%(index, letter))
+#> 0: a
+#> 1: b
+#> 2: c
 ```
 
 Use [enumerate](https://docs.python.org/3/library/functions.html#enumerate) to loop over both index and item and print out one slot at a time. Look at the `start` parameter of the function to make sure your index now starts at 1.

@@ -8,7 +8,8 @@ Instead, we will use it as an opportunity to learn about [NumPy](https://numpy.o
 
 ## Importing NumPy
 The NumPy is not a core Python library, so you may need to [install it](https://numpy.org/install/). As with all libraries, you must import NumPy before using it in your script. However, this is one of the rare cases where renaming the library during import is a standard and recommended way:
-```{python eval = FALSE}
+
+```python
 import numpy as np
 ```
 
@@ -16,33 +17,41 @@ import numpy as np
 The key data structure that NumPy introduces is a NumPy array that can have any number of dimensions. A one dimensional array, typically called "a vector", is most directly related to a Python [list](#lists), but with both some limitations and some extra functionality. Unlike Python lists that can hold anything, including other lists, all elements of an array must be of the same [numeric type](https://numpy.org/doc/stable/user/basics.types.html) (but [character arrays](https://numpy.org/doc/stable/reference/generated/numpy.chararray.html) can be created as well). However, the advantage of this restriction is that since all elements are of the same type, it is guaranteed that you can apply the same function to all the elements. Note that there is no such guarantee for potentially heterogenous Python lists, which is why you need to perform operation on each element separately. 
 
 You can create a Numpy array from a list via [array](https://numpy.org/doc/stable/reference/generated/numpy.array.html) function:
-```{python}
+
+```python
 import numpy as np
 
 # A Python list of numbers
 a_list = [1, 5, 7]
 print(a_list)
+#> [1, 5, 7]
 
 # A NumPy array created from the list
 an_array = np.array(a_list)
 print(an_array)
+#> [1 5 7]
 ```
 
 Note that because of "all values must be of the same type restriction", if the original Python list contained data of various types, all values will be converted to the most flexible one. E.g., a mix of logical values and integers will give you integers, a mix of integers and floats will give you all floats, a mix of anything with strings will give you strings, etc.
 
-```{python}
+
+```python
 # logical and integers -> all integers
 print(np.array([True, 2, 3, False]))
+#> [1 2 3 0]
 
 # integers and floats -> all floats
 print(np.array([1.0, 2, 3, 0.0]))
+#> [1. 2. 3. 0.]
 
 # logica, integers, floats, and strings -> all strings
 print(np.array([False, 1, 2.0, "a"]))
+#> ['False' '1' '2.0' 'a']
 ```
 
 However, note that the type of an array is fixed at the creation type and if you put in a different type value, it will be either converted to that type or, if conversion is tricky, NumPy will throw an error.
-```{python error = TRUE}
+
+```python
 # array of boolean
 array_of_bool = np.array([True, False, True])
 
@@ -50,10 +59,12 @@ array_of_bool = np.array([True, False, True])
 # it is True because only 0.0 is False
 array_of_bool[1] = 2.0
 print(array_of_bool)
+#> [ True  True  True]
 
 # an arbitrary string value that cannot be converted automatically to an integer
 array_of_int = np.array([1, 2, 3])
 array_of_int[1] = "A text"
+#> invalid literal for int() with base 10: 'A text'
 ```
 
 ::: {.practice}
@@ -61,52 +72,69 @@ Do exercise #1.
 :::
 
 In general, what you can can do with a list, you can do with a NumPy 1D array. For example, slicing works the same way, you can loop over elements of an array the same way, etc.
-```{python}
+
+```python
 a_list = [1, 5, 7]
 an_array = np.array(a_list)
 
 # slicing
 print(a_list[:2])
+#> [1, 5]
 print(an_array[1:])
+#> [5 7]
 
 # for loop
 for value in an_array:
   print(value)
+#> 1
+#> 5
+#> 7
 ```
 
 However, certain functionality is implemented differently, as the [append](https://numpy.org/doc/stable/reference/generated/numpy.append.html#numpy-append) in the example below. The other functionality, such as a [pop](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists), is missing but can be emulated through slicing.
 
-```{python}
+
+```python
 # appending values
 an_array = np.append(an_array, [4])
 print(an_array)
+#> [1 5 7 4]
 ```
 
 The most important practical difference between lists and numpy arrays is that because the latter are homogenous, the operations on them are vectorized. This means that you apply a function to the entire array in one go, making it both easier to use and faster, as most operations on arrays are heavily optimized. Here is an example of multiplying and then adding the same value to all every array element, something that requires a for loop for a normal list
-```{python}
+
+```python
 a_list = [1, 2, 3]
 an_array = np.array(a_list)
 2 * an_array + 1
+#> array([3, 5, 7])
 ```
 
 You can also perform elementwise operations on two (or more) arrays at the same time. E.g., here is an example of elementwise addition for two arrays
-```{python}
+
+```python
 array1 = np.array([1, 2, 4])
 array2 = np.array([-1, -3, 5])
 array1 + array2
+#> array([ 0, -1,  9])
 ```
 Note that it works only if array [shapes](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) are the same. In case of the 1D arrays (a.k.a., vectors), it means that their length must be the same. 
-```{python error = TRUE} 
+
+```python
 array1 = np.array([1, 2, 4])
 array2 = np.array([-1, -3, 5, 7])
 array1 + array2
+#> operands could not be broadcast together with shapes (3,)
+#> (4,)
 ```
 
 At the same time, you can always use vectors with a single element, which are called "scalars" and this single value is used for every element in the other vector.
-```{python error = TRUE} 
+
+```python
 a_vector = np.array([1, 2, -4])
 a_scalar = np.array([-1])
 a_vector * a_scalar
+#> array([-1, -2,  4])
 ```
 
 ::: {.practice}
@@ -125,7 +153,8 @@ The real power of NumPy is unleashed once your array have two or more dimensions
 
 As with vectors (1D arrays) versus Python lists, the advantage comes from restrictions. Matrices are rectangular, i.e., matrices are composed of multiple rows but each row has the same number of elements. In contrast, you _can_ create a rectangular matrix as list of lists (again, our `CONNECTED_CAVES` was $20\times3$ rectangular matrix) but this is not guaranteed. On top of that, homogenity of the matrix (all values must of the same type) means you can extract an rectangular part of the matrix and it is guaranteed to be another matrix of the same type. And slicing makes working with 2D arrays much easier. E.g., here is the code to extract a column from a list of lists versus NumPy matrix.
 
-```{python}
+
+```python
 matrix_as_list = [[1, 2, 3],
                   [4, 5, 6],
                   [7, 8, 9]]
@@ -138,9 +167,11 @@ column_as_list = []
 for row in matrix_as_list:
   column_as_list.append(row[icolumn])
 print(column_as_list)
+#> [2, 5, 8]
 
 # extracting column from a matrix
 print(matrix_as_array[:, 1])
+#> [2 5 8]
 ```
 
 Extracting rows, columns, and square block out of a matrix will be key to writing the code for Sudoku, so lets practice!
@@ -152,9 +183,13 @@ Do exercise #4.
 ## Creating arrays of a certain shape
 There are different ways to create NumPy arrays. Above, we used lists or lists of lists to create them. However, you need create an array of a certain [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) filled with [zeros](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html) or [ones](https://numpy.org/doc/stable/reference/generated/numpy.ones.html). The key parameter in these functions is the _shape_ of the array: a list with its dimensions. For a 2D array this means `(<number of rows>, <number of columns>).
 
-```{python}
+
+```python
 zeros_matrix_3_by_2 = np.zeros((3, 2))
 print(zeros_matrix_3_by_2)
+#> [[0. 0.]
+#>  [0. 0.]
+#>  [0. 0.]]
 ```
 
 ::: {.practice}
@@ -173,9 +208,12 @@ Do exercise #6.
 ## Creating arrays with sequences
 Similar to creating a range of integer values via [range](https://docs.python.org/3/library/functions.html#func-range), you can create a vector of integer values via [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html)^[The name is confusing, but apparently this is a short for "array range"], although this is equivalent to `np.array(range(...))`:
 
-```{python}
+
+```python
 print(np.arange(5))
+#> [0 1 2 3 4]
 print(np.array(range(5)))
+#> [0 1 2 3 4]
 ```
 However, NumPy also has a handy function called [linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html) that allows you generate sequence of _float_ numbers. 
 
@@ -189,24 +227,37 @@ The [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html)
 
 Things are easy for truly one dimensional arrays. These are arrays created from lists or via functions such as [zeros](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html) or [linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html). If you look at their [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html), you will see just one dimension.
 
-```{python}
+
+```python
 print(np.array([10, 20, 30]).shape)
+#> (3,)
 print(np.zeros(5).shape)
+#> (5,)
 ```
 
 These vectors do not have "orientation" (more on this later), so when you combine these arrays into a matrix you can use them as rows (stacking along `axis=0`, the default, see also [vstack](https://numpy.org/doc/stable/reference/generated/numpy.vstack.html)) or as columns (stacking along `axis=1`, see also [hstack](https://numpy.org/doc/stable/reference/generated/numpy.hstack.html)). 
 
 
-```{python}
+
+```python
 one_d_vector = np.arange(5)
 
 # Stacking vertically: vectors are used as rows
 print(np.stack([one_d_vector, one_d_vector]))
+#> [[0 1 2 3 4]
+#>  [0 1 2 3 4]]
 print(np.stack([one_d_vector, one_d_vector]).shape)
+#> (2, 5)
 
 # Stacking horizontally: vectors are used as columns
 print(np.stack([one_d_vector, one_d_vector], axis=1))
+#> [[0 0]
+#>  [1 1]
+#>  [2 2]
+#>  [3 3]
+#>  [4 4]]
 print(np.stack([one_d_vector, one_d_vector], axis=1).shape)
+#> (5, 2)
 ```
 
 
@@ -216,11 +267,14 @@ The difference between column and row vectors is extremely important role for li
 
 
 If you specify a single 
-```{python}
+
+```python
 np.array([1, 2, 3]).shape
+#> (3,)
 
 column_vector = np.arange(5)
 np.stack([column_vector, column_vector], axis=0)
-
+#> array([[0, 1, 2, 3, 4],
+#>        [0, 1, 2, 3, 4]])
 ```
 
