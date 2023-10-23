@@ -17,7 +17,7 @@ CONNECTED_CAVES = [[1, 4, 5], [2, 0, 7], [3, 1, 9], [4, 2, 11],
                    [17, 15, 8], [18, 16, 10], [19, 17, 12], [15, 18, 14]]
 ```
 
-Let us decipher this. You have a list of twenty elements (caves). Inside each element is a list of connected caves (caves you can travel to). This means, that if you are in cave #1 (index `0`), it is connected to  `CAVES[0]` → `[1, 4, 5]` (note that these numbers inside are zero-based indexes as well!). So, to see what is the index of the second cave connected to the first one you would write `CAVES[0][1]` (you get first element of the list and, then, the second element of the list from inside).
+Let us decipher this. You have a list of twenty elements (caves). Inside each element is a list of connected caves (caves you can travel to). This means, that if you are in cave #1 (index `0`), it is connected to  `CONNECTED_CAVES[0]` → `[1, 4, 5]` (note that these numbers inside are zero-based indexes as well!). So, to see what is the index of the second cave connected to the first one you would write `CONNECTED_CAVES[0][1]` (you get first element of the list and, then, the second element of the list from inside).
 
 To allow the player to wander, we need to know where they are to begin with. Let us define a new variable called, simply, `player_location` and assign a random integer with a _valid_ cave index. Think about the lowest valid index you can have in Python (this you need to hardcode). To compute the highest possible valid index, you need to know the total number of the caves, i.e., length --- [len()](https://docs.python.org/3/library/functions.html#len) --- of the list. Remember, the indexes in Python are zero-based, so think how to compute highest valid index from the length! Use these two indexes and put the player into a random cave. For this, you can use [randint](https://docs.python.org/3/library/random.html#random.randint) function. Look at previous chapters, if you forgot how to use it. 
 
@@ -129,6 +129,7 @@ a_set = set()
 a_set.add(1)
 print(a_set)
 a_set.intersection()
+
 # converting a list to a set
 print(set([1, 2, 2, 3]))
 ```
@@ -397,8 +398,8 @@ while TRUE:
 ```
 
 ::: {.infobox .program}
-Put your code into _code13.py_.
+Put your code into _code14.py_.
 :::
 
 ## Wrap up
-Well done, that was a real adventure exploring these caves!
+Well done, that was a real adventure exploring these caves! Zip and submit.
