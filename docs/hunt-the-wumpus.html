@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 9 Jagd auf den Wumpus | Lerne Python, indem du Spiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="Heute werden wir ein Text-Abenteuer-Computerspiel Jagd auf den Wumpus programmieren: “Im Spiel bewegt sich der Spieler durch eine Reihe von miteinander verbundenen Höhlen, die in einem Dodekaeder...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 9 Jagd auf den Wumpus | Lerne Python, indem du Spiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/hunt-the-wumpus.html">
+<meta property="og:description" content="Heute werden wir ein Text-Abenteuer-Computerspiel Jagd auf den Wumpus programmieren: “Im Spiel bewegt sich der Spieler durch eine Reihe von miteinander verbundenen Höhlen, die in einem Dodekaeder...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 9 Jagd auf den Wumpus | Lerne Python, indem du Spiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="Heute werden wir ein Text-Abenteuer-Computerspiel Jagd auf den Wumpus programmieren: “Im Spiel bewegt sich der Spieler durch eine Reihe von miteinander verbundenen Höhlen, die in einem Dodekaeder...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/python-text-favicon.svg">
+<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Spiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
+<li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+<li><a class="" href="One-armed-bandit.html"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></li>
+<li><a class="active" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="hunt-the-wumpus" class="section level1" number="9">
+<h1>
+<span class="header-section-number">Kapitel 9</span> Jagd auf den Wumpus<a class="anchor" aria-label="anchor" href="#hunt-the-wumpus"><i class="fas fa-link"></i></a>
+</h1>
+<p>Heute werden wir ein Text-Abenteuer-Computerspiel <a href="https://en.wikipedia.org/wiki/Hunt_the_Wumpus">Jagd auf den Wumpus</a> programmieren: “Im Spiel bewegt sich der Spieler durch eine Reihe von miteinander verbundenen Höhlen, die in einem Dodekaeder angeordnet sind, während sie ein Monster namens Wumpus jagen. Das rundenbasierte Spiel hat den Spieler versucht, tödliche bodenlose Gruben und”super Fledermäuse” zu vermeiden, die sie durch das Höhlensystem bewegen; das Ziel ist es, einen ihrer “krummen Pfeile” durch die Höhlen zu schießen, um den Wumpus zu töten…”</p>
+<p>Wie zuvor werden wir mit einem sehr einfachen Programm beginnen und es Schritt für Schritt zur endgültigen Version ausbauen. Der Zweck dieses Kapitels ist es, die Fähigkeiten, die du bereits hast, zu festigen, indem du sie in einem komplexeren Spiel mit mehreren Funktionen, Spielobjekten usw. anwendest. Vergiss nicht, die gesamte Datei zu kommentieren (oberer mehrzeiliger Kommentar, um zu erklären, worum es hier geht), strukturiere deinen Code, kommentiere einzelne Abschnitte und verwende sinnvolle Variablen- und Funktionsnamen. Deine Codekomplexität wird ziemlich hoch sein, daher wirst du den guten Stil benötigen, um dir dabei zu helfen.</p>
+<p>Hol dir das <a href="notebooks/Hunt%20the%20Wumpus.ipynb">Übungsnotebook</a>, bevor wir starten.</p>
+<div id="kapitel-konzepte" class="section level2" number="9.1">
+<h2>
+<span class="header-section-number">9.1</span> Kapitel Konzepte<a class="anchor" aria-label="anchor" href="#kapitel-konzepte"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Verwenden von <a href="hunt-the-wumpus.html#sets">sets</a>.</li>
+</ul>
+</div>
+<div id="ein-höhlensystem" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">9.2</span> Ein Höhlensystem<a class="anchor" aria-label="anchor" href="#ein-h%C3%B6hlensystem"><i class="fas fa-link"></i></a>
+</h2>
+<p>In unserem Spiel wird der Spieler durch ein System von Höhlen wandern, wobei jede Höhle mit drei anderen Höhlen verbunden ist. Das Layout der Höhle wird eine <em>KONSTANTE</em> sein, daher definieren wir es zu Beginn des Programms wie folgt.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb76-1"><a href="hunt-the-wumpus.html#cb76-1" tabindex="-1"></a>CONNECTED_CAVES <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>], [<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">7</span>], [<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">9</span>], [<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">11</span>], </span>
+<span id="cb76-2"><a href="hunt-the-wumpus.html#cb76-2" tabindex="-1"></a>                   [<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">13</span>], [<span class="dv">6</span>, <span class="dv">14</span>, <span class="dv">0</span>], [<span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">15</span>], [<span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">1</span>], </span>
+<span id="cb76-3"><a href="hunt-the-wumpus.html#cb76-3" tabindex="-1"></a>                   [<span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">16</span>], [<span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">2</span>], [<span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">17</span>], [<span class="dv">12</span>, <span class="dv">10</span>, <span class="dv">3</span>], </span>
+<span id="cb76-4"><a href="hunt-the-wumpus.html#cb76-4" tabindex="-1"></a>                   [<span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">18</span>], [<span class="dv">14</span>, <span class="dv">12</span>, <span class="dv">4</span>], [<span class="dv">5</span>, <span class="dv">13</span>, <span class="dv">19</span>], [<span class="dv">16</span>, <span class="dv">19</span>, <span class="dv">6</span>], </span>
+<span id="cb76-5"><a href="hunt-the-wumpus.html#cb76-5" tabindex="-1"></a>                   [<span class="dv">17</span>, <span class="dv">15</span>, <span class="dv">8</span>], [<span class="dv">18</span>, <span class="dv">16</span>, <span class="dv">10</span>], [<span class="dv">19</span>, <span class="dv">17</span>, <span class="dv">12</span>], [<span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">14</span>]]</span></code></pre></div>
+<p>Lassen uns das entschlüsseln. Du hast eine Liste von zwanzig Elementen (Höhlen). Innerhalb jeden Elements ist eine Liste von verbundenen Höhlen (Höhlen, zu denen du reisen kannst). Das bedeutet, dass du, wenn du in Höhle Nr. 1 (Index <code>0</code>) bist, verbunden bist mit <code>CONNECTED_CAVES[0]</code> → <code>[1, 4, 5]</code> (beachte, dass auch diese Zahlen im Inneren nullbasierte Indizes sind!). Um also zu sehen, welchen Index die zweite mit der ersten verbundene Höhle hat, würdest du <code>CONNECTED_CAVES[0][1]</code> schreiben (du erhältst das erste Element der Liste und dann das zweite Element der Liste aus dem Inneren).</p>
+<p>Um dem Spieler das Herumwandern zu ermöglichen, müssen wir zunächst wissen, wo er sich befindet. Lass uns eine neue Variable namens <code>player_location</code> definieren und einen zufälligen vordefinierten Index zuweisen. Denke über den niedrigsten gültigen Index nach, den du in Python haben kannst (diesen musst du fest verdrahten). Um den höchstmöglichen gültigen Index zu berechnen, musst du die Gesamtzahl der Höhlen kennen, d.h., die Länge - <a href="https://docs.python.org/3/library/functions.html#len">len()</a> - der Liste. Denke daran, dass die Indizes in Python nullbasiert sind, also überlege, wie du den höchsten gültigen Index aus der Länge berechnest! Nutze diese beiden Indizes und setze den Spieler in eine zufällige Höhle. Hierfür kannst du die Funktion <a href="https://docs.python.org/3/library/random.html#random.randint">randint</a> verwenden. Schau in den vorherigen Kapiteln nach, falls du vergessen hast, wie man sie benutzt.</p>
+<p>Unser Spieler muss wissen, wohin er gehen kann, also müssen wir in jeder Runde die Informationen darüber ausgeben, in welcher Höhle sich der Spieler befindet und über die verbindende Höhle (verwende <a href="python-grundlagen.html#string-formatting">String-Formatierung</a>, um dies schön aussehen zu lassen). Lass uns das unser erster Code-Ausschnitt für das Spiel sein. Der Code sollte so aussehen</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb77-1"><a href="hunt-the-wumpus.html#cb77-1" tabindex="-1"></a><span class="co"># Import randint</span></span>
+<span id="cb77-2"><a href="hunt-the-wumpus.html#cb77-2" tabindex="-1"></a></span>
+<span id="cb77-3"><a href="hunt-the-wumpus.html#cb77-3" tabindex="-1"></a><span class="co"># Definiere CONNECTED_CAVES (einfach die Definition kopieren und einfügen)</span></span>
+<span id="cb77-4"><a href="hunt-the-wumpus.html#cb77-4" tabindex="-1"></a></span>
+<span id="cb77-5"><a href="hunt-the-wumpus.html#cb77-5" tabindex="-1"></a><span class="co"># Erstelle Variable `player_location` und weise ihr einen zufälligen gültigen Index zu </span></span>
+<span id="cb77-6"><a href="hunt-the-wumpus.html#cb77-6" tabindex="-1"></a><span class="co"># Spieler in eine zufällige Höhle setzen</span></span>
+<span id="cb77-7"><a href="hunt-the-wumpus.html#cb77-7" tabindex="-1"></a></span>
+<span id="cb77-8"><a href="hunt-the-wumpus.html#cb77-8" tabindex="-1"></a><span class="co"># Ausgabe des aktuellen Höhlenindexes und der Indizes der verbundenen Höhlen. Verwende String-Formatierung.</span></span></code></pre></div>
+<div class="program">
+<p>Füge deinen Code in <em>code01.py</em> ein.</p>
+</div>
+</div>
+<div id="herumwandern" class="section level2" number="9.3">
+<h2>
+<span class="header-section-number">9.3</span> Herumwandern<a class="anchor" aria-label="anchor" href="#herumwandern"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da der Spieler “sehen” kann, wo er sich befindet, lass ihn herumwandern! Verwende die Funktion <code>input()</code>, um den Index der Höhle abzufragen, in die der Spieler gehen möchte, und “bewege” den Spieler in diese Höhle (welche Variable musst du ändern?). Denke daran, dass <code>input()</code> einen String zurückgibt, daher musst du ihn explizit in eine Ganzzahl umwandeln (siehe das <a href="guess-the-number-single-round.html#guess-the-number-single-round">Zahlenraten</a> Spiel, wenn du vergessen hast, wie man das macht). Gib vorerst nur gültige Zahlen ein, da wir später Überprüfungen hinzufügen werden. Um das Herumwandern kontinuierlich zu gestalten, setze es in eine <a href="guess-the-number-multi-round.html#while-loop">While-Schleife</a>, sodass der Spieler herumwandert, bis er zur Höhle Nr. 5 (Index <code>4</code>!) gelangt. Wir werden später sinnvollere Spiel-Ende-Bedingungen haben, aber dies ermöglicht es dir, das Spiel zu beenden, ohne es von außen zu unterbrechen. Der Code sollte wie folgt aussehen (achte auf deine Einrückungen!).</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb78-1"><a href="hunt-the-wumpus.html#cb78-1" tabindex="-1"></a><span class="co"># import randint function</span></span>
+<span id="cb78-2"><a href="hunt-the-wumpus.html#cb78-2" tabindex="-1"></a></span>
+<span id="cb78-3"><a href="hunt-the-wumpus.html#cb78-3" tabindex="-1"></a><span class="co"># define CONNECTED_CAVES (simply copy-paste the definition)</span></span>
+<span id="cb78-4"><a href="hunt-the-wumpus.html#cb78-4" tabindex="-1"></a></span>
+<span id="cb78-5"><a href="hunt-the-wumpus.html#cb78-5" tabindex="-1"></a><span class="co"># create `player_location` variable and set it to a random valid cave index</span></span>
+<span id="cb78-6"><a href="hunt-the-wumpus.html#cb78-6" tabindex="-1"></a></span>
+<span id="cb78-7"><a href="hunt-the-wumpus.html#cb78-7" tabindex="-1"></a><span class="co"># solange der Spieler nicht in der Höhle Nr. 5 ist (Index 4):</span></span>
+<span id="cb78-8"><a href="hunt-the-wumpus.html#cb78-8" tabindex="-1"></a>    <span class="co"># Ausgabe des aktuellen Standorts und Liste der verbundenen Höhlen. Verwende String-Formatierung.</span></span>
+<span id="cb78-9"><a href="hunt-the-wumpus.html#cb78-9" tabindex="-1"></a>    <span class="co"># Eingabeaufforderung, in welche Höhle der Spieler gehen möchte und "verschiebung" des Spielers</span></span>
+<span id="cb78-10"><a href="hunt-the-wumpus.html#cb78-10" tabindex="-1"></a>    </span>
+<span id="cb78-11"><a href="hunt-the-wumpus.html#cb78-11" tabindex="-1"></a><span class="co"># Ausgabe einer schönen Game-Over-Nachricht</span></span></code></pre></div>
+<div class="program">
+<p>Füge deinen Code in <em>code02.py</em> ein.</p>
+</div>
+</div>
+<div id="prüfen-ob-ein-wert-in-der-liste-istin-collection" class="section level2" number="9.4">
+<h2>
+<span class="header-section-number">9.4</span> Prüfen, ob ein Wert <em>in</em> der Liste ist[#in-collection]<a class="anchor" aria-label="anchor" href="#pr%C3%BCfen-ob-ein-wert-in-der-liste-istin-collection"><i class="fas fa-link"></i></a>
+</h2>
+<p>Momentan vertrauen wir dem Spieler (naja, dir), den korrekten Index für die Höhle einzugeben. Daher wird das Programm den Spieler zu einer neuen Höhle versetzen, selbst wenn du einen Index einer Höhle eingibst, die nicht mit der aktuellen verbunden ist. Noch schlimmer ist, dass es versuchen wird, den Spieler zu einer undefinierten Höhle zu versetzen, wenn du einen Index größer als 19 eingibst. Um zu prüfen, ob ein eingegebener Index mit einer der verbundenen Höhlen übereinstimmt, musst du die bedingte Anweisung <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-conditions"><value> in <list></list></value></a> verwenden. Die Idee ist einfach, wenn der Wert in der Liste ist, ist die Aussage <code>True</code>, wenn nicht, ist sie <code>False</code>.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb79-1"><a href="hunt-the-wumpus.html#cb79-1" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb79-2"><a href="hunt-the-wumpus.html#cb79-2" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">1</span> <span class="kw">in</span> x)</span>
+<span id="cb79-3"><a href="hunt-the-wumpus.html#cb79-3" tabindex="-1"></a><span class="co">#&gt; True</span></span>
+<span id="cb79-4"><a href="hunt-the-wumpus.html#cb79-4" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">4</span> <span class="kw">in</span> x)</span>
+<span id="cb79-5"><a href="hunt-the-wumpus.html#cb79-5" tabindex="-1"></a><span class="co">#&gt; False</span></span></code></pre></div>
+<p>Beachte, dass du jeweils <em>einen</em> Wert/Objekt prüfen kannst. Da eine Liste auch ein einzelnes Objekt ist, prüfst du, ob sie ein Element der anderen Liste ist, und nicht, ob alle oder einige ihrer Elemente darin enthalten sind.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb80-1"><a href="hunt-the-wumpus.html#cb80-1" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, [<span class="dv">3</span>, <span class="dv">4</span>]]</span>
+<span id="cb80-2"><a href="hunt-the-wumpus.html#cb80-2" tabindex="-1"></a><span class="co"># Das ist Falsch, weil x kein Element [1, 2] hat, sondern nur 1 und 2 (getrennt voneinander).</span></span>
+<span id="cb80-3"><a href="hunt-the-wumpus.html#cb80-3" tabindex="-1"></a><span class="bu">print</span>([<span class="dv">1</span>, <span class="dv">2</span>] <span class="kw">in</span> x)</span>
+<span id="cb80-4"><a href="hunt-the-wumpus.html#cb80-4" tabindex="-1"></a><span class="co">#&gt; False</span></span>
+<span id="cb80-5"><a href="hunt-the-wumpus.html#cb80-5" tabindex="-1"></a></span>
+<span id="cb80-6"><a href="hunt-the-wumpus.html#cb80-6" tabindex="-1"></a><span class="co"># Das ist wahr, weil x das Element [3, 4] hat.</span></span>
+<span id="cb80-7"><a href="hunt-the-wumpus.html#cb80-7" tabindex="-1"></a><span class="bu">print</span>([<span class="dv">3</span>, <span class="dv">4</span>] <span class="kw">in</span> x)</span>
+<span id="cb80-8"><a href="hunt-the-wumpus.html#cb80-8" tabindex="-1"></a><span class="co">#&gt; True</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #1.</p>
+</div>
+</div>
+<div id="gültigen-höhlenindex-prüfen" class="section level2" number="9.5">
+<h2>
+<span class="header-section-number">9.5</span> Gültigen Höhlenindex prüfen<a class="anchor" aria-label="anchor" href="#g%C3%BCltigen-h%C3%B6hlenindex-pr%C3%BCfen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da du weißt, wie man prüft, ob ein Wert in der Liste ist, lass uns das verwenden, um den Höhlenindex zu validieren. Bevor du den Spieler bewegst, musst du jetzt prüfen, ob der eingegebene Index in der Liste der verbundenen Höhlen enthalten ist. Wenn dies <code>True</code> ist, bewegst du den Spieler wie zuvor. Andernfalls gib eine Fehlermeldung aus, z. B. “Falscher Höhlenindex!” ohne den Spieler zu bewegen. Die Schleife stellt sicher, dass der Spieler erneut zur Eingabe aufgefordert wird, sodass wir uns darüber im Moment keine Sorgen machen müssen. Hier musst du eine temporäre Variable erstellen, um die Eingabe des Spielers zu speichern, da du ihre Gültigkeit prüfen musst <em>bevor</em> du entscheidest, ob du den Spieler bewegst. Du machst das Letztere nur, wenn der Wert in dieser temporären Variable ein Index einer der verbundenen Höhlen ist!</p>
+<p>Ändere deinen Code, um die Überprüfung der Eingabegültigkeit einzuschließen.</p>
+<div class="program">
+<p>Füge deinen Code in <em>code03.py</em> ein.</p>
+</div>
+</div>
+<div id="überprüfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann" class="section level2" number="9.6">
+<h2>
+<span class="header-section-number">9.6</span> Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann<a class="anchor" aria-label="anchor" href="#%C3%BCberpr%C3%BCfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann"><i class="fas fa-link"></i></a>
+</h2>
+<p>Es gibt eine weitere Gefahr bei unserer Eingabe: Der Spieler ist nicht garantiert eine gültige Ganzzahl einzugeben! Bisher haben wir uns darauf verlassen, dass du dich benimmst, aber im wirklichen Leben werden die Leute, selbst wenn sie nicht absichtlich versuchen, dein Programm zu stören, gelegentlich die falsche Taste drücken. Daher müssen wir überprüfen, ob die <em>Zeichenfolge</em>, die sie eingegeben haben, in eine <em>Ganzzahl</em> umgewandelt werden kann.</p>
+<p>Die Python-Zeichenkette ist ein Objekt (mehr dazu in ein paar Kapiteln) mit verschiedenen Methoden, die es ermöglichen, verschiedene Operationen an ihnen durchzuführen. Eine Teilmenge von Methoden ermöglicht es dir, eine grobe Überprüfung ihres Inhalts durchzuführen. Die Methode, die uns interessiert, ist <a href="https://docs.python.org/3/library/stdtypes.html#str.isdigit">str.isdigit()</a>, die überprüft, ob alle Symbole Ziffern sind und dass die Zeichenfolge nicht leer ist (sie hat mindestens ein Symbol). Du kannst dem obigen Link folgen, um andere Alternativen wie <code>str.islower()</code>, <code>str.isalpha()</code>, usw. zu überprüfen.</p>
+<div class="practice">
+<p>Mache Übung #2.</p>
+</div>
+</div>
+<div id="überprüfung-der-gültigen-ganzzahleneingabe" class="section level2" number="9.7">
+<h2>
+<span class="header-section-number">9.7</span> Überprüfung der gültigen Ganzzahleneingabe<a class="anchor" aria-label="anchor" href="#%C3%BCberpr%C3%BCfung-der-g%C3%BCltigen-ganzzahleneingabe"><i class="fas fa-link"></i></a>
+</h2>
+<p>Ändere den Code, der die Eingabe vom Benutzer erhält. Speichere zuerst die rohe Zeichenkette (nicht in eine Ganzzahl umgewandelt!) in einer Zwischenvariable. Wenn diese Zeichenkette dann nur aus Ziffern besteht, konvertiere sie in eine Ganzzahl und überprüfe dann, ob es sich um einen gültigen verbundenen Höhlenindex handelt (Verschieben des Spielers oder Ausgeben einer Fehlermeldung). Wenn die Eingabezeichenkette jedoch nicht nur aus Ziffern besteht, gib nur die Fehlermeldung aus (“Ungültiger Höhlenindex!”). Dies bedeutet, dass du eine if-Anweisung in der if-Anweisung haben musst!</p>
+<div class="program">
+<p>Füge deinen Code in <em>code04.py</em> ein.</p>
+</div>
+</div>
+<div id="den-code-in-einer-funktion-kapseln" class="section level2" number="9.8">
+<h2>
+<span class="header-section-number">9.8</span> Den Code in einer Funktion kapseln<a class="anchor" aria-label="anchor" href="#den-code-in-einer-funktion-kapseln"><i class="fas fa-link"></i></a>
+</h2>
+<p>Dein Code ist bereits in seiner Komplexität gewachsen, mit zwei Überprüfungen auf einer Eingabefunktion, daher macht es Sinn, diese Komplexität zu verbergen, indem man ihn in einer Funktion kapselt. Nennen wir es <code>input_cave</code>, da es nur eine Eingabe für einen gültigen Index einer verbundenen Höhle sein wird. Du hast bereits den gesamten Code, den du brauchst, aber denke darüber nach, welchen Parameter (oder welche Parameter?) es benötigt: Du kannst nicht direkt auf die globale Konstante <code>CONNECTED_CAVES</code> oder die globale Variable <code>player_location</code> zugreifen!</p>
+<p>Lege die Funktion in eine separate <code>utils.py</code> Datei, dokumentiere sowohl die Datei als auch die Funktion! Importiere und verwende sie im Hauptskript. Dein Programm sollte <em>genau</em> wie zuvor laufen!</p>
+<div class="program">
+<p>Lege <code>input_cave</code> in <em>utils.py</em> ab.
+<br>
+Aktualisiere deinen Code in <em>code05.py</em>.</p>
+</div>
+</div>
+<div id="sets" class="section level2" number="9.9">
+<h2>
+<span class="header-section-number">9.9</span> Mengen<a class="anchor" aria-label="anchor" href="#sets"><i class="fas fa-link"></i></a>
+</h2>
+<p>Bisher hatten wir nur den Spieler im Auge und wir haben das getan, indem wir seinen Standort in der Variable <code>player_location</code> gespeichert haben. Da wir jedoch mehr Spielobjekte hinzufügen werden (bodenlose Gruben, Fledermäuse, den Wumpus), müssen wir den Überblick behalten, wer-wo-ist, damit wir sie nicht in einer bereits besetzten Höhle platzieren. Wir werden dies als Gelegenheit nutzen, um etwas über <a href="https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset">sets</a> zu lernen: eine <em>ungeordnete</em> Sammlung von <em>einzigartigen</em> Elementen. Diese sind eine Implementierung von <a href="https://de.wikipedia.org/wiki/Menge_(Mathematik)">mathematischen Mengen</a> und haben Eigenschaften, die für unsere notwendige Buchhaltung nützlich sind. Du erstellst eine Menge über die Funktion <a href="https://docs.python.org/3/library/stdtypes.html#set">set()</a> und es kann entweder eine leere Menge sein (zu der du <code>.add()</code> hinzufügen kannst) oder es kann eine Liste (oder ein Tupel) in eine Menge umwandeln, aber es wird alle Duplikate entfernen.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb81-1"><a href="hunt-the-wumpus.html#cb81-1" tabindex="-1"></a><span class="co"># Beginnen mit einer leeren Menge</span></span>
+<span id="cb81-2"><a href="hunt-the-wumpus.html#cb81-2" tabindex="-1"></a>a_set <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb81-3"><a href="hunt-the-wumpus.html#cb81-3" tabindex="-1"></a>a_set.add(<span class="dv">1</span>)</span>
+<span id="cb81-4"><a href="hunt-the-wumpus.html#cb81-4" tabindex="-1"></a><span class="bu">print</span>(a_set)</span>
+<span id="cb81-5"><a href="hunt-the-wumpus.html#cb81-5" tabindex="-1"></a><span class="co">#&gt; {1}</span></span>
+<span id="cb81-6"><a href="hunt-the-wumpus.html#cb81-6" tabindex="-1"></a>a_set.intersection()</span>
+<span id="cb81-7"><a href="hunt-the-wumpus.html#cb81-7" tabindex="-1"></a><span class="co">#&gt; {1}</span></span>
+<span id="cb81-8"><a href="hunt-the-wumpus.html#cb81-8" tabindex="-1"></a></span>
+<span id="cb81-9"><a href="hunt-the-wumpus.html#cb81-9" tabindex="-1"></a><span class="co"># Umwandlung einer Liste in eine Menge</span></span>
+<span id="cb81-10"><a href="hunt-the-wumpus.html#cb81-10" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">set</span>([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>]))</span>
+<span id="cb81-11"><a href="hunt-the-wumpus.html#cb81-11" tabindex="-1"></a><span class="co">#&gt; {1, 2, 3}</span></span></code></pre></div>
+<p>Wenn du zwei Mengen hast, kannst du verschiedene Operationen durchführen, um die <a href="https://docs.python.org/3/library/stdtypes.html#frozenset.union">Vereinigung</a>, <a href="https://docs.python.org/3/library/stdtypes.html#frozenset.intersection">Schnittmenge</a>oder <a href="https://docs.python.org/3/library/stdtypes.html#frozenset.difference">Differenz</a> zwischen zwei Mengen zu finden (siehe <em>Grundlegende Operationen</em> in der <a href="https://de.wikipedia.org/wiki/Menge_(Mathematik)">Wikipedia</a>.</p>
+<div class="practice">
+<p>Mache Übung #3.</p>
+</div>
+<p>Beachte bitte, dass die Menge <em>nicht geordnet</em> ist, so dass du nicht auf ihre einzelnen Elemente zugreifen kannst. Allerdings kannst du genauso wie bei Listen überprüfen, ob ein Wert in der Menge ist.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb82-1"><a href="hunt-the-wumpus.html#cb82-1" tabindex="-1"></a>a_set <span class="op">=</span> <span class="bu">set</span>([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>])</span>
+<span id="cb82-2"><a href="hunt-the-wumpus.html#cb82-2" tabindex="-1"></a><span class="dv">3</span> <span class="kw">in</span> a_set</span>
+<span id="cb82-3"><a href="hunt-the-wumpus.html#cb82-3" tabindex="-1"></a><span class="co">#&gt; True</span></span></code></pre></div>
+</div>
+<div id="die-belegung-von-höhlen-im-auge-behalten" class="section level2" number="9.10">
+<h2>
+<span class="header-section-number">9.10</span> Die Belegung von Höhlen im Auge behalten<a class="anchor" aria-label="anchor" href="#die-belegung-von-h%C3%B6hlen-im-auge-behalten"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da du Mengen kennst, wird es leicht sein, den Überblick über die belegten Höhlen zu behalten. Im globalen Skript benötigen wir eine Variable, die die Indizes aller belegten Höhlen in einer <a href="hunt-the-wumpus.html#sets">Menge</a> enthält (du startest mit einer leeren Menge, da alle Höhlen anfangs leer sind). Außerdem benötigen wir eine Funktion, die einen gültigen Index für eine freie Höhle generiert. Dies basiert auf 1) dem Bereich der gültigen Indizes (denke darüber nach, wie du diese Informationen am wirtschaftlichsten an die Funktion weitergeben kannst, du kommst mit nur einer Ganzzahl aus) und 2) den Indizes der bereits belegten Höhlen (wir haben das in der globalen Variable, die du definierst, aber du kannst auf diese Variable <em>nicht</em> direkt zugreifen, also <em>musst</em> du diese Information als Parameter übergeben!).</p>
+<p>Wir werden diese Funktion zweimal schreiben. Zunächst verwenden wir eine Brute-Force-Methode, um eine freie Höhle zu finden: Erzeuge einfach in einer Schleife einen gültigen zufälligen Index, bis er <em>nicht</em> in der Menge der belegten Höhlen ist. Da er es nicht ist, handelt es sich um eine gültige freie Höhle, also solltest du die Schleife verlassen und diesen Wert zurückgeben. Nenne diese Funktion <code>find_vacant_cave_bruteforce</code>, implementiere und dokumentiere sie in <code>utils.py</code>, teste sie, indem du sie in ein Jupiter-Notebook kopierst und mehrmals mit verschiedenen fest codierten Mengen von belegten Höhlen ausführst. Überprüfen, dass die gültige Höhle nie in der Menge der belegten Höhlen ist.</p>
+<div class="program">
+<p>Lege <code>find_vacant_cave_bruteforce</code> in <em>utils.py</em> ab.
+<br>
+Teste es in Übung 4.</p>
+</div>
+<p>Die Funktion, die du geschrieben hast, funktioniert, ist aber sehr ineffizient und kann ziemlich problematisch sein, wenn unsere Menge an belegten Höhlen lang ist, da du viele Versuche benötigst, bevor du zufällig eine freie findest. Wir können das besser machen, indem wir Mengenoperationen verwenden: Wir können <a href="https://docs.python.org/3/library/functions.html#func-range">range</a> generieren, es in eine Menge umwandeln, belegte Höhlen davon <a href="https://docs.python.org/3/tutorial/datastructures.html#sets">subtrahieren</a> (das ergibt eine Menge von unbesetzten Höhlen) und dann einen Wert <a href="https://docs.python.org/3/library/random.html#random.choice">auswählen</a> (beachte aber, dass du dafür eine Menge in eine <a href="https://docs.python.org/3/library/stdtypes.html#list">Liste</a> umwandeln musst!). Im letzten Schritt wählen wir zufällig, aber <em>nur</em> aus freien Höhlen, so dass wir keine Schleifen und mehrere Versuche benötigen, um es richtig zu machen.</p>
+<p>Implementiere die Funktion <code>find_vacant_cave</code> und teste sie mit dem gleichen Code wie zuvor. Du solltest immer nur einen gültigen Index für eine freie Höhle erhalten.</p>
+<div class="program">
+<p>Lege <code>find_vacant_cave</code> in <em>utils.py</em> ab.
+<br>
+Teste es in Übung 5.</p>
+</div>
+</div>
+<div id="platzieren-von-bodenlosen-gruben" class="section level2" number="9.11">
+<h2>
+<span class="header-section-number">9.11</span> Platzieren von bodenlosen Gruben<a class="anchor" aria-label="anchor" href="#platzieren-von-bodenlosen-gruben"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da wir das Gerüst haben, fügen wir bodenlose Gruben hinzu. Die Idee ist einfach, wir platzieren zwei davon in zufälligen <em>freien</em> Höhlen. Wenn der Spieler in eine Höhle mit einer bodenlosen Grube stolpert, fällt er hinein und stirbt (Spielende). Wir werden den Spieler jedoch warnen, dass seine gegenwärtige Höhle neben einer bodenlosen Grube ist, ohne ihm zu sagen, in welcher Höhle sie genau ist.</p>
+<p>Zuerst fügen wir sie hinzu. Dazu erstellen wir eine neue Konstante <code>NUMBER_OF_BOTTOMLESS_PITS</code> (ich schlage vor, dass wir sie auf <code>2</code> setzen, aber du kannst mehr oder weniger davon haben) und eine neue Variable (<code>bottomless_pits</code>), die eine Menge von Indizes von Höhlen mit bodenlosen Gruben in ihnen enthält. Füge bodenlose Gruben mit einer for-Schleife hinzu: Bei jeder Iteration erhalte einen Index einer leeren Höhle (über die Funktion <code>find_empty_cave</code>, denke über ihre Parameter nach), füge diesen Index sowohl zu 1) <code>bottomless_pits</code> als auch zu 2) <code>occupied_caves</code> hinzu, so dass du 1) weißt, wo die bodenlosen Gruben sind und 2) weißt, welche Höhlen belegt sind. Hier ist der Code-Umriss für den Initialisierungsteil (kopiere die Hauptschleife noch nicht). Überprüfe, ob die Zahlen sinnvoll sind (die Anzahl der Höhlen entspricht deinen Erwartungen, der Wert liegt im erwarteten Bereich, es gibt keine Duplikate, usw.)</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb83-1"><a href="hunt-the-wumpus.html#cb83-1" tabindex="-1"></a><span class="co"># Erstelle die Variable `occupied_caves` und initialisiere sie als leere Menge</span></span>
+<span id="cb83-2"><a href="hunt-the-wumpus.html#cb83-2" tabindex="-1"></a><span class="co"># Erstelle die Variable `bottomless_pits` und initialisiere sie als leere Menge</span></span>
+<span id="cb83-3"><a href="hunt-the-wumpus.html#cb83-3" tabindex="-1"></a><span class="co"># Benutze eine for-Schleife und die range-Funktion, um die for-Schleife NUMBER_OF_BOTTOMLESS_PITS-mal zu wiederholen</span></span>
+<span id="cb83-4"><a href="hunt-the-wumpus.html#cb83-4" tabindex="-1"></a><span class="co">#     Generiere einen neuen Standort für die bodenlose Grube über die Funktion find_empty_cave() und füge ihn zu beiden Mengen hinzu</span></span></code></pre></div>
+<div class="program">
+<p>Teste den Code zum Erstellen von bodenlosen Gruben <br> in Übung 6.</p>
+</div>
+</div>
+<div id="in-eine-bodenlose-grube-fallen" class="section level2" number="9.12">
+<h2>
+<span class="header-section-number">9.12</span> In eine bodenlose Grube fallen<a class="anchor" aria-label="anchor" href="#in-eine-bodenlose-grube-fallen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt fügen wir eine der Möglichkeiten hinzu, das Spiel zu beenden: Der Spieler fällt in eine bodenlose Grube. Dafür müssen wir nur überprüfen, ob sich der Spieler in jeder Runde gerade in einer Höhle befindet, in der eine bodenlose Grube ist. Wenn das der Fall ist, ist die Höhle des Spielers tatsächlich in der Liste der bodenlosen Gruben, drucke eine traurige Spiel-Ende-Nachricht und <code>breche</code> aus der Schleife aus. Darüber hinaus verändern wir die Bedingung der <code>while</code> Schleife zu <code>while True:</code>, so dass die einzige Möglichkeit, das Spiel zu beenden, darin besteht, in die Grube zu fallen (nicht ganz fair für den Spieler, aber das werden wir später korrigieren).</p>
+<p>Füge den Code für das Platzieren von bodenlosen Gruben und das Hineinfallen in sie in das Hauptskript ein. Drucke die Höhlen mit bodenlosen Gruben zu Beginn des Programs aus und wandere in sie hinein, um sicherzustellen, dass dies das Spiel korrekt beendet.</p>
+<div class="program">
+<p>Aktualisiere deinen Code in <em>code06.py</em>.</p>
+</div>
+</div>
+<div id="warnung-vor-einer-bodenlosen-grube" class="section level2" number="9.13">
+<h2>
+<span class="header-section-number">9.13</span> Warnung vor einer bodenlosen Grube<a class="anchor" aria-label="anchor" href="#warnung-vor-einer-bodenlosen-grube"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wir müssen dem Spieler die Chance geben, das Schicksal zu vermeiden, in eine bodenlose Grube zu fallen, indem wir ihn warnen, dass eine (oder zwei oder mehr) in der Nähe sind. Zu diesem Zweck müssen wir zusätzliche Informationen <em>vor</em> ihrer Entscheidung, ihren Zug zu machen, ausdrucken. Deine Aufgabe ist es, zu überprüfen, ob eine Höhle sowohl im Set <code>bottomless_pits</code> als auch in der aktuellen Liste der verbundenen Höhlen ist. Du kannst eine <a href="One-armed-bandit.html#for-loop">for-Schleife</a> verwenden, aber die Verwendung von Mengenoperationen ist viel einfacher, du musst nur überprüfen, ob eine <a href="https://docs.python.org/3/library/stdtypes.html#frozenset.intersection">Schnittmenge</a> dieser beiden Mengen leer ist (sie hat null <a href="https://docs.python.org/3/library/functions.html#len">Länge</a>). Wenn mindestens eine der verbundenen Höhlen eine bodenlose Grube in sich hat, drucke “Du fühlst einen Hauch!”.</p>
+<div class="program">
+<p>Füge deinen Code in <em>code07.py</em> ein.</p>
+</div>
+</div>
+<div id="platzierung-von-fledermäusen-und-warnung-vor-ihnen" class="section level2" number="9.14">
+<h2>
+<span class="header-section-number">9.14</span> Platzierung von Fledermäusen und Warnung vor ihnen<a class="anchor" aria-label="anchor" href="#platzierung-von-flederm%C3%A4usen-und-warnung-vor-ihnen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wir brauchen mehr Nervenkitzel! Lassen wir Fledermäusen hinzu. Sie leben in Höhlen, der Spieler kann sie hören, wenn sie in einer verbundenen Höhle sind (“Du hörst Flügelschläge!”), aber wenn der Spieler unabsichtlich die Höhle mit Fledermäusen betritt, tragen sie den Spieler zu einer <em>zufälligen</em> Höhle.</p>
+<p>Die Platzierung der Fledermäuse ist analog zur Platzierung der bodenlosen Gruben. Du brauchst eine Konstante, die die Anzahl der Fledermauskolonien bestimmt (z.B. <code>ANZAHL_DER fledermaeuse</code> und setzte diese auf <code>2</code> oder eine andere von dir bevorzugte Zahl), eine Variable, die ein Set mit Indizes von Höhlen mit Fledermäusen hält (z.B. <code>fledermaeuse</code>), und du musst zufällige leere Höhlen auswählen und sie genau so in <code>bats</code> speichern, wie du es bei den bodenlosen Gruben getan hast. Drucke den Ort der Fledermäuse zu Diagnosezwecken aus.</p>
+<p>Die Warnung vor den Fledermäusen folgt auch der gleichen Logik wie bei den bodenlosen Gruben: Wenn eine der verbundenen Höhlen Fledermäuse in sich hat, druckst du <code>"Du hörst Flügelschläge!"</code> aus.</p>
+<div class="program">
+<p>Füge deinen Code in <em>code08.py</em> ein.</p>
+</div>
+</div>
+<div id="der-spieler-wird-von-fledermäusen-in-eine-zufällige-höhle-transportiert" class="section level2" number="9.15">
+<h2>
+<span class="header-section-number">9.15</span> Der Spieler wird von Fledermäusen in eine zufällige Höhle transportiert<a class="anchor" aria-label="anchor" href="#der-spieler-wird-von-flederm%C3%A4usen-in-eine-zuf%C3%A4llige-h%C3%B6hle-transportiert"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wenn sich der Spieler in einer Höhle mit Fledermäusen befindet, transportieren diese ihn in eine <em>zufällige</em> Höhle, <em>unabhängig</em> davon, ob die Höhle bewohnt ist oder nicht (also jede Höhle ist eine gültige Höhle). So können die Fledermäuse den Spieler in eine Höhle tragen:</p>
+<ol style="list-style-type: decimal">
+<li>mit einer weiteren Fledermaus-Kolonie, und diese wird den Spieler wieder transportieren.</li>
+<li>mit einer bodenlosen Grube, und der Spieler wird hineinfallen.</li>
+<li>später in die Höhle mit dem Wumpus (der Spieler überlebt das möglicherweise nicht und du implementierst das jetzt nicht).</li>
+</ol>
+<p>Denk darüber nach:</p>
+<ol style="list-style-type: decimal">
+<li>
+<em>wann</em> du die Anwesenheit von Fledermäusen überprüfst (vor oder nach der Überprüfung auf eine bodenlose Grube?),</li>
+<li>überprüfst du einmal (mit Hilfe von <code>if</code>) oder ein-oder-mehrere Male (mit Hilfe von <code>while</code>)</li>
+</ol>
+<p>Teste deinen Code, indem du in eine Höhle mit Fledermäusen gehst (drucke ihren Standort am Anfang aus, damit du weißt, wo du hingehen musst).</p>
+<div class="program">
+<p>Füge deinen Code in <em>code09.py</em> ein.</p>
+</div>
+</div>
+<div id="hinzufügen-von-wumpus-und-vom-ihm-gefressen-werden." class="section level2" number="9.16">
+<h2>
+<span class="header-section-number">9.16</span> Hinzufügen von Wumpus (und vom ihm gefressen werden).<a class="anchor" aria-label="anchor" href="#hinzuf%C3%BCgen-von-wumpus-und-vom-ihm-gefressen-werden."><i class="fas fa-link"></i></a>
+</h2>
+<p>Bis jetzt hast du einen Spieler hinzugefügt (Einzelspieler, Standort als Integer gespeichert), bodenlose Gruben (mehrzahl, Standorte in einem Set gespeichert) und Fledermäusen (ebenfalls Mehrzahl). Füge Wumpus hinzu!</p>
+<ol style="list-style-type: decimal">
+<li>Erstelle eine neue Variable (<code>wumpus</code>?) und platziere Wumpus in einer freien Höhle. Drucke den Standort von Wumpus zu Debugging-Zwecken aus.</li>
+<li>Warne vor Wumpus im selben Code, der vor Gruben und Fledermäusen warnt. Die Logik ist die gleiche, aber die Überprüfung ist einfacher, da du dir nur um einen einzigen Wumpus-Standort Sorgen machen musst. Der kanonische Warnungstext lautet <code>"Du riechst einen Wumpus!"</code>.</li>
+<li>Überprüfe, ob der Spieler in der gleichen Höhle wie Wumpus ist. Falls dies der Fall ist, ist das Spiel vorbei, da der Spieler von einem hungrigen Wumpus gefressen wird. Dies ähnelt dem <em>Spielende</em> aufgrund des Sturzes in eine bodenlose Grube. Überlege, ob die Überprüfung vor oder nach der Überprüfung auf Fledermäuse erfolgen sollte.</li>
+</ol>
+<p>Teste deinen Code, indem du in eine Höhle mit Wumpus gehst (drucke ihren Standort am Anfang aus, damit du weißt, wohin du gehen musst).</p>
+<div class="program">
+<p>Füge deinen Code in <em>code10.py</em> ein.</p>
+</div>
+</div>
+<div id="dem-spieler-eine-chance-geben." class="section level2" number="9.17">
+<h2>
+<span class="header-section-number">9.17</span> Dem Spieler eine Chance geben.<a class="anchor" aria-label="anchor" href="#dem-spieler-eine-chance-geben."><i class="fas fa-link"></i></a>
+</h2>
+<p>Geben wir dem Spieler eine Chance. Wenn er in die Höhle mit dem Wumpus kommt, erschreckt er ihn. Dann läuft Wumpus entweder weg zu einer zufälligen angrenzenden Höhle (neu) oder bleibt stehen und frisst den Spieler. Erstelle zunächst eine neue Konstante, die die Wahrscheinlichkeit definiert, dass Wumpus wegrennt, zum Beispiel <code>P_WUMPUS_AENGSTLICH</code>. In den Implementierungen, die ich gefunden habe, beträgt sie typischerweise 0,25, aber verwende einen Wert, den du für angemessen hältst.</p>
+<p>Wenn also der Spieler in der Höhle mit dem Wumpus ist, ziehe eine zufällige Zahl zwischen 0 und 1 (verwende dafür die Funktion <a href="https://docs.python.org/3/library/random.html#random.uniform">uniform</a>). Sie ist Teil der <a href="https://docs.python.org/3/library/random.html">random</a> Bibliothek, daher lautet der Aufruf <code>random.uniform(...)</code>. Denke daran, dass du entweder die <em>gesamte</em> Bibliothek importieren und dann deren Funktion durch Voranstellen des Bibliotheksnamens aufrufen kannst oder du importierst nur eine bestimmte Funktion über <code>from ... import ...</code>. Sobald du die Zahl zwischen 0 und 1 generiert hast, wenn diese Zahl <em>kleiner</em> ist als die Wahrscheinlichkeit, dass der Wumpus Angst hat, bewege ihn zu einer zufälligen angrenzenden Höhle (Fledermäuse ignorieren Wumpus und es klammert sich an die Decke der Höhlen, bodenlose Gruben sind also kein Problem für ihn). Eine nützliche Funktion, die du bereits verwendet hast, ist <a href="https://docs.python.org/3/library/random.html#random.choice">choice()</a>, auch Teil der <a href="https://docs.python.org/3/library/random.html">random</a> Bibliothek. Andernfalls, wenn Wumpus nicht weggeschreckt wurde, wird der Spieler gefressen und das Spiel ist vorbei (das einzige Ergebnis in <em>code10</em>).</p>
+<div class="program">
+<p>Füge deinen Code in <em>code11.py</em> ein.</p>
+</div>
+</div>
+<div id="flug-eines-krummen-pfeils" class="section level2" number="9.18">
+<h2>
+<span class="header-section-number">9.18</span> Flug eines krummen Pfeils<a class="anchor" aria-label="anchor" href="#flug-eines-krummen-pfeils"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unser Spieler ist mit <em>krummen</em> Pfeilen bewaffnet, die durch Höhlen fliegen können. Die Regeln für seinen Flug sind folgende:</p>
+<ul>
+<li>Der Spieler entscheidet, in welche Höhle er einen Pfeil schießt und wie weit der Pfeil fliegt (von 1 bis 5 Höhlen).</li>
+<li>Jedes Mal, wenn der Pfeil in die nächste Höhle fliegen muss, wird diese Höhle zufällig aus den angrenzenden Höhlen <em>ausgewählt</em>, mit Ausnahme der Höhle, aus der er kam (also der Pfeil kann keine 180° Wende machen und es stehen nur zwei von drei Höhlen zur Auswahl).</li>
+<li>Wenn der Pfeil in eine Höhle mit Wumpus fliegt, ist er besiegt und das Spiel ist gewonnen.</li>
+<li>Wenn der Pfeil in eine Höhle mit dem Spieler fliegt, dann hat er einen unbeabsichtigten Selbstmord begangen und das Spiel ist verloren.</li>
+<li>Wenn der Pfeil seine letzte Höhle erreicht hat (basierend darauf, wie weit der Spieler schießen wollte) und die Höhle leer ist, fällt er auf den Boden.</li>
+<li>Fledermäuse oder bodenlose Gruben haben keinen Einfluss auf den Pfeil.</li>
+</ul>
+<p>Die Gesamtzahl der Pfeile, die der Spieler zu Beginn hat, sollte in der Konstante <code>PFEIL_ANZAHL</code> definiert werden (z.B. <code>5</code>).</p>
+<p>Um den Überblick über den Pfeil zu behalten, benötigst du folgende Variablen:</p>
+<ul>
+<li>
+<code>pfeil</code>: aktuelle Position des Pfeils.</li>
+<li>
+<code>pfeil_vorherige_höhle</code>: Index der Höhle, aus der der Pfeil kam, so dass du weißt, wohin er nicht zurückfliegen kann.</li>
+<li>
+<code>verbleibende_schussdistanz</code>: verbleibende zu reisende Distanz.</li>
+<li>
+<code>verbleibende_pfeile</code>: Anzahl der verbleibenden Pfeile (auf <code>PFEIL_ANZAHL</code> gesetzt, wenn das Spiel beginnt).</li>
+</ul>
+<p>Behalte dieses Gerüst im Hinterkopf und lass uns anfangen, unsere Pfeile zu programmieren.</p>
+</div>
+<div id="zufällige-höhle-aber-keine-u-turn" class="section level2" number="9.19">
+<h2>
+<span class="header-section-number">9.19</span> Zufällige Höhle, aber keine U-Turn<a class="anchor" aria-label="anchor" href="#zuf%C3%A4llige-h%C3%B6hle-aber-keine-u-turn"><i class="fas fa-link"></i></a>
+</h2>
+<p>Du musst eine Funktion programmieren (nennen wir sie <code>next_arrow_cave()</code>), die eine zufällige Höhle auswählt, aber nicht die vorherige Höhle, in der der Pfeil war. Es sollte zwei Parameter haben:</p>
+<ul>
+<li>
+<code>connected_caves</code>: eine Liste von verbundenen Höhlen.</li>
+<li>
+<code>previous_cave</code>: Höhle, aus der der Pfeil gekommen ist.</li>
+</ul>
+<p>Zuerst, debugge den Code in einer separaten Zelle. Nehme an, dass <code>connected_caves = CONNECTED_CAVES[1]</code> (also, der Pfeil ist derzeit in Höhle 1) und <code>previous_cave = 0</code> (Pfeil kam aus Höhle 0). Schreibe den Code, der eine der verbleibenden Höhlen zufällig auswählt (in diesem Fall entweder <code>2</code> oder <code>7</code>), du willst wahrscheinlich Mengenoperationen verwenden (wie bei der effizienten Platzierung von Spielobjekten). Sobald der Code funktioniert, mache daraus eine Funktion, die die nächste Höhle für einen Pfeil zurückgibt. Dokumentiere die Funktion. Teste sie mit anderen Kombinationen von verbundenen und vorherigen Höhlen.</p>
+<div class="program">
+<p>Teste deinen Code in Übung #7.<br>
+Sobald getestet, packe die Funktion in <em>utils.py</em>.</p>
+</div>
+</div>
+<div id="zurückgelegte-entfernung" class="section level2" number="9.20">
+<h2>
+<span class="header-section-number">9.20</span> Zurückgelegte Entfernung<a class="anchor" aria-label="anchor" href="#zur%C3%BCckgelegte-entfernung"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da du eine Funktion hast, die zur nächsten zufälligen Höhle fliegt, implementiere das Fliegen mit einer for-Schleife. Ein Pfeil sollte durch <code>shooting_distance</code> Höhlen fliegen (setze es für den Test auf <code>5</code>, maximale Entfernung, von Hand). Die <em>erste</em> Höhle ist gegeben (sie wird vom Spieler ausgewählt), setze daher <code>arrow</code> auf <code>1</code> und <code>arrow_previous_cave</code> auf <code>0</code> (Spieler ist in Höhle <code>0</code> und hat den Pfeil in Höhle <code>1</code> geschossen). Drucke aus Debugging-Zwecken den Standort des Pfeils bei jeder Iteration aus. Teste den Code, indem du die <code>shooting_distance</code> änderst. Setzen sie insbesondere auf <code>1</code>. Der Pfeil sollte bereits in Höhle <code>1</code> “herunterfallen”.</p>
+<p>Verwende für dieses eine abgespeckte Version des Codes mit der Konstante <code>CONNECTED_CAVES</code>, der importierten Funktion <code>next_arrow_cave()</code> und allen relevanten Konstanten und Variablen für den Pfeil. Gib die Anfangshöhle, die vorherige Höhle und die Entfernung von Hand ein.</p>
+<div class="program">
+<p>Füge deinen Code in <em>code12.py</em> ein.</p>
+</div>
+</div>
+<div id="ein-ziel-treffen" class="section level2" number="9.21">
+<h2>
+<span class="header-section-number">9.21</span> Ein Ziel treffen<a class="anchor" aria-label="anchor" href="#ein-ziel-treffen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Implementiere die Prüfung zum Treffen des Wumpus oder des Spielers in der Schleife. Sollte die Überprüfung vor oder nach dem Fliegen des Pfeils zur nächsten zufälligen Höhle stattfinden? In beiden Fällen schreibe eine passende “Spiel vorbei” Nachricht und brich aus der Schleife aus. Teste den Code, indem du den Wumpus von Hand in die Höhle platzierst, auf die der Spieler schießt oder die nächste.</p>
+<p>Du kannst auf den Code aus dem vorherigen Abschnitt aufbauen, aber füge <code>player_location</code> und <code>wumpus</code> Variablen hinzu und kodiere sie von Hand für das Debugging. Führe den Code mehrmals aus, um zu überprüfen, dass er funktioniert.</p>
+<div class="program">
+<p>Füge deinen Code in <em>code13.py</em> ein.</p>
+</div>
+</div>
+<div id="bewegen-oder-schießen" class="section level2" number="9.22">
+<h2>
+<span class="header-section-number">9.22</span> Bewegen oder schießen?<a class="anchor" aria-label="anchor" href="#bewegen-oder-schie%C3%9Fen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wir sind fast fertig, aber bevor wir anfangen können, den Code zusammenzustellen, benötigen wir noch ein paar weitere Dinge. Zum Beispiel konnte der Spieler zuvor nur ziehen, also haben wir einfach nach der nächsten Höhlennummer gefragt. Jetzt hat der Spieler bei jedem Zug die Wahl, einen Pfeil abzuschießen oder sich zu bewegen. Implementiere eine Funktion <code>input_shoot_or_move()</code>, die keine Parameter hat und <code>"s"</code> für “Schießen” oder <code>"m"</code> für “Bewegen” zurückgibt. Frage darin den Spieler nach seiner Wahl, bis er eine von zwei gültigen Optionen auswählt. Konzeptionell ist dies sehr ähnlich zu deiner anderen Eingabefunktion <code>input_cave()</code>, die wiederholt eine Eingabe fordert, bis eine gültige gegeben ist. Teste und dokumentiere!</p>
+<div class="infobox program">
+<p>Füge <code>input_shoot_or_move()</code> in <em>utils.py</em> ein<br>Teste es in Übung 8.</p>
+</div>
+</div>
+<div id="wie-weit" class="section level2" number="9.23">
+<h2>
+<span class="header-section-number">9.23</span> Wie weit?<a class="anchor" aria-label="anchor" href="#wie-weit"><i class="fas fa-link"></i></a>
+</h2>
+<p>Implementiere die Funktion <code>input_distance()</code>, die keine Parameter hat und die gewünschte Schussentfernung zwischen <code>1</code> und <code>5</code> zurückgibt. Frage erneut wiederholt nach einer <em>ganzzahligen</em> Eingabe (denke daran, du weißt, wie man überprüfen kann, ob die Eingabe eine gültige Ganzzahl ist), wie weit der Pfeil reisen soll, bis eine gültige Eingabe gegeben ist. Dies ist sehr ähnlich zu deinen anderen Eingabefunktionen. Teste und dokumentiere.</p>
+<div class="infobox program">
+<p>Füge <code>input_distance()</code> in <em>utils.py</em> ein<br>Teste sie in Übung 9.</p>
+</div>
+</div>
+<div id="input_cave_with_prompt" class="section level2" number="9.24">
+<h2>
+<span class="header-section-number">9.24</span> input_cave_with_prompt<a class="anchor" aria-label="anchor" href="#input_cave_with_prompt"><i class="fas fa-link"></i></a>
+</h2>
+<p>Erstellen eine neue Version der Funktion <code>input_cave()</code>, nenne sie <code>input_cave_with_prompt</code> und füge einen <code>prompt</code> Parameter hinzu, damit wir nun entweder nach dem Bewegen zu oder dem Schießen auf die Höhle fragen können (daher die Notwendigkeit des prompts anstelle einer fest codierten Nachricht).</p>
+<div class="infobox program">
+<p>Füge <code>input_cave_with_prompt()</code> in <em>utils.py</em> ein<br>Teste sie in Übung 10.</p>
+</div>
+</div>
+<div id="alles-zusammenfügen" class="section level2" number="9.25">
+<h2>
+<span class="header-section-number">9.25</span> Alles zusammenfügen<a class="anchor" aria-label="anchor" href="#alles-zusammenf%C3%BCgen"><i class="fas fa-link"></i></a>
+</h2>
+<p>In den letzten Abschnitten hast du alle Teile erstellt, die du für das finale Spiel mit einem krummen Pfeil benötigst. Hier ist ein Pseudocode, wie der finale Code aussehen sollte. Schau dir das an, um besser zu verstehen, wie die neuen Teile in den alten Code integriert werden. Bis jetzt solltest du folgende Konstanten haben (du kannst auch andere Werte haben):</p>
+<ul>
+<li><code>CONNECTED_CAVES</code></li>
+<li>
+<code>NUMBER_OF_BATS</code> = 2</li>
+<li>
+<code>NUMBER_OF_BOTTOMLESS_PITS</code> = 2</li>
+<li>
+<code>P_WUMPUS_SCARED</code> = 0.25</li>
+<li>
+<code>ARROWS_NUMBER</code> = 5</li>
+</ul>
+<p>Folgende Funktionen:</p>
+<ul>
+<li>
+<code>find_vacant_cave(...)</code>, gibt einen Integer-Höhlenindex zurück</li>
+<li>
+<code>input_cave_with_prompt(prompt, connected_cave)</code>, gibt einen Integer-Höhlenindex zurück</li>
+<li>
+<code>input_shoot_or_move()</code>, gibt <code>"s"</code> für “schießen” und <code>"m"</code> für “bewegen” zurück.</li>
+<li>
+<code>input_distance()</code>, gibt eine Ganzzahl zwischen 1 und 5 zurück</li>
+<li>
+<code>next_arrow_cave(connected_caves, previous_cave)</code>, gibt einen Integer-Höhlenindex zurück</li>
+</ul>
+<p>Folgende Variablen:</p>
+<ul>
+<li>
+<code>player_location</code> : Höhlenindex</li>
+<li>
+<code>bottomless_pit</code>: Liste von Höhlenindizes</li>
+<li>
+<code>bats</code>: Liste von Höhlenindizes</li>
+<li>
+<code>wumpus</code>: Höhlenindex</li>
+<li>
+<code>remaining_arrows</code>: Ganzzahl der verbleibenden Pfeile</li>
+</ul>
+<p>Dienst-/temporäre Variablen:</p>
+<ul>
+<li>
+<code>occupied_caves</code>: Liste der Höhlenindizes</li>
+<li>
+<code>gameover_due_to_arrow</code> : gibt an, ob das Spiel vorbei ist, weil entweder der Wumpus oder der Spieler von einem Pfeil getroffen wurde</li>
+<li>
+<code>arrow</code>: Standort eines Pfeils, der ursprünglich auf die Wahl des Spielers basiert</li>
+<li>
+<code>shooting_distance</code>: Anzahl der Höhlen, die der Pfeil durchfliegen soll.</li>
+<li>andere pfeilbezogene temporäre Variablen</li>
+</ul>
+<pre><code>importiere die benötigten Bibliotheken
+
+importiere die benötigten Funktionen aus utils
+
+definiere KONSTANTEN
+
+platziere Spieler, bodenlose Gruben, Fledermäuse und Wumpus
+setze die Anzahl der verbleibenden Pfeile auf ARROWS_NUMBER
+setze die Variable gameover_due_to_arrow auf False
+
+während WAHR:
+    solange der Spieler schießen will und noch Pfeile hat:
+        frage nach der Höhle, auf die der Spieler schießen will  (speichere die Antwort in der Variable `arrow`)
+        frage, wie weit der Pfeil fliegen soll (speichere die Antwort in der Variable `shooting_distance`)
+        
+        lass in einer for-Schleife den Pfeil durch die Höhlen fliegen:
+            Wenn den Wumpus getroffen -&gt; Glückwunsch Spiel vorbei Nachricht, gameover_due_to_arrow = True und breche aus der Schleife aus
+            Wenn den Spieler getroffen -&gt; Oops Spiel vorbei Nachricht, gameover_due_to_arrow = True und breche aus der Schleife aus
+            bewege den Pfeil zur nächsten zufälligen Höhle (Funktion next_arrow_cave und Variable arrow)
+        verringere die Anzahl der verbleibenden Pfeile (Variable remaining_arrows)
+        
+    überprüfe, ob das Spiel aufgrund des Pfeils vorbei ist, breche aus der Schleife aus, falls das der Fall ist
+        
+    frage den Spieler, welche Höhle er betreten möchte und bewege den Spieler
+    
+    solange der Spieler in der Höhle mit den Fledermäusen ist: 
+        bewege den Spieler zu einer zufälligen Höhle
+    
+    überprüfe die bodenlosen Gruben (Spieler stirbt, breche aus der Schleife aus)
+    
+    wenn der Spieler in der gleichen Höhle wie der Wumpus ist:
+        wenn der Wumpus erschrocken ist
+            bewege den Wumpus zu einer zufälligen Höhle
+        sonst
+            der Spieler ist tot, bricht aus der Schleife aus</code></pre>
+<div class="infobox program">
+<p>Füge deinen Code in <em>code14.py</em> ein.</p>
+</div>
+</div>
+<div id="abschluss-1" class="section level2" number="9.26">
+<h2>
+<span class="header-section-number">9.26</span> Abschluss<a class="anchor" aria-label="anchor" href="#abschluss-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Gut gemacht, das war wirklich ein Abenteuer, diese Höhlen zu erkunden! Zippe und reiche ein.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="One-armed-bandit.html"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#hunt-the-wumpus"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
+<li><a class="nav-link" href="#kapitel-konzepte"><span class="header-section-number">9.1</span> Kapitel Konzepte</a></li>
+<li><a class="nav-link" href="#ein-h%C3%B6hlensystem"><span class="header-section-number">9.2</span> Ein Höhlensystem</a></li>
+<li><a class="nav-link" href="#herumwandern"><span class="header-section-number">9.3</span> Herumwandern</a></li>
+<li><a class="nav-link" href="#pr%C3%BCfen-ob-ein-wert-in-der-liste-istin-collection"><span class="header-section-number">9.4</span> Prüfen, ob ein Wert in der Liste ist[#in-collection]</a></li>
+<li><a class="nav-link" href="#g%C3%BCltigen-h%C3%B6hlenindex-pr%C3%BCfen"><span class="header-section-number">9.5</span> Gültigen Höhlenindex prüfen</a></li>
+<li><a class="nav-link" href="#%C3%BCberpr%C3%BCfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann"><span class="header-section-number">9.6</span> Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann</a></li>
+<li><a class="nav-link" href="#%C3%BCberpr%C3%BCfung-der-g%C3%BCltigen-ganzzahleneingabe"><span class="header-section-number">9.7</span> Überprüfung der gültigen Ganzzahleneingabe</a></li>
+<li><a class="nav-link" href="#den-code-in-einer-funktion-kapseln"><span class="header-section-number">9.8</span> Den Code in einer Funktion kapseln</a></li>
+<li><a class="nav-link" href="#sets"><span class="header-section-number">9.9</span> Mengen</a></li>
+<li><a class="nav-link" href="#die-belegung-von-h%C3%B6hlen-im-auge-behalten"><span class="header-section-number">9.10</span> Die Belegung von Höhlen im Auge behalten</a></li>
+<li><a class="nav-link" href="#platzieren-von-bodenlosen-gruben"><span class="header-section-number">9.11</span> Platzieren von bodenlosen Gruben</a></li>
+<li><a class="nav-link" href="#in-eine-bodenlose-grube-fallen"><span class="header-section-number">9.12</span> In eine bodenlose Grube fallen</a></li>
+<li><a class="nav-link" href="#warnung-vor-einer-bodenlosen-grube"><span class="header-section-number">9.13</span> Warnung vor einer bodenlosen Grube</a></li>
+<li><a class="nav-link" href="#platzierung-von-flederm%C3%A4usen-und-warnung-vor-ihnen"><span class="header-section-number">9.14</span> Platzierung von Fledermäusen und Warnung vor ihnen</a></li>
+<li><a class="nav-link" href="#der-spieler-wird-von-flederm%C3%A4usen-in-eine-zuf%C3%A4llige-h%C3%B6hle-transportiert"><span class="header-section-number">9.15</span> Der Spieler wird von Fledermäusen in eine zufällige Höhle transportiert</a></li>
+<li><a class="nav-link" href="#hinzuf%C3%BCgen-von-wumpus-und-vom-ihm-gefressen-werden."><span class="header-section-number">9.16</span> Hinzufügen von Wumpus (und vom ihm gefressen werden).</a></li>
+<li><a class="nav-link" href="#dem-spieler-eine-chance-geben."><span class="header-section-number">9.17</span> Dem Spieler eine Chance geben.</a></li>
+<li><a class="nav-link" href="#flug-eines-krummen-pfeils"><span class="header-section-number">9.18</span> Flug eines krummen Pfeils</a></li>
+<li><a class="nav-link" href="#zuf%C3%A4llige-h%C3%B6hle-aber-keine-u-turn"><span class="header-section-number">9.19</span> Zufällige Höhle, aber keine U-Turn</a></li>
+<li><a class="nav-link" href="#zur%C3%BCckgelegte-entfernung"><span class="header-section-number">9.20</span> Zurückgelegte Entfernung</a></li>
+<li><a class="nav-link" href="#ein-ziel-treffen"><span class="header-section-number">9.21</span> Ein Ziel treffen</a></li>
+<li><a class="nav-link" href="#bewegen-oder-schie%C3%9Fen"><span class="header-section-number">9.22</span> Bewegen oder schießen?</a></li>
+<li><a class="nav-link" href="#wie-weit"><span class="header-section-number">9.23</span> Wie weit?</a></li>
+<li><a class="nav-link" href="#input_cave_with_prompt"><span class="header-section-number">9.24</span> input_cave_with_prompt</a></li>
+<li><a class="nav-link" href="#alles-zusammenf%C3%BCgen"><span class="header-section-number">9.25</span> Alles zusammenfügen</a></li>
+<li><a class="nav-link" href="#abschluss-1"><span class="header-section-number">9.26</span> Abschluss</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/07-hunt-the-wumpus.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/07-hunt-the-wumpus.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-23.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

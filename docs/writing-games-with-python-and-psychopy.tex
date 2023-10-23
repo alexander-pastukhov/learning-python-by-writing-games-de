@@ -120,7 +120,7 @@
 
 \title{Lerne Python, indem du Spiele entwickels}
 \author{Alexander (Sasha) Pastukhov}
-\date{2023-10-16}
+\date{2023-10-23}
 
 \begin{document}
 \maketitle
@@ -1836,6 +1836,835 @@ Das mag für unseren einfachen Code nicht besonders nützlich aussehen, aber wen
 \section{Videospiele mit Video}\label{videospiele-mit-video}}
 
 Reiche deine Dateien ein und mach dich bereit für mehr Aufregung, denn wir wechseln zu ``richtigen'' Videospielen mit PsychoPy.
+
+\hypertarget{One-armed-bandit}{%
+\chapter{Einarmiger Bandit, aber mit Listen und Schleifen}\label{One-armed-bandit}}
+
+In diesem Kapitel werden wir das Spiel des Einarmigen Banditen mehrmals neu programmieren. Das ist vielleicht nicht die aufregendste Aussicht, aber es gibt uns ein einfaches Spiel, das du bereits zu programmieren weißt, sodass wir uns auf Listen und For-Schleifen konzentrieren können. Hol dir das \href{notebooks/One-armed\%20bandit.ipynb}{Übungsnotebook}, bevor wir starten.
+
+\hypertarget{konzepte-des-kapitels-3}{%
+\section{Konzepte des Kapitels}\label{konzepte-des-kapitels-3}}
+
+\begin{itemize}
+\tightlist
+\item
+  Speichern von vielen Elementen in \protect\hyperlink{lists}{Listen}.
+\item
+  Iterieren über Elemente mit der \protect\hyperlink{for-loop}{for} Schleife.
+\item
+  Erstellen eines \protect\hyperlink{range}{Bereichs} von Werten.
+\item
+  Schleifen über \protect\hyperlink{enumerate}{nummerierte} Indizes und Werte.
+\item
+  Listen erstellen mit \protect\hyperlink{list-comprehension}{Listenabstraktion}.
+\end{itemize}
+
+\hypertarget{lists}{%
+\section{Listen}\label{lists}}
+
+Bisher haben wir Variablen verwendet, um einzelne Werte zu speichern: die Wahl des Computers, die Vermutung des Spielers, die Anzahl der Versuche, das PsychoPy-Fensterobjekt usw. Aber manchmal müssen wir mehr als einen Wert verarbeiten. Dieses Problem hatten wir bereits im \protect\hyperlink{guess-the-number-ai}{computerbasierten Raten-der-Zahl} Spiel, als wir den verbleibenden Zahlenbereich speichern mussten. Wir haben das Problem gelöst, indem wir zwei Variablen verwendet haben, eine für die untere und eine für die obere Grenze. Allerdings ist klar, dass dieser Ansatz nicht gut skalierbar ist und manchmal wissen wir vielleicht nicht einmal, wie viele Werte wir speichern müssen. Die \href{https://docs.python.org/3/library/stdtypes.html\#lists}{Listen} von Python sind die Lösung für dieses Problem.
+
+Eine Liste ist eine veränderbare\footnote{Mehr dazu und zu Tupeln, den unveränderlichen Verwandten der Liste, später.} Sequenz von Elementen, auf die über ihren nullbasierten Index zugegriffen werden kann. Wenn du die Idee der \protect\hyperlink{variables}{Variablen-als-Box} fortschreitest, kannst du dir Listen als eine Box mit nummerierten Steckplätzen vorstellen. Um ein bestimmtes Stück zu speichern und abzurufen, musst du sowohl den \emph{Variablennamen} als auch den \emph{Index des Elements}, an dem du interessiert bist, in dieser Box kennen. Dann arbeitest du mit einer Variable-plus-Index auf genau dieselbe Weise wie mit einer normalen Variable, indem du auf ihren Wert zugreifst oder ihn änderst, genau wie vorher.
+
+Eine Liste wird durch eckige Klammern definiert \texttt{\textless{}variable\textgreater{}\ =\ {[}\textless{}wert1\textgreater{},\ \textless{}wert2\textgreater{},\ ...\ \textless{}wertN\textgreater{}{]}}. Auf einen einzelnen Platz innerhalb einer Liste wird ebenfalls über eckige Klammern zugegriffen \texttt{\textless{}variable\textgreater{}{[}\textless{}index\textgreater{}{]}}, wobei der Index wiederum \textbf{nullbasiert} ist\footnote{Das ist typisch für ``klassische'' Programmiersprachen, aber weniger für solche, die auf lineare Algebra / Data Science ausgerichtet sind. Sowohl Matlab als auch R verwenden einen indexbasierten Index, so dass du vorsichtig sein und überprüfen musst, ob du die richtigen Indizes verwendest.}. Das bedeutet, dass das \emph{erste} Element \texttt{variable{[}0{]}} ist und, wenn es \emph{N} Elemente in der Liste gibt, ist das letzte Element \texttt{variable{[}N-1{]}}. Du kannst die Gesamtzahl der Elemente in einer Liste herausfinden, indem du ihre Länge über eine spezielle \href{https://docs.python.org/3/library/functions.html\#len}{len()} Funktion erhältst. So kannst du auf das letzte Element über \texttt{variable{[}len(variable)-1{]}} zugreifen\footnote{Es gibt einen einfacheren Weg, dies zu tun, den du in Kürze lernen wirst.}. Beachte die \texttt{-1}: Wenn deine Liste 3 Elemente hat, ist der Index des letzten Elements 2, wenn sie 100 hat, dann 99, usw. Ich verbringe so viel Zeit damit, weil dies eine recht häufige Quelle von Verwirrung ist.
+
+Mache Übung \#1 um zu sehen, wie Listen definiert und indiziert werden.
+
+Listen erlauben dir auch, auf mehr als einen Slot/Index gleichzeitig zuzugreifen, und zwar über \href{https://docs.python.org/3/library/functions.html\#slice}{slicing}. Du kannst den Index der Elemente über die Notation \texttt{\textless{}start\textgreater{}:\textless{}stop\textgreater{}} angeben. Zum Beispiel gibt dir \texttt{x{[}1:3{]}} Zugang zu zwei Elementen mit den Indizes 1 und 2. Ja, \emph{zwei} Elemente: der Slicing-Index geht vom \texttt{start} bis \textbf{aber nicht einschließlich} zum \texttt{stop}. Wenn du also \emph{alle} Elemente einer Liste abrufen willst, musst du \texttt{x{[}0:length(x){]}} schreiben, und um nur das letzte Element zu bekommen, schreibst du immer noch \texttt{x{[}len(x)-1{]}}. Verwirrend? Ich denke schon! Ich verstehe die Logik, aber ich finde dieses stop-is-not-included Konzept gegenintuitiv und ich muss mich immer wieder bewusst daran erinnern. Leider ist dies die Standardmethode, um Zahlenfolgen in Python zu definieren, daher musst du dir dies merken.
+
+Mache Übung \#2, um die Intuition zu entwickeln.
+
+Beim Slicing kannst du entweder \texttt{start} oder \texttt{stop} weglassen. In diesem Fall geht Python davon aus, dass ein fehlendes \texttt{start} \texttt{0} bedeutet (der Index des ersten Elements) und ein fehlendes \texttt{stop} \texttt{len(\textless{}list\textgreater{})} bedeutet (also ist das letzte Element eingeschlossen). Wenn du \emph{beide} weglässt, z.B. \texttt{meine\_schönen\_zahlen{[}:{]}}, gibt es alle Werte zurück, da dies äquivalent zu \texttt{meine\_schönen\_zahlen{[}0:len(meine\_schönen\_zahlen){]}} ist.\footnote{Beachte, dass dies fast, aber nicht ganz das Gleiche ist wie einfach nur \texttt{meine\_schönen\_zahlen} zu schreiben, denn \texttt{meine\_schönen\_zahlen{[}:{]}} gibt eine \emph{andere} Liste mit \emph{identischem} Inhalt zurück. Der Unterschied ist subtil, aber wichtig und wir werden später darauf zurückkommen, wenn wir über veränderbare und unveränderbare Typen sprechen.}
+
+Mache Übung \#3.
+
+Du kannst auch \emph{negative} Indizes verwenden, die relativ zur Länge der Liste berechnet werden\footnote{Wenn du von R kommst, ist das negative Indexing in Python völlig anders.}. Wenn du zum Beispiel das \emph{letzte} Element der Liste abrufen willst, kannst du \texttt{meine\_schönen\_zahlen{[}len(meine\_schönen\_zahlen)-1{]}} oder einfach nur \texttt{meine\_schönen\_zahlen{[}-1{]}} sagen. Das vorletzte Element wäre \texttt{meine\_schönen\_zahlen{[}-2{]}}, usw. Du kannst negative Indizes für das Slicing verwenden, aber vergiss nicht den Haken \emph{einschließlich-dem-Start-aber-ausgenommen-dem-Stopp}: \texttt{meine\_schönen\_zahlen{[}:-1{]}} gibt alle Elemente außer dem letzten Element der Liste zurück, nicht die gesamte Liste!
+
+Mache Übung \#4.
+
+Das Slicing kann erweitert werden, indem ein \texttt{Schritt} über die Notation \texttt{start:stop:Schritt} angegeben wird. \texttt{Schritt} kann negativ sein, was ermöglicht, Indizes in umgekehrter Reihenfolge zu erstellen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{meine\_schönen\_zahlen }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{meine\_schönen\_zahlen[}\DecValTok{4}\NormalTok{:}\DecValTok{0}\NormalTok{:}\OperatorTok{{-}}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#\textgreater{} [5, 4, 3, 2]}
+\end{Highlighting}
+\end{Shaded}
+
+Aber du musst auf das Vorzeichen des Schritts achten. Wenn es in die falsche Richtung geht und \texttt{stop} nicht erreicht werden kann, gibt Python eine leere Liste zurück.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{meine\_schönen\_zahlen }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{meine\_schönen\_zahlen[}\DecValTok{4}\NormalTok{:}\DecValTok{0}\NormalTok{:}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#\textgreater{} []}
+\end{Highlighting}
+\end{Shaded}
+
+Schritte können mit ausgelassenen und negativen Indizes kombiniert werden. Um jedes \emph{ungerade} Element der Liste zu bekommen, schreibst du \texttt{meine\_schönen\_zahlen{[}::2{]}}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{meine\_schönen\_zahlen }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{meine\_schönen\_zahlen[::}\DecValTok{2}\NormalTok{]}
+\CommentTok{\#\textgreater{} [1, 3, 5, 7]}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#5.
+
+Wenn du versuchst, auf Indizes \emph{außerhalb} eines gültigen Bereichs zuzugreifen, wird Python einen \href{https://docs.python.org/3/library/exceptions.html\#IndexError}{IndexError}\footnote{Wenn du mit R und seiner laxen Haltung gegenüber Indizes vertraut bist, wirst du das sehr befriedigend finden.} auslösen. Wenn du also versuchst, das 6\textsuperscript{te} Element (Index 5) einer fünfelementigen Liste zu holen, wird ein einfacher und unmissverständlicher Fehler generiert. Wenn jedoch deine \emph{Scheibe} größer ist als der Bereich, wird sie ohne zusätzliche Warnung oder einen Fehler abgeschnitten. Daher wird für eine fünfelementige Liste \texttt{my\_pretty\_numbers{[}:6{]}} oder \texttt{my\_pretty\_numbers{[}:600{]}} beide alle Nummern zurückgeben (effektiv ist dies gleichwertig mit \texttt{my\_pretty\_numbers{[}:{]}}). Zudem, wenn die Scheibe leer ist (\texttt{2:2}, kann 2 nicht einschließen, weil es ein Stop-Wert ist, obwohl es auch von 2 aus startet) oder die gesamte Scheibe außerhalb des Bereichs liegt, wird Python eine leere Liste zurückgeben, wiederum wird weder eine Warnung noch ein Fehler generiert.
+
+Mache Übung \#6.
+
+In Python sind Listen dynamisch, daher kannst du immer Elemente hinzufügen oder entfernen, siehe \href{https://docs.python.org/3/tutorial/datastructures.html\#more-on-lists}{die Liste der Methoden}. Du kannst ein neues Element am Ende der Liste über die Methode \texttt{.append(\textless{}new\_value\textgreater{})} hinzufügen
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_pretty\_numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{my\_pretty\_numbers.append(}\DecValTok{10}\NormalTok{)}
+\NormalTok{my\_pretty\_numbers}
+\CommentTok{\#\textgreater{} [1, 2, 3, 4, 5, 6, 7, 10]}
+\end{Highlighting}
+\end{Shaded}
+
+Oder du kannst \texttt{insert(\textless{}index\textgreater{},\ \textless{}new\_value\textgreater{})} \emph{vor} einem Element mit diesem Index verwenden. Leider bedeutet dies, dass du einen beliebig großen Index verwenden kannst und es fügt einen neuen Wert als \emph{letztes} Element ein, ohne einen Fehler zu erzeugen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_pretty\_numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{my\_pretty\_numbers.insert(}\DecValTok{2}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{my\_pretty\_numbers.insert(}\DecValTok{500}\NormalTok{, }\DecValTok{20}\NormalTok{)}
+\NormalTok{my\_pretty\_numbers}
+\CommentTok{\#\textgreater{} [1, 2, 10, 3, 4, 5, 6, 7, 20]}
+\end{Highlighting}
+\end{Shaded}
+
+Du kannst ein Element mit seinem Index über \texttt{pop(\textless{}index\textgreater{})} entfernen, beachte, dass das Element auch \emph{zurückgegeben} wird. Wenn du den Index weglässt, entfernt \texttt{pop()} das \emph{letzte} Element der Liste. Hier kannst du nur gültige Indizes verwenden.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_pretty\_numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{my\_pretty\_numbers.pop(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{)}
+\CommentTok{\#\textgreater{} 7}
+\NormalTok{my\_pretty\_numbers.pop(}\DecValTok{3}\NormalTok{)}
+\CommentTok{\#\textgreater{} 4}
+\NormalTok{my\_pretty\_numbers}
+\CommentTok{\#\textgreater{} [1, 2, 3, 5, 6]}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#7.
+
+\hypertarget{neukonzeption-des-einarmigen-banditen-spiels-mit-listen}{%
+\section{Neukonzeption des Einarmigen Banditen-Spiels mit Listen}\label{neukonzeption-des-einarmigen-banditen-spiels-mit-listen}}
+
+Puh, das war \emph{viel} über Listen\footnote{Und wir haben gerade einmal an der Oberfläche gekratzt!}. Aber \href{https://de.wiktionary.org/wiki/work_hard,_play_hard}{Work hard, play hard}! Lass uns zum Einarmigen Banditen-Spiel zurückkehren, das du bereits implementiert hast, und es mithilfe von Listen neu gestalten. Letztere machen viel Sinn, wenn man mit mehreren Slots arbeitet. Erinnere dich an die Regeln: Du hast drei Slots mit \href{https://docs.python.org/3/library/random.html\#random.randint}{zufälligen Zahlen} zwischen 1 und 5, wenn alle drei Zahlen übereinstimmen, gibst du ``Drei Gleiche!'' aus, wenn nur zwei Zahlen übereinstimmen, druckst du ``Ein Paar!''. Implementiere dieses Spiel mit einer Liste anstelle von drei Variablen. In der ersten Version, verwende die Notation \texttt{\textless{}variable\textgreater{}\ =\ {[}\textless{}value1\textgreater{},\ \textless{}value2\textgreater{},\ ...,\ \textless{}valueN\textgreater{}{]}}, um sie zu definieren. Beachte außerdem, dass du bei der Verwendung von \protect\hyperlink{string-formatierung}{String-Formatierung} alle Werte in einem Tuple (eine eingefrorene Liste, mehr dazu in späteren Kapiteln) oder einer Liste übergibst. Die gute Nachricht: Deine drei Werte befinden sich in der Liste, daher kannst du sie für die String-Formatierung verwenden, denke nur an die Anzahl der Slots, die du innerhalb des Format-Strings definieren musst.
+
+Ich weiß, es wird verlockend sein, einfach den bereits implementierten Code zu kopieren und zu bearbeiten, aber wir sind hier, um zu lernen, daher empfehle ich dringend, ihn von Grund auf neu zu schreiben. Es ist ein sehr einfaches Programm, es neu zu machen ist sehr einfach, aber es hilft dir, mehr zu üben.
+
+Setze deinen Code in \emph{code01.py} um.
+
+Jetzt mache dasselbe, aber beginne mit einer leeren Liste und \href{https://docs.python.org/3/tutorial/datastructures.html\#more-on-lists}{füge} zufällige Zahlen hinzu.
+
+Setze deinen Code in \emph{code02.py} um.
+
+\hypertarget{for-loop}{%
+\section{For-Schleife}\label{for-loop}}
+
+In dem oben genannten Code mussten wir über drei Maulwürfe (Kreise) iterieren, die wir in einer Liste hatten. Python bietet dafür ein spezielles Werkzeug: eine
+\href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#for-statements}{For-Schleife}, die über die Elemente jeder Sequenz iteriert (unsere Liste ist eine Sequenz!). Hier ist ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{42}\NormalTok{]}
+\ControlFlowTok{for}\NormalTok{ a\_number }\KeywordTok{in}\NormalTok{ numbers:}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"Der Wert der Variable a\_number in dieser Iteration beträgt }\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{\%}\NormalTok{(a\_number))}
+\NormalTok{    a\_number }\OperatorTok{=}\NormalTok{ a\_number }\OperatorTok{+} \DecValTok{3}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"  Jetzt haben wir es um 3 erhöht: }\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{\%}\NormalTok{(a\_number))}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"  Jetzt verwenden wir es in einer Formel a\_number / 10: }\SpecialCharTok{\%g}\StringTok{"}\OperatorTok{\%}\NormalTok{(a\_number }\OperatorTok{/} \DecValTok{10}\NormalTok{))}
+\CommentTok{\#\textgreater{} Der Wert der Variable a\_number in dieser Iteration beträgt 2}
+\CommentTok{\#\textgreater{}   Jetzt haben wir es um 3 erhöht: 5}
+\CommentTok{\#\textgreater{}   Jetzt verwenden wir es in einer Formel a\_number / 10: 0.5}
+\CommentTok{\#\textgreater{} Der Wert der Variable a\_number in dieser Iteration beträgt 4}
+\CommentTok{\#\textgreater{}   Jetzt haben wir es um 3 erhöht: 7}
+\CommentTok{\#\textgreater{}   Jetzt verwenden wir es in einer Formel a\_number / 10: 0.7}
+\CommentTok{\#\textgreater{} Der Wert der Variable a\_number in dieser Iteration beträgt 42}
+\CommentTok{\#\textgreater{}   Jetzt haben wir es um 3 erhöht: 45}
+\CommentTok{\#\textgreater{}   Jetzt verwenden wir es in einer Formel a\_number / 10: 4.5}
+\end{Highlighting}
+\end{Shaded}
+
+Hier wird der Code innerhalb der \texttt{for}-Schleife dreimal wiederholt, weil es drei Elemente in der Liste gibt. Bei jeder Iteration wird der nächste Wert aus der Liste einer temporären Variable \texttt{a\_number} zugewiesen (siehe Ausgabe). Sobald der Wert einer Variablen zugewiesen ist, kannst du ihn wie jede andere Variable verwenden. Du kannst ihn ausgeben lassen (erster \texttt{print}), du kannst ihn ändern (zweite Zeile innerhalb der Schleife), seinen Wert verwenden, wenn du andere Funktionen aufrufst, usw. Um das besser zu würdigen, kopiere diesen Code in eine temporäre Datei (nenne sie \texttt{test01.py}), setze einen \protect\hyperlink{debugging}{Breakpoint} auf die erste \texttt{print} Anweisung und dann verwende \textbf{F10}, um durch die Schleife zu springen und zu sehen, wie sich der Wert der Variable \texttt{a\_number} bei jeder Iteration ändert und dann in der zweiten Zeile innerhalb der Schleife modifiziert wird.
+
+Beachte, dass du die gleiche \href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#break-and-continue-statements-and-else-clauses-on-loops}{break} Anweisung verwenden kannst wie bei der \href{https://docs.python.org/3/reference/compound_stmts.html\#the-while-statement}{while} Schleife.
+
+Mache Übung \#8.
+
+\hypertarget{verwendung-der-for-schleife-zur-erzeugung-von-slots}{%
+\section{Verwendung der For-Schleife zur Erzeugung von Slots}\label{verwendung-der-for-schleife-zur-erzeugung-von-slots}}
+
+Verwende die \href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#for-statements}{For-Schleife} zweimal. Zuerst, wenn du die drei Slots erstellst: Beginne mit einer leeren Liste und füge drei zufällige Nummern mit einer For-Schleife hinzu. Zweitens, beim Ausdrucken der Slots. Ich habe oben darauf hingewiesen, dass es einfacher ist, die Formatierung vorzunehmen, wenn man drei Werte in einer Liste hat, aber hier sollst du, um der Übung willen, jeden Slot separat mit einer For-Schleife ausdrucken.
+
+Setze deinen Code in \emph{code03.py} um.
+
+\hypertarget{range}{%
+\section{range() Funktion: Code N-mal wiederholen}\label{range}}
+
+Manchmal musst du den Code mehrmals wiederholen. Stelle dir zum Beispiel vor, dass du in einem Experiment 40 Versuche hast. Daher musst du den versuchsbezogenen Code 40 Mal wiederholen. Natürlich kannst du von Hand eine 40 Elemente lange Liste erstellen und darüber iterieren, aber Python hat dafür eine praktische \href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#the-range-function}{range()} Funktion. \texttt{range(N)} erzeugt N Ganzzahlen von 0 bis N-1 (gleiche Regel wie beim Slicing, dass bis zu, aber nicht einschließlich gilt), über die du in einer For-Schleife iterieren kannst.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ x }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{3}\NormalTok{):}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"Der Wert von x ist }\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{\%}\NormalTok{(x))}
+\CommentTok{\#\textgreater{} Der Wert von x ist 0}
+\CommentTok{\#\textgreater{} Der Wert von x ist 1}
+\CommentTok{\#\textgreater{} Der Wert von x ist 2}
+\end{Highlighting}
+\end{Shaded}
+
+Du kannst das Verhalten der \href{https://docs.python.org/3/library/stdtypes.html\#range}{range()} Funktion ändern, indem du einen Startwert und eine Schrittgröße angibst. Aber in ihrer einfachsten Form ist \texttt{range(N)} ein praktisches Werkzeug, um den Code so oft zu wiederholen. Beachte, dass du zwar immer eine temporäre Variable in einer \texttt{for} Schleife benötigst, sie manchmal aber überhaupt nicht verwendest. In solchen Fällen solltest du \texttt{\_} (Unterstrich) als Variablennamen verwenden, um anzuzeigen, dass sie nicht verwendet wird.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ \_ }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{2}\NormalTok{):}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"Ich werde zweimal wiederholt!"}\NormalTok{)}
+\CommentTok{\#\textgreater{} Ich werde zweimal wiederholt!}
+\CommentTok{\#\textgreater{} Ich werde zweimal wiederholt!}
+\end{Highlighting}
+\end{Shaded}
+
+Alternativ kannst du \texttt{range()} verwenden, um durch die Indizes einer Liste zu schleifen (denke daran, du kannst immer auf ein einzelnes Listenelement über \texttt{var{[}index{]}} zugreifen). Mache genau das\footnote{Beachte, das ist nicht eine \emph{bessere}, sondern eine \emph{alternative} Möglichkeit, dies zu tun.}! Ändere deinen Code so, dass du die \href{(https://docs.python.org/3/library/stdtypes.html\#range)}{range()} Funktion in der For-Schleife verwendest (wie kannst du die Anzahl der Iterationen, die du benötigst, aus der Länge der Liste berechnen?), verwende die temporäre Variable als \emph{Index} für die Liste, um jedes Element zu zeichnen\footnote{Stilhinweis: Wenn eine Variable ein \emph{Index} von etwas ist, neige ich dazu, sie \texttt{isomething} zu nennen. Wenn sie zum Beispiel einen Index zu einem aktuellen Maulwurf hält, würde ich sie \texttt{imole} nennen. Das ist \emph{meine} Art, das zu tun. Andere verwenden das \texttt{i\_} Präfix oder ein \texttt{\_i} Suffix. Aber so oder so, es ist eine nützliche Benennungskonvention. Denke daran, je einfacher es ist, die Bedeutung einer Variable aus ihrem Namen zu verstehen, desto einfacher ist es für dich, den Code zu lesen und zu ändern.}. Wenn du unsicher bist, setze einen Breakpoint innerhalb (oder kurz vor) der Schleife und schreite durch deinen Code, um zu verstehen, welche Werte eine temporäre Schleifenvariable erhält und wie sie verwendet wird.
+
+\hypertarget{informationen-zum-slot-index-hinzufuxfcgen}{%
+\section{Informationen zum Slot-Index hinzufügen}\label{informationen-zum-slot-index-hinzufuxfcgen}}
+
+In der vorherigen Version des Spiels hatten wir keine Möglichkeit, den Slot-Index anzugeben. Es ist zwar offensichtlich an der Reihenfolge im Ausdruck erkennbar, aber es wäre schöner, wenn wir explizit \texttt{"Slot\ \#1:\ 2"} ausdrucken würden. Verwende die Funktion \href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#the-range-function}{range()} um Indizes von Slots zu generieren, schlaufe über diese Indizes und drucke sie in ``Slot \# : '' aus. Beachte jedoch, dass die Indizes in Python bei Null beginnen, unsere Slots aber bei 1 starten (kein Slot Null!). Überlege dir, wie du dies in einem Ausdruck korrigieren könntest.
+
+Gib deinen Code in \emph{code04.py} ein.
+
+\hypertarget{enumerate}{%
+\section{Über Index und Element gleichzeitig schleifen mit Listenaufzählung}\label{enumerate}}
+
+Es passiert ziemlich oft, dass du sowohl über die Indizes als auch über die Elemente einer Liste schleifen musst, daher hat Python eine praktische Funktion dafür: \href{https://docs.python.org/3/library/functions.html\#enumerate}{enumerate()}! Wenn du anstelle einer Liste über \href{https://docs.python.org/3/library/functions.html\#enumerate}{enumerate()} iterierst, erhältst du ein Tupel mit \texttt{(Index,\ Wert)}. Hier ist ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{letters }\OperatorTok{=}\NormalTok{ [}\StringTok{\textquotesingle{}a\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}c\textquotesingle{}}\NormalTok{]}
+\ControlFlowTok{for}\NormalTok{ index, letter }\KeywordTok{in} \BuiltInTok{enumerate}\NormalTok{(letters):}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}}\SpecialCharTok{\%d}\StringTok{: }\SpecialCharTok{\%s}\StringTok{\textquotesingle{}}\OperatorTok{\%}\NormalTok{(index, letter))}
+\CommentTok{\#\textgreater{} 0: a}
+\CommentTok{\#\textgreater{} 1: b}
+\CommentTok{\#\textgreater{} 2: c}
+\end{Highlighting}
+\end{Shaded}
+
+Verwende \href{https://docs.python.org/3/library/functions.html\#enumerate}{enumerate}, um gleichzeitig über den Index und das Element zu schleifen und einen Slot nach dem anderen auszudrucken. Sieh dir den \texttt{start} Parameter der Funktion an, um sicherzustellen, dass dein Index jetzt bei 1 beginnt.
+
+Gib deinen Code in \emph{code05.py} ein.
+
+\hypertarget{list-comprehension}{%
+\section{List Comprehension}\label{list-comprehension}}
+
+Die List Comprehension bietet eine elegante und leicht zu lesende Möglichkeit, Elemente einer Liste zu erzeugen, zu ändern und/oder zu filtern und dabei eine neue Liste zu erstellen. Die allgemeine Struktur lautet
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{new\_list }\OperatorTok{=}\NormalTok{ [}\OperatorTok{\textless{}}\NormalTok{Transformation}\OperatorTok{{-}}\NormalTok{des}\OperatorTok{{-}}\NormalTok{Elements}\OperatorTok{\textgreater{}} \ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ old\_list }\ControlFlowTok{if} \OperatorTok{\textless{}}\NormalTok{Bedingung}\OperatorTok{{-}}\NormalTok{gegeben}\OperatorTok{{-}}\NormalTok{das}\OperatorTok{{-}}\NormalTok{Element}\OperatorTok{\textgreater{}}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Schauen wir uns Beispiele an, um zu verstehen, wie es funktioniert. Stell dir vor, du hast eine Liste \texttt{numbers\ =\ {[}1,\ 2,\ 3{]}} und du musst jede Zahl um 1 erhöhen\footnote{Ein sehr willkürliches Beispiel!}. Du kannst es machen, indem du eine neue Liste erstellst und 1 zu jedem Element im Teil hinzufügst:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_plus\_1 }\OperatorTok{=}\NormalTok{ [item }\OperatorTok{+} \DecValTok{1} \ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers]}
+\end{Highlighting}
+\end{Shaded}
+
+Beachte, dass dies äquivalent ist zu
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_plus\_1 }\OperatorTok{=}\NormalTok{ []}
+\ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers:}
+\NormalTok{    numbers\_plus\_1.append(item }\OperatorTok{+} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Oder stelle dir vor, du musst jedes Element in einen String umwandeln. Das kannst du einfach so machen
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_as\_strings }\OperatorTok{=}\NormalTok{ [}\BuiltInTok{str}\NormalTok{(item) }\ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers]}
+\end{Highlighting}
+\end{Shaded}
+
+Wie wäre die äquivalente Form mit einer normalen for-Schleife? Schreibe beide Versionen des Codes in Jupiter cells und überprüfe, ob die Ergebnisse gleich sind.
+
+Mache Übung \#9 im Jupyter Notebook.
+
+Implementiere nun den unten stehenden Code mit Hilfe der List Comprehension. Überprüfe, ob die Ergebnisse übereinstimmen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{strings }\OperatorTok{=}\NormalTok{ [}\StringTok{\textquotesingle{}1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}3\textquotesingle{}}\NormalTok{]}
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ []}
+\ControlFlowTok{for}\NormalTok{ astring }\KeywordTok{in}\NormalTok{ strings:}
+\NormalTok{    numbers.append(}\BuiltInTok{int}\NormalTok{(astring) }\OperatorTok{+} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#10 im Jupyter Notebook.
+
+Wie oben bemerkt, kannst du auch eine bedingte Anweisung verwenden, um zu filtern, welche Elemente an die neue Liste weitergegeben werden. In unserem Zahlenbeispiel können wir Zahlen beibehalten, die größer als 1 sind
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_greater\_than\_1 }\OperatorTok{=}\NormalTok{ [item }\ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers }\ControlFlowTok{if}\NormalTok{ item }\OperatorTok{\textgreater{}} \DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Manchmal wird die gleiche Aussage in drei Zeilen statt in einer geschrieben, um das Lesen zu erleichtern:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_greater\_than\_1 }\OperatorTok{=}\NormalTok{ [item }
+                          \ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers}
+                          \ControlFlowTok{if}\NormalTok{ item }\OperatorTok{\textgreater{}} \DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Natürlich kannst du die Transformation und Filterung in einer einzigen Aussage kombinieren. Schreibe einen Code, der alle Elemente unter 2 herausfiltert und 4 zu ihnen hinzufügt.
+
+Mache Übung \#11 im Jupyter Notebook.
+
+\hypertarget{verwendung-von-list-comprehension-zur-erstellung-von-drei-slots}{%
+\section{Verwendung von List Comprehension zur Erstellung von drei Slots}\label{verwendung-von-list-comprehension-zur-erstellung-von-drei-slots}}
+
+Lass uns List Comprehension verwenden, um in einer einzigen Zeile drei Slots zu erstellen. Die gute Nachricht ist, dass wir uns das Erstellen einer leeren Liste und die Verwendung von \texttt{append} ersparen. Die schlechte Nachricht ist, dass du darüber nachdenken musst, über welche Werte du schleifen möchtest, wenn du drei Zufallszahlen erzeugen willst. Tipp: schau dir die Funktion \protect\hyperlink{range}{range()} erneut an und überlege, ob du die temporäre Schleifenvariable tatsächlich verwenden wirst.
+
+Gib deinen Code in \emph{code06.py} ein.
+
+\hypertarget{fertig-fuxfcr-den-tag}{%
+\section{Fertig für den Tag}\label{fertig-fuxfcr-den-tag}}
+
+Ausgezeichnet! Verpacke den Ordner mit dem Code und dem Notebook in eine Zip-Datei und reiche sie ein!
+
+\hypertarget{hunt-the-wumpus}{%
+\chapter{Jagd auf den Wumpus}\label{hunt-the-wumpus}}
+
+Heute werden wir ein Text-Abenteuer-Computerspiel \href{https://en.wikipedia.org/wiki/Hunt_the_Wumpus}{Jagd auf den Wumpus} programmieren: ``Im Spiel bewegt sich der Spieler durch eine Reihe von miteinander verbundenen Höhlen, die in einem Dodekaeder angeordnet sind, während sie ein Monster namens Wumpus jagen. Das rundenbasierte Spiel hat den Spieler versucht, tödliche bodenlose Gruben und''super Fledermäuse'' zu vermeiden, die sie durch das Höhlensystem bewegen; das Ziel ist es, einen ihrer ``krummen Pfeile'' durch die Höhlen zu schießen, um den Wumpus zu töten\ldots''
+
+Wie zuvor werden wir mit einem sehr einfachen Programm beginnen und es Schritt für Schritt zur endgültigen Version ausbauen. Der Zweck dieses Kapitels ist es, die Fähigkeiten, die du bereits hast, zu festigen, indem du sie in einem komplexeren Spiel mit mehreren Funktionen, Spielobjekten usw. anwendest. Vergiss nicht, die gesamte Datei zu kommentieren (oberer mehrzeiliger Kommentar, um zu erklären, worum es hier geht), strukturiere deinen Code, kommentiere einzelne Abschnitte und verwende sinnvolle Variablen- und Funktionsnamen. Deine Codekomplexität wird ziemlich hoch sein, daher wirst du den guten Stil benötigen, um dir dabei zu helfen.
+
+Hol dir das \href{notebooks/Hunt\%20the\%20Wumpus.ipynb}{Übungsnotebook}, bevor wir starten.
+
+\hypertarget{kapitel-konzepte}{%
+\section{Kapitel Konzepte}\label{kapitel-konzepte}}
+
+\begin{itemize}
+\tightlist
+\item
+  Verwenden von \protect\hyperlink{sets}{sets}.
+\end{itemize}
+
+\hypertarget{ein-huxf6hlensystem}{%
+\section{Ein Höhlensystem}\label{ein-huxf6hlensystem}}
+
+In unserem Spiel wird der Spieler durch ein System von Höhlen wandern, wobei jede Höhle mit drei anderen Höhlen verbunden ist. Das Layout der Höhle wird eine \emph{KONSTANTE} sein, daher definieren wir es zu Beginn des Programms wie folgt.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CONNECTED\_CAVES }\OperatorTok{=}\NormalTok{ [[}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{], [}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{7}\NormalTok{], [}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{9}\NormalTok{], [}\DecValTok{4}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{11}\NormalTok{], }
+\NormalTok{                   [}\DecValTok{0}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{13}\NormalTok{], [}\DecValTok{6}\NormalTok{, }\DecValTok{14}\NormalTok{, }\DecValTok{0}\NormalTok{], [}\DecValTok{7}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{15}\NormalTok{], [}\DecValTok{8}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{1}\NormalTok{], }
+\NormalTok{                   [}\DecValTok{9}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{16}\NormalTok{], [}\DecValTok{10}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{2}\NormalTok{], [}\DecValTok{11}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{17}\NormalTok{], [}\DecValTok{12}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{3}\NormalTok{], }
+\NormalTok{                   [}\DecValTok{13}\NormalTok{, }\DecValTok{11}\NormalTok{, }\DecValTok{18}\NormalTok{], [}\DecValTok{14}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{4}\NormalTok{], [}\DecValTok{5}\NormalTok{, }\DecValTok{13}\NormalTok{, }\DecValTok{19}\NormalTok{], [}\DecValTok{16}\NormalTok{, }\DecValTok{19}\NormalTok{, }\DecValTok{6}\NormalTok{], }
+\NormalTok{                   [}\DecValTok{17}\NormalTok{, }\DecValTok{15}\NormalTok{, }\DecValTok{8}\NormalTok{], [}\DecValTok{18}\NormalTok{, }\DecValTok{16}\NormalTok{, }\DecValTok{10}\NormalTok{], [}\DecValTok{19}\NormalTok{, }\DecValTok{17}\NormalTok{, }\DecValTok{12}\NormalTok{], [}\DecValTok{15}\NormalTok{, }\DecValTok{18}\NormalTok{, }\DecValTok{14}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+Lassen uns das entschlüsseln. Du hast eine Liste von zwanzig Elementen (Höhlen). Innerhalb jeden Elements ist eine Liste von verbundenen Höhlen (Höhlen, zu denen du reisen kannst). Das bedeutet, dass du, wenn du in Höhle Nr. 1 (Index \texttt{0}) bist, verbunden bist mit \texttt{CONNECTED\_CAVES{[}0{]}} → \texttt{{[}1,\ 4,\ 5{]}} (beachte, dass auch diese Zahlen im Inneren nullbasierte Indizes sind!). Um also zu sehen, welchen Index die zweite mit der ersten verbundene Höhle hat, würdest du \texttt{CONNECTED\_CAVES{[}0{]}{[}1{]}} schreiben (du erhältst das erste Element der Liste und dann das zweite Element der Liste aus dem Inneren).
+
+Um dem Spieler das Herumwandern zu ermöglichen, müssen wir zunächst wissen, wo er sich befindet. Lass uns eine neue Variable namens \texttt{player\_location} definieren und einen zufälligen vordefinierten Index zuweisen. Denke über den niedrigsten gültigen Index nach, den du in Python haben kannst (diesen musst du fest verdrahten). Um den höchstmöglichen gültigen Index zu berechnen, musst du die Gesamtzahl der Höhlen kennen, d.h., die Länge - \href{https://docs.python.org/3/library/functions.html\#len}{len()} - der Liste. Denke daran, dass die Indizes in Python nullbasiert sind, also überlege, wie du den höchsten gültigen Index aus der Länge berechnest! Nutze diese beiden Indizes und setze den Spieler in eine zufällige Höhle. Hierfür kannst du die Funktion \href{https://docs.python.org/3/library/random.html\#random.randint}{randint} verwenden. Schau in den vorherigen Kapiteln nach, falls du vergessen hast, wie man sie benutzt.
+
+Unser Spieler muss wissen, wohin er gehen kann, also müssen wir in jeder Runde die Informationen darüber ausgeben, in welcher Höhle sich der Spieler befindet und über die verbindende Höhle (verwende \protect\hyperlink{string-formatting}{String-Formatierung}, um dies schön aussehen zu lassen). Lass uns das unser erster Code-Ausschnitt für das Spiel sein. Der Code sollte so aussehen
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Import randint}
+
+\CommentTok{\# Definiere CONNECTED\_CAVES (einfach die Definition kopieren und einfügen)}
+
+\CommentTok{\# Erstelle Variable \textasciigrave{}player\_location\textasciigrave{} und weise ihr einen zufälligen gültigen Index zu }
+\CommentTok{\# Spieler in eine zufällige Höhle setzen}
+
+\CommentTok{\# Ausgabe des aktuellen Höhlenindexes und der Indizes der verbundenen Höhlen. Verwende String{-}Formatierung.}
+\end{Highlighting}
+\end{Shaded}
+
+Füge deinen Code in \emph{code01.py} ein.
+
+\hypertarget{herumwandern}{%
+\section{Herumwandern}\label{herumwandern}}
+
+Jetzt, da der Spieler ``sehen'' kann, wo er sich befindet, lass ihn herumwandern! Verwende die Funktion \texttt{input()}, um den Index der Höhle abzufragen, in die der Spieler gehen möchte, und ``bewege'' den Spieler in diese Höhle (welche Variable musst du ändern?). Denke daran, dass \texttt{input()} einen String zurückgibt, daher musst du ihn explizit in eine Ganzzahl umwandeln (siehe das \protect\hyperlink{guess-the-number-single-round}{Zahlenraten} Spiel, wenn du vergessen hast, wie man das macht). Gib vorerst nur gültige Zahlen ein, da wir später Überprüfungen hinzufügen werden. Um das Herumwandern kontinuierlich zu gestalten, setze es in eine \protect\hyperlink{while-loop}{While-Schleife}, sodass der Spieler herumwandert, bis er zur Höhle Nr. 5 (Index \texttt{4}!) gelangt. Wir werden später sinnvollere Spiel-Ende-Bedingungen haben, aber dies ermöglicht es dir, das Spiel zu beenden, ohne es von außen zu unterbrechen. Der Code sollte wie folgt aussehen (achte auf deine Einrückungen!).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# import randint function}
+
+\CommentTok{\# define CONNECTED\_CAVES (simply copy{-}paste the definition)}
+
+\CommentTok{\# create \textasciigrave{}player\_location\textasciigrave{} variable and set it to a random valid cave index}
+
+\CommentTok{\# solange der Spieler nicht in der Höhle Nr. 5 ist (Index 4):}
+    \CommentTok{\# Ausgabe des aktuellen Standorts und Liste der verbundenen Höhlen. Verwende String{-}Formatierung.}
+    \CommentTok{\# Eingabeaufforderung, in welche Höhle der Spieler gehen möchte und "verschiebung" des Spielers}
+    
+\CommentTok{\# Ausgabe einer schönen Game{-}Over{-}Nachricht}
+\end{Highlighting}
+\end{Shaded}
+
+Füge deinen Code in \emph{code02.py} ein.
+
+\hypertarget{pruxfcfen-ob-ein-wert-in-der-liste-istin-collection}{%
+\section{\texorpdfstring{Prüfen, ob ein Wert \emph{in} der Liste ist{[}\#in-collection{]}}{Prüfen, ob ein Wert in der Liste ist{[}\#in-collection{]}}}\label{pruxfcfen-ob-ein-wert-in-der-liste-istin-collection}}
+
+Momentan vertrauen wir dem Spieler (naja, dir), den korrekten Index für die Höhle einzugeben. Daher wird das Programm den Spieler zu einer neuen Höhle versetzen, selbst wenn du einen Index einer Höhle eingibst, die nicht mit der aktuellen verbunden ist. Noch schlimmer ist, dass es versuchen wird, den Spieler zu einer undefinierten Höhle zu versetzen, wenn du einen Index größer als 19 eingibst. Um zu prüfen, ob ein eingegebener Index mit einer der verbundenen Höhlen übereinstimmt, musst du die bedingte Anweisung \href{https://docs.python.org/3/tutorial/datastructures.html\#more-on-conditions}{ in } verwenden. Die Idee ist einfach, wenn der Wert in der Liste ist, ist die Aussage \texttt{True}, wenn nicht, ist sie \texttt{False}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\BuiltInTok{print}\NormalTok{(}\DecValTok{1} \KeywordTok{in}\NormalTok{ x)}
+\CommentTok{\#\textgreater{} True}
+\BuiltInTok{print}\NormalTok{(}\DecValTok{4} \KeywordTok{in}\NormalTok{ x)}
+\CommentTok{\#\textgreater{} False}
+\end{Highlighting}
+\end{Shaded}
+
+Beachte, dass du jeweils \emph{einen} Wert/Objekt prüfen kannst. Da eine Liste auch ein einzelnes Objekt ist, prüfst du, ob sie ein Element der anderen Liste ist, und nicht, ob alle oder einige ihrer Elemente darin enthalten sind.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, [}\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{]]}
+\CommentTok{\# Das ist Falsch, weil x kein Element [1, 2] hat, sondern nur 1 und 2 (getrennt voneinander).}
+\BuiltInTok{print}\NormalTok{([}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{] }\KeywordTok{in}\NormalTok{ x)}
+\CommentTok{\#\textgreater{} False}
+
+\CommentTok{\# Das ist wahr, weil x das Element [3, 4] hat.}
+\BuiltInTok{print}\NormalTok{([}\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{] }\KeywordTok{in}\NormalTok{ x)}
+\CommentTok{\#\textgreater{} True}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#1.
+
+\hypertarget{guxfcltigen-huxf6hlenindex-pruxfcfen}{%
+\section{Gültigen Höhlenindex prüfen}\label{guxfcltigen-huxf6hlenindex-pruxfcfen}}
+
+Jetzt, da du weißt, wie man prüft, ob ein Wert in der Liste ist, lass uns das verwenden, um den Höhlenindex zu validieren. Bevor du den Spieler bewegst, musst du jetzt prüfen, ob der eingegebene Index in der Liste der verbundenen Höhlen enthalten ist. Wenn dies \texttt{True} ist, bewegst du den Spieler wie zuvor. Andernfalls gib eine Fehlermeldung aus, z. B. ``Falscher Höhlenindex!'' ohne den Spieler zu bewegen. Die Schleife stellt sicher, dass der Spieler erneut zur Eingabe aufgefordert wird, sodass wir uns darüber im Moment keine Sorgen machen müssen. Hier musst du eine temporäre Variable erstellen, um die Eingabe des Spielers zu speichern, da du ihre Gültigkeit prüfen musst \emph{bevor} du entscheidest, ob du den Spieler bewegst. Du machst das Letztere nur, wenn der Wert in dieser temporären Variable ein Index einer der verbundenen Höhlen ist!
+
+Ändere deinen Code, um die Überprüfung der Eingabegültigkeit einzuschließen.
+
+Füge deinen Code in \emph{code03.py} ein.
+
+\hypertarget{uxfcberpruxfcfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann}{%
+\section{Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann}\label{uxfcberpruxfcfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann}}
+
+Es gibt eine weitere Gefahr bei unserer Eingabe: Der Spieler ist nicht garantiert eine gültige Ganzzahl einzugeben! Bisher haben wir uns darauf verlassen, dass du dich benimmst, aber im wirklichen Leben werden die Leute, selbst wenn sie nicht absichtlich versuchen, dein Programm zu stören, gelegentlich die falsche Taste drücken. Daher müssen wir überprüfen, ob die \emph{Zeichenfolge}, die sie eingegeben haben, in eine \emph{Ganzzahl} umgewandelt werden kann.
+
+Die Python-Zeichenkette ist ein Objekt (mehr dazu in ein paar Kapiteln) mit verschiedenen Methoden, die es ermöglichen, verschiedene Operationen an ihnen durchzuführen. Eine Teilmenge von Methoden ermöglicht es dir, eine grobe Überprüfung ihres Inhalts durchzuführen. Die Methode, die uns interessiert, ist \href{https://docs.python.org/3/library/stdtypes.html\#str.isdigit}{str.isdigit()}, die überprüft, ob alle Symbole Ziffern sind und dass die Zeichenfolge nicht leer ist (sie hat mindestens ein Symbol). Du kannst dem obigen Link folgen, um andere Alternativen wie \texttt{str.islower()}, \texttt{str.isalpha()}, usw. zu überprüfen.
+
+Mache Übung \#2.
+
+\hypertarget{uxfcberpruxfcfung-der-guxfcltigen-ganzzahleneingabe}{%
+\section{Überprüfung der gültigen Ganzzahleneingabe}\label{uxfcberpruxfcfung-der-guxfcltigen-ganzzahleneingabe}}
+
+Ändere den Code, der die Eingabe vom Benutzer erhält. Speichere zuerst die rohe Zeichenkette (nicht in eine Ganzzahl umgewandelt!) in einer Zwischenvariable. Wenn diese Zeichenkette dann nur aus Ziffern besteht, konvertiere sie in eine Ganzzahl und überprüfe dann, ob es sich um einen gültigen verbundenen Höhlenindex handelt (Verschieben des Spielers oder Ausgeben einer Fehlermeldung). Wenn die Eingabezeichenkette jedoch nicht nur aus Ziffern besteht, gib nur die Fehlermeldung aus (``Ungültiger Höhlenindex!''). Dies bedeutet, dass du eine if-Anweisung in der if-Anweisung haben musst!
+
+Füge deinen Code in \emph{code04.py} ein.
+
+\hypertarget{den-code-in-einer-funktion-kapseln}{%
+\section{Den Code in einer Funktion kapseln}\label{den-code-in-einer-funktion-kapseln}}
+
+Dein Code ist bereits in seiner Komplexität gewachsen, mit zwei Überprüfungen auf einer Eingabefunktion, daher macht es Sinn, diese Komplexität zu verbergen, indem man ihn in einer Funktion kapselt. Nennen wir es \texttt{input\_cave}, da es nur eine Eingabe für einen gültigen Index einer verbundenen Höhle sein wird. Du hast bereits den gesamten Code, den du brauchst, aber denke darüber nach, welchen Parameter (oder welche Parameter?) es benötigt: Du kannst nicht direkt auf die globale Konstante \texttt{CONNECTED\_CAVES} oder die globale Variable \texttt{player\_location} zugreifen!
+
+Lege die Funktion in eine separate \texttt{utils.py} Datei, dokumentiere sowohl die Datei als auch die Funktion! Importiere und verwende sie im Hauptskript. Dein Programm sollte \emph{genau} wie zuvor laufen!
+
+Lege \texttt{input\_cave} in \emph{utils.py} ab.
+Aktualisiere deinen Code in \emph{code05.py}.
+
+\hypertarget{sets}{%
+\section{Mengen}\label{sets}}
+
+Bisher hatten wir nur den Spieler im Auge und wir haben das getan, indem wir seinen Standort in der Variable \texttt{player\_location} gespeichert haben. Da wir jedoch mehr Spielobjekte hinzufügen werden (bodenlose Gruben, Fledermäuse, den Wumpus), müssen wir den Überblick behalten, wer-wo-ist, damit wir sie nicht in einer bereits besetzten Höhle platzieren. Wir werden dies als Gelegenheit nutzen, um etwas über \href{https://docs.python.org/3/library/stdtypes.html\#set-types-set-frozenset}{sets} zu lernen: eine \emph{ungeordnete} Sammlung von \emph{einzigartigen} Elementen. Diese sind eine Implementierung von \href{https://de.wikipedia.org/wiki/Menge_(Mathematik)}{mathematischen Mengen} und haben Eigenschaften, die für unsere notwendige Buchhaltung nützlich sind. Du erstellst eine Menge über die Funktion \href{https://docs.python.org/3/library/stdtypes.html\#set}{set()} und es kann entweder eine leere Menge sein (zu der du \texttt{.add()} hinzufügen kannst) oder es kann eine Liste (oder ein Tupel) in eine Menge umwandeln, aber es wird alle Duplikate entfernen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Beginnen mit einer leeren Menge}
+\NormalTok{a\_set }\OperatorTok{=} \BuiltInTok{set}\NormalTok{()}
+\NormalTok{a\_set.add(}\DecValTok{1}\NormalTok{)}
+\BuiltInTok{print}\NormalTok{(a\_set)}
+\CommentTok{\#\textgreater{} \{1\}}
+\NormalTok{a\_set.intersection()}
+\CommentTok{\#\textgreater{} \{1\}}
+
+\CommentTok{\# Umwandlung einer Liste in eine Menge}
+\BuiltInTok{print}\NormalTok{(}\BuiltInTok{set}\NormalTok{([}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]))}
+\CommentTok{\#\textgreater{} \{1, 2, 3\}}
+\end{Highlighting}
+\end{Shaded}
+
+Wenn du zwei Mengen hast, kannst du verschiedene Operationen durchführen, um die \href{https://docs.python.org/3/library/stdtypes.html\#frozenset.union}{Vereinigung}, \href{https://docs.python.org/3/library/stdtypes.html\#frozenset.intersection}{Schnittmenge}oder \href{https://docs.python.org/3/library/stdtypes.html\#frozenset.difference}{Differenz} zwischen zwei Mengen zu finden (siehe \emph{Grundlegende Operationen} in der \href{https://de.wikipedia.org/wiki/Menge_(Mathematik)}{Wikipedia}.
+
+Mache Übung \#3.
+
+Beachte bitte, dass die Menge \emph{nicht geordnet} ist, so dass du nicht auf ihre einzelnen Elemente zugreifen kannst. Allerdings kannst du genauso wie bei Listen überprüfen, ob ein Wert in der Menge ist.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a\_set }\OperatorTok{=} \BuiltInTok{set}\NormalTok{([}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{3}\NormalTok{])}
+\DecValTok{3} \KeywordTok{in}\NormalTok{ a\_set}
+\CommentTok{\#\textgreater{} True}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{die-belegung-von-huxf6hlen-im-auge-behalten}{%
+\section{Die Belegung von Höhlen im Auge behalten}\label{die-belegung-von-huxf6hlen-im-auge-behalten}}
+
+Jetzt, da du Mengen kennst, wird es leicht sein, den Überblick über die belegten Höhlen zu behalten. Im globalen Skript benötigen wir eine Variable, die die Indizes aller belegten Höhlen in einer \protect\hyperlink{sets}{Menge} enthält (du startest mit einer leeren Menge, da alle Höhlen anfangs leer sind). Außerdem benötigen wir eine Funktion, die einen gültigen Index für eine freie Höhle generiert. Dies basiert auf 1) dem Bereich der gültigen Indizes (denke darüber nach, wie du diese Informationen am wirtschaftlichsten an die Funktion weitergeben kannst, du kommst mit nur einer Ganzzahl aus) und 2) den Indizes der bereits belegten Höhlen (wir haben das in der globalen Variable, die du definierst, aber du kannst auf diese Variable \emph{nicht} direkt zugreifen, also \emph{musst} du diese Information als Parameter übergeben!).
+
+Wir werden diese Funktion zweimal schreiben. Zunächst verwenden wir eine Brute-Force-Methode, um eine freie Höhle zu finden: Erzeuge einfach in einer Schleife einen gültigen zufälligen Index, bis er \emph{nicht} in der Menge der belegten Höhlen ist. Da er es nicht ist, handelt es sich um eine gültige freie Höhle, also solltest du die Schleife verlassen und diesen Wert zurückgeben. Nenne diese Funktion \texttt{find\_vacant\_cave\_bruteforce}, implementiere und dokumentiere sie in \texttt{utils.py}, teste sie, indem du sie in ein Jupiter-Notebook kopierst und mehrmals mit verschiedenen fest codierten Mengen von belegten Höhlen ausführst. Überprüfen, dass die gültige Höhle nie in der Menge der belegten Höhlen ist.
+
+Lege \texttt{find\_vacant\_cave\_bruteforce} in \emph{utils.py} ab.
+Teste es in Übung 4.
+
+Die Funktion, die du geschrieben hast, funktioniert, ist aber sehr ineffizient und kann ziemlich problematisch sein, wenn unsere Menge an belegten Höhlen lang ist, da du viele Versuche benötigst, bevor du zufällig eine freie findest. Wir können das besser machen, indem wir Mengenoperationen verwenden: Wir können \href{https://docs.python.org/3/library/functions.html\#func-range}{range} generieren, es in eine Menge umwandeln, belegte Höhlen davon \href{https://docs.python.org/3/tutorial/datastructures.html\#sets}{subtrahieren} (das ergibt eine Menge von unbesetzten Höhlen) und dann einen Wert \href{https://docs.python.org/3/library/random.html\#random.choice}{auswählen} (beachte aber, dass du dafür eine Menge in eine \href{https://docs.python.org/3/library/stdtypes.html\#list}{Liste} umwandeln musst!). Im letzten Schritt wählen wir zufällig, aber \emph{nur} aus freien Höhlen, so dass wir keine Schleifen und mehrere Versuche benötigen, um es richtig zu machen.
+
+Implementiere die Funktion \texttt{find\_vacant\_cave} und teste sie mit dem gleichen Code wie zuvor. Du solltest immer nur einen gültigen Index für eine freie Höhle erhalten.
+
+Lege \texttt{find\_vacant\_cave} in \emph{utils.py} ab.
+Teste es in Übung 5.
+
+\hypertarget{platzieren-von-bodenlosen-gruben}{%
+\section{Platzieren von bodenlosen Gruben}\label{platzieren-von-bodenlosen-gruben}}
+
+Jetzt, da wir das Gerüst haben, fügen wir bodenlose Gruben hinzu. Die Idee ist einfach, wir platzieren zwei davon in zufälligen \emph{freien} Höhlen. Wenn der Spieler in eine Höhle mit einer bodenlosen Grube stolpert, fällt er hinein und stirbt (Spielende). Wir werden den Spieler jedoch warnen, dass seine gegenwärtige Höhle neben einer bodenlosen Grube ist, ohne ihm zu sagen, in welcher Höhle sie genau ist.
+
+Zuerst fügen wir sie hinzu. Dazu erstellen wir eine neue Konstante \texttt{NUMBER\_OF\_BOTTOMLESS\_PITS} (ich schlage vor, dass wir sie auf \texttt{2} setzen, aber du kannst mehr oder weniger davon haben) und eine neue Variable (\texttt{bottomless\_pits}), die eine Menge von Indizes von Höhlen mit bodenlosen Gruben in ihnen enthält. Füge bodenlose Gruben mit einer for-Schleife hinzu: Bei jeder Iteration erhalte einen Index einer leeren Höhle (über die Funktion \texttt{find\_empty\_cave}, denke über ihre Parameter nach), füge diesen Index sowohl zu 1) \texttt{bottomless\_pits} als auch zu 2) \texttt{occupied\_caves} hinzu, so dass du 1) weißt, wo die bodenlosen Gruben sind und 2) weißt, welche Höhlen belegt sind. Hier ist der Code-Umriss für den Initialisierungsteil (kopiere die Hauptschleife noch nicht). Überprüfe, ob die Zahlen sinnvoll sind (die Anzahl der Höhlen entspricht deinen Erwartungen, der Wert liegt im erwarteten Bereich, es gibt keine Duplikate, usw.)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Erstelle die Variable \textasciigrave{}occupied\_caves\textasciigrave{} und initialisiere sie als leere Menge}
+\CommentTok{\# Erstelle die Variable \textasciigrave{}bottomless\_pits\textasciigrave{} und initialisiere sie als leere Menge}
+\CommentTok{\# Benutze eine for{-}Schleife und die range{-}Funktion, um die for{-}Schleife NUMBER\_OF\_BOTTOMLESS\_PITS{-}mal zu wiederholen}
+\CommentTok{\#     Generiere einen neuen Standort für die bodenlose Grube über die Funktion find\_empty\_cave() und füge ihn zu beiden Mengen hinzu}
+\end{Highlighting}
+\end{Shaded}
+
+Teste den Code zum Erstellen von bodenlosen Gruben in Übung 6.
+
+\hypertarget{in-eine-bodenlose-grube-fallen}{%
+\section{In eine bodenlose Grube fallen}\label{in-eine-bodenlose-grube-fallen}}
+
+Jetzt fügen wir eine der Möglichkeiten hinzu, das Spiel zu beenden: Der Spieler fällt in eine bodenlose Grube. Dafür müssen wir nur überprüfen, ob sich der Spieler in jeder Runde gerade in einer Höhle befindet, in der eine bodenlose Grube ist. Wenn das der Fall ist, ist die Höhle des Spielers tatsächlich in der Liste der bodenlosen Gruben, drucke eine traurige Spiel-Ende-Nachricht und \texttt{breche} aus der Schleife aus. Darüber hinaus verändern wir die Bedingung der \texttt{while} Schleife zu \texttt{while\ True:}, so dass die einzige Möglichkeit, das Spiel zu beenden, darin besteht, in die Grube zu fallen (nicht ganz fair für den Spieler, aber das werden wir später korrigieren).
+
+Füge den Code für das Platzieren von bodenlosen Gruben und das Hineinfallen in sie in das Hauptskript ein. Drucke die Höhlen mit bodenlosen Gruben zu Beginn des Programs aus und wandere in sie hinein, um sicherzustellen, dass dies das Spiel korrekt beendet.
+
+Aktualisiere deinen Code in \emph{code06.py}.
+
+\hypertarget{warnung-vor-einer-bodenlosen-grube}{%
+\section{Warnung vor einer bodenlosen Grube}\label{warnung-vor-einer-bodenlosen-grube}}
+
+Wir müssen dem Spieler die Chance geben, das Schicksal zu vermeiden, in eine bodenlose Grube zu fallen, indem wir ihn warnen, dass eine (oder zwei oder mehr) in der Nähe sind. Zu diesem Zweck müssen wir zusätzliche Informationen \emph{vor} ihrer Entscheidung, ihren Zug zu machen, ausdrucken. Deine Aufgabe ist es, zu überprüfen, ob eine Höhle sowohl im Set \texttt{bottomless\_pits} als auch in der aktuellen Liste der verbundenen Höhlen ist. Du kannst eine \protect\hyperlink{for-loop}{for-Schleife} verwenden, aber die Verwendung von Mengenoperationen ist viel einfacher, du musst nur überprüfen, ob eine \href{https://docs.python.org/3/library/stdtypes.html\#frozenset.intersection}{Schnittmenge} dieser beiden Mengen leer ist (sie hat null \href{https://docs.python.org/3/library/functions.html\#len}{Länge}). Wenn mindestens eine der verbundenen Höhlen eine bodenlose Grube in sich hat, drucke ``Du fühlst einen Hauch!''.
+
+Füge deinen Code in \emph{code07.py} ein.
+
+\hypertarget{platzierung-von-fledermuxe4usen-und-warnung-vor-ihnen}{%
+\section{Platzierung von Fledermäusen und Warnung vor ihnen}\label{platzierung-von-fledermuxe4usen-und-warnung-vor-ihnen}}
+
+Wir brauchen mehr Nervenkitzel! Lassen wir Fledermäusen hinzu. Sie leben in Höhlen, der Spieler kann sie hören, wenn sie in einer verbundenen Höhle sind (``Du hörst Flügelschläge!''), aber wenn der Spieler unabsichtlich die Höhle mit Fledermäusen betritt, tragen sie den Spieler zu einer \emph{zufälligen} Höhle.
+
+Die Platzierung der Fledermäuse ist analog zur Platzierung der bodenlosen Gruben. Du brauchst eine Konstante, die die Anzahl der Fledermauskolonien bestimmt (z.B. \texttt{ANZAHL\_DER\ fledermaeuse} und setzte diese auf \texttt{2} oder eine andere von dir bevorzugte Zahl), eine Variable, die ein Set mit Indizes von Höhlen mit Fledermäusen hält (z.B. \texttt{fledermaeuse}), und du musst zufällige leere Höhlen auswählen und sie genau so in \texttt{bats} speichern, wie du es bei den bodenlosen Gruben getan hast. Drucke den Ort der Fledermäuse zu Diagnosezwecken aus.
+
+Die Warnung vor den Fledermäusen folgt auch der gleichen Logik wie bei den bodenlosen Gruben: Wenn eine der verbundenen Höhlen Fledermäuse in sich hat, druckst du \texttt{"Du\ hörst\ Flügelschläge!"} aus.
+
+Füge deinen Code in \emph{code08.py} ein.
+
+\hypertarget{der-spieler-wird-von-fledermuxe4usen-in-eine-zufuxe4llige-huxf6hle-transportiert}{%
+\section{Der Spieler wird von Fledermäusen in eine zufällige Höhle transportiert}\label{der-spieler-wird-von-fledermuxe4usen-in-eine-zufuxe4llige-huxf6hle-transportiert}}
+
+Wenn sich der Spieler in einer Höhle mit Fledermäusen befindet, transportieren diese ihn in eine \emph{zufällige} Höhle, \emph{unabhängig} davon, ob die Höhle bewohnt ist oder nicht (also jede Höhle ist eine gültige Höhle). So können die Fledermäuse den Spieler in eine Höhle tragen:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  mit einer weiteren Fledermaus-Kolonie, und diese wird den Spieler wieder transportieren.
+\item
+  mit einer bodenlosen Grube, und der Spieler wird hineinfallen.
+\item
+  später in die Höhle mit dem Wumpus (der Spieler überlebt das möglicherweise nicht und du implementierst das jetzt nicht).
+\end{enumerate}
+
+Denk darüber nach:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{wann} du die Anwesenheit von Fledermäusen überprüfst (vor oder nach der Überprüfung auf eine bodenlose Grube?),
+\item
+  überprüfst du einmal (mit Hilfe von \texttt{if}) oder ein-oder-mehrere Male (mit Hilfe von \texttt{while})
+\end{enumerate}
+
+Teste deinen Code, indem du in eine Höhle mit Fledermäusen gehst (drucke ihren Standort am Anfang aus, damit du weißt, wo du hingehen musst).
+
+Füge deinen Code in \emph{code09.py} ein.
+
+\hypertarget{hinzufuxfcgen-von-wumpus-und-vom-ihm-gefressen-werden.}{%
+\section{Hinzufügen von Wumpus (und vom ihm gefressen werden).}\label{hinzufuxfcgen-von-wumpus-und-vom-ihm-gefressen-werden.}}
+
+Bis jetzt hast du einen Spieler hinzugefügt (Einzelspieler, Standort als Integer gespeichert), bodenlose Gruben (mehrzahl, Standorte in einem Set gespeichert) und Fledermäusen (ebenfalls Mehrzahl). Füge Wumpus hinzu!
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Erstelle eine neue Variable (\texttt{wumpus}?) und platziere Wumpus in einer freien Höhle. Drucke den Standort von Wumpus zu Debugging-Zwecken aus.
+\item
+  Warne vor Wumpus im selben Code, der vor Gruben und Fledermäusen warnt. Die Logik ist die gleiche, aber die Überprüfung ist einfacher, da du dir nur um einen einzigen Wumpus-Standort Sorgen machen musst. Der kanonische Warnungstext lautet \texttt{"Du\ riechst\ einen\ Wumpus!"}.
+\item
+  Überprüfe, ob der Spieler in der gleichen Höhle wie Wumpus ist. Falls dies der Fall ist, ist das Spiel vorbei, da der Spieler von einem hungrigen Wumpus gefressen wird. Dies ähnelt dem \emph{Spielende} aufgrund des Sturzes in eine bodenlose Grube. Überlege, ob die Überprüfung vor oder nach der Überprüfung auf Fledermäuse erfolgen sollte.
+\end{enumerate}
+
+Teste deinen Code, indem du in eine Höhle mit Wumpus gehst (drucke ihren Standort am Anfang aus, damit du weißt, wohin du gehen musst).
+
+Füge deinen Code in \emph{code10.py} ein.
+
+\hypertarget{dem-spieler-eine-chance-geben.}{%
+\section{Dem Spieler eine Chance geben.}\label{dem-spieler-eine-chance-geben.}}
+
+Geben wir dem Spieler eine Chance. Wenn er in die Höhle mit dem Wumpus kommt, erschreckt er ihn. Dann läuft Wumpus entweder weg zu einer zufälligen angrenzenden Höhle (neu) oder bleibt stehen und frisst den Spieler. Erstelle zunächst eine neue Konstante, die die Wahrscheinlichkeit definiert, dass Wumpus wegrennt, zum Beispiel \texttt{P\_WUMPUS\_AENGSTLICH}. In den Implementierungen, die ich gefunden habe, beträgt sie typischerweise 0,25, aber verwende einen Wert, den du für angemessen hältst.
+
+Wenn also der Spieler in der Höhle mit dem Wumpus ist, ziehe eine zufällige Zahl zwischen 0 und 1 (verwende dafür die Funktion \href{https://docs.python.org/3/library/random.html\#random.uniform}{uniform}). Sie ist Teil der \href{https://docs.python.org/3/library/random.html}{random} Bibliothek, daher lautet der Aufruf \texttt{random.uniform(...)}. Denke daran, dass du entweder die \emph{gesamte} Bibliothek importieren und dann deren Funktion durch Voranstellen des Bibliotheksnamens aufrufen kannst oder du importierst nur eine bestimmte Funktion über \texttt{from\ ...\ import\ ...}. Sobald du die Zahl zwischen 0 und 1 generiert hast, wenn diese Zahl \emph{kleiner} ist als die Wahrscheinlichkeit, dass der Wumpus Angst hat, bewege ihn zu einer zufälligen angrenzenden Höhle (Fledermäuse ignorieren Wumpus und es klammert sich an die Decke der Höhlen, bodenlose Gruben sind also kein Problem für ihn). Eine nützliche Funktion, die du bereits verwendet hast, ist \href{https://docs.python.org/3/library/random.html\#random.choice}{choice()}, auch Teil der \href{https://docs.python.org/3/library/random.html}{random} Bibliothek. Andernfalls, wenn Wumpus nicht weggeschreckt wurde, wird der Spieler gefressen und das Spiel ist vorbei (das einzige Ergebnis in \emph{code10}).
+
+Füge deinen Code in \emph{code11.py} ein.
+
+\hypertarget{flug-eines-krummen-pfeils}{%
+\section{Flug eines krummen Pfeils}\label{flug-eines-krummen-pfeils}}
+
+Unser Spieler ist mit \emph{krummen} Pfeilen bewaffnet, die durch Höhlen fliegen können. Die Regeln für seinen Flug sind folgende:
+
+\begin{itemize}
+\tightlist
+\item
+  Der Spieler entscheidet, in welche Höhle er einen Pfeil schießt und wie weit der Pfeil fliegt (von 1 bis 5 Höhlen).
+\item
+  Jedes Mal, wenn der Pfeil in die nächste Höhle fliegen muss, wird diese Höhle zufällig aus den angrenzenden Höhlen \emph{ausgewählt}, mit Ausnahme der Höhle, aus der er kam (also der Pfeil kann keine 180° Wende machen und es stehen nur zwei von drei Höhlen zur Auswahl).
+\item
+  Wenn der Pfeil in eine Höhle mit Wumpus fliegt, ist er besiegt und das Spiel ist gewonnen.
+\item
+  Wenn der Pfeil in eine Höhle mit dem Spieler fliegt, dann hat er einen unbeabsichtigten Selbstmord begangen und das Spiel ist verloren.
+\item
+  Wenn der Pfeil seine letzte Höhle erreicht hat (basierend darauf, wie weit der Spieler schießen wollte) und die Höhle leer ist, fällt er auf den Boden.
+\item
+  Fledermäuse oder bodenlose Gruben haben keinen Einfluss auf den Pfeil.
+\end{itemize}
+
+Die Gesamtzahl der Pfeile, die der Spieler zu Beginn hat, sollte in der Konstante \texttt{PFEIL\_ANZAHL} definiert werden (z.B. \texttt{5}).
+
+Um den Überblick über den Pfeil zu behalten, benötigst du folgende Variablen:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{pfeil}: aktuelle Position des Pfeils.
+\item
+  \texttt{pfeil\_vorherige\_höhle}: Index der Höhle, aus der der Pfeil kam, so dass du weißt, wohin er nicht zurückfliegen kann.
+\item
+  \texttt{verbleibende\_schussdistanz}: verbleibende zu reisende Distanz.
+\item
+  \texttt{verbleibende\_pfeile}: Anzahl der verbleibenden Pfeile (auf \texttt{PFEIL\_ANZAHL} gesetzt, wenn das Spiel beginnt).
+\end{itemize}
+
+Behalte dieses Gerüst im Hinterkopf und lass uns anfangen, unsere Pfeile zu programmieren.
+
+\hypertarget{zufuxe4llige-huxf6hle-aber-keine-u-turn}{%
+\section{Zufällige Höhle, aber keine U-Turn}\label{zufuxe4llige-huxf6hle-aber-keine-u-turn}}
+
+Du musst eine Funktion programmieren (nennen wir sie \texttt{next\_arrow\_cave()}), die eine zufällige Höhle auswählt, aber nicht die vorherige Höhle, in der der Pfeil war. Es sollte zwei Parameter haben:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{connected\_caves}: eine Liste von verbundenen Höhlen.
+\item
+  \texttt{previous\_cave}: Höhle, aus der der Pfeil gekommen ist.
+\end{itemize}
+
+Zuerst, debugge den Code in einer separaten Zelle. Nehme an, dass \texttt{connected\_caves\ =\ CONNECTED\_CAVES{[}1{]}} (also, der Pfeil ist derzeit in Höhle 1) und \texttt{previous\_cave\ =\ 0} (Pfeil kam aus Höhle 0). Schreibe den Code, der eine der verbleibenden Höhlen zufällig auswählt (in diesem Fall entweder \texttt{2} oder \texttt{7}), du willst wahrscheinlich Mengenoperationen verwenden (wie bei der effizienten Platzierung von Spielobjekten). Sobald der Code funktioniert, mache daraus eine Funktion, die die nächste Höhle für einen Pfeil zurückgibt. Dokumentiere die Funktion. Teste sie mit anderen Kombinationen von verbundenen und vorherigen Höhlen.
+
+Teste deinen Code in Übung \#7.
+Sobald getestet, packe die Funktion in \emph{utils.py}.
+
+\hypertarget{zuruxfcckgelegte-entfernung}{%
+\section{Zurückgelegte Entfernung}\label{zuruxfcckgelegte-entfernung}}
+
+Jetzt, da du eine Funktion hast, die zur nächsten zufälligen Höhle fliegt, implementiere das Fliegen mit einer for-Schleife. Ein Pfeil sollte durch \texttt{shooting\_distance} Höhlen fliegen (setze es für den Test auf \texttt{5}, maximale Entfernung, von Hand). Die \emph{erste} Höhle ist gegeben (sie wird vom Spieler ausgewählt), setze daher \texttt{arrow} auf \texttt{1} und \texttt{arrow\_previous\_cave} auf \texttt{0} (Spieler ist in Höhle \texttt{0} und hat den Pfeil in Höhle \texttt{1} geschossen). Drucke aus Debugging-Zwecken den Standort des Pfeils bei jeder Iteration aus. Teste den Code, indem du die \texttt{shooting\_distance} änderst. Setzen sie insbesondere auf \texttt{1}. Der Pfeil sollte bereits in Höhle \texttt{1} ``herunterfallen''.
+
+Verwende für dieses eine abgespeckte Version des Codes mit der Konstante \texttt{CONNECTED\_CAVES}, der importierten Funktion \texttt{next\_arrow\_cave()} und allen relevanten Konstanten und Variablen für den Pfeil. Gib die Anfangshöhle, die vorherige Höhle und die Entfernung von Hand ein.
+
+Füge deinen Code in \emph{code12.py} ein.
+
+\hypertarget{ein-ziel-treffen}{%
+\section{Ein Ziel treffen}\label{ein-ziel-treffen}}
+
+Implementiere die Prüfung zum Treffen des Wumpus oder des Spielers in der Schleife. Sollte die Überprüfung vor oder nach dem Fliegen des Pfeils zur nächsten zufälligen Höhle stattfinden? In beiden Fällen schreibe eine passende ``Spiel vorbei'' Nachricht und brich aus der Schleife aus. Teste den Code, indem du den Wumpus von Hand in die Höhle platzierst, auf die der Spieler schießt oder die nächste.
+
+Du kannst auf den Code aus dem vorherigen Abschnitt aufbauen, aber füge \texttt{player\_location} und \texttt{wumpus} Variablen hinzu und kodiere sie von Hand für das Debugging. Führe den Code mehrmals aus, um zu überprüfen, dass er funktioniert.
+
+Füge deinen Code in \emph{code13.py} ein.
+
+\hypertarget{bewegen-oder-schieuxdfen}{%
+\section{Bewegen oder schießen?}\label{bewegen-oder-schieuxdfen}}
+
+Wir sind fast fertig, aber bevor wir anfangen können, den Code zusammenzustellen, benötigen wir noch ein paar weitere Dinge. Zum Beispiel konnte der Spieler zuvor nur ziehen, also haben wir einfach nach der nächsten Höhlennummer gefragt. Jetzt hat der Spieler bei jedem Zug die Wahl, einen Pfeil abzuschießen oder sich zu bewegen. Implementiere eine Funktion \texttt{input\_shoot\_or\_move()}, die keine Parameter hat und \texttt{"s"} für ``Schießen'' oder \texttt{"m"} für ``Bewegen'' zurückgibt. Frage darin den Spieler nach seiner Wahl, bis er eine von zwei gültigen Optionen auswählt. Konzeptionell ist dies sehr ähnlich zu deiner anderen Eingabefunktion \texttt{input\_cave()}, die wiederholt eine Eingabe fordert, bis eine gültige gegeben ist. Teste und dokumentiere!
+
+Füge \texttt{input\_shoot\_or\_move()} in \emph{utils.py} einTeste es in Übung 8.
+
+\hypertarget{wie-weit}{%
+\section{Wie weit?}\label{wie-weit}}
+
+Implementiere die Funktion \texttt{input\_distance()}, die keine Parameter hat und die gewünschte Schussentfernung zwischen \texttt{1} und \texttt{5} zurückgibt. Frage erneut wiederholt nach einer \emph{ganzzahligen} Eingabe (denke daran, du weißt, wie man überprüfen kann, ob die Eingabe eine gültige Ganzzahl ist), wie weit der Pfeil reisen soll, bis eine gültige Eingabe gegeben ist. Dies ist sehr ähnlich zu deinen anderen Eingabefunktionen. Teste und dokumentiere.
+
+Füge \texttt{input\_distance()} in \emph{utils.py} einTeste sie in Übung 9.
+
+\hypertarget{input_cave_with_prompt}{%
+\section{input\_cave\_with\_prompt}\label{input_cave_with_prompt}}
+
+Erstellen eine neue Version der Funktion \texttt{input\_cave()}, nenne sie \texttt{input\_cave\_with\_prompt} und füge einen \texttt{prompt} Parameter hinzu, damit wir nun entweder nach dem Bewegen zu oder dem Schießen auf die Höhle fragen können (daher die Notwendigkeit des prompts anstelle einer fest codierten Nachricht).
+
+Füge \texttt{input\_cave\_with\_prompt()} in \emph{utils.py} einTeste sie in Übung 10.
+
+\hypertarget{alles-zusammenfuxfcgen}{%
+\section{Alles zusammenfügen}\label{alles-zusammenfuxfcgen}}
+
+In den letzten Abschnitten hast du alle Teile erstellt, die du für das finale Spiel mit einem krummen Pfeil benötigst. Hier ist ein Pseudocode, wie der finale Code aussehen sollte. Schau dir das an, um besser zu verstehen, wie die neuen Teile in den alten Code integriert werden. Bis jetzt solltest du folgende Konstanten haben (du kannst auch andere Werte haben):
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{CONNECTED\_CAVES}
+\item
+  \texttt{NUMBER\_OF\_BATS} = 2
+\item
+  \texttt{NUMBER\_OF\_BOTTOMLESS\_PITS} = 2
+\item
+  \texttt{P\_WUMPUS\_SCARED} = 0.25
+\item
+  \texttt{ARROWS\_NUMBER} = 5
+\end{itemize}
+
+Folgende Funktionen:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{find\_vacant\_cave(...)}, gibt einen Integer-Höhlenindex zurück
+\item
+  \texttt{input\_cave\_with\_prompt(prompt,\ connected\_cave)}, gibt einen Integer-Höhlenindex zurück
+\item
+  \texttt{input\_shoot\_or\_move()}, gibt \texttt{"s"} für ``schießen'' und \texttt{"m"} für ``bewegen'' zurück.
+\item
+  \texttt{input\_distance()}, gibt eine Ganzzahl zwischen 1 und 5 zurück
+\item
+  \texttt{next\_arrow\_cave(connected\_caves,\ previous\_cave)}, gibt einen Integer-Höhlenindex zurück
+\end{itemize}
+
+Folgende Variablen:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{player\_location} : Höhlenindex
+\item
+  \texttt{bottomless\_pit}: Liste von Höhlenindizes
+\item
+  \texttt{bats}: Liste von Höhlenindizes
+\item
+  \texttt{wumpus}: Höhlenindex
+\item
+  \texttt{remaining\_arrows}: Ganzzahl der verbleibenden Pfeile
+\end{itemize}
+
+Dienst-/temporäre Variablen:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{occupied\_caves}: Liste der Höhlenindizes
+\item
+  \texttt{gameover\_due\_to\_arrow} : gibt an, ob das Spiel vorbei ist, weil entweder der Wumpus oder der Spieler von einem Pfeil getroffen wurde
+\item
+  \texttt{arrow}: Standort eines Pfeils, der ursprünglich auf die Wahl des Spielers basiert
+\item
+  \texttt{shooting\_distance}: Anzahl der Höhlen, die der Pfeil durchfliegen soll.
+\item
+  andere pfeilbezogene temporäre Variablen
+\end{itemize}
+
+\begin{verbatim}
+importiere die benötigten Bibliotheken
+
+importiere die benötigten Funktionen aus utils
+
+definiere KONSTANTEN
+
+platziere Spieler, bodenlose Gruben, Fledermäuse und Wumpus
+setze die Anzahl der verbleibenden Pfeile auf ARROWS_NUMBER
+setze die Variable gameover_due_to_arrow auf False
+
+während WAHR:
+    solange der Spieler schießen will und noch Pfeile hat:
+        frage nach der Höhle, auf die der Spieler schießen will  (speichere die Antwort in der Variable `arrow`)
+        frage, wie weit der Pfeil fliegen soll (speichere die Antwort in der Variable `shooting_distance`)
+        
+        lass in einer for-Schleife den Pfeil durch die Höhlen fliegen:
+            Wenn den Wumpus getroffen -> Glückwunsch Spiel vorbei Nachricht, gameover_due_to_arrow = True und breche aus der Schleife aus
+            Wenn den Spieler getroffen -> Oops Spiel vorbei Nachricht, gameover_due_to_arrow = True und breche aus der Schleife aus
+            bewege den Pfeil zur nächsten zufälligen Höhle (Funktion next_arrow_cave und Variable arrow)
+        verringere die Anzahl der verbleibenden Pfeile (Variable remaining_arrows)
+        
+    überprüfe, ob das Spiel aufgrund des Pfeils vorbei ist, breche aus der Schleife aus, falls das der Fall ist
+        
+    frage den Spieler, welche Höhle er betreten möchte und bewege den Spieler
+    
+    solange der Spieler in der Höhle mit den Fledermäusen ist: 
+        bewege den Spieler zu einer zufälligen Höhle
+    
+    überprüfe die bodenlosen Gruben (Spieler stirbt, breche aus der Schleife aus)
+    
+    wenn der Spieler in der gleichen Höhle wie der Wumpus ist:
+        wenn der Wumpus erschrocken ist
+            bewege den Wumpus zu einer zufälligen Höhle
+        sonst
+            der Spieler ist tot, bricht aus der Schleife aus
+\end{verbatim}
+
+Füge deinen Code in \emph{code14.py} ein.
+
+\hypertarget{abschluss-1}{%
+\section{Abschluss}\label{abschluss-1}}
+
+Gut gemacht, das war wirklich ein Abenteuer, diese Höhlen zu erkunden! Zippe und reiche ein.
 
   \bibliography{book.bib}
 

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 8 Einarmiger Bandit, aber mit Listen und Schleifen | Lerne Python, indem du Spiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="In diesem Kapitel werden wir das Spiel des Einarmigen Banditen mehrmals neu programmieren. Das ist vielleicht nicht die aufregendste Aussicht, aber es gibt uns ein einfaches Spiel, das du bereits...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 8 Einarmiger Bandit, aber mit Listen und Schleifen | Lerne Python, indem du Spiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/One-armed-bandit.html">
+<meta property="og:description" content="In diesem Kapitel werden wir das Spiel des Einarmigen Banditen mehrmals neu programmieren. Das ist vielleicht nicht die aufregendste Aussicht, aber es gibt uns ein einfaches Spiel, das du bereits...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 8 Einarmiger Bandit, aber mit Listen und Schleifen | Lerne Python, indem du Spiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="In diesem Kapitel werden wir das Spiel des Einarmigen Banditen mehrmals neu programmieren. Das ist vielleicht nicht die aufregendste Aussicht, aber es gibt uns ein einfaches Spiel, das du bereits...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/python-text-favicon.svg">
+<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Spiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
+<li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+<li><a class="active" href="One-armed-bandit.html"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></li>
+<li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="One-armed-bandit" class="section level1" number="8">
+<h1>
+<span class="header-section-number">Kapitel 8</span> Einarmiger Bandit, aber mit Listen und Schleifen<a class="anchor" aria-label="anchor" href="#One-armed-bandit"><i class="fas fa-link"></i></a>
+</h1>
+<p>In diesem Kapitel werden wir das Spiel des Einarmigen Banditen mehrmals neu programmieren. Das ist vielleicht nicht die aufregendste Aussicht, aber es gibt uns ein einfaches Spiel, das du bereits zu programmieren weißt, sodass wir uns auf Listen und For-Schleifen konzentrieren können. Hol dir das <a href="notebooks/One-armed%20bandit.ipynb">Übungsnotebook</a>, bevor wir starten.</p>
+<div id="konzepte-des-kapitels-3" class="section level2" number="8.1">
+<h2>
+<span class="header-section-number">8.1</span> Konzepte des Kapitels<a class="anchor" aria-label="anchor" href="#konzepte-des-kapitels-3"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Speichern von vielen Elementen in <a href="One-armed-bandit.html#lists">Listen</a>.</li>
+<li>Iterieren über Elemente mit der <a href="One-armed-bandit.html#for-loop">for</a> Schleife.</li>
+<li>Erstellen eines <a href="One-armed-bandit.html#range">Bereichs</a> von Werten.</li>
+<li>Schleifen über <a href="One-armed-bandit.html#enumerate">nummerierte</a> Indizes und Werte.</li>
+<li>Listen erstellen mit <a href="One-armed-bandit.html#list-comprehension">Listenabstraktion</a>.</li>
+</ul>
+</div>
+<div id="lists" class="section level2" number="8.2">
+<h2>
+<span class="header-section-number">8.2</span> Listen<a class="anchor" aria-label="anchor" href="#lists"><i class="fas fa-link"></i></a>
+</h2>
+<p>Bisher haben wir Variablen verwendet, um einzelne Werte zu speichern: die Wahl des Computers, die Vermutung des Spielers, die Anzahl der Versuche, das PsychoPy-Fensterobjekt usw. Aber manchmal müssen wir mehr als einen Wert verarbeiten. Dieses Problem hatten wir bereits im <a href="guess-the-number-ai.html#guess-the-number-ai">computerbasierten Raten-der-Zahl</a> Spiel, als wir den verbleibenden Zahlenbereich speichern mussten. Wir haben das Problem gelöst, indem wir zwei Variablen verwendet haben, eine für die untere und eine für die obere Grenze. Allerdings ist klar, dass dieser Ansatz nicht gut skalierbar ist und manchmal wissen wir vielleicht nicht einmal, wie viele Werte wir speichern müssen. Die <a href="https://docs.python.org/3/library/stdtypes.html#lists">Listen</a> von Python sind die Lösung für dieses Problem.</p>
+<p>Eine Liste ist eine veränderbare<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Mehr dazu und zu Tupeln, den unveränderlichen Verwandten der Liste, später.&lt;/p&gt;"><sup>27</sup></a> Sequenz von Elementen, auf die über ihren nullbasierten Index zugegriffen werden kann. Wenn du die Idee der <a href="#variables">Variablen-als-Box</a> fortschreitest, kannst du dir Listen als eine Box mit nummerierten Steckplätzen vorstellen. Um ein bestimmtes Stück zu speichern und abzurufen, musst du sowohl den <em>Variablennamen</em> als auch den <em>Index des Elements</em>, an dem du interessiert bist, in dieser Box kennen. Dann arbeitest du mit einer Variable-plus-Index auf genau dieselbe Weise wie mit einer normalen Variable, indem du auf ihren Wert zugreifst oder ihn änderst, genau wie vorher.</p>
+<p>Eine Liste wird durch eckige Klammern definiert <code>&lt;variable&gt; = [&lt;wert1&gt;, &lt;wert2&gt;, ... &lt;wertN&gt;]</code>. Auf einen einzelnen Platz innerhalb einer Liste wird ebenfalls über eckige Klammern zugegriffen <code>&lt;variable&gt;[&lt;index&gt;]</code>, wobei der Index wiederum <strong>nullbasiert</strong> ist<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Das ist typisch für “klassische” Programmiersprachen, aber weniger für solche, die auf lineare Algebra / Data Science ausgerichtet sind. Sowohl Matlab als auch R verwenden einen indexbasierten Index, so dass du vorsichtig sein und überprüfen musst, ob du die richtigen Indizes verwendest.&lt;/p&gt;"><sup>28</sup></a>. Das bedeutet, dass das <em>erste</em> Element <code>variable[0]</code> ist und, wenn es <em>N</em> Elemente in der Liste gibt, ist das letzte Element <code>variable[N-1]</code>. Du kannst die Gesamtzahl der Elemente in einer Liste herausfinden, indem du ihre Länge über eine spezielle <a href="https://docs.python.org/3/library/functions.html#len">len()</a> Funktion erhältst. So kannst du auf das letzte Element über <code>variable[len(variable)-1]</code> zugreifen<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Es gibt einen einfacheren Weg, dies zu tun, den du in Kürze lernen wirst.&lt;/p&gt;"><sup>29</sup></a>. Beachte die <code>-1</code>: Wenn deine Liste 3 Elemente hat, ist der Index des letzten Elements 2, wenn sie 100 hat, dann 99, usw. Ich verbringe so viel Zeit damit, weil dies eine recht häufige Quelle von Verwirrung ist.</p>
+<div class="practice">
+<p>Mache Übung #1 um zu sehen, wie Listen definiert und indiziert werden.</p>
+</div>
+<p>Listen erlauben dir auch, auf mehr als einen Slot/Index gleichzeitig zuzugreifen, und zwar über <a href="https://docs.python.org/3/library/functions.html#slice">slicing</a>. Du kannst den Index der Elemente über die Notation <code>&lt;start&gt;:&lt;stop&gt;</code> angeben. Zum Beispiel gibt dir <code>x[1:3]</code> Zugang zu zwei Elementen mit den Indizes 1 und 2. Ja, <em>zwei</em> Elemente: der Slicing-Index geht vom <code>start</code> bis <strong>aber nicht einschließlich</strong> zum <code>stop</code>. Wenn du also <em>alle</em> Elemente einer Liste abrufen willst, musst du <code>x[0:length(x)]</code> schreiben, und um nur das letzte Element zu bekommen, schreibst du immer noch <code>x[len(x)-1]</code>. Verwirrend? Ich denke schon! Ich verstehe die Logik, aber ich finde dieses stop-is-not-included Konzept gegenintuitiv und ich muss mich immer wieder bewusst daran erinnern. Leider ist dies die Standardmethode, um Zahlenfolgen in Python zu definieren, daher musst du dir dies merken.</p>
+<div class="practice">
+<p>Mache Übung #2, um die Intuition zu entwickeln.</p>
+</div>
+<p>Beim Slicing kannst du entweder <code>start</code> oder <code>stop</code> weglassen. In diesem Fall geht Python davon aus, dass ein fehlendes <code>start</code> <code>0</code> bedeutet (der Index des ersten Elements) und ein fehlendes <code>stop</code> <code>len(&lt;list&gt;)</code> bedeutet (also ist das letzte Element eingeschlossen). Wenn du <em>beide</em> weglässt, z.B. <code>meine_schönen_zahlen[:]</code>, gibt es alle Werte zurück, da dies äquivalent zu <code>meine_schönen_zahlen[0:len(meine_schönen_zahlen)]</code> ist.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Beachte, dass dies fast, aber nicht ganz das Gleiche ist wie einfach nur &lt;code&gt;meine_schönen_zahlen&lt;/code&gt; zu schreiben, denn &lt;code&gt;meine_schönen_zahlen[:]&lt;/code&gt; gibt eine &lt;em&gt;andere&lt;/em&gt; Liste mit &lt;em&gt;identischem&lt;/em&gt; Inhalt zurück. Der Unterschied ist subtil, aber wichtig und wir werden später darauf zurückkommen, wenn wir über veränderbare und unveränderbare Typen sprechen.&lt;/p&gt;"><sup>30</sup></a></p>
+<div class="practice">
+<p>Mache Übung #3.</p>
+</div>
+<p>Du kannst auch <em>negative</em> Indizes verwenden, die relativ zur Länge der Liste berechnet werden<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Wenn du von R kommst, ist das negative Indexing in Python völlig anders.&lt;/p&gt;"><sup>31</sup></a>. Wenn du zum Beispiel das <em>letzte</em> Element der Liste abrufen willst, kannst du <code>meine_schönen_zahlen[len(meine_schönen_zahlen)-1]</code> oder einfach nur <code>meine_schönen_zahlen[-1]</code> sagen. Das vorletzte Element wäre <code>meine_schönen_zahlen[-2]</code>, usw. Du kannst negative Indizes für das Slicing verwenden, aber vergiss nicht den Haken <em>einschließlich-dem-Start-aber-ausgenommen-dem-Stopp</em>: <code>meine_schönen_zahlen[:-1]</code> gibt alle Elemente außer dem letzten Element der Liste zurück, nicht die gesamte Liste!</p>
+<div class="practice">
+<p>Mache Übung #4.</p>
+</div>
+<p>Das Slicing kann erweitert werden, indem ein <code>Schritt</code> über die Notation <code>start:stop:Schritt</code> angegeben wird. <code>Schritt</code> kann negativ sein, was ermöglicht, Indizes in umgekehrter Reihenfolge zu erstellen:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb59-1"><a href="One-armed-bandit.html#cb59-1" tabindex="-1"></a>meine_schönen_zahlen <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb59-2"><a href="One-armed-bandit.html#cb59-2" tabindex="-1"></a>meine_schönen_zahlen[<span class="dv">4</span>:<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb59-3"><a href="One-armed-bandit.html#cb59-3" tabindex="-1"></a><span class="co">#&gt; [5, 4, 3, 2]</span></span></code></pre></div>
+<p>Aber du musst auf das Vorzeichen des Schritts achten. Wenn es in die falsche Richtung geht und <code>stop</code> nicht erreicht werden kann, gibt Python eine leere Liste zurück.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb60-1"><a href="One-armed-bandit.html#cb60-1" tabindex="-1"></a>meine_schönen_zahlen <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb60-2"><a href="One-armed-bandit.html#cb60-2" tabindex="-1"></a>meine_schönen_zahlen[<span class="dv">4</span>:<span class="dv">0</span>:<span class="dv">1</span>]</span>
+<span id="cb60-3"><a href="One-armed-bandit.html#cb60-3" tabindex="-1"></a><span class="co">#&gt; []</span></span></code></pre></div>
+<p>Schritte können mit ausgelassenen und negativen Indizes kombiniert werden. Um jedes <em>ungerade</em> Element der Liste zu bekommen, schreibst du <code>meine_schönen_zahlen[::2]</code>:</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb61-1"><a href="One-armed-bandit.html#cb61-1" tabindex="-1"></a>meine_schönen_zahlen <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb61-2"><a href="One-armed-bandit.html#cb61-2" tabindex="-1"></a>meine_schönen_zahlen[::<span class="dv">2</span>]</span>
+<span id="cb61-3"><a href="One-armed-bandit.html#cb61-3" tabindex="-1"></a><span class="co">#&gt; [1, 3, 5, 7]</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #5.</p>
+</div>
+<p>Wenn du versuchst, auf Indizes <em>außerhalb</em> eines gültigen Bereichs zuzugreifen, wird Python einen <a href="https://docs.python.org/3/library/exceptions.html#IndexError">IndexError</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Wenn du mit R und seiner laxen Haltung gegenüber Indizes vertraut bist, wirst du das sehr befriedigend finden.&lt;/p&gt;"><sup>32</sup></a> auslösen. Wenn du also versuchst, das 6<sup>te</sup> Element (Index 5) einer fünfelementigen Liste zu holen, wird ein einfacher und unmissverständlicher Fehler generiert. Wenn jedoch deine <em>Scheibe</em> größer ist als der Bereich, wird sie ohne zusätzliche Warnung oder einen Fehler abgeschnitten. Daher wird für eine fünfelementige Liste <code>my_pretty_numbers[:6]</code> oder <code>my_pretty_numbers[:600]</code> beide alle Nummern zurückgeben (effektiv ist dies gleichwertig mit <code>my_pretty_numbers[:]</code>). Zudem, wenn die Scheibe leer ist (<code>2:2</code>, kann 2 nicht einschließen, weil es ein Stop-Wert ist, obwohl es auch von 2 aus startet) oder die gesamte Scheibe außerhalb des Bereichs liegt, wird Python eine leere Liste zurückgeben, wiederum wird weder eine Warnung noch ein Fehler generiert.</p>
+<div class="practice">
+<p>Mache Übung #6.</p>
+</div>
+<p>In Python sind Listen dynamisch, daher kannst du immer Elemente hinzufügen oder entfernen, siehe <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">die Liste der Methoden</a>. Du kannst ein neues Element am Ende der Liste über die Methode <code>.append(&lt;new_value&gt;)</code> hinzufügen</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb62-1"><a href="One-armed-bandit.html#cb62-1" tabindex="-1"></a>my_pretty_numbers <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb62-2"><a href="One-armed-bandit.html#cb62-2" tabindex="-1"></a>my_pretty_numbers.append(<span class="dv">10</span>)</span>
+<span id="cb62-3"><a href="One-armed-bandit.html#cb62-3" tabindex="-1"></a>my_pretty_numbers</span>
+<span id="cb62-4"><a href="One-armed-bandit.html#cb62-4" tabindex="-1"></a><span class="co">#&gt; [1, 2, 3, 4, 5, 6, 7, 10]</span></span></code></pre></div>
+<p>Oder du kannst <code>insert(&lt;index&gt;, &lt;new_value&gt;)</code> <em>vor</em> einem Element mit diesem Index verwenden. Leider bedeutet dies, dass du einen beliebig großen Index verwenden kannst und es fügt einen neuen Wert als <em>letztes</em> Element ein, ohne einen Fehler zu erzeugen.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb63-1"><a href="One-armed-bandit.html#cb63-1" tabindex="-1"></a>my_pretty_numbers <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb63-2"><a href="One-armed-bandit.html#cb63-2" tabindex="-1"></a>my_pretty_numbers.insert(<span class="dv">2</span>, <span class="dv">10</span>)</span>
+<span id="cb63-3"><a href="One-armed-bandit.html#cb63-3" tabindex="-1"></a>my_pretty_numbers.insert(<span class="dv">500</span>, <span class="dv">20</span>)</span>
+<span id="cb63-4"><a href="One-armed-bandit.html#cb63-4" tabindex="-1"></a>my_pretty_numbers</span>
+<span id="cb63-5"><a href="One-armed-bandit.html#cb63-5" tabindex="-1"></a><span class="co">#&gt; [1, 2, 10, 3, 4, 5, 6, 7, 20]</span></span></code></pre></div>
+<p>Du kannst ein Element mit seinem Index über <code>pop(&lt;index&gt;)</code> entfernen, beachte, dass das Element auch <em>zurückgegeben</em> wird. Wenn du den Index weglässt, entfernt <code>pop()</code> das <em>letzte</em> Element der Liste. Hier kannst du nur gültige Indizes verwenden.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb64-1"><a href="One-armed-bandit.html#cb64-1" tabindex="-1"></a>my_pretty_numbers <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb64-2"><a href="One-armed-bandit.html#cb64-2" tabindex="-1"></a>my_pretty_numbers.pop(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb64-3"><a href="One-armed-bandit.html#cb64-3" tabindex="-1"></a><span class="co">#&gt; 7</span></span>
+<span id="cb64-4"><a href="One-armed-bandit.html#cb64-4" tabindex="-1"></a>my_pretty_numbers.pop(<span class="dv">3</span>)</span>
+<span id="cb64-5"><a href="One-armed-bandit.html#cb64-5" tabindex="-1"></a><span class="co">#&gt; 4</span></span>
+<span id="cb64-6"><a href="One-armed-bandit.html#cb64-6" tabindex="-1"></a>my_pretty_numbers</span>
+<span id="cb64-7"><a href="One-armed-bandit.html#cb64-7" tabindex="-1"></a><span class="co">#&gt; [1, 2, 3, 5, 6]</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #7.</p>
+</div>
+</div>
+<div id="neukonzeption-des-einarmigen-banditen-spiels-mit-listen" class="section level2" number="8.3">
+<h2>
+<span class="header-section-number">8.3</span> Neukonzeption des Einarmigen Banditen-Spiels mit Listen<a class="anchor" aria-label="anchor" href="#neukonzeption-des-einarmigen-banditen-spiels-mit-listen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Puh, das war <em>viel</em> über Listen<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Und wir haben gerade einmal an der Oberfläche gekratzt!&lt;/p&gt;"><sup>33</sup></a>. Aber <a href="https://de.wiktionary.org/wiki/work_hard,_play_hard">Work hard, play hard</a>! Lass uns zum Einarmigen Banditen-Spiel zurückkehren, das du bereits implementiert hast, und es mithilfe von Listen neu gestalten. Letztere machen viel Sinn, wenn man mit mehreren Slots arbeitet. Erinnere dich an die Regeln: Du hast drei Slots mit <a href="https://docs.python.org/3/library/random.html#random.randint">zufälligen Zahlen</a> zwischen 1 und 5, wenn alle drei Zahlen übereinstimmen, gibst du “Drei Gleiche!” aus, wenn nur zwei Zahlen übereinstimmen, druckst du “Ein Paar!”. Implementiere dieses Spiel mit einer Liste anstelle von drei Variablen. In der ersten Version, verwende die Notation <code>&lt;variable&gt; = [&lt;value1&gt;, &lt;value2&gt;, ..., &lt;valueN&gt;]</code>, um sie zu definieren. Beachte außerdem, dass du bei der Verwendung von <a href="#string-formatierung">String-Formatierung</a> alle Werte in einem Tuple (eine eingefrorene Liste, mehr dazu in späteren Kapiteln) oder einer Liste übergibst. Die gute Nachricht: Deine drei Werte befinden sich in der Liste, daher kannst du sie für die String-Formatierung verwenden, denke nur an die Anzahl der Slots, die du innerhalb des Format-Strings definieren musst.</p>
+<p>Ich weiß, es wird verlockend sein, einfach den bereits implementierten Code zu kopieren und zu bearbeiten, aber wir sind hier, um zu lernen, daher empfehle ich dringend, ihn von Grund auf neu zu schreiben. Es ist ein sehr einfaches Programm, es neu zu machen ist sehr einfach, aber es hilft dir, mehr zu üben.</p>
+<div class="program">
+<p>Setze deinen Code in <em>code01.py</em> um.</p>
+</div>
+<p>Jetzt mache dasselbe, aber beginne mit einer leeren Liste und <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">füge</a> zufällige Zahlen hinzu.</p>
+<div class="program">
+<p>Setze deinen Code in <em>code02.py</em> um.</p>
+</div>
+</div>
+<div id="for-loop" class="section level2" number="8.4">
+<h2>
+<span class="header-section-number">8.4</span> For-Schleife<a class="anchor" aria-label="anchor" href="#for-loop"><i class="fas fa-link"></i></a>
+</h2>
+<p>In dem oben genannten Code mussten wir über drei Maulwürfe (Kreise) iterieren, die wir in einer Liste hatten. Python bietet dafür ein spezielles Werkzeug: eine
+<a href="https://docs.python.org/3/tutorial/controlflow.html?highlight=loop#for-statements">For-Schleife</a>, die über die Elemente jeder Sequenz iteriert (unsere Liste ist eine Sequenz!). Hier ist ein Beispiel:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb65-1"><a href="One-armed-bandit.html#cb65-1" tabindex="-1"></a>numbers <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">42</span>]</span>
+<span id="cb65-2"><a href="One-armed-bandit.html#cb65-2" tabindex="-1"></a><span class="cf">for</span> a_number <span class="kw">in</span> numbers:</span>
+<span id="cb65-3"><a href="One-armed-bandit.html#cb65-3" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Der Wert der Variable a_number in dieser Iteration beträgt </span><span class="sc">%d</span><span class="st">"</span><span class="op">%</span>(a_number))</span>
+<span id="cb65-4"><a href="One-armed-bandit.html#cb65-4" tabindex="-1"></a>    a_number <span class="op">=</span> a_number <span class="op">+</span> <span class="dv">3</span></span>
+<span id="cb65-5"><a href="One-armed-bandit.html#cb65-5" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  Jetzt haben wir es um 3 erhöht: </span><span class="sc">%d</span><span class="st">"</span><span class="op">%</span>(a_number))</span>
+<span id="cb65-6"><a href="One-armed-bandit.html#cb65-6" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  Jetzt verwenden wir es in einer Formel a_number / 10: </span><span class="sc">%g</span><span class="st">"</span><span class="op">%</span>(a_number <span class="op">/</span> <span class="dv">10</span>))</span>
+<span id="cb65-7"><a href="One-armed-bandit.html#cb65-7" tabindex="-1"></a><span class="co">#&gt; Der Wert der Variable a_number in dieser Iteration beträgt 2</span></span>
+<span id="cb65-8"><a href="One-armed-bandit.html#cb65-8" tabindex="-1"></a><span class="co">#&gt;   Jetzt haben wir es um 3 erhöht: 5</span></span>
+<span id="cb65-9"><a href="One-armed-bandit.html#cb65-9" tabindex="-1"></a><span class="co">#&gt;   Jetzt verwenden wir es in einer Formel a_number / 10: 0.5</span></span>
+<span id="cb65-10"><a href="One-armed-bandit.html#cb65-10" tabindex="-1"></a><span class="co">#&gt; Der Wert der Variable a_number in dieser Iteration beträgt 4</span></span>
+<span id="cb65-11"><a href="One-armed-bandit.html#cb65-11" tabindex="-1"></a><span class="co">#&gt;   Jetzt haben wir es um 3 erhöht: 7</span></span>
+<span id="cb65-12"><a href="One-armed-bandit.html#cb65-12" tabindex="-1"></a><span class="co">#&gt;   Jetzt verwenden wir es in einer Formel a_number / 10: 0.7</span></span>
+<span id="cb65-13"><a href="One-armed-bandit.html#cb65-13" tabindex="-1"></a><span class="co">#&gt; Der Wert der Variable a_number in dieser Iteration beträgt 42</span></span>
+<span id="cb65-14"><a href="One-armed-bandit.html#cb65-14" tabindex="-1"></a><span class="co">#&gt;   Jetzt haben wir es um 3 erhöht: 45</span></span>
+<span id="cb65-15"><a href="One-armed-bandit.html#cb65-15" tabindex="-1"></a><span class="co">#&gt;   Jetzt verwenden wir es in einer Formel a_number / 10: 4.5</span></span></code></pre></div>
+<p>Hier wird der Code innerhalb der <code>for</code>-Schleife dreimal wiederholt, weil es drei Elemente in der Liste gibt. Bei jeder Iteration wird der nächste Wert aus der Liste einer temporären Variable <code>a_number</code> zugewiesen (siehe Ausgabe). Sobald der Wert einer Variablen zugewiesen ist, kannst du ihn wie jede andere Variable verwenden. Du kannst ihn ausgeben lassen (erster <code>print</code>), du kannst ihn ändern (zweite Zeile innerhalb der Schleife), seinen Wert verwenden, wenn du andere Funktionen aufrufst, usw. Um das besser zu würdigen, kopiere diesen Code in eine temporäre Datei (nenne sie <code>test01.py</code>), setze einen <a href="guess-the-number-single-round.html#debugging">Breakpoint</a> auf die erste <code>print</code> Anweisung und dann verwende <strong>F10</strong>, um durch die Schleife zu springen und zu sehen, wie sich der Wert der Variable <code>a_number</code> bei jeder Iteration ändert und dann in der zweiten Zeile innerhalb der Schleife modifiziert wird.</p>
+<p>Beachte, dass du die gleiche <a href="https://docs.python.org/3/tutorial/controlflow.html?highlight=loop#break-and-continue-statements-and-else-clauses-on-loops">break</a> Anweisung verwenden kannst wie bei der <a href="https://docs.python.org/3/reference/compound_stmts.html#the-while-statement">while</a> Schleife.</p>
+<div class="practice">
+<p>Mache Übung #8.</p>
+</div>
+</div>
+<div id="verwendung-der-for-schleife-zur-erzeugung-von-slots" class="section level2" number="8.5">
+<h2>
+<span class="header-section-number">8.5</span> Verwendung der For-Schleife zur Erzeugung von Slots<a class="anchor" aria-label="anchor" href="#verwendung-der-for-schleife-zur-erzeugung-von-slots"><i class="fas fa-link"></i></a>
+</h2>
+<p>Verwende die <a href="https://docs.python.org/3/tutorial/controlflow.html?highlight=loop#for-statements">For-Schleife</a> zweimal. Zuerst, wenn du die drei Slots erstellst: Beginne mit einer leeren Liste und füge drei zufällige Nummern mit einer For-Schleife hinzu. Zweitens, beim Ausdrucken der Slots. Ich habe oben darauf hingewiesen, dass es einfacher ist, die Formatierung vorzunehmen, wenn man drei Werte in einer Liste hat, aber hier sollst du, um der Übung willen, jeden Slot separat mit einer For-Schleife ausdrucken.</p>
+<div class="program">
+<p>Setze deinen Code in <em>code03.py</em> um.</p>
+</div>
+</div>
+<div id="range" class="section level2" number="8.6">
+<h2>
+<span class="header-section-number">8.6</span> range() Funktion: Code N-mal wiederholen<a class="anchor" aria-label="anchor" href="#range"><i class="fas fa-link"></i></a>
+</h2>
+<p>Manchmal musst du den Code mehrmals wiederholen. Stelle dir zum Beispiel vor, dass du in einem Experiment 40 Versuche hast. Daher musst du den versuchsbezogenen Code 40 Mal wiederholen. Natürlich kannst du von Hand eine 40 Elemente lange Liste erstellen und darüber iterieren, aber Python hat dafür eine praktische <a href="https://docs.python.org/3/tutorial/controlflow.html?highlight=loop#the-range-function">range()</a> Funktion. <code>range(N)</code> erzeugt N Ganzzahlen von 0 bis N-1 (gleiche Regel wie beim Slicing, dass bis zu, aber nicht einschließlich gilt), über die du in einer For-Schleife iterieren kannst.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb66-1"><a href="One-armed-bandit.html#cb66-1" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb66-2"><a href="One-armed-bandit.html#cb66-2" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Der Wert von x ist </span><span class="sc">%d</span><span class="st">"</span><span class="op">%</span>(x))</span>
+<span id="cb66-3"><a href="One-armed-bandit.html#cb66-3" tabindex="-1"></a><span class="co">#&gt; Der Wert von x ist 0</span></span>
+<span id="cb66-4"><a href="One-armed-bandit.html#cb66-4" tabindex="-1"></a><span class="co">#&gt; Der Wert von x ist 1</span></span>
+<span id="cb66-5"><a href="One-armed-bandit.html#cb66-5" tabindex="-1"></a><span class="co">#&gt; Der Wert von x ist 2</span></span></code></pre></div>
+<p>Du kannst das Verhalten der <a href="https://docs.python.org/3/library/stdtypes.html#range">range()</a> Funktion ändern, indem du einen Startwert und eine Schrittgröße angibst. Aber in ihrer einfachsten Form ist <code>range(N)</code> ein praktisches Werkzeug, um den Code so oft zu wiederholen. Beachte, dass du zwar immer eine temporäre Variable in einer <code>for</code> Schleife benötigst, sie manchmal aber überhaupt nicht verwendest. In solchen Fällen solltest du <code>_</code> (Unterstrich) als Variablennamen verwenden, um anzuzeigen, dass sie nicht verwendet wird.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb67-1"><a href="One-armed-bandit.html#cb67-1" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):</span>
+<span id="cb67-2"><a href="One-armed-bandit.html#cb67-2" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Ich werde zweimal wiederholt!"</span>)</span>
+<span id="cb67-3"><a href="One-armed-bandit.html#cb67-3" tabindex="-1"></a><span class="co">#&gt; Ich werde zweimal wiederholt!</span></span>
+<span id="cb67-4"><a href="One-armed-bandit.html#cb67-4" tabindex="-1"></a><span class="co">#&gt; Ich werde zweimal wiederholt!</span></span></code></pre></div>
+<p>Alternativ kannst du <code><a href="https://rdrr.io/r/base/range.html">range()</a></code> verwenden, um durch die Indizes einer Liste zu schleifen (denke daran, du kannst immer auf ein einzelnes Listenelement über <code>var[index]</code> zugreifen). Mache genau das<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Beachte, das ist nicht eine &lt;em&gt;bessere&lt;/em&gt;, sondern eine &lt;em&gt;alternative&lt;/em&gt; Möglichkeit, dies zu tun.&lt;/p&gt;"><sup>34</sup></a>! Ändere deinen Code so, dass du die <a href="(https://docs.python.org/3/library/stdtypes.html#range)">range()</a> Funktion in der For-Schleife verwendest (wie kannst du die Anzahl der Iterationen, die du benötigst, aus der Länge der Liste berechnen?), verwende die temporäre Variable als <em>Index</em> für die Liste, um jedes Element zu zeichnen<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Stilhinweis: Wenn eine Variable ein &lt;em&gt;Index&lt;/em&gt; von etwas ist, neige ich dazu, sie &lt;code&gt;isomething&lt;/code&gt; zu nennen. Wenn sie zum Beispiel einen Index zu einem aktuellen Maulwurf hält, würde ich sie &lt;code&gt;imole&lt;/code&gt; nennen. Das ist &lt;em&gt;meine&lt;/em&gt; Art, das zu tun. Andere verwenden das &lt;code&gt;i_&lt;/code&gt; Präfix oder ein &lt;code&gt;_i&lt;/code&gt; Suffix. Aber so oder so, es ist eine nützliche Benennungskonvention. Denke daran, je einfacher es ist, die Bedeutung einer Variable aus ihrem Namen zu verstehen, desto einfacher ist es für dich, den Code zu lesen und zu ändern.&lt;/p&gt;"><sup>35</sup></a>. Wenn du unsicher bist, setze einen Breakpoint innerhalb (oder kurz vor) der Schleife und schreite durch deinen Code, um zu verstehen, welche Werte eine temporäre Schleifenvariable erhält und wie sie verwendet wird.</p>
+</div>
+<div id="informationen-zum-slot-index-hinzufügen" class="section level2" number="8.7">
+<h2>
+<span class="header-section-number">8.7</span> Informationen zum Slot-Index hinzufügen<a class="anchor" aria-label="anchor" href="#informationen-zum-slot-index-hinzuf%C3%BCgen"><i class="fas fa-link"></i></a>
+</h2>
+<p>In der vorherigen Version des Spiels hatten wir keine Möglichkeit, den Slot-Index anzugeben. Es ist zwar offensichtlich an der Reihenfolge im Ausdruck erkennbar, aber es wäre schöner, wenn wir explizit <code>"Slot #1: 2"</code> ausdrucken würden. Verwende die Funktion <a href="https://docs.python.org/3/tutorial/controlflow.html?highlight=loop#the-range-function">range()</a> um Indizes von Slots zu generieren, schlaufe über diese Indizes und drucke sie in “Slot #<slot-index> : <slot-wert-f>” aus. Beachte jedoch, dass die Indizes in Python bei Null beginnen, unsere Slots aber bei 1 starten (kein Slot Null!). Überlege dir, wie du dies in einem Ausdruck korrigieren könntest.</slot-wert-f></slot-index></p>
+<div class="program">
+<p>Gib deinen Code in <em>code04.py</em> ein.</p>
+</div>
+</div>
+<div id="enumerate" class="section level2" number="8.8">
+<h2>
+<span class="header-section-number">8.8</span> Über Index und Element gleichzeitig schleifen mit Listenaufzählung<a class="anchor" aria-label="anchor" href="#enumerate"><i class="fas fa-link"></i></a>
+</h2>
+<p>Es passiert ziemlich oft, dass du sowohl über die Indizes als auch über die Elemente einer Liste schleifen musst, daher hat Python eine praktische Funktion dafür: <a href="https://docs.python.org/3/library/functions.html#enumerate">enumerate()</a>! Wenn du anstelle einer Liste über <a href="https://docs.python.org/3/library/functions.html#enumerate">enumerate(<list>)</list></a> iterierst, erhältst du ein Tupel mit <code>(Index, Wert)</code>. Hier ist ein Beispiel:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb68-1"><a href="One-armed-bandit.html#cb68-1" tabindex="-1"></a>letters <span class="op">=</span> [<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>]</span>
+<span id="cb68-2"><a href="One-armed-bandit.html#cb68-2" tabindex="-1"></a><span class="cf">for</span> index, letter <span class="kw">in</span> <span class="bu">enumerate</span>(letters):</span>
+<span id="cb68-3"><a href="One-armed-bandit.html#cb68-3" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'</span><span class="sc">%d</span><span class="st">: </span><span class="sc">%s</span><span class="st">'</span><span class="op">%</span>(index, letter))</span>
+<span id="cb68-4"><a href="One-armed-bandit.html#cb68-4" tabindex="-1"></a><span class="co">#&gt; 0: a</span></span>
+<span id="cb68-5"><a href="One-armed-bandit.html#cb68-5" tabindex="-1"></a><span class="co">#&gt; 1: b</span></span>
+<span id="cb68-6"><a href="One-armed-bandit.html#cb68-6" tabindex="-1"></a><span class="co">#&gt; 2: c</span></span></code></pre></div>
+<p>Verwende <a href="https://docs.python.org/3/library/functions.html#enumerate">enumerate</a>, um gleichzeitig über den Index und das Element zu schleifen und einen Slot nach dem anderen auszudrucken. Sieh dir den <code>start</code> Parameter der Funktion an, um sicherzustellen, dass dein Index jetzt bei 1 beginnt.</p>
+<div class="program">
+<p>Gib deinen Code in <em>code05.py</em> ein.</p>
+</div>
+</div>
+<div id="list-comprehension" class="section level2" number="8.9">
+<h2>
+<span class="header-section-number">8.9</span> List Comprehension<a class="anchor" aria-label="anchor" href="#list-comprehension"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die List Comprehension bietet eine elegante und leicht zu lesende Möglichkeit, Elemente einer Liste zu erzeugen, zu ändern und/oder zu filtern und dabei eine neue Liste zu erstellen. Die allgemeine Struktur lautet</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb69-1"><a href="One-armed-bandit.html#cb69-1" tabindex="-1"></a>new_list <span class="op">=</span> [<span class="op">&lt;</span>Transformation<span class="op">-</span>des<span class="op">-</span>Elements<span class="op">&gt;</span> <span class="cf">for</span> item <span class="kw">in</span> old_list <span class="cf">if</span> <span class="op">&lt;</span>Bedingung<span class="op">-</span>gegeben<span class="op">-</span>das<span class="op">-</span>Element<span class="op">&gt;</span>]</span></code></pre></div>
+<p>Schauen wir uns Beispiele an, um zu verstehen, wie es funktioniert. Stell dir vor, du hast eine Liste <code>numbers = [1, 2, 3]</code> und du musst jede Zahl um 1 erhöhen<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ein sehr willkürliches Beispiel!&lt;/p&gt;"><sup>36</sup></a>. Du kannst es machen, indem du eine neue Liste erstellst und 1 zu jedem Element im <transformiere-das-element> Teil hinzufügst:</transformiere-das-element></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb70-1"><a href="One-armed-bandit.html#cb70-1" tabindex="-1"></a>numbers <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb70-2"><a href="One-armed-bandit.html#cb70-2" tabindex="-1"></a>numbers_plus_1 <span class="op">=</span> [item <span class="op">+</span> <span class="dv">1</span> <span class="cf">for</span> item <span class="kw">in</span> numbers]</span></code></pre></div>
+<p>Beachte, dass dies äquivalent ist zu</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb71-1"><a href="One-armed-bandit.html#cb71-1" tabindex="-1"></a>numbers <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb71-2"><a href="One-armed-bandit.html#cb71-2" tabindex="-1"></a>numbers_plus_1 <span class="op">=</span> []</span>
+<span id="cb71-3"><a href="One-armed-bandit.html#cb71-3" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> numbers:</span>
+<span id="cb71-4"><a href="One-armed-bandit.html#cb71-4" tabindex="-1"></a>    numbers_plus_1.append(item <span class="op">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>Oder stelle dir vor, du musst jedes Element in einen String umwandeln. Das kannst du einfach so machen</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb72-1"><a href="One-armed-bandit.html#cb72-1" tabindex="-1"></a>numbers <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb72-2"><a href="One-armed-bandit.html#cb72-2" tabindex="-1"></a>numbers_as_strings <span class="op">=</span> [<span class="bu">str</span>(item) <span class="cf">for</span> item <span class="kw">in</span> numbers]</span></code></pre></div>
+<p>Wie wäre die äquivalente Form mit einer normalen for-Schleife? Schreibe beide Versionen des Codes in Jupiter cells und überprüfe, ob die Ergebnisse gleich sind.</p>
+<div class="practice">
+<p>Mache Übung #9 im Jupyter Notebook.</p>
+</div>
+<p>Implementiere nun den unten stehenden Code mit Hilfe der List Comprehension. Überprüfe, ob die Ergebnisse übereinstimmen.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb73-1"><a href="One-armed-bandit.html#cb73-1" tabindex="-1"></a>strings <span class="op">=</span> [<span class="st">'1'</span>, <span class="st">'2'</span>, <span class="st">'3'</span>]</span>
+<span id="cb73-2"><a href="One-armed-bandit.html#cb73-2" tabindex="-1"></a>numbers <span class="op">=</span> []</span>
+<span id="cb73-3"><a href="One-armed-bandit.html#cb73-3" tabindex="-1"></a><span class="cf">for</span> astring <span class="kw">in</span> strings:</span>
+<span id="cb73-4"><a href="One-armed-bandit.html#cb73-4" tabindex="-1"></a>    numbers.append(<span class="bu">int</span>(astring) <span class="op">+</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #10 im Jupyter Notebook.</p>
+</div>
+<p>Wie oben bemerkt, kannst du auch eine bedingte Anweisung verwenden, um zu filtern, welche Elemente an die neue Liste weitergegeben werden. In unserem Zahlenbeispiel können wir Zahlen beibehalten, die größer als 1 sind</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb74-1"><a href="One-armed-bandit.html#cb74-1" tabindex="-1"></a>numbers <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb74-2"><a href="One-armed-bandit.html#cb74-2" tabindex="-1"></a>numbers_greater_than_1 <span class="op">=</span> [item <span class="cf">for</span> item <span class="kw">in</span> numbers <span class="cf">if</span> item <span class="op">&gt;</span> <span class="dv">1</span>]</span></code></pre></div>
+<p>Manchmal wird die gleiche Aussage in drei Zeilen statt in einer geschrieben, um das Lesen zu erleichtern:</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb75-1"><a href="One-armed-bandit.html#cb75-1" tabindex="-1"></a>numbers <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb75-2"><a href="One-armed-bandit.html#cb75-2" tabindex="-1"></a>numbers_greater_than_1 <span class="op">=</span> [item </span>
+<span id="cb75-3"><a href="One-armed-bandit.html#cb75-3" tabindex="-1"></a>                          <span class="cf">for</span> item <span class="kw">in</span> numbers</span>
+<span id="cb75-4"><a href="One-armed-bandit.html#cb75-4" tabindex="-1"></a>                          <span class="cf">if</span> item <span class="op">&gt;</span> <span class="dv">1</span>]</span></code></pre></div>
+<p>Natürlich kannst du die Transformation und Filterung in einer einzigen Aussage kombinieren. Schreibe einen Code, der alle Elemente unter 2 herausfiltert und 4 zu ihnen hinzufügt.</p>
+<div class="practice">
+<p>Mache Übung #11 im Jupyter Notebook.</p>
+</div>
+</div>
+<div id="verwendung-von-list-comprehension-zur-erstellung-von-drei-slots" class="section level2" number="8.10">
+<h2>
+<span class="header-section-number">8.10</span> Verwendung von List Comprehension zur Erstellung von drei Slots<a class="anchor" aria-label="anchor" href="#verwendung-von-list-comprehension-zur-erstellung-von-drei-slots"><i class="fas fa-link"></i></a>
+</h2>
+<p>Lass uns List Comprehension verwenden, um in einer einzigen Zeile drei Slots zu erstellen. Die gute Nachricht ist, dass wir uns das Erstellen einer leeren Liste und die Verwendung von <code>append</code> ersparen. Die schlechte Nachricht ist, dass du darüber nachdenken musst, über welche Werte du schleifen möchtest, wenn du drei Zufallszahlen erzeugen willst. Tipp: schau dir die Funktion <a href="One-armed-bandit.html#range">range()</a> erneut an und überlege, ob du die temporäre Schleifenvariable tatsächlich verwenden wirst.</p>
+<div class="program">
+<p>Gib deinen Code in <em>code06.py</em> ein.</p>
+</div>
+</div>
+<div id="fertig-für-den-tag" class="section level2" number="8.11">
+<h2>
+<span class="header-section-number">8.11</span> Fertig für den Tag<a class="anchor" aria-label="anchor" href="#fertig-f%C3%BCr-den-tag"><i class="fas fa-link"></i></a>
+</h2>
+<p>Ausgezeichnet! Verpacke den Ordner mit dem Code und dem Notebook in eine Zip-Datei und reiche sie ein!</p>
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></div>
+<div class="next"><a href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#One-armed-bandit"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></li>
+<li><a class="nav-link" href="#konzepte-des-kapitels-3"><span class="header-section-number">8.1</span> Konzepte des Kapitels</a></li>
+<li><a class="nav-link" href="#lists"><span class="header-section-number">8.2</span> Listen</a></li>
+<li><a class="nav-link" href="#neukonzeption-des-einarmigen-banditen-spiels-mit-listen"><span class="header-section-number">8.3</span> Neukonzeption des Einarmigen Banditen-Spiels mit Listen</a></li>
+<li><a class="nav-link" href="#for-loop"><span class="header-section-number">8.4</span> For-Schleife</a></li>
+<li><a class="nav-link" href="#verwendung-der-for-schleife-zur-erzeugung-von-slots"><span class="header-section-number">8.5</span> Verwendung der For-Schleife zur Erzeugung von Slots</a></li>
+<li><a class="nav-link" href="#range"><span class="header-section-number">8.6</span> range() Funktion: Code N-mal wiederholen</a></li>
+<li><a class="nav-link" href="#informationen-zum-slot-index-hinzuf%C3%BCgen"><span class="header-section-number">8.7</span> Informationen zum Slot-Index hinzufügen</a></li>
+<li><a class="nav-link" href="#enumerate"><span class="header-section-number">8.8</span> Über Index und Element gleichzeitig schleifen mit Listenaufzählung</a></li>
+<li><a class="nav-link" href="#list-comprehension"><span class="header-section-number">8.9</span> List Comprehension</a></li>
+<li><a class="nav-link" href="#verwendung-von-list-comprehension-zur-erstellung-von-drei-slots"><span class="header-section-number">8.10</span> Verwendung von List Comprehension zur Erstellung von drei Slots</a></li>
+<li><a class="nav-link" href="#fertig-f%C3%BCr-den-tag"><span class="header-section-number">8.11</span> Fertig für den Tag</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/06-one-armed-bandit.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/06-one-armed-bandit.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-23.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

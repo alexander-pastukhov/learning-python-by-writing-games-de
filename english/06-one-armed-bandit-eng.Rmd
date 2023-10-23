@@ -244,3 +244,5 @@ Let us use list comprehension to build three slots in a single line. The good ne
 Put your code into _code06.py_.
 :::
 
+## Done for the day
+Most excellent! Zip the folder with code and the notebook and submit!
