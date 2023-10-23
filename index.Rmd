@@ -1,5 +1,5 @@
 --- 
-title: "Lerne Python, indem du Spiele entwickels"
+title: "Lerne Python, indem du Textspiele entwickels"
 author: "Alexander (Sasha) Pastukhov"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
