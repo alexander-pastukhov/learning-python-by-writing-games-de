@@ -120,7 +120,7 @@
 
 \title{Lerne Python, indem du Spiele entwickels}
 \author{Alexander (Sasha) Pastukhov}
-\date{2023-10-16}
+\date{2023-10-23}
 
 \begin{document}
 \maketitle
@@ -1836,6 +1836,326 @@ Das mag für unseren einfachen Code nicht besonders nützlich aussehen, aber wen
 \section{Videospiele mit Video}\label{videospiele-mit-video}}
 
 Reiche deine Dateien ein und mach dich bereit für mehr Aufregung, denn wir wechseln zu ``richtigen'' Videospielen mit PsychoPy.
+
+\hypertarget{One-armed-bandit}{%
+\chapter{Einarmiger Bandit, aber mit Listen und Schleifen}\label{One-armed-bandit}}
+
+In diesem Kapitel werden wir das Spiel des Einarmigen Banditen mehrmals neu programmieren. Das ist vielleicht nicht die aufregendste Aussicht, aber es gibt uns ein einfaches Spiel, das du bereits zu programmieren weißt, sodass wir uns auf Listen und For-Schleifen konzentrieren können. Hol dir das \href{notebooks/One-armed\%20bandit.ipynb}{Übungsnotebook}, bevor wir starten.
+
+\hypertarget{konzepte-des-kapitels-3}{%
+\section{Konzepte des Kapitels}\label{konzepte-des-kapitels-3}}
+
+\begin{itemize}
+\tightlist
+\item
+  Speichern von vielen Elementen in \protect\hyperlink{lists}{Listen}.
+\item
+  Iterieren über Elemente mit der \protect\hyperlink{for-loop}{for} Schleife.
+\item
+  Erstellen eines \protect\hyperlink{range}{Bereichs} von Werten.
+\item
+  Schleifen über \protect\hyperlink{enumerate}{nummerierte} Indizes und Werte.
+\item
+  Listen erstellen mit \protect\hyperlink{list-comprehension}{Listenabstraktion}.
+\end{itemize}
+
+\hypertarget{lists}{%
+\section{Listen}\label{lists}}
+
+Bisher haben wir Variablen verwendet, um einzelne Werte zu speichern: die Wahl des Computers, die Vermutung des Spielers, die Anzahl der Versuche, das PsychoPy-Fensterobjekt usw. Aber manchmal müssen wir mehr als einen Wert verarbeiten. Dieses Problem hatten wir bereits im \protect\hyperlink{guess-the-number-ai}{computerbasierten Raten-der-Zahl} Spiel, als wir den verbleibenden Zahlenbereich speichern mussten. Wir haben das Problem gelöst, indem wir zwei Variablen verwendet haben, eine für die untere und eine für die obere Grenze. Allerdings ist klar, dass dieser Ansatz nicht gut skalierbar ist und manchmal wissen wir vielleicht nicht einmal, wie viele Werte wir speichern müssen. Die \href{https://docs.python.org/3/library/stdtypes.html\#lists}{Listen} von Python sind die Lösung für dieses Problem.
+
+Eine Liste ist eine veränderbare\footnote{Mehr dazu und zu Tupeln, den unveränderlichen Verwandten der Liste, später.} Sequenz von Elementen, auf die über ihren nullbasierten Index zugegriffen werden kann. Wenn du die Idee der \protect\hyperlink{variables}{Variablen-als-Box} fortschreitest, kannst du dir Listen als eine Box mit nummerierten Steckplätzen vorstellen. Um ein bestimmtes Stück zu speichern und abzurufen, musst du sowohl den \emph{Variablennamen} als auch den \emph{Index des Elements}, an dem du interessiert bist, in dieser Box kennen. Dann arbeitest du mit einer Variable-plus-Index auf genau dieselbe Weise wie mit einer normalen Variable, indem du auf ihren Wert zugreifst oder ihn änderst, genau wie vorher.
+
+Eine Liste wird durch eckige Klammern definiert \texttt{\textless{}variable\textgreater{}\ =\ {[}\textless{}wert1\textgreater{},\ \textless{}wert2\textgreater{},\ ...\ \textless{}wertN\textgreater{}{]}}. Auf einen einzelnen Platz innerhalb einer Liste wird ebenfalls über eckige Klammern zugegriffen \texttt{\textless{}variable\textgreater{}{[}\textless{}index\textgreater{}{]}}, wobei der Index wiederum \textbf{nullbasiert} ist\footnote{Das ist typisch für ``klassische'' Programmiersprachen, aber weniger für solche, die auf lineare Algebra / Data Science ausgerichtet sind. Sowohl Matlab als auch R verwenden einen indexbasierten Index, so dass du vorsichtig sein und überprüfen musst, ob du die richtigen Indizes verwendest.}. Das bedeutet, dass das \emph{erste} Element \texttt{variable{[}0{]}} ist und, wenn es \emph{N} Elemente in der Liste gibt, ist das letzte Element \texttt{variable{[}N-1{]}}. Du kannst die Gesamtzahl der Elemente in einer Liste herausfinden, indem du ihre Länge über eine spezielle \href{https://docs.python.org/3/library/functions.html\#len}{len()} Funktion erhältst. So kannst du auf das letzte Element über \texttt{variable{[}len(variable)-1{]}} zugreifen\footnote{Es gibt einen einfacheren Weg, dies zu tun, den du in Kürze lernen wirst.}. Beachte die \texttt{-1}: Wenn deine Liste 3 Elemente hat, ist der Index des letzten Elements 2, wenn sie 100 hat, dann 99, usw. Ich verbringe so viel Zeit damit, weil dies eine recht häufige Quelle von Verwirrung ist.
+
+Mache Übung \#1 um zu sehen, wie Listen definiert und indiziert werden.
+
+Listen erlauben dir auch, auf mehr als einen Slot/Index gleichzeitig zuzugreifen, und zwar über \href{https://docs.python.org/3/library/functions.html\#slice}{slicing}. Du kannst den Index der Elemente über die Notation \texttt{\textless{}start\textgreater{}:\textless{}stop\textgreater{}} angeben. Zum Beispiel gibt dir \texttt{x{[}1:3{]}} Zugang zu zwei Elementen mit den Indizes 1 und 2. Ja, \emph{zwei} Elemente: der Slicing-Index geht vom \texttt{start} bis \textbf{aber nicht einschließlich} zum \texttt{stop}. Wenn du also \emph{alle} Elemente einer Liste abrufen willst, musst du \texttt{x{[}0:length(x){]}} schreiben, und um nur das letzte Element zu bekommen, schreibst du immer noch \texttt{x{[}len(x)-1{]}}. Verwirrend? Ich denke schon! Ich verstehe die Logik, aber ich finde dieses stop-is-not-included Konzept gegenintuitiv und ich muss mich immer wieder bewusst daran erinnern. Leider ist dies die Standardmethode, um Zahlenfolgen in Python zu definieren, daher musst du dir dies merken.
+
+Mache Übung \#2, um die Intuition zu entwickeln.
+
+Beim Slicing kannst du entweder \texttt{start} oder \texttt{stop} weglassen. In diesem Fall geht Python davon aus, dass ein fehlendes \texttt{start} \texttt{0} bedeutet (der Index des ersten Elements) und ein fehlendes \texttt{stop} \texttt{len(\textless{}list\textgreater{})} bedeutet (also ist das letzte Element eingeschlossen). Wenn du \emph{beide} weglässt, z.B. \texttt{meine\_schönen\_zahlen{[}:{]}}, gibt es alle Werte zurück, da dies äquivalent zu \texttt{meine\_schönen\_zahlen{[}0:len(meine\_schönen\_zahlen){]}} ist.\footnote{Beachte, dass dies fast, aber nicht ganz das Gleiche ist wie einfach nur \texttt{meine\_schönen\_zahlen} zu schreiben, denn \texttt{meine\_schönen\_zahlen{[}:{]}} gibt eine \emph{andere} Liste mit \emph{identischem} Inhalt zurück. Der Unterschied ist subtil, aber wichtig und wir werden später darauf zurückkommen, wenn wir über veränderbare und unveränderbare Typen sprechen.}
+
+Mache Übung \#3.
+
+Du kannst auch \emph{negative} Indizes verwenden, die relativ zur Länge der Liste berechnet werden\footnote{Wenn du von R kommst, ist das negative Indexing in Python völlig anders.}. Wenn du zum Beispiel das \emph{letzte} Element der Liste abrufen willst, kannst du \texttt{meine\_schönen\_zahlen{[}len(meine\_schönen\_zahlen)-1{]}} oder einfach nur \texttt{meine\_schönen\_zahlen{[}-1{]}} sagen. Das vorletzte Element wäre \texttt{meine\_schönen\_zahlen{[}-2{]}}, usw. Du kannst negative Indizes für das Slicing verwenden, aber vergiss nicht den Haken \emph{einschließlich-dem-Start-aber-ausgenommen-dem-Stopp}: \texttt{meine\_schönen\_zahlen{[}:-1{]}} gibt alle Elemente außer dem letzten Element der Liste zurück, nicht die gesamte Liste!
+
+Mache Übung \#4.
+
+Das Slicing kann erweitert werden, indem ein \texttt{Schritt} über die Notation \texttt{start:stop:Schritt} angegeben wird. \texttt{Schritt} kann negativ sein, was ermöglicht, Indizes in umgekehrter Reihenfolge zu erstellen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{meine\_schönen\_zahlen }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{meine\_schönen\_zahlen[}\DecValTok{4}\NormalTok{:}\DecValTok{0}\NormalTok{:}\OperatorTok{{-}}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#\textgreater{} [5, 4, 3, 2]}
+\end{Highlighting}
+\end{Shaded}
+
+Aber du musst auf das Vorzeichen des Schritts achten. Wenn es in die falsche Richtung geht und \texttt{stop} nicht erreicht werden kann, gibt Python eine leere Liste zurück.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{meine\_schönen\_zahlen }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{meine\_schönen\_zahlen[}\DecValTok{4}\NormalTok{:}\DecValTok{0}\NormalTok{:}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#\textgreater{} []}
+\end{Highlighting}
+\end{Shaded}
+
+Schritte können mit ausgelassenen und negativen Indizes kombiniert werden. Um jedes \emph{ungerade} Element der Liste zu bekommen, schreibst du \texttt{meine\_schönen\_zahlen{[}::2{]}}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{meine\_schönen\_zahlen }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{meine\_schönen\_zahlen[::}\DecValTok{2}\NormalTok{]}
+\CommentTok{\#\textgreater{} [1, 3, 5, 7]}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#5.
+
+Wenn du versuchst, auf Indizes \emph{außerhalb} eines gültigen Bereichs zuzugreifen, wird Python einen \href{https://docs.python.org/3/library/exceptions.html\#IndexError}{IndexError}\footnote{Wenn du mit R und seiner laxen Haltung gegenüber Indizes vertraut bist, wirst du das sehr befriedigend finden.} auslösen. Wenn du also versuchst, das 6\textsuperscript{te} Element (Index 5) einer fünfelementigen Liste zu holen, wird ein einfacher und unmissverständlicher Fehler generiert. Wenn jedoch deine \emph{Scheibe} größer ist als der Bereich, wird sie ohne zusätzliche Warnung oder einen Fehler abgeschnitten. Daher wird für eine fünfelementige Liste \texttt{my\_pretty\_numbers{[}:6{]}} oder \texttt{my\_pretty\_numbers{[}:600{]}} beide alle Nummern zurückgeben (effektiv ist dies gleichwertig mit \texttt{my\_pretty\_numbers{[}:{]}}). Zudem, wenn die Scheibe leer ist (\texttt{2:2}, kann 2 nicht einschließen, weil es ein Stop-Wert ist, obwohl es auch von 2 aus startet) oder die gesamte Scheibe außerhalb des Bereichs liegt, wird Python eine leere Liste zurückgeben, wiederum wird weder eine Warnung noch ein Fehler generiert.
+
+Mache Übung \#6.
+
+In Python sind Listen dynamisch, daher kannst du immer Elemente hinzufügen oder entfernen, siehe \href{https://docs.python.org/3/tutorial/datastructures.html\#more-on-lists}{die Liste der Methoden}. Du kannst ein neues Element am Ende der Liste über die Methode \texttt{.append(\textless{}new\_value\textgreater{})} hinzufügen
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_pretty\_numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{my\_pretty\_numbers.append(}\DecValTok{10}\NormalTok{)}
+\NormalTok{my\_pretty\_numbers}
+\CommentTok{\#\textgreater{} [1, 2, 3, 4, 5, 6, 7, 10]}
+\end{Highlighting}
+\end{Shaded}
+
+Oder du kannst \texttt{insert(\textless{}index\textgreater{},\ \textless{}new\_value\textgreater{})} \emph{vor} einem Element mit diesem Index verwenden. Leider bedeutet dies, dass du einen beliebig großen Index verwenden kannst und es fügt einen neuen Wert als \emph{letztes} Element ein, ohne einen Fehler zu erzeugen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_pretty\_numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{my\_pretty\_numbers.insert(}\DecValTok{2}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{my\_pretty\_numbers.insert(}\DecValTok{500}\NormalTok{, }\DecValTok{20}\NormalTok{)}
+\NormalTok{my\_pretty\_numbers}
+\CommentTok{\#\textgreater{} [1, 2, 10, 3, 4, 5, 6, 7, 20]}
+\end{Highlighting}
+\end{Shaded}
+
+Du kannst ein Element mit seinem Index über \texttt{pop(\textless{}index\textgreater{})} entfernen, beachte, dass das Element auch \emph{zurückgegeben} wird. Wenn du den Index weglässt, entfernt \texttt{pop()} das \emph{letzte} Element der Liste. Hier kannst du nur gültige Indizes verwenden.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_pretty\_numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{my\_pretty\_numbers.pop(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{)}
+\CommentTok{\#\textgreater{} 7}
+\NormalTok{my\_pretty\_numbers.pop(}\DecValTok{3}\NormalTok{)}
+\CommentTok{\#\textgreater{} 4}
+\NormalTok{my\_pretty\_numbers}
+\CommentTok{\#\textgreater{} [1, 2, 3, 5, 6]}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#7.
+
+\hypertarget{neukonzeption-des-einarmigen-banditen-spiels-mit-listen}{%
+\section{Neukonzeption des Einarmigen Banditen-Spiels mit Listen}\label{neukonzeption-des-einarmigen-banditen-spiels-mit-listen}}
+
+Puh, das war \emph{viel} über Listen\footnote{Und wir haben gerade einmal an der Oberfläche gekratzt!}. Aber \href{https://de.wiktionary.org/wiki/work_hard,_play_hard}{Work hard, play hard}! Lass uns zum Einarmigen Banditen-Spiel zurückkehren, das du bereits implementiert hast, und es mithilfe von Listen neu gestalten. Letztere machen viel Sinn, wenn man mit mehreren Slots arbeitet. Erinnere dich an die Regeln: Du hast drei Slots mit \href{https://docs.python.org/3/library/random.html\#random.randint}{zufälligen Zahlen} zwischen 1 und 5, wenn alle drei Zahlen übereinstimmen, gibst du ``Drei Gleiche!'' aus, wenn nur zwei Zahlen übereinstimmen, druckst du ``Ein Paar!''. Implementiere dieses Spiel mit einer Liste anstelle von drei Variablen. In der ersten Version, verwende die Notation \texttt{\textless{}variable\textgreater{}\ =\ {[}\textless{}value1\textgreater{},\ \textless{}value2\textgreater{},\ ...,\ \textless{}valueN\textgreater{}{]}}, um sie zu definieren. Beachte außerdem, dass du bei der Verwendung von \protect\hyperlink{string-formatierung}{String-Formatierung} alle Werte in einem Tuple (eine eingefrorene Liste, mehr dazu in späteren Kapiteln) oder einer Liste übergibst. Die gute Nachricht: Deine drei Werte befinden sich in der Liste, daher kannst du sie für die String-Formatierung verwenden, denke nur an die Anzahl der Slots, die du innerhalb des Format-Strings definieren musst.
+
+Ich weiß, es wird verlockend sein, einfach den bereits implementierten Code zu kopieren und zu bearbeiten, aber wir sind hier, um zu lernen, daher empfehle ich dringend, ihn von Grund auf neu zu schreiben. Es ist ein sehr einfaches Programm, es neu zu machen ist sehr einfach, aber es hilft dir, mehr zu üben.
+
+Setze deinen Code in \emph{code01.py} um.
+
+Jetzt mache dasselbe, aber beginne mit einer leeren Liste und \href{https://docs.python.org/3/tutorial/datastructures.html\#more-on-lists}{füge} zufällige Zahlen hinzu.
+
+Setze deinen Code in \emph{code02.py} um.
+
+\hypertarget{for-loop}{%
+\section{For-Schleife}\label{for-loop}}
+
+In dem oben genannten Code mussten wir über drei Maulwürfe (Kreise) iterieren, die wir in einer Liste hatten. Python bietet dafür ein spezielles Werkzeug: eine
+\href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#for-statements}{For-Schleife}, die über die Elemente jeder Sequenz iteriert (unsere Liste ist eine Sequenz!). Hier ist ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{42}\NormalTok{]}
+\ControlFlowTok{for}\NormalTok{ a\_number }\KeywordTok{in}\NormalTok{ numbers:}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"Der Wert der Variable a\_number in dieser Iteration beträgt }\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{\%}\NormalTok{(a\_number))}
+\NormalTok{    a\_number }\OperatorTok{=}\NormalTok{ a\_number }\OperatorTok{+} \DecValTok{3}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"  Jetzt haben wir es um 3 erhöht: }\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{\%}\NormalTok{(a\_number))}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"  Jetzt verwenden wir es in einer Formel a\_number / 10: }\SpecialCharTok{\%g}\StringTok{"}\OperatorTok{\%}\NormalTok{(a\_number }\OperatorTok{/} \DecValTok{10}\NormalTok{))}
+\CommentTok{\#\textgreater{} Der Wert der Variable a\_number in dieser Iteration beträgt 2}
+\CommentTok{\#\textgreater{}   Jetzt haben wir es um 3 erhöht: 5}
+\CommentTok{\#\textgreater{}   Jetzt verwenden wir es in einer Formel a\_number / 10: 0.5}
+\CommentTok{\#\textgreater{} Der Wert der Variable a\_number in dieser Iteration beträgt 4}
+\CommentTok{\#\textgreater{}   Jetzt haben wir es um 3 erhöht: 7}
+\CommentTok{\#\textgreater{}   Jetzt verwenden wir es in einer Formel a\_number / 10: 0.7}
+\CommentTok{\#\textgreater{} Der Wert der Variable a\_number in dieser Iteration beträgt 42}
+\CommentTok{\#\textgreater{}   Jetzt haben wir es um 3 erhöht: 45}
+\CommentTok{\#\textgreater{}   Jetzt verwenden wir es in einer Formel a\_number / 10: 4.5}
+\end{Highlighting}
+\end{Shaded}
+
+Hier wird der Code innerhalb der \texttt{for}-Schleife dreimal wiederholt, weil es drei Elemente in der Liste gibt. Bei jeder Iteration wird der nächste Wert aus der Liste einer temporären Variable \texttt{a\_number} zugewiesen (siehe Ausgabe). Sobald der Wert einer Variablen zugewiesen ist, kannst du ihn wie jede andere Variable verwenden. Du kannst ihn ausgeben lassen (erster \texttt{print}), du kannst ihn ändern (zweite Zeile innerhalb der Schleife), seinen Wert verwenden, wenn du andere Funktionen aufrufst, usw. Um das besser zu würdigen, kopiere diesen Code in eine temporäre Datei (nenne sie \texttt{test01.py}), setze einen \protect\hyperlink{debugging}{Breakpoint} auf die erste \texttt{print} Anweisung und dann verwende \textbf{F10}, um durch die Schleife zu springen und zu sehen, wie sich der Wert der Variable \texttt{a\_number} bei jeder Iteration ändert und dann in der zweiten Zeile innerhalb der Schleife modifiziert wird.
+
+Beachte, dass du die gleiche \href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#break-and-continue-statements-and-else-clauses-on-loops}{break} Anweisung verwenden kannst wie bei der \href{https://docs.python.org/3/reference/compound_stmts.html\#the-while-statement}{while} Schleife.
+
+Mache Übung \#8.
+
+\hypertarget{verwendung-der-for-schleife-zur-erzeugung-von-slots}{%
+\section{Verwendung der For-Schleife zur Erzeugung von Slots}\label{verwendung-der-for-schleife-zur-erzeugung-von-slots}}
+
+Verwende die \href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#for-statements}{For-Schleife} zweimal. Zuerst, wenn du die drei Slots erstellst: Beginne mit einer leeren Liste und füge drei zufällige Nummern mit einer For-Schleife hinzu. Zweitens, beim Ausdrucken der Slots. Ich habe oben darauf hingewiesen, dass es einfacher ist, die Formatierung vorzunehmen, wenn man drei Werte in einer Liste hat, aber hier sollst du, um der Übung willen, jeden Slot separat mit einer For-Schleife ausdrucken.
+
+Setze deinen Code in \emph{code03.py} um.
+
+\hypertarget{range}{%
+\section{range() Funktion: Code N-mal wiederholen}\label{range}}
+
+Manchmal musst du den Code mehrmals wiederholen. Stelle dir zum Beispiel vor, dass du in einem Experiment 40 Versuche hast. Daher musst du den versuchsbezogenen Code 40 Mal wiederholen. Natürlich kannst du von Hand eine 40 Elemente lange Liste erstellen und darüber iterieren, aber Python hat dafür eine praktische \href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#the-range-function}{range()} Funktion. \texttt{range(N)} erzeugt N Ganzzahlen von 0 bis N-1 (gleiche Regel wie beim Slicing, dass bis zu, aber nicht einschließlich gilt), über die du in einer For-Schleife iterieren kannst.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ x }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{3}\NormalTok{):}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"Der Wert von x ist }\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{\%}\NormalTok{(x))}
+\CommentTok{\#\textgreater{} Der Wert von x ist 0}
+\CommentTok{\#\textgreater{} Der Wert von x ist 1}
+\CommentTok{\#\textgreater{} Der Wert von x ist 2}
+\end{Highlighting}
+\end{Shaded}
+
+Du kannst das Verhalten der \href{https://docs.python.org/3/library/stdtypes.html\#range}{range()} Funktion ändern, indem du einen Startwert und eine Schrittgröße angibst. Aber in ihrer einfachsten Form ist \texttt{range(N)} ein praktisches Werkzeug, um den Code so oft zu wiederholen. Beachte, dass du zwar immer eine temporäre Variable in einer \texttt{for} Schleife benötigst, sie manchmal aber überhaupt nicht verwendest. In solchen Fällen solltest du \texttt{\_} (Unterstrich) als Variablennamen verwenden, um anzuzeigen, dass sie nicht verwendet wird.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ \_ }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{2}\NormalTok{):}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{"Ich werde zweimal wiederholt!"}\NormalTok{)}
+\CommentTok{\#\textgreater{} Ich werde zweimal wiederholt!}
+\CommentTok{\#\textgreater{} Ich werde zweimal wiederholt!}
+\end{Highlighting}
+\end{Shaded}
+
+Alternativ kannst du \texttt{range()} verwenden, um durch die Indizes einer Liste zu schleifen (denke daran, du kannst immer auf ein einzelnes Listenelement über \texttt{var{[}index{]}} zugreifen). Mache genau das\footnote{Beachte, das ist nicht eine \emph{bessere}, sondern eine \emph{alternative} Möglichkeit, dies zu tun.}! Ändere deinen Code so, dass du die \href{(https://docs.python.org/3/library/stdtypes.html\#range)}{range()} Funktion in der For-Schleife verwendest (wie kannst du die Anzahl der Iterationen, die du benötigst, aus der Länge der Liste berechnen?), verwende die temporäre Variable als \emph{Index} für die Liste, um jedes Element zu zeichnen\footnote{Stilhinweis: Wenn eine Variable ein \emph{Index} von etwas ist, neige ich dazu, sie \texttt{isomething} zu nennen. Wenn sie zum Beispiel einen Index zu einem aktuellen Maulwurf hält, würde ich sie \texttt{imole} nennen. Das ist \emph{meine} Art, das zu tun. Andere verwenden das \texttt{i\_} Präfix oder ein \texttt{\_i} Suffix. Aber so oder so, es ist eine nützliche Benennungskonvention. Denke daran, je einfacher es ist, die Bedeutung einer Variable aus ihrem Namen zu verstehen, desto einfacher ist es für dich, den Code zu lesen und zu ändern.}. Wenn du unsicher bist, setze einen Breakpoint innerhalb (oder kurz vor) der Schleife und schreite durch deinen Code, um zu verstehen, welche Werte eine temporäre Schleifenvariable erhält und wie sie verwendet wird.
+
+\hypertarget{informationen-zum-slot-index-hinzufuxfcgen}{%
+\section{Informationen zum Slot-Index hinzufügen}\label{informationen-zum-slot-index-hinzufuxfcgen}}
+
+In der vorherigen Version des Spiels hatten wir keine Möglichkeit, den Slot-Index anzugeben. Es ist zwar offensichtlich an der Reihenfolge im Ausdruck erkennbar, aber es wäre schöner, wenn wir explizit \texttt{"Slot\ \#1:\ 2"} ausdrucken würden. Verwende die Funktion \href{https://docs.python.org/3/tutorial/controlflow.html?highlight=loop\#the-range-function}{range()} um Indizes von Slots zu generieren, schlaufe über diese Indizes und drucke sie in ``Slot \# : '' aus. Beachte jedoch, dass die Indizes in Python bei Null beginnen, unsere Slots aber bei 1 starten (kein Slot Null!). Überlege dir, wie du dies in einem Ausdruck korrigieren könntest.
+
+Gib deinen Code in \emph{code04.py} ein.
+
+\hypertarget{enumerate}{%
+\section{Über Index und Element gleichzeitig schleifen mit Listenaufzählung}\label{enumerate}}
+
+Es passiert ziemlich oft, dass du sowohl über die Indizes als auch über die Elemente einer Liste schleifen musst, daher hat Python eine praktische Funktion dafür: \href{https://docs.python.org/3/library/functions.html\#enumerate}{enumerate()}! Wenn du anstelle einer Liste über \href{https://docs.python.org/3/library/functions.html\#enumerate}{enumerate()} iterierst, erhältst du ein Tupel mit \texttt{(Index,\ Wert)}. Hier ist ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{letters }\OperatorTok{=}\NormalTok{ [}\StringTok{\textquotesingle{}a\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}c\textquotesingle{}}\NormalTok{]}
+\ControlFlowTok{for}\NormalTok{ index, letter }\KeywordTok{in} \BuiltInTok{enumerate}\NormalTok{(letters):}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}}\SpecialCharTok{\%d}\StringTok{: }\SpecialCharTok{\%s}\StringTok{\textquotesingle{}}\OperatorTok{\%}\NormalTok{(index, letter))}
+\CommentTok{\#\textgreater{} 0: a}
+\CommentTok{\#\textgreater{} 1: b}
+\CommentTok{\#\textgreater{} 2: c}
+\end{Highlighting}
+\end{Shaded}
+
+Verwende \href{https://docs.python.org/3/library/functions.html\#enumerate}{enumerate}, um gleichzeitig über den Index und das Element zu schleifen und einen Slot nach dem anderen auszudrucken. Sieh dir den \texttt{start} Parameter der Funktion an, um sicherzustellen, dass dein Index jetzt bei 1 beginnt.
+
+Gib deinen Code in \emph{code05.py} ein.
+
+\hypertarget{list-comprehension}{%
+\section{List Comprehension}\label{list-comprehension}}
+
+Die List Comprehension bietet eine elegante und leicht zu lesende Möglichkeit, Elemente einer Liste zu erzeugen, zu ändern und/oder zu filtern und dabei eine neue Liste zu erstellen. Die allgemeine Struktur lautet
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{new\_list }\OperatorTok{=}\NormalTok{ [}\OperatorTok{\textless{}}\NormalTok{Transformation}\OperatorTok{{-}}\NormalTok{des}\OperatorTok{{-}}\NormalTok{Elements}\OperatorTok{\textgreater{}} \ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ old\_list }\ControlFlowTok{if} \OperatorTok{\textless{}}\NormalTok{Bedingung}\OperatorTok{{-}}\NormalTok{gegeben}\OperatorTok{{-}}\NormalTok{das}\OperatorTok{{-}}\NormalTok{Element}\OperatorTok{\textgreater{}}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Schauen wir uns Beispiele an, um zu verstehen, wie es funktioniert. Stell dir vor, du hast eine Liste \texttt{numbers\ =\ {[}1,\ 2,\ 3{]}} und du musst jede Zahl um 1 erhöhen\footnote{Ein sehr willkürliches Beispiel!}. Du kannst es machen, indem du eine neue Liste erstellst und 1 zu jedem Element im Teil hinzufügst:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_plus\_1 }\OperatorTok{=}\NormalTok{ [item }\OperatorTok{+} \DecValTok{1} \ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers]}
+\end{Highlighting}
+\end{Shaded}
+
+Beachte, dass dies äquivalent ist zu
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_plus\_1 }\OperatorTok{=}\NormalTok{ []}
+\ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers:}
+\NormalTok{    numbers\_plus\_1.append(item }\OperatorTok{+} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Oder stelle dir vor, du musst jedes Element in einen String umwandeln. Das kannst du einfach so machen
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_as\_strings }\OperatorTok{=}\NormalTok{ [}\BuiltInTok{str}\NormalTok{(item) }\ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers]}
+\end{Highlighting}
+\end{Shaded}
+
+Wie wäre die äquivalente Form mit einer normalen for-Schleife? Schreibe beide Versionen des Codes in Jupiter cells und überprüfe, ob die Ergebnisse gleich sind.
+
+Mache Übung \#9 im Jupyter Notebook.
+
+Implementiere nun den unten stehenden Code mit Hilfe der List Comprehension. Überprüfe, ob die Ergebnisse übereinstimmen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{strings }\OperatorTok{=}\NormalTok{ [}\StringTok{\textquotesingle{}1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}3\textquotesingle{}}\NormalTok{]}
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ []}
+\ControlFlowTok{for}\NormalTok{ astring }\KeywordTok{in}\NormalTok{ strings:}
+\NormalTok{    numbers.append(}\BuiltInTok{int}\NormalTok{(astring) }\OperatorTok{+} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Mache Übung \#10 im Jupyter Notebook.
+
+Wie oben bemerkt, kannst du auch eine bedingte Anweisung verwenden, um zu filtern, welche Elemente an die neue Liste weitergegeben werden. In unserem Zahlenbeispiel können wir Zahlen beibehalten, die größer als 1 sind
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_greater\_than\_1 }\OperatorTok{=}\NormalTok{ [item }\ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers }\ControlFlowTok{if}\NormalTok{ item }\OperatorTok{\textgreater{}} \DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Manchmal wird die gleiche Aussage in drei Zeilen statt in einer geschrieben, um das Lesen zu erleichtern:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{]}
+\NormalTok{numbers\_greater\_than\_1 }\OperatorTok{=}\NormalTok{ [item }
+                          \ControlFlowTok{for}\NormalTok{ item }\KeywordTok{in}\NormalTok{ numbers}
+                          \ControlFlowTok{if}\NormalTok{ item }\OperatorTok{\textgreater{}} \DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Natürlich kannst du die Transformation und Filterung in einer einzigen Aussage kombinieren. Schreibe einen Code, der alle Elemente unter 2 herausfiltert und 4 zu ihnen hinzufügt.
+
+Mache Übung \#11 im Jupyter Notebook.
+
+\hypertarget{verwendung-von-list-comprehension-zur-erstellung-von-drei-slots}{%
+\section{Verwendung von List Comprehension zur Erstellung von drei Slots}\label{verwendung-von-list-comprehension-zur-erstellung-von-drei-slots}}
+
+Lass uns List Comprehension verwenden, um in einer einzigen Zeile drei Slots zu erstellen. Die gute Nachricht ist, dass wir uns das Erstellen einer leeren Liste und die Verwendung von \texttt{append} ersparen. Die schlechte Nachricht ist, dass du darüber nachdenken musst, über welche Werte du schleifen möchtest, wenn du drei Zufallszahlen erzeugen willst. Tipp: schau dir die Funktion \protect\hyperlink{range}{range()} erneut an und überlege, ob du die temporäre Schleifenvariable tatsächlich verwenden wirst.
+
+Gib deinen Code in \emph{code06.py} ein.
+
+\hypertarget{fertig-fuxfcr-den-tag}{%
+\section{Fertig für den Tag}\label{fertig-fuxfcr-den-tag}}
+
+Ausgezeichnet! Verpacke den Ordner mit dem Code und dem Notebook in eine Zip-Datei und reiche sie ein!
 
   \bibliography{book.bib}
 

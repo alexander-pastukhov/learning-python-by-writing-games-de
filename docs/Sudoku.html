@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 11 Sudoku | Lerne Python, indem du Spiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="In this chapter, we are going to write programs that will both generate and solve sudoku puzzle. In this puzzle, you need to complete a \(9\times9\) grid with number 1 to 9, so that number do not...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 11 Sudoku | Lerne Python, indem du Spiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/Sudoku.html">
+<meta property="og:description" content="In this chapter, we are going to write programs that will both generate and solve sudoku puzzle. In this puzzle, you need to complete a \(9\times9\) grid with number 1 to 9, so that number do not...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 11 Sudoku | Lerne Python, indem du Spiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="In this chapter, we are going to write programs that will both generate and solve sudoku puzzle. In this puzzle, you need to complete a \(9\times9\) grid with number 1 to 9, so that number do not...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/psychopy-python-favicon.svg">
+<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Spiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
+<li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+<li><a class="" href="One-armed-bandit.html"><span class="header-section-number">8</span> One-armed bandit but with lists and loops</a></li>
+<li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Hunt the Wumpus</a></li>
+<li><a class="" href="guess-the-animal.html"><span class="header-section-number">10</span> Guess the animal</a></li>
+<li><a class="active" href="Sudoku.html"><span class="header-section-number">11</span> Sudoku</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="Sudoku" class="section level1" number="11">
+<h1>
+<span class="header-section-number">Kapitel 11</span> Sudoku<a class="anchor" aria-label="anchor" href="#Sudoku"><i class="fas fa-link"></i></a>
+</h1>
+<p>In this chapter, we are going to write programs that will both generate and solve <a href="https://en.wikipedia.org/wiki/Sudoku">sudoku puzzle</a>. In this puzzle, you need to complete a <span class="math inline">\(9\times9\)</span> grid with number 1 to 9, so that number do not repeat within each row, each column, and each <span class="math inline">\(3\times3\)</span> square block. When you play the game, you have an incomplete puzzle and the more gaps you have, the harder the puzzle tends to be. But before you can play the game, some (that is you, today) must 1) generate a complete puzzle, 2) remove some numbers while ensuring that the solution to the puzzle remains unique.</p>
+<p>The puzzle is based on a 2D grid and, in principles, you can use <a href="One-armed-bandit.html#lists">list</a> of rows (which are lists themselves) to create this grid. This would be similar to the list of lists that contained information about connecting caves in (Hunt the Wumpus)[#hunt-the-wumpus] game. However, this nested list structure makes it hard to work with columns and blocks, as their elements belong to different lists, so you need to use for loop instead of simpler list slicing (works, but only for rows).</p>
+<p>Instead, we will use it as an opportunity to learn about <a href="https://numpy.org/">NumPy</a> library, which is one of the key packages for scientific computing in Python and is a foundation for many data analysis libraries. Note that the material below is by no means complete. If anything, it barely scratches the surface of NumPy. If you need NumPy for your projects, I strongly recommend taking a look at offical <a href="https://numpy.org/doc/stable/user/absolute_beginners.html">Getting Started for aboslute beginners</a> guide and the official <a href="https://numpy.org/doc/stable/user/index.html">user guide</a>.</p>
+<div id="importing-numpy" class="section level2" number="11.1">
+<h2>
+<span class="header-section-number">11.1</span> Importing NumPy<a class="anchor" aria-label="anchor" href="#importing-numpy"><i class="fas fa-link"></i></a>
+</h2>
+<p>The NumPy is not a core Python library, so you may need to <a href="https://numpy.org/install/">install it</a>. As with all libraries, you must import NumPy before using it in your script. However, this is one of the rare cases where renaming the library during import is a standard and recommended way:</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb98-1"><a href="Sudoku.html#cb98-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code></pre></div>
+</div>
+<div id="d-numpy-arrays-versus-python-lists" class="section level2" number="11.2">
+<h2>
+<span class="header-section-number">11.2</span> 1D NumPy arrays versus Python lists<a class="anchor" aria-label="anchor" href="#d-numpy-arrays-versus-python-lists"><i class="fas fa-link"></i></a>
+</h2>
+<p>The key data structure that NumPy introduces is a NumPy array that can have any number of dimensions. A one dimensional array, typically called “a vector”, is most directly related to a Python <a href="One-armed-bandit.html#lists">list</a>, but with both some limitations and some extra functionality. Unlike Python lists that can hold anything, including other lists, all elements of an array must be of the same <a href="https://numpy.org/doc/stable/user/basics.types.html">numeric type</a> (but <a href="https://numpy.org/doc/stable/reference/generated/numpy.chararray.html">character arrays</a> can be created as well). However, the advantage of this restriction is that since all elements are of the same type, it is guaranteed that you can apply the same function to all the elements. Note that there is no such guarantee for potentially heterogenous Python lists, which is why you need to perform operation on each element separately.</p>
+<p>You can create a Numpy array from a list via <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html">array</a> function:</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb99-1"><a href="Sudoku.html#cb99-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb99-2"><a href="Sudoku.html#cb99-2" tabindex="-1"></a></span>
+<span id="cb99-3"><a href="Sudoku.html#cb99-3" tabindex="-1"></a><span class="co"># A Python list of numbers</span></span>
+<span id="cb99-4"><a href="Sudoku.html#cb99-4" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">7</span>]</span>
+<span id="cb99-5"><a href="Sudoku.html#cb99-5" tabindex="-1"></a><span class="bu">print</span>(a_list)</span>
+<span id="cb99-6"><a href="Sudoku.html#cb99-6" tabindex="-1"></a><span class="co">#&gt; [1, 5, 7]</span></span>
+<span id="cb99-7"><a href="Sudoku.html#cb99-7" tabindex="-1"></a></span>
+<span id="cb99-8"><a href="Sudoku.html#cb99-8" tabindex="-1"></a><span class="co"># A NumPy array created from the list</span></span>
+<span id="cb99-9"><a href="Sudoku.html#cb99-9" tabindex="-1"></a>an_array <span class="op">=</span> np.array(a_list)</span>
+<span id="cb99-10"><a href="Sudoku.html#cb99-10" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
+<span id="cb99-11"><a href="Sudoku.html#cb99-11" tabindex="-1"></a><span class="co">#&gt; [1 5 7]</span></span></code></pre></div>
+<p>Note that because of “all values must be of the same type restriction”, if the original Python list contained data of various types, all values will be converted to the most flexible one. E.g., a mix of logical values and integers will give you integers, a mix of integers and floats will give you all floats, a mix of anything with strings will give you strings, etc.</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb100-1"><a href="Sudoku.html#cb100-1" tabindex="-1"></a><span class="co"># logical and integers -&gt; all integers</span></span>
+<span id="cb100-2"><a href="Sudoku.html#cb100-2" tabindex="-1"></a><span class="bu">print</span>(np.array([<span class="va">True</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="va">False</span>]))</span>
+<span id="cb100-3"><a href="Sudoku.html#cb100-3" tabindex="-1"></a><span class="co">#&gt; [1 2 3 0]</span></span>
+<span id="cb100-4"><a href="Sudoku.html#cb100-4" tabindex="-1"></a></span>
+<span id="cb100-5"><a href="Sudoku.html#cb100-5" tabindex="-1"></a><span class="co"># integers and floats -&gt; all floats</span></span>
+<span id="cb100-6"><a href="Sudoku.html#cb100-6" tabindex="-1"></a><span class="bu">print</span>(np.array([<span class="fl">1.0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="fl">0.0</span>]))</span>
+<span id="cb100-7"><a href="Sudoku.html#cb100-7" tabindex="-1"></a><span class="co">#&gt; [1. 2. 3. 0.]</span></span>
+<span id="cb100-8"><a href="Sudoku.html#cb100-8" tabindex="-1"></a></span>
+<span id="cb100-9"><a href="Sudoku.html#cb100-9" tabindex="-1"></a><span class="co"># logica, integers, floats, and strings -&gt; all strings</span></span>
+<span id="cb100-10"><a href="Sudoku.html#cb100-10" tabindex="-1"></a><span class="bu">print</span>(np.array([<span class="va">False</span>, <span class="dv">1</span>, <span class="fl">2.0</span>, <span class="st">"a"</span>]))</span>
+<span id="cb100-11"><a href="Sudoku.html#cb100-11" tabindex="-1"></a><span class="co">#&gt; ['False' '1' '2.0' 'a']</span></span></code></pre></div>
+<p>However, note that the type of an array is fixed at the creation type and if you put in a different type value, it will be either converted to that type or, if conversion is tricky, NumPy will throw an error.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb101-1"><a href="Sudoku.html#cb101-1" tabindex="-1"></a><span class="co"># array of boolean</span></span>
+<span id="cb101-2"><a href="Sudoku.html#cb101-2" tabindex="-1"></a>array_of_bool <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">False</span>, <span class="va">True</span>])</span>
+<span id="cb101-3"><a href="Sudoku.html#cb101-3" tabindex="-1"></a></span>
+<span id="cb101-4"><a href="Sudoku.html#cb101-4" tabindex="-1"></a><span class="co"># float value is automatically converted to logical</span></span>
+<span id="cb101-5"><a href="Sudoku.html#cb101-5" tabindex="-1"></a><span class="co"># it is True because only 0.0 is False</span></span>
+<span id="cb101-6"><a href="Sudoku.html#cb101-6" tabindex="-1"></a>array_of_bool[<span class="dv">1</span>] <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb101-7"><a href="Sudoku.html#cb101-7" tabindex="-1"></a><span class="bu">print</span>(array_of_bool)</span>
+<span id="cb101-8"><a href="Sudoku.html#cb101-8" tabindex="-1"></a><span class="co">#&gt; [ True  True  True]</span></span>
+<span id="cb101-9"><a href="Sudoku.html#cb101-9" tabindex="-1"></a></span>
+<span id="cb101-10"><a href="Sudoku.html#cb101-10" tabindex="-1"></a><span class="co"># an arbitrary string value that cannot be converted automatically to an integer</span></span>
+<span id="cb101-11"><a href="Sudoku.html#cb101-11" tabindex="-1"></a>array_of_int <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb101-12"><a href="Sudoku.html#cb101-12" tabindex="-1"></a>array_of_int[<span class="dv">1</span>] <span class="op">=</span> <span class="st">"A text"</span></span>
+<span id="cb101-13"><a href="Sudoku.html#cb101-13" tabindex="-1"></a><span class="co">#&gt; invalid literal for int() with base 10: 'A text'</span></span></code></pre></div>
+<div class="practice">
+<p>Do exercise #1.</p>
+</div>
+<p>In general, what you can can do with a list, you can do with a NumPy 1D array. For example, slicing works the same way, you can loop over elements of an array the same way, etc.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb102-1"><a href="Sudoku.html#cb102-1" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">7</span>]</span>
+<span id="cb102-2"><a href="Sudoku.html#cb102-2" tabindex="-1"></a>an_array <span class="op">=</span> np.array(a_list)</span>
+<span id="cb102-3"><a href="Sudoku.html#cb102-3" tabindex="-1"></a></span>
+<span id="cb102-4"><a href="Sudoku.html#cb102-4" tabindex="-1"></a><span class="co"># slicing</span></span>
+<span id="cb102-5"><a href="Sudoku.html#cb102-5" tabindex="-1"></a><span class="bu">print</span>(a_list[:<span class="dv">2</span>])</span>
+<span id="cb102-6"><a href="Sudoku.html#cb102-6" tabindex="-1"></a><span class="co">#&gt; [1, 5]</span></span>
+<span id="cb102-7"><a href="Sudoku.html#cb102-7" tabindex="-1"></a><span class="bu">print</span>(an_array[<span class="dv">1</span>:])</span>
+<span id="cb102-8"><a href="Sudoku.html#cb102-8" tabindex="-1"></a><span class="co">#&gt; [5 7]</span></span>
+<span id="cb102-9"><a href="Sudoku.html#cb102-9" tabindex="-1"></a></span>
+<span id="cb102-10"><a href="Sudoku.html#cb102-10" tabindex="-1"></a><span class="co"># for loop</span></span>
+<span id="cb102-11"><a href="Sudoku.html#cb102-11" tabindex="-1"></a><span class="cf">for</span> value <span class="kw">in</span> an_array:</span>
+<span id="cb102-12"><a href="Sudoku.html#cb102-12" tabindex="-1"></a>  <span class="bu">print</span>(value)</span>
+<span id="cb102-13"><a href="Sudoku.html#cb102-13" tabindex="-1"></a><span class="co">#&gt; 1</span></span>
+<span id="cb102-14"><a href="Sudoku.html#cb102-14" tabindex="-1"></a><span class="co">#&gt; 5</span></span>
+<span id="cb102-15"><a href="Sudoku.html#cb102-15" tabindex="-1"></a><span class="co">#&gt; 7</span></span></code></pre></div>
+<p>However, certain functionality is implemented differently, as the <a href="https://numpy.org/doc/stable/reference/generated/numpy.append.html#numpy-append">append</a> in the example below. The other functionality, such as a <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">pop</a>, is missing but can be emulated through slicing.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb103-1"><a href="Sudoku.html#cb103-1" tabindex="-1"></a><span class="co"># appending values</span></span>
+<span id="cb103-2"><a href="Sudoku.html#cb103-2" tabindex="-1"></a>an_array <span class="op">=</span> np.append(an_array, [<span class="dv">4</span>])</span>
+<span id="cb103-3"><a href="Sudoku.html#cb103-3" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
+<span id="cb103-4"><a href="Sudoku.html#cb103-4" tabindex="-1"></a><span class="co">#&gt; [1 5 7 4]</span></span></code></pre></div>
+<p>The most important practical difference between lists and numpy arrays is that because the latter are homogenous, the operations on them are vectorized. This means that you apply a function to the entire array in one go, making it both easier to use and faster, as most operations on arrays are heavily optimized. Here is an example of multiplying and then adding the same value to all every array element, something that requires a for loop for a normal list</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb104-1"><a href="Sudoku.html#cb104-1" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb104-2"><a href="Sudoku.html#cb104-2" tabindex="-1"></a>an_array <span class="op">=</span> np.array(a_list)</span>
+<span id="cb104-3"><a href="Sudoku.html#cb104-3" tabindex="-1"></a><span class="dv">2</span> <span class="op">*</span> an_array <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb104-4"><a href="Sudoku.html#cb104-4" tabindex="-1"></a><span class="co">#&gt; array([3, 5, 7])</span></span></code></pre></div>
+<p>You can also perform elementwise operations on two (or more) arrays at the same time. E.g., here is an example of elementwise addition for two arrays</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb105-1"><a href="Sudoku.html#cb105-1" tabindex="-1"></a>array1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>])</span>
+<span id="cb105-2"><a href="Sudoku.html#cb105-2" tabindex="-1"></a>array2 <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">3</span>, <span class="dv">5</span>])</span>
+<span id="cb105-3"><a href="Sudoku.html#cb105-3" tabindex="-1"></a>array1 <span class="op">+</span> array2</span>
+<span id="cb105-4"><a href="Sudoku.html#cb105-4" tabindex="-1"></a><span class="co">#&gt; array([ 0, -1,  9])</span></span></code></pre></div>
+<p>Note that it works only if array <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">shapes</a> are the same. In case of the 1D arrays (a.k.a., vectors), it means that their length must be the same.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb106-1"><a href="Sudoku.html#cb106-1" tabindex="-1"></a>array1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>])</span>
+<span id="cb106-2"><a href="Sudoku.html#cb106-2" tabindex="-1"></a>array2 <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>])</span>
+<span id="cb106-3"><a href="Sudoku.html#cb106-3" tabindex="-1"></a>array1 <span class="op">+</span> array2</span>
+<span id="cb106-4"><a href="Sudoku.html#cb106-4" tabindex="-1"></a><span class="co">#&gt; operands could not be broadcast together with shapes (3,)</span></span>
+<span id="cb106-5"><a href="Sudoku.html#cb106-5" tabindex="-1"></a><span class="co">#&gt; (4,)</span></span></code></pre></div>
+<p>At the same time, you can always use vectors with a single element, which are called “scalars” and this single value is used for every element in the other vector.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb107-1"><a href="Sudoku.html#cb107-1" tabindex="-1"></a>a_vector <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="op">-</span><span class="dv">4</span>])</span>
+<span id="cb107-2"><a href="Sudoku.html#cb107-2" tabindex="-1"></a>a_scalar <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb107-3"><a href="Sudoku.html#cb107-3" tabindex="-1"></a>a_vector <span class="op">*</span> a_scalar</span>
+<span id="cb107-4"><a href="Sudoku.html#cb107-4" tabindex="-1"></a><span class="co">#&gt; array([-1, -2,  4])</span></span></code></pre></div>
+<div class="practice">
+<p>Do exercise #2.</p>
+</div>
+<p>Vectorization also means that you can apply aggregating function – <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html">mean</a>, <a href="https://numpy.org/doc/stable/reference/generated/numpy.median.html">median</a>, <a href="https://numpy.org/doc/stable/reference/generated/numpy.min.html">min</a>, etc. — to the array instead of computing it by hand.</p>
+<div class="practice">
+<p>Do exercise #3.</p>
+</div>
+</div>
+<div id="d-numpy-arrays-a.k.a.-matrices" class="section level2" number="11.3">
+<h2>
+<span class="header-section-number">11.3</span> 2D NumPy arrays, a.k.a., matrices<a class="anchor" aria-label="anchor" href="#d-numpy-arrays-a.k.a.-matrices"><i class="fas fa-link"></i></a>
+</h2>
+<p>The real power of NumPy is unleashed once your array have two or more dimensions. The 2D arrays are called matrices, whereas arrays with three or more dimensions are known as tensors. The former play key role in classic linear algebra in Python, whereas the latter are required for artifical neural networks (hence, tensor, in <a href="https://www.tensorflow.org/">TensorFlow</a>).</p>
+<p>As with vectors (1D arrays) versus Python lists, the advantage comes from restrictions. Matrices are rectangular, i.e., matrices are composed of multiple rows but each row has the same number of elements. In contrast, you <em>can</em> create a rectangular matrix as list of lists (again, our <code>CONNECTED_CAVES</code> was <span class="math inline">\(20\times3\)</span> rectangular matrix) but this is not guaranteed. On top of that, homogenity of the matrix (all values must of the same type) means you can extract an rectangular part of the matrix and it is guaranteed to be another matrix of the same type. And slicing makes working with 2D arrays much easier. E.g., here is the code to extract a column from a list of lists versus NumPy matrix.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb108-1"><a href="Sudoku.html#cb108-1" tabindex="-1"></a>matrix_as_list <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb108-2"><a href="Sudoku.html#cb108-2" tabindex="-1"></a>                  [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb108-3"><a href="Sudoku.html#cb108-3" tabindex="-1"></a>                  [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]]</span>
+<span id="cb108-4"><a href="Sudoku.html#cb108-4" tabindex="-1"></a>matrix_as_array <span class="op">=</span> np.array(matrix_as_list)</span>
+<span id="cb108-5"><a href="Sudoku.html#cb108-5" tabindex="-1"></a></span>
+<span id="cb108-6"><a href="Sudoku.html#cb108-6" tabindex="-1"></a>icolumn <span class="op">=</span> <span class="dv">1</span> <span class="co"># column index that we want to extract</span></span>
+<span id="cb108-7"><a href="Sudoku.html#cb108-7" tabindex="-1"></a></span>
+<span id="cb108-8"><a href="Sudoku.html#cb108-8" tabindex="-1"></a><span class="co"># extracting column from via for loop</span></span>
+<span id="cb108-9"><a href="Sudoku.html#cb108-9" tabindex="-1"></a>column_as_list <span class="op">=</span> []</span>
+<span id="cb108-10"><a href="Sudoku.html#cb108-10" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> matrix_as_list:</span>
+<span id="cb108-11"><a href="Sudoku.html#cb108-11" tabindex="-1"></a>  column_as_list.append(row[icolumn])</span>
+<span id="cb108-12"><a href="Sudoku.html#cb108-12" tabindex="-1"></a><span class="bu">print</span>(column_as_list)</span>
+<span id="cb108-13"><a href="Sudoku.html#cb108-13" tabindex="-1"></a><span class="co">#&gt; [2, 5, 8]</span></span>
+<span id="cb108-14"><a href="Sudoku.html#cb108-14" tabindex="-1"></a></span>
+<span id="cb108-15"><a href="Sudoku.html#cb108-15" tabindex="-1"></a><span class="co"># extracting column from a matrix</span></span>
+<span id="cb108-16"><a href="Sudoku.html#cb108-16" tabindex="-1"></a><span class="bu">print</span>(matrix_as_array[:, <span class="dv">1</span>])</span>
+<span id="cb108-17"><a href="Sudoku.html#cb108-17" tabindex="-1"></a><span class="co">#&gt; [2 5 8]</span></span></code></pre></div>
+<p>Extracting rows, columns, and square block out of a matrix will be key to writing the code for Sudoku, so lets practice!</p>
+<div class="practice">
+<p>Do exercise #4.</p>
+</div>
+</div>
+<div id="creating-arrays-of-a-certain-shape" class="section level2" number="11.4">
+<h2>
+<span class="header-section-number">11.4</span> Creating arrays of a certain shape<a class="anchor" aria-label="anchor" href="#creating-arrays-of-a-certain-shape"><i class="fas fa-link"></i></a>
+</h2>
+<p>There are different ways to create NumPy arrays. Above, we used lists or lists of lists to create them. However, you need create an array of a certain <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">shape</a> filled with <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html">zeros</a> or <a href="https://numpy.org/doc/stable/reference/generated/numpy.ones.html">ones</a>. The key parameter in these functions is the <em>shape</em> of the array: a list with its dimensions. For a 2D array this means `(<number of rows>, <number of columns>).</number></number></p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb109-1"><a href="Sudoku.html#cb109-1" tabindex="-1"></a>zeros_matrix_3_by_2 <span class="op">=</span> np.zeros((<span class="dv">3</span>, <span class="dv">2</span>))</span>
+<span id="cb109-2"><a href="Sudoku.html#cb109-2" tabindex="-1"></a><span class="bu">print</span>(zeros_matrix_3_by_2)</span>
+<span id="cb109-3"><a href="Sudoku.html#cb109-3" tabindex="-1"></a><span class="co">#&gt; [[0. 0.]</span></span>
+<span id="cb109-4"><a href="Sudoku.html#cb109-4" tabindex="-1"></a><span class="co">#&gt;  [0. 0.]</span></span>
+<span id="cb109-5"><a href="Sudoku.html#cb109-5" tabindex="-1"></a><span class="co">#&gt;  [0. 0.]]</span></span></code></pre></div>
+<div class="practice">
+<p>Martix filled with 7.
+Do exercise #5.</p>
+</div>
+</div>
+<div id="creating-random-arrays-of-a-certain-shape" class="section level2" number="11.5">
+<h2>
+<span class="header-section-number">11.5</span> Creating random arrays of a certain shape<a class="anchor" aria-label="anchor" href="#creating-random-arrays-of-a-certain-shape"><i class="fas fa-link"></i></a>
+</h2>
+<p>NumPy has a module for generating random number — <a href="https://numpy.org/doc/stable/reference/random/index.html#module-numpy.random">numpy.random</a> — that is conceptually similar to the <a href="https://docs.python.org/3/library/random.html">random</a> but allows you to generate arrays rather than single values. For convenience, the names are kept the same. E.g., function <a href="https://docs.python.org/3/library/random.html#random.randint">random.randint</a> that generates a single random integer has its twin brother <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html">numpy.random.randint</a> that accepts same parameters and, by default also generates a single value. However, you can generate the whole vector / matrix / tensor of random numbers in one go by spezifying its <code>size</code>. Confusingly, the parameter is called <code>size</code> even though it refers to the “output shape”.</p>
+<div class="practice">
+<p>Generate random 4x5 matrix with normally distributed numbers with mean of 3 and standard deviation of 1.
+Do exercise #6.</p>
+</div>
+</div>
+<div id="creating-arrays-with-sequences" class="section level2" number="11.6">
+<h2>
+<span class="header-section-number">11.6</span> Creating arrays with sequences<a class="anchor" aria-label="anchor" href="#creating-arrays-with-sequences"><i class="fas fa-link"></i></a>
+</h2>
+<p>Similar to creating a range of integer values via <a href="https://docs.python.org/3/library/functions.html#func-range">range</a>, you can create a vector of integer values via <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html">arange</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The name is confusing, but apparently this is a short for “array range”&lt;/p&gt;"><sup>47</sup></a>, although this is equivalent to <code>np.array(range(...))</code>:</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb110-1"><a href="Sudoku.html#cb110-1" tabindex="-1"></a><span class="bu">print</span>(np.arange(<span class="dv">5</span>))</span>
+<span id="cb110-2"><a href="Sudoku.html#cb110-2" tabindex="-1"></a><span class="co">#&gt; [0 1 2 3 4]</span></span>
+<span id="cb110-3"><a href="Sudoku.html#cb110-3" tabindex="-1"></a><span class="bu">print</span>(np.array(<span class="bu">range</span>(<span class="dv">5</span>)))</span>
+<span id="cb110-4"><a href="Sudoku.html#cb110-4" tabindex="-1"></a><span class="co">#&gt; [0 1 2 3 4]</span></span></code></pre></div>
+<p>However, NumPy also has a handy function called <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html">linspace</a> that allows you generate sequence of <em>float</em> numbers.</p>
+<div class="practice">
+<p>Generate random 4x5 matrix with normally distributed numbers with mean of 3 and standard deviation of 1.
+Do exercise #7.</p>
+</div>
+</div>
+<div id="stacking-array-to-create-a-matrix" class="section level2" number="11.7">
+<h2>
+<span class="header-section-number">11.7</span> Stacking array to create a matrix<a class="anchor" aria-label="anchor" href="#stacking-array-to-create-a-matrix"><i class="fas fa-link"></i></a>
+</h2>
+<p>The <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html">arange</a> function will be useful for us to generate a sequence of integers from 1 to 9. However, note that in both cases you can only generate a vector but not a matrix that we need! The solution in this case is to <a href="https://numpy.org/doc/stable/reference/generated/numpy.stack.html">stack</a> individual vectors. When stacking, shapes of individual vectors starts to play a very important role. Unlike lists, that only have <a href="https://docs.python.org/3/library/functions.html#len">length</a>, all arrays including vectors have also <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">shape</a>: information about each dimension.</p>
+<p>Things are easy for truly one dimensional arrays. These are arrays created from lists or via functions such as <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html">zeros</a> or <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html">linspace</a>. If you look at their <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">shape</a>, you will see just one dimension.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb111-1"><a href="Sudoku.html#cb111-1" tabindex="-1"></a><span class="bu">print</span>(np.array([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>]).shape)</span>
+<span id="cb111-2"><a href="Sudoku.html#cb111-2" tabindex="-1"></a><span class="co">#&gt; (3,)</span></span>
+<span id="cb111-3"><a href="Sudoku.html#cb111-3" tabindex="-1"></a><span class="bu">print</span>(np.zeros(<span class="dv">5</span>).shape)</span>
+<span id="cb111-4"><a href="Sudoku.html#cb111-4" tabindex="-1"></a><span class="co">#&gt; (5,)</span></span></code></pre></div>
+<p>These vectors do not have “orientation” (more on this later), so when you combine these arrays into a matrix you can use them as rows (stacking along <code>axis=0</code>, the default, see also <a href="https://numpy.org/doc/stable/reference/generated/numpy.vstack.html">vstack</a>) or as columns (stacking along <code>axis=1</code>, see also <a href="https://numpy.org/doc/stable/reference/generated/numpy.hstack.html">hstack</a>).</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb112-1"><a href="Sudoku.html#cb112-1" tabindex="-1"></a>one_d_vector <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
+<span id="cb112-2"><a href="Sudoku.html#cb112-2" tabindex="-1"></a></span>
+<span id="cb112-3"><a href="Sudoku.html#cb112-3" tabindex="-1"></a><span class="co"># Stacking vertically: vectors are used as rows</span></span>
+<span id="cb112-4"><a href="Sudoku.html#cb112-4" tabindex="-1"></a><span class="bu">print</span>(np.stack([one_d_vector, one_d_vector]))</span>
+<span id="cb112-5"><a href="Sudoku.html#cb112-5" tabindex="-1"></a><span class="co">#&gt; [[0 1 2 3 4]</span></span>
+<span id="cb112-6"><a href="Sudoku.html#cb112-6" tabindex="-1"></a><span class="co">#&gt;  [0 1 2 3 4]]</span></span>
+<span id="cb112-7"><a href="Sudoku.html#cb112-7" tabindex="-1"></a><span class="bu">print</span>(np.stack([one_d_vector, one_d_vector]).shape)</span>
+<span id="cb112-8"><a href="Sudoku.html#cb112-8" tabindex="-1"></a><span class="co">#&gt; (2, 5)</span></span>
+<span id="cb112-9"><a href="Sudoku.html#cb112-9" tabindex="-1"></a></span>
+<span id="cb112-10"><a href="Sudoku.html#cb112-10" tabindex="-1"></a><span class="co"># Stacking horizontally: vectors are used as columns</span></span>
+<span id="cb112-11"><a href="Sudoku.html#cb112-11" tabindex="-1"></a><span class="bu">print</span>(np.stack([one_d_vector, one_d_vector], axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb112-12"><a href="Sudoku.html#cb112-12" tabindex="-1"></a><span class="co">#&gt; [[0 0]</span></span>
+<span id="cb112-13"><a href="Sudoku.html#cb112-13" tabindex="-1"></a><span class="co">#&gt;  [1 1]</span></span>
+<span id="cb112-14"><a href="Sudoku.html#cb112-14" tabindex="-1"></a><span class="co">#&gt;  [2 2]</span></span>
+<span id="cb112-15"><a href="Sudoku.html#cb112-15" tabindex="-1"></a><span class="co">#&gt;  [3 3]</span></span>
+<span id="cb112-16"><a href="Sudoku.html#cb112-16" tabindex="-1"></a><span class="co">#&gt;  [4 4]]</span></span>
+<span id="cb112-17"><a href="Sudoku.html#cb112-17" tabindex="-1"></a><span class="bu">print</span>(np.stack([one_d_vector, one_d_vector], axis<span class="op">=</span><span class="dv">1</span>).shape)</span>
+<span id="cb112-18"><a href="Sudoku.html#cb112-18" tabindex="-1"></a><span class="co">#&gt; (5, 2)</span></span></code></pre></div>
+<p>First, they can be either column or row vectors. A column vector is “vertical” relative to a 2D matrix, i.e., it correspond to a single column with values distributed across the rows. Conversely, a row vector is “horizontal” and corresponds to a row of a matrix with its values going along columns. You can convert one to the another via <a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html">transpose</a> function.
+The difference between column and row vectors is extremely important role for linear algebra but in our case it determines the axis along which we can stack vectors to create a matrix. If vectors are column vectors, we need to stack them horizontaly, whereas for row vectors — vertically.</p>
+<p>If you specify a single</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb113-1"><a href="Sudoku.html#cb113-1" tabindex="-1"></a>np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]).shape</span>
+<span id="cb113-2"><a href="Sudoku.html#cb113-2" tabindex="-1"></a><span class="co">#&gt; (3,)</span></span>
+<span id="cb113-3"><a href="Sudoku.html#cb113-3" tabindex="-1"></a></span>
+<span id="cb113-4"><a href="Sudoku.html#cb113-4" tabindex="-1"></a>column_vector <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
+<span id="cb113-5"><a href="Sudoku.html#cb113-5" tabindex="-1"></a>np.stack([column_vector, column_vector], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb113-6"><a href="Sudoku.html#cb113-6" tabindex="-1"></a><span class="co">#&gt; array([[0, 1, 2, 3, 4],</span></span>
+<span id="cb113-7"><a href="Sudoku.html#cb113-7" tabindex="-1"></a><span class="co">#&gt;        [0, 1, 2, 3, 4]])</span></span></code></pre></div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="guess-the-animal.html"><span class="header-section-number">10</span> Guess the animal</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#Sudoku"><span class="header-section-number">11</span> Sudoku</a></li>
+<li><a class="nav-link" href="#importing-numpy"><span class="header-section-number">11.1</span> Importing NumPy</a></li>
+<li><a class="nav-link" href="#d-numpy-arrays-versus-python-lists"><span class="header-section-number">11.2</span> 1D NumPy arrays versus Python lists</a></li>
+<li><a class="nav-link" href="#d-numpy-arrays-a.k.a.-matrices"><span class="header-section-number">11.3</span> 2D NumPy arrays, a.k.a., matrices</a></li>
+<li><a class="nav-link" href="#creating-arrays-of-a-certain-shape"><span class="header-section-number">11.4</span> Creating arrays of a certain shape</a></li>
+<li><a class="nav-link" href="#creating-random-arrays-of-a-certain-shape"><span class="header-section-number">11.5</span> Creating random arrays of a certain shape</a></li>
+<li><a class="nav-link" href="#creating-arrays-with-sequences"><span class="header-section-number">11.6</span> Creating arrays with sequences</a></li>
+<li><a class="nav-link" href="#stacking-array-to-create-a-matrix"><span class="header-section-number">11.7</span> Stacking array to create a matrix</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/09-sudoku.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/09-sudoku.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-23.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
