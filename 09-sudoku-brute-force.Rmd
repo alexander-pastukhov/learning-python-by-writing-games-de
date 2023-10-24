@@ -1,12 +1,15 @@
-# Brut force Sudoku {#Sudoku}
+# Brute force Sudoku {#sudoku-brute-force}
 
-In this chapter, we are going to write programs that will both generate and solve [sudoku puzzle](https://en.wikipedia.org/wiki/Sudoku). In this puzzle, you need to complete a $9\times9$ grid with number 1 to 9, so that number do not repeat within each row, each column, and each $3\times3$ square block. When you play the game, you have an incomplete puzzle and the more gaps you have, the harder the puzzle tends to be. But before you can play the game, some (that is you, today) must 1) generate a complete puzzle, 2) remove some numbers while ensuring that the solution to the puzzle remains unique.
+In this chapter, we are going to write programs that will generate [sudoku puzzle](https://en.wikipedia.org/wiki/Sudoku). In this puzzle, you need to complete a $9\times9$ grid with number 1 to 9, so that number do not repeat within each row, each column, and each $3\times3$ square block. When you play the game, you have an incomplete puzzle and the more gaps you have, the harder the puzzle tends to be. But before you can play the game, some (that is you, today) must 1) generate a complete puzzle, 2) remove some numbers while ensuring that the solution to the puzzle remains unique.
 
-![An example Sudoku puzzle and the solution](images/sudoku.png){width=100%}
+![An example Sudoku puzzle and the solution](images/sudoku.png){width=100% style="display: block; margin: 0 auto"}
 
+<br/>
 The puzzle is based on a 2D grid and, in principles, you can use [list](#lists) of rows (which are lists themselves) to create this grid. This would be similar to the list of lists that contained information about connecting caves in (Hunt the Wumpus)[#hunt-the-wumpus] game. However, this nested list structure makes it hard to work with columns and blocks, as their elements belong to different lists, so you need to use for loop instead of simpler list slicing (works, but only for rows).
 
 Instead, we will use it as an opportunity to learn about [NumPy](https://numpy.org/) library, which is one of the key packages for scientific computing in Python and is a foundation for many data analysis libraries. Note that the material below is by no means complete. If anything, it barely scratches the surface of NumPy. If you need NumPy for your projects, I strongly recommend taking a look at offical [Getting Started for aboslute beginners](https://numpy.org/doc/stable/user/absolute_beginners.html) guide and the official [user guide](https://numpy.org/doc/stable/user/index.html).
+
+Grab the [exercise notebook]() to get started.
 
 ## Importing NumPy
 The NumPy is not a core Python library, so you may need to [install it](https://numpy.org/install/). As with all libraries, you must import NumPy before using it in your script. However, this is one of the rare cases where renaming the library during import is a standard and recommended way:
@@ -284,7 +287,7 @@ Write program in _code02.py_
 ## Is this row even valid?
 For a matrix to be a Sudoku, it must adhere to "nine unique numbers in each row, column, and block" rule. Let us implement code for checking the rows (turning it into a column-check will be trivial). 
 
-Again, for the row to be valid, it must contain 9 different, i.e., [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) numbers. Use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) function to write a comparison for row `irow` (set it to some valid index by hand) that it indeed has 9 unique numbers. To check that it works correctly, generate an ordered matrix by row (each row goes from 1:9, so any row should be valid) and by column (each row has the same value nine times, so every row should be invalid). Next, shuffle either a single row and check (permutation does not alter the elements, so row should still be valid) or a single column (all or most rows should be invalid).
+Again, for the row to be valid, it must contain 9 different, i.e., [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) numbers. Use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) function to write a comparison for row `irow` (set it to some valid index by hand) that it indeed has 9 unique numbers, i.e., array [size](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm) is equal to nine. To check that it works correctly, generate an ordered matrix by row (each row goes from 1:9, so any row should be valid) and by column (each row has the same value nine times, so every row should be invalid). Next, shuffle either a single row and check (permutation does not alter the elements, so row should still be valid) or a single column (all or most rows should be invalid).
 
 ::: {.program}
 Write and test single row validation<br/>
@@ -307,10 +310,10 @@ Extend program from in _code03.py_ in _code04.py_
 ## Blocks
 Blocks are a touch trickier to work with as we do not have simple axis to use. However, we can think about each as having a row and column index, which both got from 0 to 2 as we have $3\times3$ blocks. 
 
-![Sudoku blocks indexing](images/sudoku-blocks.png){width=100%}
+![Sudoku blocks indexing](images/sudoku-blocks.png){width=50% style="display: block; margin: 0 auto"}
 
-
-Write the code that uses (slicing)[https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding] to extract a single block defined by `i_block_row` and `i_block_col`. For me it helps to compute matrix row for the block center from `i_block_row` and then get a vertical slice relative to it. Same for the vertical slice in matrix col indexes. To make debugging easier, generate a $9\times9$ matrix of random integers, so that it is easier to see whether you code works. Test it for all combinations for `i_block_row` and `i_block_col`.
+<br/><br/>
+Write the code that uses [slicing](https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding) to extract a single block defined by `i_block_row` and `i_block_col`. For me it helps to compute matrix row for the block top left corner and then get a vertical slice relative to it. Same for the horizontal slice relative to the top-left block column in the matrix. To make debugging easier, generate a $9\times9$ matrix of integers stacked either by row or by columns, so that it is easier to see whether you code works. Test it for all combinations for `i_block_row` and `i_block_col`.
 
 ::: {.program}
 Write and test single block extraction code<br/>
