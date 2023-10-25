@@ -316,7 +316,90 @@ Put `add_one_cell` into _utils.py_<br/>
 Test code in _code07.py_
 :::
 
-## Knowing where to go to next
+## Exceptions {#exceptions}
+Our program will explore the tree until it finds the required solution and then execution should return to the main script. The question is, how can we implement this "once the valid solution is found, abort execution and return to the top level"? In the [Guess the Animal](#guess-the-animal) game we did not have this problem because we traced _one_ path through the tree until we reached the final node (leaf). Once the necessary updates to node leaf were carried out, the function simply returned to the previous level, that returned to the previous level, etc. as there was no need for any further action and the fact that the function completed its action meant that we finished exploring the tree. However, in case of Sudoku the fact that the function needs to return to one level up can be due to 1) reaching and filling the final cell, 2) having no mean of completing it in a valid manner and need the previous level (function) to adjust itself. We could implement function behavior conditioned on a return value but instead we will you two different mechanisms for handling these two situation. The function will _return_ if it cannot fill the cell but it will use mechanism of exceptions to return straight to the top level. This makes our code simpler and easier to understand and gives us an opportunity to learn about exceptions.
+
+Sometime, when you are running a program bad things --- errors --- happen. In some cases a program that crashes is simply annoying but in other cases it might mean that you lost whatever data you collected or computation you performed in the mean time. Just think about our [Guess the Animal](#guess-the-animal) game which you played for a long time and that crashed _without_ saving the updated decision tree. Good for us that Python, as other languages, has special mechanisms to handle [exceptions](https://docs.python.org/3/tutorial/errors.html) that arise during the code execution. Whenever an error occurs at a run time, it [raises](https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement) an exception: it creates an object of [a special class](https://docs.python.org/3/library/exceptions.html#concrete-exceptions) that contains information describing the problem. For example, a [ZeroDivisionError](https://docs.python.org/3/library/exceptions.html#ZeroDivisionError) is raised whenever you try to divide by zero, e.g., `1 / 0` (you can try this in a Jupyter notebook). A [KeyError](https://docs.python.org/3/library/exceptions.html#KeyError) is raised, if you using a dictionary with a wrong key, the code below will raise it:
+```{python, error=TRUE}
+a_dict = {"a_key" : 1}
+a_dict["b_key"]
+```
+
+Similarly, an [IndexError](https://docs.python.org/3/library/exceptions.html#IndexError) is raised, if you try to use an invalid index for a list, a [NameError](https://docs.python.org/3/library/exceptions.html#NameError), if you are trying to access variable that does not exist, [AttributeError](https://docs.python.org/3/library/exceptions.html#AttributeError) when an object does not have an attribute you are trying to use, etc. 
+
+In Python, you use `try: ... except:...finally:` operators to anticipate and handle exceptions:
+```python
+try:
+    # some code that might generate a runtime error
+except:  
+    # code that is executed if something bad happens
+finally:
+    # code that is executed both with and without exception
+    
+# code that is executed ONLY if there were no exceptions or if an exception was handled
+```
+
+In the simplest case, you need just the first two operators: `try` and `except`. In the Jupyter notebook, write code that generates a division-by-zero error but is handled via `try...except...`. In the `except` simply print out a message, so that you know that it was executed. Create another cell, copy the code and now check that the exception handling code is _not_ executed, if the error is not generated (i.e., divide by some non-zero number).
+
+::: {.practice}
+Do exercise #4.
+:::
+
+Using `except:` catches _all_ exceptions. However, this is considered a bad style (too general) and a linter will complain. Instead, you can be more specific and handle exceptions based on their class.
+```python
+try:
+    # some code that might generate a runtime error
+except KeyError as key_error:
+    # code that is executed only if KeyError exception was raised 
+    # with exception information stored in the key_error object
+except ZeroDivisionError as zero_division_error:  
+    # code that is executed only if ZeroDivisionError exception was raised
+    # with exception information stored in the zero_division_error object
+except:
+    # code that is executed if any OTHER exception is raised.
+```
+
+Implement handling for `KeyError` and `ZeroDivisionError`, they should print out different messages to check that it works. Test it by generating these runtime errors with your code. 
+
+::: {.practice}
+Do exercise #5.
+:::
+
+So far, you generated exception by causing runtime errors code but you can raise these exceptions yourself via [raise](https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement) operator. For example, instead of dividing by zero, you can `raise ZeroDivisionError`. Use it with you previous code, instead of an actual division by zero. Try raising other exceptions and see how your code handles them. Also check what happens if you have the first two specific exception handlers but no general `except:` and raise an [NameError](https://docs.python.org/3/library/exceptions.html#NameError)?
+
+::: {.program}
+Do exercise #6.
+:::
+
+So far I have talked about exceptions as a way to alert about runtime errors. However, they can be used in a more general way to control the execution flow. For example, imagine a situation with nested loops similar to "repeat games - repeat round with game" nested loops you implemented before. Previously, there was no option for a player to abort the game before it is over but what if we game them that option? 
+
+```{python eval = FALSE}
+# repeating game
+while want_to_play:
+    ...
+    
+    # repeating rounds of the game
+    while not game_over:
+      ...
+      
+      → user wants to abort game here ←
+```
+
+This is very similar situation to nested recursive calls for our Sudoku algorithm. Here, a simple `break` out of inner loop or setting `game_over = True` want necessarily do, as you have the outer loop to deal with as well. You could create an extra variable or a more flexible `game_over` variable with different "game over" states (success, failure, user abort, etc.) and then check it to decide whether you need to ask the user whether they want to play again. Otherwise, you might be asking "wanna play again?" right after they said "quit". However, these extra state and extra checks make code harder to read, particularly if you have further nesting, function calls inside function calls, etc. An alternative way, is to implement a _custom_ exception that will signal that user decided to quit the game.
+
+You define a custom exception by inheriting from a base class [Exception](https://docs.python.org/3/library/exceptions.html#Exception). Since you haven't learned about object-oriented programming yet, this sounds like a gibberish but here is the only code you need^[[pass](https://docs.python.org/3/reference/simple_stmts.html#the-pass-statement) means "do nothing" and it is used in cases when you need a statement due to syntax but don't have anything to do.]:
+```{python eval = FALSE}
+class QuitTheGame(Exception):
+    pass
+```
+
+As an exercise, implement the code with a simple an endless while loop in which you ask whether to continue or quit (decide on how you will handle the input). Once you finally opt to quit, raise `QuitTheGame` exception that should be handled by the `try except` code wrapped around the loop. Use code to handle `QuitTheGame` exception _specifically_ and print a message to show how said you are that the player is leaving.
+
+::: {.program}
+Do exercise #7.
+:::
+
+## Puzzle is complete once you run out of cells to consider (cheater's edition)
 Pass the remaining list of cell indexes
 
 ## Adding more cells
