@@ -1,27 +1,27 @@
-# Sudoku backtracking algorithm {#sudoku-backtracking}
+# Sudoku: Backtracking algorithm {#sudoku-backtracking}
 
 ```{python echo = FALSE}
 import numpy as np
 ```
 
-In this chapter we will work on Sudoku again using a more efficient backtracking algorithm. In contrast to fully stochastic [brute force](#sudoku-brute-force) algorithm that tries to "guess" the entire board in one go, backtracking algorithm makes an educated guess about one cell at at time. As in the previous chapters, we will build the program step by step, but the good news is you know very much everything you need to implement it: matrices, slicing, and recursive functions. We still will used it as opportunity to learn more about lists and NumPy. Grab the [exercise notebook]() and read on.
+In this chapter we will work on Sudoku again using a more efficient backtracking algorithm. In contrast to fully stochastic [brute force](#sudoku-brute-force) algorithm that tries to "guess" the entire board in one go, backtracking algorithm makes an educated guess about one cell at at time. As in the previous chapters, we will build the program step by step, but the good news is you know almost everything you need to implement it: matrices, slicing, and recursive functions. In addition, we will used it as opportunity to learn more about lists and NumPy. Grab the [exercise notebook](notebooks/sudoku-backtracking.ipynb) and read on.
 
 ## Chapter concepts
 * [Repetition of lists](#list-repetition)
 * [Unpacking of tuples](#unpack-tuple) and lists
 * [Seeding](#random-seed) random generator
 * [Reshaping](#reshape) arrays
-* [Exceptions](#exceptions)
+* [Exceptions](#exceptions) raising and handling
 
 ## Backtracking algorithm
-This algorithm is very intuitive if you think about it as an exploration of a tree. Each node is a cell and our three is 82 levels deep (starting with an empty grid and going through all 81 cells). Each node has _up to_ nine possible edges going out of it. Why _up to_ nine? We can use numbers 1 to 9 (hence nine edges at most) but unless cells is located in completely empty row, column, and block, some values will be already spoken for which limits valid edges. 
+This algorithm is very intuitive if you think about it as an exploration of a tree. Each node is a cell and our tree is 82 levels deep (starting with an empty grid and going through all 81 cells). Each node has _up to_ nine possible edges going out of it. Why _up to_ nine? We can use numbers 1 to 9 (hence nine edges at most) but unless a cell is located in completely empty row, column, and block, some values will be already spoken for which limits valid edges. 
 
-An example of such tree for $4\times4$ Sudoku is illustrated in the figure below. You start with an empty at the top and you have four possible ways to fill in the first cell (marked in red). However, as you move to a different cell (go one layer down), your choices are limited as both cells belong to the same row. Thus, if you picked $1$, you have three choices but $1$, if you picked $3$ you have three choices but $3$. Once you pick on of the available options you move to a next cell. However, you may eventually hit a dead end, as shown at the bottom right: All four numbers were already used, so there is no valid value for the cell and that path through the tree is invalid. The solution is to backtrack: go one level up, pick another number for the cell instead of $4$. Here, both $1$ and $2$ and _in both cases_ you may end up with a complete board. This is important as the tree defines _all possible paths_ and, therefore, _all possible_ $4\times4$ valid Sudoku matrices!
+An example of such a tree for $4\times4$ Sudoku is illustrated in the figure below. You start with an empty at the top and you have four possible ways to fill in the first cell (marked in red). However, as you move to a different cell (go one layer down), your choices are limited as both cells belong to the same row. Thus, if you picked $1$, you have three choices but $1$, if you picked $3$ you have three choices but $3$. Once you pick one of the available options you move to the next cell. However, you may eventually hit a dead end, as shown at the bottom right: All four numbers were already used, so there is no valid value for the cell and that path through the tree is invalid. The solution is to backtrack: go one level up, pick another number for the cell instead of $4$. Here, for both $1$ and $2$ you may end up with a complete board. This is important as the tree defines _all possible paths_ and, therefore, _all possible_ $4\times4$ valid Sudoku matrices!
 
 ![Creating Sudoku by exploring a tree](images/sudoku-tree.png){width=100% style="display: block; margin: 0 auto"}
 <br/>
 
-If you are patient enough to systematically explore all paths in this tree, you will find all valid Sudoku matrices. However, we do not _all_, we want just _one_. At the same time, we want our program to generate a _different_ matrix on each run. If we fix our exploration path (always going through cells in the same order) and our choices (we always go through available numbers in ascending order), we will always end up at the same matrix. So our exploration strategy will include randomness. Initially, we will work with a smaller $4\times4$ matrices but once the algorithm works, it will be easy to tweak it to generate the proper $9\times9$ ones.
+If you are patient enough to systematically explore all paths in this tree, you will find all valid Sudoku matrices. However, we do not _all_, we want just _one_. At the same time, we want our program to generate a _different_ matrix on each run. If we fix our exploration path (always going through cells in the same order) and our choices (we always go through available numbers in ascending order), we will always end up with the same matrix. So our exploration strategy will include randomness. Initially, we will work with a smaller $4\times4$ matrices but once the algorithm works, it will be easy to tweak it to generate the proper $9\times9$ ones.
 
 ## Empty matrix (full of zeros)
 The very first matrix in our tree is empty. For simplicity, we denote empty via $0$, so you need to generate a $4\times4$ matrix filled with zeros. Write the code for this using [NumPy](https://numpy.org/): There is a function that you learned about the last time which does exactly the job. Important detail, define size of the matrix ($4$) as a CONSTANT (let's call it `SUDOKU_SIZE`). This number defines both the matrix size and the range of numbers, so this will be the only change required to generate Sudoku of a different size.
@@ -31,7 +31,7 @@ Do exercise #1.
 :::
 
 ## Empty matrix but via list repetitions {#list-repetition}
-The NumPy solution does the job but there is also an alternative way of creating it via repetitions of lists. This does not make things easier here but it is a nice trick to know when for working with list. Namely, you can repeat a list $N$ times via `<list> * N`  where `* N` means "repeat N times". Here is an example of repeating three element array four times.
+The NumPy solution does the job but there is also an alternative way of creating it via repetitions of lists. This does not make things easier here but it is a nice trick to know when working with lists. Namely, you can repeat a list $N$ times via `<list> * N`  where `* N` means "repeat N times". Here is an example of repeating three-element array four times.
 ```{python}
 [1, 2, 3] * 4
 ```
@@ -46,7 +46,7 @@ SUDOKU_SIZE = 4
 Do exercise #2.
 :::
 
-An important note on use of `*` for lists versus NumPy arrays. In the latter case, `*` means "multiply by", so even if things _look_ similar they will behave very differently!
+An important note on the use of `*` for lists versus NumPy arrays. In the latter case, `*` means "multiply by", so even if things _look_ similar they will behave very differently!
 ```{python}
 a_list = [1, 2, 3]
 an_array = np.array(a_list)
@@ -59,13 +59,13 @@ an_array * 2
 ```
 
 ## Cell row and column from index
-There are different ways to define a random path through cells. In the matrix, each cell is identified by its row and column but, we can also think of cells having a unique index going from 0 till `SUDOKU_SIZE * SUDOKU_SIZE - 1` (why minus one?). Here is the illustration of what I mean. The index goes from top-left cell right and down, so if you know cell's row and column, you can compute its index. Conversely, if you cell's index you know in which row and column it is located, e.g., the highlighted cell with index $9$ is in row $2$ and column $1$. Same goes for the row and column of the block that the cell belongs to.
+There are different ways to define a random path through cells. In the matrix, each cell is identified by its row and column but we can also think of cells having a unique index going from 0 till `SUDOKU_SIZE * SUDOKU_SIZE - 1` (why minus one?). Here is an illustration of what I mean. The index goes from the top-left cell right and down, so if you know the cell row and column, you can compute its index. Conversely, if you know the cell index, can compute in which row and column it is located. For example, the highlighted cell with index $9$ is in row $2$ and column $1$. The same goes for the row and column of the block that the cell belongs to.
 
 ![Cell index, as well as row and column indexes.](images/sudoku-cell-index-row-col.svg){width=25% style="display: block; margin: 0 auto"}
 <br/>
 
-You job is to write a function that takes a cell index and row width as parameters and returns a [tuple](https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences) (an immutable list) with `(row, column)`.To convert an overall index to row and column you should use two special division operators: [floor division operator //](https://python-reference.readthedocs.io/en/latest/docs/operators/floor_division.html) and [modulos, divison remainder %](https://python-reference.readthedocs.io/en/latest/docs/operators/modulus.html) operators. The former returns only the integer part of the division, so that 4 // 3 is 1 (because 4/3 is 1.33333) and 1 // 4 is 0 (because 1/4 is 0.25). The latter returns the remaining integers, so that 4 % 3 is 1 and 1 % 4 is 0. These two operators are enough for you to compute row and column indexes. 
-Write the function and test it by checking returned values. Reminder, you should get a tuple of two values (`return (row, col)`), so your output for index $9$ should look as follows:
+Your job is to write a function that takes a cell index and row width as parameters and returns a [tuple](https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences) (an immutable list) with `(row, column)`.To convert an overall index to row and column you should use two special division operators: [floor division operator //](https://python-reference.readthedocs.io/en/latest/docs/operators/floor_division.html) and [modulos, division remainder %](https://python-reference.readthedocs.io/en/latest/docs/operators/modulus.html) operators. The former returns only the integer part of the division, so that 4 // 3 is 1 (because 4/3 is 1.33333) and 1 // 4 is 0 (because 1/4 is 0.25). The latter returns the remaining integers so that 4 % 3 is 1 and 1 % 4 is 0. These two operators are enough for you to compute row and column indexes. 
+Write the function and test it by checking the returned values. Reminder, you should get a tuple of two values (`return (row, col)`), so your output for index $9$ should look as follows:
 
 ```{python echo = FALSE}
 def row_col_from_index(index, row_width):
@@ -115,7 +115,7 @@ def coords_from_index(index, row_width):
   
   Returns
   ----------
-  tuple : (row, col) index
+  tuple : (row, col, block_row, block_index) index
   """
   block_width = int(np.sqrt(row_width))
   
@@ -138,7 +138,7 @@ Test code in _code02.py_
 :::
 
 ## Unpacking tuples
-Our function returns a [tuple](https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences) of `(row, col, block_row, block_col)`. Theoretically, we can use it via indexes, so that `row_col[0]` means row and `row_col[1]` mean column etc. but this is hard to read. There is a better solution via so called "unpacking". When you created a tuple, you "packed" four values into it, the "unpacking" reverses it^[Yes, I am aware of the irony of unpacking values to pack them back for the print.].
+Our function returns a [tuple](https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences) of `(row, col, block_row, block_col)`. Theoretically, we can use it via indexes, so that `row_col[0]` means row and `row_col[1]` means column, etc. but this is hard to read. There is a better solution via so-called "unpacking". When you create a tuple, you "pack" four values into it, the "unpacking" reverses it^[Yes, I am aware of the irony of unpacking values to pack them back for the `print`.].
 
 ```{python}
 row, col, block_row, block_col = coords_from_index(9, SUDOKU_SIZE)
@@ -146,7 +146,7 @@ row, col, block_row, block_col = coords_from_index(9, SUDOKU_SIZE)
 print("Row: %d, column %d, block row %d, block column %d"%(row, col, block_row, block_col))
 ```
 
-This trick works only if you have matching number of elements and variables, so only suitable when fixed returned tuples are fixed in size. Note that the same trick will work a list but this break semantics. It is okay for tuples because the are immutable and using them you indicate to the reader that their size is, at least conceptually, fixed. In contrast, lists are mutable, so their use indicates that they can have any length. Again, it makes no actual difference in the program for a tuple or list of the identical size, but this distinction serves to inform the reader about your intents and any help in reading code should be welcomed.
+This trick works only if you have a matching number of elements and variables, so only suitable when fixed returned tuples are fixed in size. Note that the same trick will work a list but this breaks semantics. It is okay for tuples because they are immutable and using them you indicate to the reader that their size is, at least conceptually, fixed. In contrast, lists are mutable, so their use indicates that they can have any length. Again, it makes no actual difference in the program for a tuple or list of identical size, but this distinction serves to inform the reader about your intents and any help in reading code should be welcomed.
 ```{python, error = TRUE}
 # too few values (or too many variables)
 row, col, depth = row_col_from_index(9, SUDOKU_SIZE)
@@ -227,7 +227,7 @@ already_used
 Now, the only thing left to do is generate all possible valid numbers, [subtract](https://numpy.org/doc/stable/reference/generated/numpy.setdiff1d.html) the already-used ones, and see what is left.
 
 ```{python}
-np.setdiff1d(np.arange(SUDOKU_SIZE), already_used)
+np.setdiff1d(np.arange(SUDOKU_SIZE + 1), already_used)
 ```
 
 ::: {.program}
@@ -250,7 +250,7 @@ Test in _code05.py_ .
 :::
 
 ## `get_available_values` function
-Simply package code from `code04` (the more efficient one) into a function. Its inputs should be the matrix itself, the cell index, size of the Sudoku (now sneaky access to the global constants or variables!) and probably the size of the block. You can compute it on-the-fly but we will be calling this function _a lot_, so better compute it once. It should return an array of unique values that you computed. Write, document, test!
+Simply package code from `code04` (the more efficient one) into a function. Its inputs should be the matrix itself, the cell index, size of the Sudoku (no sneaky access to the global constants or variables!) and probably the size of the block. You can compute it on-the-fly but we will be calling this function _a lot_, so better compute it once. It should return an array of unique values that you computed. Write, document, test!
 
 ::: {.program}
 Put `get_available_values` into _utils.py_<br/>
@@ -258,7 +258,7 @@ Test code in _code06.py_
 :::
 
 ## Just one cell
-We have all the pieces that we need to write the code but let us start slow by creating the code that puts a random value into just one random cell. You need to write a function (let us call it `add_one_cell`) that will extend the `get_available_values` function. In addition to finding the values that are available, it should [shuffle](https://numpy.org/doc/1.21/reference/random/generated/numpy.random.shuffle.html) them, and puts the first value into the cell. As arrays are mutable, we don't need to worry about return values. Test the function by running it several times (cell should be the same but values should be different) but remember, if you [seed](https://numpy.org/doc/1.21/reference/random/generated/numpy.random.seed.html) your random number generator with `42` you will get the same matrix as I do.
+We have almost all the pieces that we need to write the program. Let us start slow by creating the code that puts a random value into just one random cell. You need to write a function (let us call it `add_one_cell`) that will be an extended version of the `get_available_values` function. In addition to finding the values that are available, it should [shuffle](https://numpy.org/doc/1.21/reference/random/generated/numpy.random.shuffle.html) them, and put the first value (our of the shuffle array) into the cell. As arrays are mutable, we don't need to worry about return values. Test the function by running it several times (cell should be the same but values should be different) but remember, if you [seed](https://numpy.org/doc/1.21/reference/random/generated/numpy.random.seed.html) your random number generator with `42` you will get the same matrix as I do.
 
 ```{python echo = FALSE}
 def add_one_cell(grid, icell, sudoku_size, block_size):
@@ -277,13 +277,14 @@ def add_one_cell(grid, icell, sudoku_size, block_size):
   row, col, block_row, block_col = coords_from_index(icell, sudoku_size)
   
   # figure out values that were already used
-  values_in_row = np.unique(example_matrix[row, :])
-  values_in_col = np.unique(example_matrix[:, col])
-  values_in_block = np.unique(example_matrix[(block_row * block_width):(block_row * block_width + block_width), (block_col * block_width):(block_col * block_width + block_width)])
+  values_in_row = np.unique(grid[row, :])
+  values_in_col = np.unique(grid[:, col])
+  values_in_block = np.unique(grid[(block_row * block_size):(block_row * block_size + block_size),
+                                   (block_col * block_size):(block_col * block_size + block_size)])
   already_used = np.union1d(np.union1d(values_in_row, values_in_col), values_in_block)
 
   # find available values
-  available_values = np.setdiff1d(np.arange(sudoku_size), already_used)
+  available_values = np.setdiff1d(np.arange(sudoku_size + 1), already_used)
   
   # shuffle
   np.random.shuffle(available_values)
@@ -317,7 +318,7 @@ Test code in _code07.py_
 :::
 
 ## Exceptions {#exceptions}
-Our program will explore the tree until it finds the required solution and then execution should return to the main script. The question is, how can we implement this "once the valid solution is found, abort execution and return to the top level"? In the [Guess the Animal](#guess-the-animal) game we did not have this problem because we traced _one_ path through the tree until we reached the final node (leaf). Once the necessary updates to node leaf were carried out, the function simply returned to the previous level, that returned to the previous level, etc. as there was no need for any further action and the fact that the function completed its action meant that we finished exploring the tree. However, in case of Sudoku the fact that the function needs to return to one level up can be due to 1) reaching and filling the final cell, 2) having no mean of completing it in a valid manner and need the previous level (function) to adjust itself. We could implement function behavior conditioned on a return value but instead we will you two different mechanisms for handling these two situation. The function will _return_ if it cannot fill the cell but it will use mechanism of exceptions to return straight to the top level. This makes our code simpler and easier to understand and gives us an opportunity to learn about exceptions.
+Our program will explore the tree until it finds the required solution and then execution should return to the main script. The question is, how can we implement this "once the valid solution is found, abort execution and return to the top level" behavior? In the [Guess the Animal](#guess-the-animal) game we did not have this problem because we traced _one_ path through the tree until we reached the final node (leaf). Once the necessary updates to node leaf were carried out, the function simply returned to the previous level, that returned to the previous level, etc. as there was no need for any further action and the fact that the function completed its action meant that we finished exploring the tree. However, in case of Sudoku the fact that the function needs to return to one level up can be due to 1) reaching and filling the final cell, 2) having no means of completing it in a valid manner and needing the previous level (function) to adjust itself. To handle this, we could implement function behavior conditioned on a return value (.e.g., zero means "cannot fill in the cell", non-zero means "success"). However, there is an alternative approach that uses two different mechanisms for handling these two situations. The function will _return_ to upper level if it cannot fill the cell but it will use mechanism of exceptions to return straight to the top level once the matrix is complete. This makes our code simpler and easier to understand and gives us an opportunity to learn about exceptions.
 
 Sometime, when you are running a program bad things --- errors --- happen. In some cases a program that crashes is simply annoying but in other cases it might mean that you lost whatever data you collected or computation you performed in the mean time. Just think about our [Guess the Animal](#guess-the-animal) game which you played for a long time and that crashed _without_ saving the updated decision tree. Good for us that Python, as other languages, has special mechanisms to handle [exceptions](https://docs.python.org/3/tutorial/errors.html) that arise during the code execution. Whenever an error occurs at a run time, it [raises](https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement) an exception: it creates an object of [a special class](https://docs.python.org/3/library/exceptions.html#concrete-exceptions) that contains information describing the problem. For example, a [ZeroDivisionError](https://docs.python.org/3/library/exceptions.html#ZeroDivisionError) is raised whenever you try to divide by zero, e.g., `1 / 0` (you can try this in a Jupyter notebook). A [KeyError](https://docs.python.org/3/library/exceptions.html#KeyError) is raised, if you using a dictionary with a wrong key, the code below will raise it:
 ```{python, error=TRUE}
@@ -399,7 +400,163 @@ As an exercise, implement the code with a simple an endless while loop in which 
 Do exercise #7.
 :::
 
-## Puzzle is complete once you run out of cells to consider (cheater's edition)
-Pass the remaining list of cell indexes
+## Puzzle is complete once you run out of cells to consider
+Our function `add_one_cell` added just one cell and had no way of continuing even if it wanted to, as it had no index of the next cell. Let us extend this function, call the new version `add_few_cells`, so that instead of a single cell index it takes a list of them (I renamed the parameter to `remaining_cells`). If the list is empty, it should raise `GridComplete` exception that is handled in the main script (grid is printed out). If the list still has elements in it, function should use the _first_ one as an index of the current cell. Once it fills the current cell with the first random available value (code you already implemented), it then calls itself (recursion!) and passes the _remaining_ list (without the first element).
 
-## Adding more cells
+Create `GridComplete` using the code for `QuitTheGame` exception but think about _where_ to place the code as you use both in the function, which is in _utils.py_, and in the main script. Think in which file you should define it and in which should you import it (hint, having circular dependencies is not a good idea). You import an exception class similar to doing that using a function: `from<file-you-decided-on import GridComplete`.
+
+There is no backtracking mechanism yet, so our function will crash (why?) if we give it a full list of cells. Therefore, test it using only first four cells. These are guaranteed to be filled in (again, why?) and our code should print out a matrix as below (seed still `42`). Our matrix is not complete, but this is easy to carry our test for completion handling mechanisms. Here, using debugger to follow through call levels is very helpful for understanding the mechanism of recursion.
+
+```{python echo = FALSE}
+SUDOKU_SIZE = 4
+
+# compute block size
+BLOCK_SIZE = int(np.sqrt(SUDOKU_SIZE))
+
+class GridComplete(Exception):
+    pass
+
+def add_few_cells(grid, remaining_cells, sudoku_size, block_size):
+  """Add a random value to a cell using available numbers.
+  Modifies matrix in place.
+  
+  Parameters
+  ----------
+  grid : numpy.array
+    matrix sudoku_size x sudoku_size
+  remaining_cells : list
+    list of cell indexes for remaining cells
+  sudoku_size : int
+  block_size : int
+  """
+  # complete grid?
+  if len(remaining_cells) == 0:
+    raise GridComplete
+  
+  row, col, block_row, block_col = coords_from_index(remaining_cells[0], sudoku_size)
+  
+  # figure out values that were already used
+  values_in_row = np.unique(grid[row, :])
+  values_in_col = np.unique(grid[:, col])
+  values_in_block = np.unique(grid[(block_row * block_size):(block_row * block_size + block_size),
+                                   (block_col * block_size):(block_col * block_size + block_size)])
+  already_used = np.union1d(np.union1d(values_in_row, values_in_col), values_in_block)
+
+  # find available values
+  available_values = np.setdiff1d(np.arange(sudoku_size + 1), already_used)
+  
+  # shuffle
+  np.random.shuffle(available_values)
+  
+  # use the first one
+  grid[row, col] = available_values[0]
+  
+  add_few_cells(grid, remaining_cells[1:], sudoku_size, block_size)
+
+
+# empty grid  
+grid = np.zeros((SUDOKU_SIZE, SUDOKU_SIZE))
+
+# fix randomness
+np.random.seed(42)
+
+# random walk through the matrix
+indexes = np.arange(SUDOKU_SIZE * SUDOKU_SIZE)
+np.random.shuffle(indexes)
+ 
+try:
+  # place a single cell
+  add_few_cells(grid, indexes[:4], SUDOKU_SIZE, BLOCK_SIZE)
+except GridComplete:
+  pass
+
+grid
+```
+
+::: {.program}
+Put `add_few_cells` into _utils.py_<br/>
+Test code in _code08.py_
+:::
+
+## Adding backtracking mechanism
+The last piece we need is backtracking mechanism. Currently, our function uses only the first value from the randomized list of available values. However, that first value may not lead to a valid grid, so the function must loop over them calling itself. Here, if the inner function call returns that means the current cell value leads to a dead end and we need to try the next one, hence the loop (remember, if the path produces a complete grid, it will jump straight to the top level without every using `return`). However, if you completed the for loop that means that the inner function returned every single time and there is no possible value for the current cell that can resolve the dead end and you need to reset the value to zero (back to original blank state!), and return to the level about to try to fix the previous cell.
+
+Call function `add_cell` and use it instead of `add_few_cells` both in the main script and in the function itself. First, use the same first four indexes only as a sanity check: The output should be exactly the same as for the code that used `add_few_cells`. Then, use all indexes and if you set seed to `42`, you should get exactly the same Sudoku solution.
+
+```{python echo = FALSE}
+SUDOKU_SIZE = 4
+
+# compute block size
+BLOCK_SIZE = int(np.sqrt(SUDOKU_SIZE))
+
+class GridComplete(Exception):
+    pass
+
+def add_cell(grid, remaining_cells, sudoku_size, block_size):
+  """Add a random value to a cell using available numbers.
+  Modifies matrix in place.
+  
+  Parameters
+  ----------
+  grid : numpy.array
+    matrix sudoku_size x sudoku_size
+  remaining_cells : list
+    list of cell indexes for remaining cells
+  sudoku_size : int
+  block_size : int
+  """
+  # complete grid?
+  if len(remaining_cells) == 0:
+    raise GridComplete
+  
+  row, col, block_row, block_col = coords_from_index(remaining_cells[0], sudoku_size)
+  
+  # figure out values that were already used
+  values_in_row = np.unique(grid[row, :])
+  values_in_col = np.unique(grid[:, col])
+  values_in_block = np.unique(grid[(block_row * block_size):(block_row * block_size + block_size),
+                                   (block_col * block_size):(block_col * block_size + block_size)])
+  already_used = np.union1d(np.union1d(values_in_row, values_in_col), values_in_block)
+
+  # find available values
+  available_values = np.setdiff1d(np.arange(sudoku_size + 1), already_used)
+  
+  # shuffle
+  np.random.shuffle(available_values)
+  
+  # go through values, hoping that one of the works
+  for value in available_values:
+    grid[row, col] = value
+    add_cell(grid, remaining_cells[1:], sudoku_size, block_size)
+    
+  # nope, dead end
+  grid[row, col] = 0
+  return
+
+
+# empty grid  
+grid = np.zeros((SUDOKU_SIZE, SUDOKU_SIZE))
+
+# fix randomness
+np.random.seed(42)
+
+# random walk through the matrix
+indexes = np.arange(SUDOKU_SIZE * SUDOKU_SIZE)
+np.random.shuffle(indexes)
+ 
+try:
+  # place a single cell
+  add_cell(grid, indexes, SUDOKU_SIZE, BLOCK_SIZE)
+except GridComplete:
+  pass
+
+grid.astype(int)
+```
+
+::: {.program}
+Put `add_cell` into _utils.py_<br/>
+Test code in _code09.py_
+:::
+
+## Wrap up
+Now you have an alternative, more efficient version of the algorithm that can generate a Sudoku. Next time will continue by turning a full solution to the Sudoku into a puzzle itself, learning how to save it for posterity using file input and output.

@@ -1,4 +1,4 @@
-# Brute force Sudoku {#sudoku-brute-force}
+# Sudoku: Brute force algorithm {#sudoku-brute-force}
 
 In this chapter, we are going to write programs that will generate [sudoku puzzle](https://en.wikipedia.org/wiki/Sudoku). In this puzzle, you need to complete a $9\times9$ grid with number 1 to 9, so that number do not repeat within each row, each column, and each $3\times3$ square block. When you play the game, you have an incomplete puzzle and the more gaps you have, the harder the puzzle tends to be. But before you can play the game, some (that is you, today) must 1) generate a complete puzzle, 2) remove some numbers while ensuring that the solution to the puzzle remains unique.
 
@@ -163,7 +163,6 @@ print(zeros_matrix_3_by_2)
 ```
 
 ::: {.practice}
-Martix filled with 7.
 Do exercise #5.
 :::
 
@@ -171,7 +170,6 @@ Do exercise #5.
 NumPy has a module for generating random number --- [numpy.random](https://numpy.org/doc/stable/reference/random/index.html#module-numpy.random) --- that is conceptually similar to the [random](https://docs.python.org/3/library/random.html) but allows you to generate arrays rather than single values. For convenience, the names are kept the same. E.g., function [random.randint](https://docs.python.org/3/library/random.html#random.randint) that generates a single random integer has its twin brother [numpy.random.randint](https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html) that accepts same parameters and, by default also generates a single value. However, you can generate the whole vector / matrix / tensor of random numbers in one go by spezifying its `size`. Confusingly, the parameter is called `size` even though it refers to the "output shape".
 
 ::: {.practice}
-Generate random 4x5 matrix with normally distributed numbers with mean of 3 and standard deviation of 1. 
 Do exercise #6.
 :::
 
@@ -185,7 +183,6 @@ print(np.array(range(5)))
 However, NumPy also has a handy function called [linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html) that allows you generate sequence of _float_ numbers. 
 
 ::: {.practice}
-Generate random 4x5 matrix with normally distributed numbers with mean of 3 and standard deviation of 1. 
 Do exercise #7.
 :::
 
@@ -215,30 +212,57 @@ print(np.stack([one_d_vector, one_d_vector], axis=1).shape)
 ```
 
 ::: {.practice}
-Generate single Sudoku ordered row and stack it horizontally and vertically. 
 Do exercise #8.
 :::
 
 ## Repeating and tiling
-In the exercise above, you stacked nine arrays but they were all identical. NumPy provides a solution for such repeated values in [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) and [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) functions. They both repeat values requested number of times but there are couple of important differences. First, [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) repeats each value N times before going to the next value, whereas [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) repeats N times the entire sequence in order.
+In the exercise above, you stacked four arrays but they were all identical. NumPy provides a solution for such repeated values in [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) and [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) functions. They both repeat values requested number of times but there are couple of important differences. First, [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) repeats each value N times before going to the next value, whereas [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) repeats N times the entire sequence in order.
 
 ```{python}
 print(np.repeat(np.arange(5), 2))
 print(np.tile(np.arange(5), 2))
 ```
-Second, you can decide on the direction the values are repeated similar to how it is determined during [stacking](#stack). However, the specifics are different for the two functions. For [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) you specify `axis` as in [stacking](#stack). For [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) you specify repetitions (`reps` parameter) and you can specify repetitions _per axis_. 
 
-```{python}
-# Stack repeated array by row
-np.repeat(one_d_vector, 2, axis=0)
+Second, you can decide on the direction the values are repeated similar to how it is determined during [stacking](#stack). However, the specifics are different for the two functions. For [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) you specify `axis` as in [stacking](#stack) but 1D arrays have just one axis, you can only stack them along the `0` axis. The solution is to turn into a proper row vector via `np.array([])` which creates a 2D array that can be stacked:
 
-# Tile array twice by row, thrice by column
-np.tile(one_d_vector, (2, 3))
+```{python error = TRUE}
+an_array = np.array([1, 2, 3])
+
+# repeats elements generating long 1D array
+np.repeat(an_array, 2, axis=0)
+
+# stacks row vectors into a matrix
+a_row_vector = np.array([an_array])
+a_row_vector.shape
+np.repeat(a_row_vector, 2, axis=0)
+```
+
+Note that you get a column vector that you can stack horizontally by [transposing](https://numpy.org/doc/stable/reference/generated/numpy.transpose.html) the row vector. In the exercise below create a column vector from a row vector and then stack them horizontally in repeat. The output should look like this
+
+```{python eacho = FALSE}
+row_vector = np.array([np.arange(1, 5)])
+col_vector = np.transpose(row_vector)
+np.repeat(col_vector, 4, axis=1)
 ```
 
 ::: {.practice}
-Generate single Sudoku via repeat and tile. 
 Do exercise #9.
+:::
+
+
+For [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) you specify repetitions (`reps` parameter) and you can specify repetitions _per axis_. 
+
+```{python}
+# Tile array twice by row, thrice by column
+np.tile(one_d_vector, (2, 3))
+```
+Use [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html to generate matrix with ordered rows. Your output should look like this
+```{python echo = FALSE}
+np.tile(np.arange(1, 5), (4, 1))
+```
+
+::: {.practice}
+Do exercise #10.
 :::
 
 ```{python}
@@ -263,14 +287,22 @@ np.random.shuffle(an_array[:3])
 print(an_array)
 ```
 
-Write the code that creates an ordered matrix by row (so, each row goes from 1 till 9 but each column has a single number in it) and write the code that shuffles just one row (put its index in `irow` variable). Change `irow` value to test that your code works.
+Write the code that creates an ordered matrix by row (so, each row goes from 1 till 9 but each column has a single number in it) and write the code that shuffles just one row (put its index in `irow` variable). Change `irow` value to test that your code works. For example, your output for a randomly shuffle row #2 could look like this.
+
+```{python echo = FALSE}
+SUDOKU_SIZE = 9
+grid = np.tile(np.arange(1, SUDOKU_SIZE + 1), (SUDOKU_SIZE, 1))
+np.random.shuffle(grid[1, ])
+grid
+```
+
 
 ::: {.program}
 Write code for creating matrix<br/>
-and shuffling one row in exercise #10.
+and shuffling one row in exercise #11.
 :::
 
-Once a single row code works, modify that it shuffle all rows but one at a time (you can shuffle the entire matrix but then even rows will most likely be invalid). Once the shuffling code works, turn it into a function `shuffle_by_row`. Just like [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) it does not need to return anything, as the shuffling occurs in place. Write the code that generates an ordered-by-row matrix, shuffle it by row and prints it out.
+Once a single row code works, modify that it shuffle all rows but one at a time (you can shuffle the entire matrix but then even rows will most likely be invalid). Once the shuffling code works, turn it into a function `shuffle_by_row`. Just like [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) it does not need to return anything, as the shuffling occurs in place. Write the code that generates an ordered-by-row matrix, shuffle it by row and prints it out. You definitely need to know matrix [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html) and loop over the [range](https://docs.python.org/3/library/functions.html#func-range) of them.
 
 ::: {.program}
 Put `shuffle_by_row` into _utils.py_<br/>
@@ -287,21 +319,22 @@ Write program in _code02.py_
 ## Is this row even valid?
 For a matrix to be a Sudoku, it must adhere to "nine unique numbers in each row, column, and block" rule. Let us implement code for checking the rows (turning it into a column-check will be trivial). 
 
-Again, for the row to be valid, it must contain 9 different, i.e., [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) numbers. Use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) function to write a comparison for row `irow` (set it to some valid index by hand) that it indeed has 9 unique numbers, i.e., array [size](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm) is equal to nine. To check that it works correctly, generate an ordered matrix by row (each row goes from 1:9, so any row should be valid) and by column (each row has the same value nine times, so every row should be invalid). Next, shuffle either a single row and check (permutation does not alter the elements, so row should still be valid) or a single column (all or most rows should be invalid).
+Again, for the row to be valid, it must contain 9 different, i.e., [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) numbers. Use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) function to write a comparison for row `irow` (set it to some valid index by hand) that it indeed has 9 unique numbers, i.e., array [size](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm) is equal to nine. To check that it works correctly, generate an ordered matrix by row (each row goes from 1:9, so any row should be valid) and by column (each row has the same value nine times, so every row should be invalid). Use actual matrix [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) instead of hardcoding `9` to determine the required number of unique numbers (same we columns or rows).
+
 
 ::: {.program}
 Write and test single row validation<br/>
-in exercise #11.
+in exercise #12.
 :::
 
 Once, we have the code working for a single row, we use (list comprehension)[#list-comprehension] to generate nine logical values (one per row). Matrix is valid (at least with respect to rows) only if _all_ rows are valid. Handily, NumPy has a function (all)[https://numpy.org/doc/stable/reference/generated/numpy.all.html] that test whether _all_ elements of the array (that we can create from a list that we generated via list comprehension) are `True`. Package this code into function _validate_rows_, think about its inputs and outputs, document.
 
 ::: {.program}
 Put `validate_rows` into _utils.py_<br/>
-Extend program from in _code01.py_ in _code03.py_
+Extend program from _code01.py_ in _code03.py_
 :::
 
-Now, do the same for columns and use both checks to see if the matrix is a valid Sudoku
+Now, do the same for columns and use both checks to see if the matrix is a valid Sudoku (rows should be fine but columns should fail the check).
 ::: {.program}
 Put `validate_columns` into _utils.py_<br/>
 Extend program from in _code03.py_ in _code04.py_
@@ -313,11 +346,40 @@ Blocks are a touch trickier to work with as we do not have simple axis to use. H
 ![Sudoku blocks indexing](images/sudoku-blocks.png){width=50% style="display: block; margin: 0 auto"}
 
 <br/><br/>
-Write the code that uses [slicing](https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding) to extract a single block defined by `i_block_row` and `i_block_col`. For me it helps to compute matrix row for the block top left corner and then get a vertical slice relative to it. Same for the horizontal slice relative to the top-left block column in the matrix. To make debugging easier, generate a $9\times9$ matrix of integers stacked either by row or by columns, so that it is easier to see whether you code works. Test it for all combinations for `i_block_row` and `i_block_col`.
+Write the code that uses [slicing](https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding) to extract a single block defined by `i_block_row` and `i_block_col`. For me it helps to compute matrix row for the block top left corner and then get a vertical slice relative to it. Same for the horizontal slice relative to the top-left block column in the matrix. To make debugging easier, generate a $9\times9$ matrix of integers stacked either by row or by columns, so that it is easier to see whether you code works. Test it for all combinations for `i_block_row` and `i_block_col`. You will also need to compute or define the block size.
+
+This is how the output should look like if `i_block_row = 1` and `i_block_col = 0` when you stack matrix by row
+```{python echo = FALSE}
+SUDOKU_SIZE = 9
+BLOCK_SIZE = 3
+
+# matrix generated by row
+grid = np.tile(np.arange(1, SUDOKU_SIZE + 1), (SUDOKU_SIZE, 1))
+
+i_block_row = 1
+i_block_col = 0
+grid[(i_block_row * BLOCK_SIZE):(i_block_row * BLOCK_SIZE + BLOCK_SIZE),
+     (i_block_col * BLOCK_SIZE):(i_block_col * BLOCK_SIZE + BLOCK_SIZE)]
+```
+
+and when stacked by column
+```{python echo = FALSE}
+SUDOKU_SIZE = 9
+BLOCK_SIZE = 3
+
+# matrix generated by column
+row_vector = np.array([np.arange(1, SUDOKU_SIZE + 1)])
+col_vector = np.transpose(row_vector)
+grid = np.repeat(col_vector, SUDOKU_SIZE, axis=1)
+
+
+grid[(i_block_row * BLOCK_SIZE):(i_block_row * BLOCK_SIZE + BLOCK_SIZE),
+     (i_block_col * BLOCK_SIZE):(i_block_col * BLOCK_SIZE + BLOCK_SIZE)]
+```
 
 ::: {.program}
 Write and test single block extraction code<br/>
-in exercise #12.
+in exercise #13.
 :::
 
 Once you have the code to extract block values, the validation logic is very similar to that of the row / column validation. Note that you can use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) directly on the 2D array you extracted or, optionally, you can  [flatten](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html) it to a 1D array first. The main difference is that you need nested loops (one for block row, one for block column and build the list of validation values via [append](https://docs.python.org/3/tutorial/datastructures.html). Once you have a list of nine logical values (one per block), you can check whether they are (all)[https://numpy.org/doc/stable/reference/generated/numpy.all.html] `True`.
@@ -334,6 +396,9 @@ We have all the building blocks to try to generate Sudoku via brute force. Packa
 Put `validate_matrix` into _utils.py_<br/>
 Write program in _code06.py_
 :::
+
+## Give brute force a chance
+
 
 ## Wrap up
 Excellent, we have an (occasionally) working program that generates a complete Sudoku matrix. Zip and submit and next time we will write a different, more efficient implementation of the algorithm.
