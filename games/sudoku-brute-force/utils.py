@@ -62,3 +62,28 @@ def validate_columns(grid):
     col_validity = [np.unique(grid[:, icol]).size == grid.shape[0]
                     for icol in range(grid.shape[1])]
     return np.all(col_validity)
+
+def validate_blocks(grid):
+    """Check whether all blocks are valid.
+
+    Parameters
+    ----------
+    grid: numpy.array
+        2D grid
+
+    Returns
+    ----------
+    logical
+    """
+    # figure out the block size
+    block_size = int(np.sqrt(grid.shape[0]))
+
+    block_validity = []
+    for i_block_row in range(block_size):
+        for i_block_col in range(block_size):
+            block_values = grid[(i_block_row * block_size):(i_block_row * block_size + block_size),
+                                (i_block_col * block_size):(i_block_col * block_size + block_size)]
+
+            block_validity.append(np.unique(block_values).size == grid.shape[0])
+
+    return np.all(block_validity)
