@@ -1,6 +1,6 @@
 # Guess the animal {#guess-the-animal}
 
-Today we will program a game in which computer tries to guess an animal that you thought of and learns from its mistake gradually building it vocabulary. Despite its simplisity, it will give us an opportunity to learn about dictionaries, critical differences between mutable and immutable objects, recursion, and file system. As per usual, grab the [exercise notebook]() before we start.
+Today we will program a game in which computer tries to guess an animal that you thought of and learns from its mistake gradually building its vocabulary. Despite algorithm's simplicity, it will give us an opportunity to learn about dictionaries, critical differences between mutable and immutable objects, recursion, and file system. As per usual, grab the [exercise notebook]() before we start.
 
 ## Chapter concepts
 * [Dictionaries](#dictionaries)
@@ -14,16 +14,22 @@ The way the game is played is very simple: On each turn computer asks you whethe
 
 ![Decision tree growing over rounds.](images/guess-the-animal-decision-tree.png){width=100%}
  
+## Yes/no input
+In our game, we will be asking yes/no question _a lot_, so let us start by programming `input_yes_no` function that takes a prompt as a single argument and keeps asking for the response until it receives the valid one. It should return `True` if response was "yes" and `False` for "no". For convenience, it should prepend the prompt with a message `'Type "y" for yes and "n" for no."`, e.g., if prompt parameter was `"Is it a pony?"` the actual input prompt should be `'Type "y" for yes and "n" for no. Is it a pony?'`. This should be easy for you by now as you implemented several similar functions during for the [Hunt the Wumpus](#hunt-the-wumpus) game. Document(!), test it in exercise 1, and put the code in `utils.py`.
+
+::: {.program}
+Put `input_yes_no` into _utils.py_.<br/>Test it in exercise 1.
+:::
 
 ## Dictionaries {#dictionaries}
-In the decision tree, we have two kinds nodes: 1) the action decision node ("quack?") that has two edges (_yes_ and _no_) that lead to other nodes, and 2) the leaf animal nodes ("duck", "dog", "cat", etc.). Thus each node has a one or two subtrees that in turn include their own decision trees, etc. Thus, each node has following properties: 
+In the decision tree, we have two kinds nodes: 1) the action decision node ("quack?") that has two edges (_yes_ and _no_) that lead to other nodes, and 2) the leaf animal nodes ("duck", "dog", "cat", etc.). Each node has following properties:
 
 * `kind`: node _kind_ either `"action"` or `"animal"`
 * `text`: node _text_ which holds either an action or the name of the animal
 * `yes` : subtree for answer "yes" (relevant only for _action_ nodes)
 * `no` : subtree for answer "no" (also relevant only for _action_ nodes)
 
-This calls for a container and we _could_ put each node with its subtrees into a list and use numerical indexes to access individual elements (e.g., `node[0]` would be the node kind, whereas `node[2]` would hold the yes-subtree) but indexes do not have meaning per se, so figuring out how `node[0]` is different from `node[2]` would be tricky. Python has a solution for cases like this: [dictionaries](https://docs.python.org/3/library/stdtypes.html#dict).
+This calls for a container and we _could_ put each node with its subtrees into a list and use numerical indexes to access individual elements: e.g., `node[0]` would be the node kind, whereas `node[2]` would hold the yes-subtree, etc. But indexes do not have meaning per se, so figuring out how `node[0]` is different from `node[2]` is not impossible but requires an extra effort. Python has a solution for cases like this: [dictionaries](https://docs.python.org/3/library/stdtypes.html#dict).
 
 A dictionary is a container that stores information using _key : value_ pairs. This is similar to how you look up a meaning or a translation (value) of a word (key) in a real dictionary, hence the name. To create a dictionary, you use _curly_ brackets `{<key1> : <value1>}, {<key2> : <value2>, ...}` or create it via `dict(<key1>=<value1>, <key2>=<value2>, ...)`. Note that the second version is more restrictive as keys must follow rules for variable names, whereas in curly-brackets version keys can be arbitrary strings.
 ```python
@@ -37,37 +43,30 @@ book = dict(Author="Walter Moers",
 
 Once you created a dictionary, you can access or modify each field using its key, e.g. `print(book["Author"])` or `book["Author"] = "Moers, W."`. You can also add new fields by assigning values to them, e.g., `book["Publication year"] = 1999`. In short, you can use a combination of `<dictionary-variable>[<key>]` just like you would use a normal variable. This is similar to using the `list[index]` combination, the only difference is that `index` must be an integer, whereas `key` can be any hashable^[Immutable values are [hashable](https://docs.python.org/3/glossary.html#term-hashable), whereas mutable ones, like dictionaries and lists, are not. This is because mutable objects can _change_ while the program is running and therefore are unusable as a key. I.e., it is hard to match by a key, if the key can be different by the time you need to access the dictionary.] value.
 
-## Yes/no input
-In our game, we will be asking yes/no question _a lot_, so let us start by programming a `input_yes_no` function that takes a prompt as a single argument and keeps asking for the response until it receives the valid one. It should return `True` if response was "yes" and `False` otherwise. For convenience, it should prepend the prompt with a message `'Type "y" for yes and "n" for no.", e.g., if prompt parameter was `"Is it a pony?" the actual input prompt should be `'Type "y" for yes and "n" for no. Is it a pony?'`. This should be easy for you by now as you implemented several similar functions during the game. Document(!), test it in exercise 7, and put the code in `utils.py`.
-
-::: {.program}
-Put `input_yes_no` into _utils.py_.<br/>Test it in exercise 1.
-:::
-
 ## One-trick pony
-Let us start at the beginning by creating a dictionary with a single animal that can be used to ask a question "Is it <animal>?". Create a dictionary following the structure layed out above and think about which field you need (hint, not all four) and what values they should have. In the future, we will modify this tree, so even though you hard code it, it is still a variable, not a constant, so use the appropriate naming style.
+Let us start at the beginning by creating a dictionary with a single animal that can be used to ask a question "Is it <animal>?". Create a dictionary following the structure laid out above and think about which fields you need (hint, not all four) and what values they should have. In the future, we will modify this tree, so even though you hard code it, it is still a variable, not a constant, so use the appropriate naming style.
 
-Next, you need a simple code that checks if the node `"kind"` is `"animal"`, it asks "Is it <animal>?" (which field you need to use for that?) using the `input_yes_no` function you implemented before. For the moment, congratulate yourself if the answer was "yes" (computer guess it correctly!) but perform no action otherwise.
+Next, you need a simple code that checks node `"kind"` and if it is `"animal"` asks "Is it <animal>?" (which field you need to use for that?) using the `input_yes_no` function you implemented before. For the moment, congratulate yourself if the answer was "yes" (computer guessed it correctly!) but perform no action otherwise.
 
 ::: {.program}
 Put your code into _code01.py_.
 :::
 
 ## Learning a new trick
-In the final implementation, our decision tree will grow through trial-and-error but initially, let us hard code a small decision tree by hand. Create a dictionary of dictionaries for the _Round 2_ decision tree. It has just three nodes, the top one is an action tree with two subtrees, each subtree is an animal leaf node. Since subtrees a dictionaries, it means that you put a dictionary into a corresponding field, so `decision_tree['yes']` will yield `{"kind" : "animal", "text" : "duck"} and, therefore, `decision_tree['yes']['animal']` will be `"duck"`. Once you defined it, explore it by hand in a jupiter notebook, trying different field and different levels, as in the example I've shown above.
+In the final implementation, our decision tree will grow through trial-and-error but initially, let us hard code a small decision tree by hand. Create a dictionary of dictionaries for the _Round 2_ decision tree. It has just three nodes, the top one is an action tree with two subtrees, each subtree is an animal leaf node. Since subtrees a dictionaries, it means that you put a dictionary into a corresponding field, so `decision_tree['yes']` will yield `{"kind" : "animal", "text" : "duck"} and, therefore, `decision_tree['yes']['animal']` will be `"duck"`. Once you defined it, explore it by hand in a jupyter notebook, trying different field and different levels, as in the example I've shown above.
 
-Now that we have two kinds of nodes, we need to update the query code, so that is asks  "Is it <animal>?" for _animal_ node (you have this code already) but "Does it <action>?" for the _action_ node. Implement it but take no action for the response to the action node question yet. Test that it works by changing node kind.
+Now that we have two kinds of nodes, we need to update the query code, so that is asks  "Is it <animal>?" for _animal_ node (you have this code already) but "Does it <action>?" for the _action_ node. Implement it but take no action for the response to the action node question yet. Test that it works by defining changing node kind.
 
 ::: {.program}
 Put your code into _code02.py_.
 :::
 
 ## Recursion
-Our trees have many nodes at different depths but when we need to act on a node (ask a relevant question), the only thing that matters is the node itself, not the tree it belongs to or where it is within this tree. E.g., look at the figure below for a full and trunkated decision trees. Once we are at the node "meow?", it makes no difference whether we arrived to it from some upper-level node or it was the top node itself, the question we ask and the decision we make is the same. Similarly, once we are at the node `"cat"`, it makes no difference to us whether we ended up where after a long exploration or it was the only node that we have.
+Our trees have many nodes at different depths but when we need to act on a node (ask a relevant question), the only thing that matters is the node itself, not the tree it belongs to or where it is within this tree. E.g., look at the figure below with full and truncated decision trees. Once we are at the node "meow?", it makes no difference whether we arrived to it from some upper-level node or it was the top node itself. The question we ask and the decision we make is the same. Similarly, once we are at the node `"cat"`, it makes no difference to us whether we ended up where after a long exploration or it was the only node that we have.
 
 ![Truncated decision tree.](images/guess-the-animal-truncated.png){width=100%}
 
-This means that we need just one function that will act on the node and that the _same_ function will be applied to a relevant subnode for the _action_ node. I.e., the function will call itself! This is called a recursion and a classic example^[Actually, it is somewhat misleading, as you do not need recursion for factorial, a for loop will suffice, but this a nice and simple toy example, so we'll walk with the crowd on this one.] to illustrate the concept is computation of a [factorial](https://en.wikipedia.org/wiki/Factorial):
+This means that we need just one function that will act on the node and that _same_ function will be applied to a relevant subnode for the _action_ node. I.e., the function will call itself! This is called a recursion and a classic example^[Actually, it is somewhat misleading, as you do not need recursion for factorial, a for loop will suffice, but this a nice and simple toy example, so we'll walk with the crowd on this one.] to illustrate the concept is computation of a [factorial](https://en.wikipedia.org/wiki/Factorial):
 $$!n = n \times (n - 1) \times (n - 2) \times ...\times3\times2\times1$$
 
 It is easy to see a recursive nature of the computation here as the formula can be rewritten as
@@ -79,7 +78,7 @@ $$\ !n = \begin{cases}
   n \times !(n - 1) & \text{if n > 1}
 \end{cases}$$
 
-Your task is to write a function (document!) that computes a factorial for a given positive integer using the formula above. As long as $n > 1$ it should use itself to compute a factorial of the remaining terms. Test the function to check that computation works correctly.
+Your task is to write a function (document it!) that computes a factorial for a given positive integer using the formula above. As long as $n > 1$ it should use itself to compute a factorial of the remaining terms. Test the function to check that computation works correctly.
 
 ::: {.program}
 Implement and test function in exercise 2.
@@ -90,10 +89,10 @@ Let us apply the same idea of a recursion to explore the decision tree while pla
 
 ![Decision tree for three animals.](images/guess-the-animal-three.png){width=100%}
 
-Next, we need to convert the code from _code02.py_ that used a single node to a function. Extend it, so that if the node is an _action_ node, the function goes one level deeper by applying itself the corresponding "yes" or "no" subtree (that is determined by player's response). Call it `explore_tree`. It should have just a single parameter (the current node) and it does not need to return any value. Once implemented, call it starting with hardcoded tree and test by giving different answers. The tree is small, so you should be able to quickly try all paths. There should be positive "yay!", if at the end you agree that computer's guess about an animal was correct and no output, if you said "no".
+Next, we need to convert the code from _code02.py_ that used a single node to a function. Extend it, so that if the node is an _action_ node, the function goes one level deeper calling itself with the corresponding "yes" or "no" subtree (that is determined by player's response). Call it `explore_tree`. It should have just a single parameter (the current tree) and it does not need to return any value. Once implemented, call it starting with hard coded tree and test by giving different answers. The tree is small, so you should be able to quickly try all paths. There should be positive "yay!", if at the end you agree that computer's guess about an animal was correct and no output, if you said "no".
 
 ::: {.program}
-Implement function in _utils.py_<br/>
+Implement function `explore_tree` in _utils.py_<br/>
 Use it in code _code03.py_.
 :::
 
