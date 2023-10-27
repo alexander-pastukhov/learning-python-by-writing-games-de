@@ -1,15 +1,15 @@
 # Sudoku: Brute force algorithm {#sudoku-brute-force}
 
-In this chapter, we are going to write a program that will generate [sudoku puzzle](https://en.wikipedia.org/wiki/Sudoku). In this puzzle, you need to complete a $9\times9$ grid with number 1 to 9, so that number do not repeat within each row, each column, and each $3\times3$ square block. When you play the game, you have an incomplete puzzle and the more gaps you have, the harder the puzzle tends to be. But before you can play the game, some (that is you, today) must 1) generate a complete puzzle (what we will concentrate on today), 2) remove some numbers while ensuring that the solution to the puzzle remains unique.
+In this chapter, we are going to write a program that generates [sudoku puzzle](https://en.wikipedia.org/wiki/Sudoku). In a typical Sudoku puzzle, you need to complete a $9\times9$ grid with number 1 to 9, so that numbers do not repeat within each row, each column, and each $3\times3$ square block. When you play the game, you have an incomplete puzzle and the more gaps you have, the harder the puzzle tends to be. But before you can play the game, some (that is you, today) must 1) generate a complete puzzle (what we will concentrate on today), 2) remove some numbers while ensuring that the solution to the puzzle remains unique. Today, we are going to concentrate on the first task: Generating a complete board.
 
 ![An example Sudoku puzzle and the solution](images/sudoku.png){width=100% style="display: block; margin: 0 auto"}
 
 <br/>
-The puzzle is based on a 2D grid and, in principle, you can use [list](#lists) of rows (which are lists themselves) to create this grid. This would be similar to the list of lists that contained information about connecting caves in (Hunt the Wumpus)[#hunt-the-wumpus] game. However, this nested list structure makes it hard to work with columns and blocks, as their elements belong to different lists, so you need to use for loop instead of simpler list slicing (the latter only works for rows).
+The puzzle is based on a 2D grid and, in principle, you can use [list](#lists) of rows (which are lists themselves) to create this grid. This would be similar to the list of lists that contained information about connecting caves in [Hunt the Wumpus](#hunt-the-wumpus) game. However, a nested list structure makes it hard to work with columns and blocks, as their elements belong to different lists and you need to use for loop instead of simpler list slicing (the latter only works for rows).
 
 Instead, we will use it as an opportunity to learn about [NumPy](https://numpy.org/) library, which is one of the key packages for scientific computing in Python and is a foundation for many data analysis libraries. Note that the material below is by no means complete. If anything, it barely scratches the surface of NumPy. If you need NumPy for your projects, I strongly recommend taking a look at official [Getting Started for aboslute beginners](https://numpy.org/doc/stable/user/absolute_beginners.html) guide and the official [user guide](https://numpy.org/doc/stable/user/index.html).
 
-Grab the [exercise notebook](notebooks/sudoku-brute-force.ipynb) to get started.
+Grab the [exercise notebook](notebooks/sudoku-brute-force.ipynb) and let's get get started.
 
 ## Importing NumPy
 The NumPy is not a core Python library, so you may need to [install it](https://numpy.org/install/). As with all libraries, you must import NumPy before using it in your script. However, this is one of the rare cases where renaming the library during import is a standard and recommended way:
@@ -18,7 +18,7 @@ import numpy as np
 ```
 
 ## 1D NumPy arrays versus Python lists
-The key data structure that NumPy introduces is a NumPy array that can have any number of dimensions. A one dimensional array, typically called "a vector", is most directly related to a Python [list](#lists), but with both some limitations and some extra functionality. Unlike Python lists that can hold anything, including other lists, all elements of an array must be of the same [numeric type](https://numpy.org/doc/stable/user/basics.types.html) (but [character arrays](https://numpy.org/doc/stable/reference/generated/numpy.chararray.html) can be created as well). However, the advantage of this restriction is that since all elements are of the same type, it is guaranteed that you can apply the same function to all the elements. Note that there is no such guarantee forintrinsically heterogeneous Python lists, which is why you need to perform operation on each element separately. 
+The key data structure that NumPy introduces is a NumPy array that can have any number of dimensions. A one dimensional array, typically called "a vector", is most directly related to a Python [list](#lists), but with both some limitations and some extra functionality. Unlike Python lists that can hold anything, including other lists, all elements of an array must be of the same. The advantage of this restriction is that since all elements are of the same type, you can apply a function to all the elements. Note that there is no guarantee that this will work for intrinsically heterogeneous Python lists, which is why you need to perform operation on each element separately. 
 
 You can create a Numpy array from a list via [array](https://numpy.org/doc/stable/reference/generated/numpy.array.html) function:
 ```{python}
@@ -46,7 +46,7 @@ print(np.array([1.0, 2, 3, 0.0]))
 print(np.array([False, 1, 2.0, "a"]))
 ```
 
-However, the type of an array is fixed at the creation and if you put in a different type value, it will be either converted to that type or, if conversion is tricky, NumPy will throw an error.
+The type of an array is fixed at the creation and if you put in a different type value, it will be either converted to that type or, if a conversion is not possible, NumPy will throw an error.
 ```{python error = TRUE}
 # array of boolean
 array_of_bool = np.array([True, False, True])
@@ -83,7 +83,7 @@ However, certain functionality is implemented differently, as the [append](https
 
 ```{python}
 # appending values
-an_array = np.append(an_array, [4])
+an_array = np.append(an_array, 4)
 print(an_array)
 ```
 
@@ -100,6 +100,7 @@ array1 = np.array([1, 2, 4])
 array2 = np.array([-1, -3, 5])
 array1 + array2
 ```
+
 Note that it works only if array [shapes](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) are the same. In case of the 1D arrays (a.k.a., vectors), it means that their length must be the same. 
 ```{python error = TRUE} 
 array1 = np.array([1, 2, 4])
@@ -126,7 +127,7 @@ Do exercise #3.
 
 
 ## 2D NumPy arrays, a.k.a., matrices
-The real power of NumPy is unleashed once your array have two or more dimensions. The 2D arrays are called matrices, whereas arrays with three or more dimensions are known as tensors. The former play key role in classic linear algebra in Python, whereas the latter are required for artifical neural networks (hence, tensor, in [TensorFlow](https://www.tensorflow.org/)).
+The real power of NumPy is unleashed once your array has two or more dimensions. The 2D arrays are called matrices, whereas arrays with three or more dimensions are known as tensors. The former play key role in classic linear algebra in Python, whereas the latter are required for artifical neural networks (hence, tensor, in [TensorFlow](https://www.tensorflow.org/)).
 
 As with vectors (1D arrays) versus Python lists, the advantage comes from restrictions. Matrices are rectangular, i.e., matrices are composed of multiple rows but each row has the same number of elements. In contrast, you _can_ create a rectangular matrix as list of lists (again, our `CONNECTED_CAVES` was $20\times3$ rectangular matrix) but this is not guaranteed. On top of that, homogenity of the matrix (all values must of the same type) means you can extract an rectangular part of the matrix and it is guaranteed to be another matrix of the same type. And slicing makes working with 2D arrays much easier. E.g., here is the code to extract a column from a list of lists versus NumPy matrix.
 
@@ -138,24 +139,22 @@ matrix_as_array = np.array(matrix_as_list)
 
 icolumn = 1 # column index that we want to extract
 
-# extracting column from via for loop
-column_as_list = []
-for row in matrix_as_list:
-  column_as_list.append(row[icolumn])
+# extracting column from via list comprehension
+column_as_list = [row[icolumn] for row in matrix_as_list]
 print(column_as_list)
 
 # extracting column from a matrix
 print(matrix_as_array[:, 1])
 ```
 
-Extracting rows, columns, and square block out of a matrix will be key to writing the code for Sudoku, so lets practice!
+Extracting rows, columns, and square block out of a matrix will be key to writing the code for Sudoku, so let's practice!
 
 ::: {.practice}
 Do exercise #4.
 :::
 
 ## Creating arrays of a certain shape
-There are different ways to create NumPy arrays. Above, we used lists or lists of lists to create them. However, you need create an array of a certain [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) filled with [zeros](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html) or [ones](https://numpy.org/doc/stable/reference/generated/numpy.ones.html). The key parameter in these functions is the _shape_ of the array: a list with its dimensions. For a 2D array this means `(<number of rows>, <number of columns>).
+There are different ways to create NumPy arrays. Above, we used lists or lists of lists to create them. However, you need create an array of a certain [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) filled with [zeros](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html) or [ones](https://numpy.org/doc/stable/reference/generated/numpy.ones.html). The key parameter in these functions is the _shape_ of the array: a list with array's dimensions. For a 1D array this can be either `number of elements>` or `(<number of elements>, )`. For a 2D array this means `(<number of rows>, <number of columns>)`.
 
 ```{python}
 zeros_matrix_3_by_2 = np.zeros((3, 2))
@@ -166,8 +165,8 @@ print(zeros_matrix_3_by_2)
 Do exercise #5.
 :::
 
-## Creating random arrays of a certain shape
-NumPy has a module for generating random number --- [numpy.random](https://numpy.org/doc/stable/reference/random/index.html#module-numpy.random) --- that is conceptually similar to the [random](https://docs.python.org/3/library/random.html) but allows you to generate arrays rather than single values. For convenience, the names are kept the same. E.g., function [random.randint](https://docs.python.org/3/library/random.html#random.randint) that generates a single random integer has its twin brother [numpy.random.randint](https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html) that accepts same parameters and, by default also generates a single value. However, you can generate the whole vector / matrix / tensor of random numbers in one go by specifying its `size`. Confusingly, the parameter is called `size` even though it refers to the "output shape".
+## Creating random arrays of a certain ~~shape~~ size
+NumPy has a module for generating random numbers --- [numpy.random](https://numpy.org/doc/stable/reference/random/index.html#module-numpy.random) --- that is conceptually similar to the [random](https://docs.python.org/3/library/random.html) library packaged with Python but it allows you to generate arrays of values rather than a single value. For convenience, the names are kept the same. E.g., function [random.randint](https://docs.python.org/3/library/random.html#random.randint) that generates a single random integer has its twin brother [numpy.random.randint](https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html) that accepts same parameters and, by default also generates a single value. However, you can generate the whole vector / matrix / tensor of random numbers in one go by specifying its `size`. Confusingly, the parameter is called `size` even though it refers to the "output shape" (not sure why they did not call it "shape").
 
 ::: {.practice}
 Do exercise #6.
@@ -187,18 +186,16 @@ Do exercise #7.
 :::
 
 ## Stacking array to create a matrix {#stack}
-The [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html) function will be useful for us to generate a sequence of integers from 1 to 9 (or 1 to 4, when working on a smaller version of Sudoku). However, note that in both cases you can only generate a vector but not a matrix that we need! The solution in this case is to [stack](https://numpy.org/doc/stable/reference/generated/numpy.stack.html) individual vectors. When stacking, shapes of individual vectors starts to play a very important role, as their [shapes](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html) must be compatible. This is a key difference to Python lists, that only have [length](https://docs.python.org/3/library/functions.html#len).
+The [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html) function will be useful for us to generate a sequence of integers from 1 to 9 (or 1 to 4 when working on a smaller version of Sudoku). However, note that in both cases you can only generate a vector but not a matrix that we need! The solution in this case is to [stack](https://numpy.org/doc/stable/reference/generated/numpy.stack.html) individual vectors. When stacking, [shapes](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html) of individual vectors start to play an important role, as they must be compatible. This is a key difference to Python lists, that only have [length](https://docs.python.org/3/library/functions.html#len).
 
-Things are also easy for truly one dimensional arrays. These are arrays created from lists or via functions such as [zeros](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html) or [linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html). If you look at their [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html), you will see just one dimension.
+Things are easy for truly one dimensional arrays. These are arrays created from lists or via functions such as [zeros](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html) or [linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html). If you look at their [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html), you will see just one dimension.
 
 ```{python}
 print(np.array([10, 20, 30]).shape)
 print(np.zeros(5).shape)
 ```
 
-These vectors do not have "orientation" (if you know linear algebra you would expect either column or rows vectors), so when you combine these arrays into a matrix you can use them as rows (stacking along `axis=0`, the default, see also [vstack](https://numpy.org/doc/stable/reference/generated/numpy.vstack.html)) or as columns (stacking along `axis=1`, see also [hstack](https://numpy.org/doc/stable/reference/generated/numpy.hstack.html)). 
-
-
+These vectors do not have "orientation" (if you know linear algebra you would expect either column or rows vectors), so when you combine these arrays into a matrix you can use them as rows (stacking along `axis=0`, the default, see also [vstack](https://numpy.org/doc/stable/reference/generated/numpy.vstack.html)) or as columns (stacking along `axis=1`, see also [hstack](https://numpy.org/doc/stable/reference/generated/numpy.hstack.html)).
 ```{python}
 one_d_vector = np.arange(5)
 
@@ -211,63 +208,80 @@ print(np.stack([one_d_vector, one_d_vector], axis=1))
 print(np.stack([one_d_vector, one_d_vector], axis=1).shape)
 ```
 
+Practice staking, the output for a matrix stacked by rows look like this
+```{python echo = FALSE}
+a_row = np.arange(1, 5)
+np.stack([a_row, a_row, a_row, a_row], axis=0)
+```
+
+and for a matrix stack by columns like this
+```{python echo = FALSE}
+a_column = np.arange(1, 5)
+np.stack([a_column, a_column, a_column, a_column], axis=1)
+```
+
 ::: {.practice}
 Do exercise #8.
 :::
 
+## Row and column vectors versus 1D arrays(#row-col-vectors)
+As noted above, 1D arrays are truly one-dimension as their shape is `(N, )` (note the empty spot after the comma). However, often you need the same vector but in a 2D form either as a row `(1, N)` or `(N, 1)` vector. The difference between 1D array and a 2D row / column vector is that the latter have "orientation"^[This is particularly important for linear algebra.] and despite the same number of elements will produce differently stacked arrays.
+
+You can turn a 1D `(N, )` array into a row `(1, N)` vector by putting it inside another list: `np.array([<original list or 1D array>])`. As you can see below, although [shapes](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html) of two arrays are different, their [size](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.html) (total number of elements) is the same.
+
+```{python}
+# A 1D array
+oned_array = np.array([1, 2, 3])
+(oned_array.shape, oned_array.size)
+
+# A 2D array but with the same number of elements and the same longest dimension
+row_vector = np.array([[1, 2, 3]])
+(row_vector.shape, row_vector.size)
+```
+
+There are two ways to create a column vector with shape `(N, 1)`. First, you can specify it as list of lists with one value per row (inner list). Alternatively, you can create a row vector and then [transpose](https://numpy.org/doc/stable/reference/generated/numpy.transpose.html) it.
+
+```{python}
+# column vector from list of lists
+np.array([[1], [2], [3]])
+
+# column vector by transposition of a row vector
+np.transpose(np.array([[1, 2, 3]]))
+```
+
+As noted above, vector "orientation" makes difference for stacking. Explore these differences in the exercise 9.
+
+::: {.practice}
+Do exercise #9.
+:::
+
 ## Repeating and tiling
-In the exercise above, you stacked four arrays but they were all identical. NumPy provides a solution for such repeated values in [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) and [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) functions. They both repeat values requested number of times but there are couple of important differences. First, [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) repeats each value N times before going to the next value, whereas [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) repeats N times the entire sequence in order.
+In the exercise above, you stacked four row or column vectors but they were all identical. NumPy can generate such repeated sequences via [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) and [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) functions. They both repeat values requested number of times but there are couple of important differences. First, [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) repeats each value N times before going to the next value, whereas [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) repeats N times the entire sequence in order.
 
 ```{python}
 print(np.repeat(np.arange(5), 2))
 print(np.tile(np.arange(5), 2))
 ```
 
-Second, you can decide on the direction the values are repeated similar to how it is determined during [stacking](#stack). However, the specifics are different for the two functions. For [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) you specify `axis` as in [stacking](#stack) but 1D arrays have just one axis and you can only stack them along that `0` axis. If you need to stack row one on top of the other, the solution is to turn a 1D array into a proper row vector via `np.array([])` which creates a 2D array with shape `(1, N)` that can be stacked to create a 2D matrix:
-
-```{python error = TRUE}
-an_array = np.array([1, 2, 3])
-
-# repeats elements generating long 1D array
-np.repeat(an_array, 2, axis=0)
-
-# stacks row vectors into a matrix
-a_row_vector = np.array([an_array])
-a_row_vector.shape
-np.repeat(a_row_vector, 2, axis=0)
-```
-
-Note that you get a column vector, which you can then stack horizontally, by [transposing](https://numpy.org/doc/stable/reference/generated/numpy.transpose.html) the row vector. In the exercise below create a column vector from a row vector and then stack them horizontally via [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html). The output should look like this
-
-```{python eacho = FALSE}
-row_vector = np.array([np.arange(1, 5)])
-col_vector = np.transpose(row_vector)
-np.repeat(col_vector, 4, axis=1)
-```
-
-::: {.practice}
-Do exercise #9.
-:::
-
-
-For [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) you specify repetitions (`reps` parameter) and you can specify repetitions _per axis_. 
-
-```{python}
-# Tile array twice by row, thrice by column
-np.tile(one_d_vector, (2, 3))
-```
-Use [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html to generate matrix with ordered rows. Your output should look like this
-```{python echo = FALSE}
-np.tile(np.arange(1, 5), (4, 1))
-```
+The second difference how you specify repetition when constructing 2D matrices. In case of [repeat](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) you specify along which `axis` you repeat the sequence (same as `axis` parameter in [stacking](#stack)). 
 
 ::: {.practice}
 Do exercise #10.
 :::
 
+For [tile](https://numpy.org/doc/stable/reference/generated/numpy.tile.html) you specify repetitions (`reps` parameter) and you can specify repetitions _per axis_. 
 
-## Geneating Sudoku via brute force: order and chaos
-Our first take on generating Sudoku will be conceptually simple but very inefficient: We will create an ordered matrix (by row or by column, not a valid solution), shuffle it (by row or by column), and then check if, accidentally, we ended up with a valid Sudoku. If not, rinse and repeat until we have one.
+```{python}
+# Tile array twice by row, thrice by column
+np.tile(np.array([1, 2, 3]), (2, 3))
+```
+
+::: {.practice}
+Do exercise #11.
+:::
+
+## Generating Sudoku via brute force: order and chaos
+Our take on generating Sudoku will be conceptually simple but very inefficient: We will create an ordered matrix (by row or by column, not a valid initial solution), shuffle it (by row or by column), and then check if, accidentally, we ended up with a valid Sudoku matrix. If not, keep shuffling until we have one.
 
 You already know how to create an ordered matrix that has 1..4 or 1..9 rows or columns. To randomize it, use [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) that shuffles an array or a _part of_ an array _in place_. The latter part means that the function does not return any value and the array you supplied (it is passed by reference, recall [mutable objects and functions](#mutable-objects)).
 
@@ -283,20 +297,20 @@ np.random.shuffle(an_array[:3])
 print(an_array)
 ```
 
-Write the code that creates a 4×4 matrix (define matrix size via `SUDOKU_SIZE` constant) ordered by row 
-(so, each row goes from 1 till `SUDOKU_SIZE` but each column has a single number in it) and write the code that shuffles just one row (put its index in `irow` variable). Change `irow` value to test that your code works. For example, your output for a randomly shuffle row #2 could look like this.
+Write the code that creates a $4\times4$ matrix (define matrix size via `SUDOKU_SIZE` constant) ordered by row 
+(so, each row goes from 1 till `SUDOKU_SIZE` but each column has a the same number in it) and write the code that shuffles just one row (put its index in `irow` variable). Change `irow` value to test that your code works. For example, your output for a randomly shuffle row #2 could look like this.
 
 ```{python echo = FALSE}
 SUDOKU_SIZE = 4
+np.random.seed(42)
 grid = np.tile(np.arange(1, SUDOKU_SIZE + 1), (SUDOKU_SIZE, 1))
 np.random.shuffle(grid[1, ])
 grid
 ```
 
-
 ::: {.program}
 Write code for creating matrix<br/>
-and shuffling one row in exercise #11.
+and shuffling one row in exercise #12.
 :::
 
 Once a single row code works, modify that it shuffle all rows but one at a time (you can shuffle the entire matrix but then even rows will most likely be invalid). Once the shuffling code works, turn it into a function `shuffle_by_row`. Just like [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) it does not need to return anything, as shuffling occurs in place. Write the code that generates an ordered-by-row matrix of `SUDOLI_SIZE`, shuffles it by row, and prints it out. You definitely need to know matrix [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html) and loop over the [range](https://docs.python.org/3/library/functions.html#func-range) of them.
@@ -314,7 +328,7 @@ Write program in _code02.py_
 :::
 
 ## Is this row even valid?
-For a matrix to be a Sudoku, it must adhere to "only unique numbers in each row, column, and block" rule. Let us implement code for checking the rows (turning it into a column-check will be trivial). 
+For a matrix to be a Sudoku, it must adhere to "only unique numbers in each row, column, and block" rule. Let us implement code for checking the rows (turning it into a column-check will be trivial).
 
 Again, for the row to be valid, it must contain `SUDOKU_SIZE` different, i.e., [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) numbers. Use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) function to write a comparison for row `irow` (set it to some valid index by hand) that it indeed has `SUDOKU_SIZE` unique numbers, i.e., the array [size](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm) is equal to nine. However, do not pass the `SUDOKU_SIZE` constant to the function, instead infer the number of necessary unique element from the [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) of the matrix itself. 
 
