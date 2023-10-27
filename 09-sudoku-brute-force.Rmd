@@ -328,7 +328,7 @@ Write program in _code02.py_
 :::
 
 ## Validation examples
-In the following section, you will write functions that check validity of row, columns, and 
+In the following section, you will write functions that check validity of row, columns, and blocks. For this, we need examples that are valid for all or some checks. Use the cell below to run the check later.
 ```{python eval = FALSE}
 all_valid = np.array([[4, 1, 3, 2],
                       [3, 2, 4, 1],
@@ -364,9 +364,9 @@ all_invalid = np.array([[4, 1, 3, 2],
 ## Is this row even valid?
 For a matrix to be a Sudoku, it must adhere to "only unique numbers in each row, column, and block" rule. Let us implement code for checking the rows (turning it into a column-check will be trivial).
 
-For the row to be valid, it must contain `SUDOKU_SIZE` different, i.e., [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) numbers. Use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) function to write a comparison for row `irow` (set it to some valid index by hand) that it indeed has `SUDOKU_SIZE` unique numbers, i.e., the array [size](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm) of unique numbers is equal to `SUDOKU_SIZE`. However, do not pass the `SUDOKU_SIZE` constant to the function, instead infer the number of necessary unique element from the [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) of the matrix itself. 
+For the row to be valid, it must contain `SUDOKU_SIZE` different, i.e., [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) numbers. Use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) function to write a comparison for row `irow` (set it to some valid index by hand) that it indeed has `SUDOKU_SIZE` unique numbers, i.e., the array [size](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm) of unique numbers is equal to `SUDOKU_SIZE`. However, do not pass the `SUDOKU_SIZE` constant to the function, instead infer the number of necessary unique element from the [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) of the matrix itself.
 
-To check that it works correctly, generate an ordered matrix by row (each row goes from 1:9, so any row should be valid) and by column (each row has the same value nine times, so every row should be invalid).
+Use example matrices (see above) to check that it works correctly.
 
 ::: {.program}
 Write and test single row validation<br/>
@@ -377,13 +377,15 @@ Once, we have the code working for a single row, we can use [list comprehension]
 
 ::: {.program}
 Put `validate_rows` into _utils.py_<br/>
-Extend program from _code01.py_ in _code03.py_
+Extend program from _code01.py_ in _code03.py_<br/>
+Test code using example matrices.
 :::
 
 Now, do the same for columns and use both checks to see if the matrix is a valid Sudoku (rows should be fine but columns should fail the check).
 ::: {.program}
 Put `validate_columns` into _utils.py_<br/>
-Extend program from in _code03.py_ in _code04.py_
+Extend program from in _code03.py_ in _code04.py_<br/>
+Test code using example matrices.
 :::
 
 ## Blocks
@@ -430,32 +432,21 @@ in exercise #13.
 
 Once you have the code to extract block values, the validation logic is very similar to that of the row / column validation. Note that you can use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) directly on the 2D array you extracted or, optionally, you can  [flatten](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html) it to a 1D array first. Once you have a list of nine logical values (one per block), you can check whether they are (all)[https://numpy.org/doc/stable/reference/generated/numpy.all.html] `True`. The main difference here is that you need nested loops to go over 2D grid of blocks. My solution is to create an empty list for validation values and then loop of block row and block column [appending](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) values to the list.
 
-To know whether our code works correctly, we need an example of a valid matrix and of invalid ones. Use the two $4\times4$ example below, the should pass all three checks, whe
-
-```{python}
-valid_matrix = np.array([[4, 1, 3, 2],
-                         [3, 2, 4, 1],
-                         [2, 4, 1, 3],
-                         s[1, 3, 2, 4]])
-```
 
 ::: {.program}
 Put `validate_blocks` into _utils.py_<br/>
-Test all three validation functions <br/>
-in _code05.py_
+Test all three validation functions using <br/>
+example matrices in _code05.py_</br>
 :::
 
 ## Brute force in action
-We have all the building blocks to try to generate Sudoku via brute force. Package three validation functions that you created into a single `validate_matrix` function that returns `True` only if all rows, all columns, and blocks are valid. Then, generate an ordered matrix by row and in a for loop (I would use a for loop and limit it to say 1000 iterations) shuffle this matrix by row and check whether it is valid. If it is, break our of the loop and print out the Sudoku. Write a sad message (without a matrix print out) once you run out of trials (but no sad message otherwise!). Alternatively, you can generated matrix ordered by columns and then shuffle by columns as well (why generating by row and shuffling by columns won't work?)
+We have all the building blocks to try to generate Sudoku via brute force. Package three validation functions that you created into a single `validate_matrix` function that returns `True` only if all rows, all columns, and blocks are valid. Then, generate an ordered matrix by row and in a for loop (I would use a for loop and limit it to say 1000 iterations) shuffle this matrix by row and check whether it is valid. If it is, break our of the loop and print out the Sudoku. Write a sad message (without a matrix print out) once you run out of trials (but no sad message otherwise!). Alternatively, you can generate matrix ordered by columns and then shuffle by columns as well (why generating by row and shuffling by columns won't work?). Set matrix size to 4 but note that our code will work with any correct matrix size ($9\times9$, $16\times16$, etc.)
 
 ::: {.program}
 Put `validate_matrix` into _utils.py_<br/>
 Write program in _code06.py_
 :::
 
-## Give brute force a chance
-
-
 ## Wrap up
-Excellent, we have an (occasionally) working program that generates a complete Sudoku matrix. Zip and submit and next time we will write a different, more efficient implementation of the algorithm.
+Excellent, we have a working program that (very rarely) generates a complete Sudoku matrix. Zip and submit and next time we will write a different, more efficient implementation of the algorithm.
 

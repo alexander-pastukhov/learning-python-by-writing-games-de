@@ -1,6 +1,7 @@
 """Collection of function for Sudoku brute force algorithm.
 """
 
+from tkinter import N
 import numpy as np
 
 
@@ -87,3 +88,21 @@ def validate_blocks(grid):
             block_validity.append(np.unique(block_values).size == grid.shape[0])
 
     return np.all(block_validity)
+
+
+def validate_matrix(grid):
+    """Check whether all row, columns, and
+    blocks are valid.
+
+    Parameters
+    ----------
+    grid: numpy.array
+        2D grid
+
+    Returns
+    ----------
+    logical
+    """
+    return validate_rows(grid) and \
+           validate_columns(grid) and \
+           validate_blocks(grid)
