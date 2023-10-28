@@ -4,22 +4,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Kapitel 10 Guess the animal | Lerne Python, indem du Spiele entwickels</title>
+<title>Kapitel 10 Rate das Tier | Lerne Python, indem du Textspiele entwickels</title>
 <meta name="author" content="Alexander (Sasha) Pastukhov">
-<meta name="description" content="Today we will program a game in which computer tries to guess an animal that you thought of and learns from its mistake gradually building it vocabulary. Despite its simplisity, it will give us an...">
-<meta name="generator" content="bookdown 0.35 with bs4_book()">
-<meta property="og:title" content="Kapitel 10 Guess the animal | Lerne Python, indem du Spiele entwickels">
+<meta name="description" content="Heute programmieren wir ein Spiel, bei dem der Computer versucht, ein Tier zu erraten, an das du gedacht hast, und lernt aus seinen Fehlern, während er allmählich seinen Wortschatz aufbaut. Trotz...">
+<meta name="generator" content="bookdown 0.34 with bs4_book()">
+<meta property="og:title" content="Kapitel 10 Rate das Tier | Lerne Python, indem du Textspiele entwickels">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/guess-the-animal.html">
-<meta property="og:description" content="Today we will program a game in which computer tries to guess an animal that you thought of and learns from its mistake gradually building it vocabulary. Despite its simplisity, it will give us an...">
+<meta property="og:description" content="Heute programmieren wir ein Spiel, bei dem der Computer versucht, ein Tier zu erraten, an das du gedacht hast, und lernt aus seinen Fehlern, während er allmählich seinen Wortschatz aufbaut. Trotz...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kapitel 10 Guess the animal | Lerne Python, indem du Spiele entwickels">
+<meta name="twitter:title" content="Kapitel 10 Rate das Tier | Lerne Python, indem du Textspiele entwickels">
 <meta name="twitter:site" content="@PastukhovSasha">
-<meta name="twitter:description" content="Today we will program a game in which computer tries to guess an animal that you thought of and learns from its mistake gradually building it vocabulary. Despite its simplisity, it will give us an...">
+<meta name="twitter:description" content="Heute programmieren wir ein Spiel, bei dem der Computer versucht, ein Tier zu erraten, an das du gedacht hast, und lernt aus seinen Fehlern, während er allmählich seinen Wortschatz aufbaut. Trotz...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/psychopy-python-favicon.svg">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.0/transition.js"></script><script src="libs/bs3compat-0.5.0/tabs.js"></script><script src="libs/bs3compat-0.5.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/python-text-favicon.svg">
 <!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -41,7 +41,7 @@
 
     <div class="d-flex align-items-start justify-content-between">
       <h1>
-        <a href="index.html" title="">Lerne Python, indem du Spiele entwickels</a>
+        <a href="index.html" title="">Lerne Python, indem du Textspiele entwickels</a>
       </h1>
       <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
@@ -60,10 +60,9 @@
 <li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
 <li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
 <li><a class="" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
-<li><a class="" href="One-armed-bandit.html"><span class="header-section-number">8</span> One-armed bandit but with lists and loops</a></li>
-<li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Hunt the Wumpus</a></li>
-<li><a class="active" href="guess-the-animal.html"><span class="header-section-number">10</span> Guess the animal</a></li>
-<li><a class="" href="Sudoku.html"><span class="header-section-number">11</span> Sudoku</a></li>
+<li><a class="" href="One-armed-bandit.html"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></li>
+<li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
+<li><a class="active" href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></li>
 </ul>
 
         <div class="book-extra">
@@ -73,375 +72,456 @@
 </div>
   </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="guess-the-animal" class="section level1" number="10">
 <h1>
-<span class="header-section-number">Kapitel 10</span> Guess the animal<a class="anchor" aria-label="anchor" href="#guess-the-animal"><i class="fas fa-link"></i></a>
+<span class="header-section-number">Kapitel 10</span> Rate das Tier<a class="anchor" aria-label="anchor" href="#guess-the-animal"><i class="fas fa-link"></i></a>
 </h1>
-<p>Today we will program a game in which computer tries to guess an animal that you thought of and learns from its mistake gradually building it vocabulary. Despite its simplisity, it will give us an opportunity to learn about dictionaries, critical differences between mutable and immutable objects, recursion, and file system. As per usual, grab the <a href="">exercise notebook</a> before we start.</p>
-<div id="chapter-concepts-2" class="section level2" number="10.1">
+<p>Heute programmieren wir ein Spiel, bei dem der Computer versucht, ein Tier zu erraten, an das du gedacht hast, und lernt aus seinen Fehlern, während er allmählich seinen Wortschatz aufbaut. Trotz der Einfachheit des Algorithmus, bietet es uns die Möglichkeit, über Wörterbücher, die kritischen Unterschiede zwischen veränderlichen und unveränderlichen Objekten, Rekursion und Dateisystem zu lernen. Wie üblich, schnapp dir das <a href="notebooks/guess-the-animal.ipynb">Übungs-Notizbuch</a> bevor wir starten.</p>
+<div id="konzepte-des-kapitels-4" class="section level2" number="10.1">
 <h2>
-<span class="header-section-number">10.1</span> Chapter concepts<a class="anchor" aria-label="anchor" href="#chapter-concepts-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.1</span> Konzepte des Kapitels<a class="anchor" aria-label="anchor" href="#konzepte-des-kapitels-4"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
-<li><a href="guess-the-animal.html#dictionaries">Dictionaries</a></li>
-<li><a href="guess-the-animal.html#recursion">Recursion</a></li>
-<li>
-<a href="guess-the-animal.html#mutable-objects">Mutable</a> vs. <a href="guess-the-animal.html#variables-as-boxes-immutable-objects">immutable</a> objects</li>
-<li>Saving/reading objects via <a href="guess-the-animal.html#pickle">pickle</a> and <a href="guess-the-animal.html#json">JSON</a>
+<li><a href="guess-the-animal.html#dictionaries">Wörterbücher</a></li>
+<li><a href="#recursion">Rekursion</a></li>
+<li>Veränderliche (Engl.: <a href="guess-the-animal.html#mutable-objects">Mutable</a>) vs. unveränderliche (Engl.: <a href="#variables-as-boxes-immutable-objects">Immutable</a>) Objekte</li>
+<li>Speichern/Lesen von Objekten via <a href="guess-the-animal.html#pickle">Pickle</a> und <a href="guess-the-animal.html#json">JSON</a>
 </li>
-<li>Working with files via <a href="#os-library">os</a> library</li>
 </ul>
 </div>
-<div id="game-structure" class="section level2" number="10.2">
+<div id="spielstruktur" class="section level2" number="10.2">
 <h2>
-<span class="header-section-number">10.2</span> Game structure<a class="anchor" aria-label="anchor" href="#game-structure"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.2</span> Spielstruktur<a class="anchor" aria-label="anchor" href="#spielstruktur"><i class="fas fa-link"></i></a>
 </h2>
-<p>The way the game is played is very simple: On each turn computer asks you whether an animal has a certain property or if it is a specific animal. It starts knowing only about one animal, say, “dog”. So, it asks you “Is the animal you are thinking of is a dog?”. If it is, game is over and you can do it again. However, if it is not a dog then the computer asks “Who is it?”, let say you answer “Duck” and then computer also asks you “What does duck do?” and you answer “quack”. The important bit here is that computer uses this information the next time you play the game. It starts by asking “does the animal quack?”, if yes, it guess “Duck”, if not it falls back on the only animal it has left and guess “Dog”. If it is not a dog, it asks you again “Who is it?”, you say “Cat”. “What does cat do?”, “meow”. Below you can see the decision tree that the computer can use on each round and how it adds the information it learned from it failures.</p>
+<p>Die Art und Weise, wie das Spiel gespielt wird, ist sehr einfach: In jeder Runde fragt der Computer dich, ob ein Tier eine bestimmte Eigenschaft hat oder ob es ein spezifisches Tier ist. Es beginnt nur mit einem Tier, sagen wir “Hund”. Also fragt es dich “Ist das Tier, an das du denkst, ein Hund?”. Wenn ja, ist das Spiel vorbei und du kannst es erneut tun. Wenn es jedoch kein Hund ist, fragt der Computer “Wer ist es dann?”, sagen wir, du antwortest “Ente” und dann fragt der Computer auch “Was macht die Ente?” und du antwortest “quaken”. Der wichtige Punkt hier ist, dass der Computer diese Information beim nächsten Mal, wenn du das Spiel spielst, nutzt. Es beginnt mit der Frage “quakt das Tier?”, wenn ja, rät es “Ente”, wenn nicht, fällt es auf das einzige Tier zurück, das es noch hat, und rät “Hund”. Wenn es kein Hund ist, fragt es dich erneut “Wer ist es?”, du sagst “Katze”. “Was macht die Katze?”, “miauen”. Unten siehst du den Entscheidungsbaum, den der Computer in jeder Runde nutzen kann, und wie er die Informationen hinzufügt, die er aus seinen Fehlern gelernt hat.</p>
 <div class="float">
-<img src="images/guess-the-animal-decision-tree.png" style="width:100.0%" alt="Decision tree growing over rounds."><div class="figcaption">Decision tree growing over rounds.</div>
+<img src="images/guess-the-animal-decision-tree.png" style="width:100.0%" alt="Entscheidungsbaum wächst über die Runden."><div class="figcaption">Entscheidungsbaum wächst über die Runden.</div>
 </div>
 </div>
-<div id="dictionaries" class="section level2" number="10.3">
+<div id="janein-eingabe" class="section level2" number="10.3">
 <h2>
-<span class="header-section-number">10.3</span> Dictionaries<a class="anchor" aria-label="anchor" href="#dictionaries"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.3</span> Ja/Nein-Eingabe<a class="anchor" aria-label="anchor" href="#janein-eingabe"><i class="fas fa-link"></i></a>
 </h2>
-<p>In the decision tree, we have two kinds nodes: 1) the action decision node (“quack?”) that has two edges (<em>yes</em> and <em>no</em>) that lead to other nodes, and 2) the leaf animal nodes (“duck”, “dog”, “cat”, etc.). Thus each node has a one or two subtrees that in turn include their own decision trees, etc. Thus, each node has following properties:</p>
+<p>In unserem Spiel werden wir <em>viele</em> Ja/Nein-Fragen stellen, also fangen wir an mit der Programmierung der Funktion <code>input_yes_no</code>, die einen Eingabeaufforderungstext als Einzelargument nimmt und solange nach einer Antwort fragt, bis sie eine gültige erhält. Sie sollte <code>True</code> zurückgeben, wenn die Antwort “Ja” war und <code>False</code> für “Nein”. Für die Bequemlichkeit sollte sie den Aufforderungstext mit der Nachricht <code>'Gib "j" für ja und "n" für nein ein.'</code> voranstellen, z.B. wenn der Eingabeaufforderungstext <code>"Ist es ein Pony?"</code> war, sollte die tatsächliche Eingabeaufforderung <code>'Gib "j" für ja und "n" für nein ein. Ist es ein Pony?'</code> sein. Dies sollte dir jetzt leicht fallen, da du während des <a href="hunt-the-wumpus.html#hunt-the-wumpus">Jage den Wumpus</a> Spiels schon mehrere ähnliche Funktionen implementiert hast. Dokumentiere(!) es, teste es in Übung 1, und gib den Code in <code>utils.py</code> ein.</p>
+<div class="program">
+<p>Füge <code>input_yes_no</code> in <em>utils.py</em> ein. <br> Teste es in Übung 1.</p>
+</div>
+</div>
+<div id="dictionaries" class="section level2" number="10.4">
+<h2>
+<span class="header-section-number">10.4</span> Wörterbücher<a class="anchor" aria-label="anchor" href="#dictionaries"><i class="fas fa-link"></i></a>
+</h2>
+<p>Im Entscheidungsbaum haben wir zwei Arten von Knoten: 1) den Aktionsentscheidungsknoten (“quaken?”) mit zwei Kanten (<em>ja</em> und <em>nein</em>), die zu anderen Knoten führen, und 2) die tierischen Blattknoten (“Ente”, “Hund”, “Katze” usw.). Jeder Knoten hat folgende Eigenschaften:</p>
 <ul>
 <li>
-<code>kind</code>: node <em>kind</em> either <code>"action"</code> or <code>"animal"</code>
+<code>Art</code>: Knoten-<em>Art</em> entweder <code>"Aktion"</code> oder <code>"Tier"</code>
 </li>
 <li>
-<code>text</code>: node <em>text</em> which holds either an action or the name of the animal</li>
+<code>Text</code>: Knoten-<em>Text</em>, der entweder eine Aktion oder den Namen des Tieres enthält</li>
 <li>
-<code>yes</code> : subtree for answer “yes” (relevant only for <em>action</em> nodes)</li>
+<code>ja</code> : Unterbaum für die Antwort “ja” (nur relevant für <em>Aktions</em>-Knoten)</li>
 <li>
-<code>no</code> : subtree for answer “no” (also relevant only for <em>action</em> nodes)</li>
+<code>nein</code> : Unterbaum für die Antwort “nein” (ebenfalls nur relevant für <em>Aktions</em>-Knoten)</li>
 </ul>
-<p>This calls for a container and we <em>could</em> put each node with its subtrees into a list and use numerical indexes to access individual elements (e.g., <code>node[0]</code> would be the node kind, whereas <code>node[2]</code> would hold the yes-subtree) but indexes do not have meaning per se, so figuring out how <code>node[0]</code> is different from <code>node[2]</code> would be tricky. Python has a solution for cases like this: <a href="https://docs.python.org/3/library/stdtypes.html#dict">dictionaries</a>.</p>
-<p>A dictionary is a container that stores information using <em>key : value</em> pairs. This is similar to how you look up a meaning or a translation (value) of a word (key) in a real dictionary, hence the name. To create a dictionary, you use <em>curly</em> brackets <code>{&lt;key1&gt; : &lt;value1&gt;}, {&lt;key2&gt; : &lt;value2&gt;, ...}</code> or create it via <code>dict(&lt;key1&gt;=&lt;value1&gt;, &lt;key2&gt;=&lt;value2&gt;, ...)</code>. Note that the second version is more restrictive as keys must follow rules for variable names, whereas in curly-brackets version keys can be arbitrary strings.</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb85-1"><a href="guess-the-animal.html#cb85-1" tabindex="-1"></a>book <span class="op">=</span> {<span class="st">"Author"</span> : <span class="st">"Walter Moers"</span>,</span>
-<span id="cb85-2"><a href="guess-the-animal.html#cb85-2" tabindex="-1"></a>        <span class="st">"Title"</span>: <span class="st">"Die 13½ Leben des Käpt'n Blaubär"</span>}</span>
-<span id="cb85-3"><a href="guess-the-animal.html#cb85-3" tabindex="-1"></a>        </span>
-<span id="cb85-4"><a href="guess-the-animal.html#cb85-4" tabindex="-1"></a><span class="co"># or, equivalently</span></span>
-<span id="cb85-5"><a href="guess-the-animal.html#cb85-5" tabindex="-1"></a>book <span class="op">=</span> <span class="bu">dict</span>(Author<span class="op">=</span><span class="st">"Walter Moers"</span>,</span>
-<span id="cb85-6"><a href="guess-the-animal.html#cb85-6" tabindex="-1"></a>            Title<span class="op">=</span><span class="st">"Die 13½ Leben des Käpt'n Blaubär"</span>)</span></code></pre></div>
-<p>Once you created a dictionary, you can access or modify each field using its key, e.g. <code>print(book["Author"])</code> or <code>book["Author"] = "Moers, W."</code>. You can also add new fields by assigning values to them, e.g., <code>book["Publication year"] = 1999</code>. In short, you can use a combination of <code>&lt;dictionary-variable&gt;[&lt;key&gt;]</code> just like you would use a normal variable. This is similar to using the <code>list[index]</code> combination, the only difference is that <code>index</code> must be an integer, whereas <code>key</code> can be any hashable<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Immutable values are &lt;a href="https://docs.python.org/3/glossary.html#term-hashable"&gt;hashable&lt;/a&gt;, whereas mutable ones, like dictionaries and lists, are not. This is because mutable objects can &lt;em&gt;change&lt;/em&gt; while the program is running and therefore are unusable as a key. I.e., it is hard to match by a key, if the key can be different by the time you need to access the dictionary.&lt;/p&gt;'><sup>37</sup></a> value.</p>
+<p>Das verlangt nach einem Container und wir <em>könnten</em> jeden Knoten mit seinen Unterbäumen in eine Liste stecken und numerische Indizes verwenden, um auf einzelne Elemente zuzugreifen: z.B. wäre <code>knoten[0]</code> die Knotenart, während <code>knoten[2]</code> den Ja-Unterbaum enthalten würde usw. Aber Indizes haben an sich keine Bedeutung, daher ist es nicht unmöglich, aber erfordert zusätzliche Anstrengungen herauszufinden, wie sich <code>knoten[0]</code> von <code>knoten[2]</code> unterscheidet. Python hat eine Lösung für Fälle wie diesen: <a href="https://docs.python.org/3/library/stdtypes.html#dict">Wörterbücher</a>.</p>
+<p>Ein Wörterbuch ist ein Container, der Informationen in <em>Schlüssel : Wert</em>-Paaren speichert. Dies ist ähnlich, wie du in einem echten Wörterbuch eine Bedeutung oder Übersetzung (Wert) eines Wortes (Schlüssel) nachschlägst, daher der Name. Um ein Wörterbuch zu erstellen, verwendest du <em>geschweifte</em> Klammern <code>{&lt;Schlüssel1&gt; : &lt;Wert1&gt;}, {&lt;Schlüssel2&gt; : &lt;Wert2&gt;, ...}</code> oder erstellst es über <code>dict(&lt;Schlüssel1&gt;=&lt;Wert1&gt;, &lt;Schlüssel2&gt;=&lt;Wert2&gt;, ...)</code>. Beachte, dass die zweite Variante restriktiver ist, da die Schlüssel den Regeln für Variablennamen folgen müssen, während in der geschweiften-Klammern-Version Schlüssel beliebige Zeichenketten sein können.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb85-1"><a href="guess-the-animal.html#cb85-1" tabindex="-1"></a>buch <span class="op">=</span> {<span class="st">"Autor"</span> : <span class="st">"Walter Moers"</span>,</span>
+<span id="cb85-2"><a href="guess-the-animal.html#cb85-2" tabindex="-1"></a>        <span class="st">"Titel"</span>: <span class="st">"Die 13½ Leben des Käpt'n Blaubär"</span>}</span>
+<span id="cb85-3"><a href="guess-the-animal.html#cb85-3" tabindex="-1"></a>       </span>
+<span id="cb85-4"><a href="guess-the-animal.html#cb85-4" tabindex="-1"></a><span class="co"># oder, äquivalent</span></span>
+<span id="cb85-5"><a href="guess-the-animal.html#cb85-5" tabindex="-1"></a>buch <span class="op">=</span> <span class="bu">dict</span>(Autor<span class="op">=</span><span class="st">"Walter Moers"</span>,</span>
+<span id="cb85-6"><a href="guess-the-animal.html#cb85-6" tabindex="-1"></a>            Titel<span class="op">=</span><span class="st">"Die 13½ Leben des Käpt'n Blaubär"</span>)</span></code></pre></div>
+<p>Wenn du ein Wörterbuch erstellt hast, kannst du jedes Feld über seinen Schlüssel abrufen oder ändern, z.B. <code>print(buch["Autor"])</code> oder <code>buch["Autor"] = "Moers, W."</code>. Du kannst auch neue Felder hinzufügen, indem du ihnen Werte zuweist, z.B., <code>buch["Erscheinungsjahr"] = 1999</code>. Kurz gesagt, du kannst die Kombination von <code>&lt;Wörterbuch-Variable&gt;[&lt;Schlüssel&gt;]</code> genauso verwenden wie eine normale Variable. Dies ähnelt der Verwendung der Kombination <code>Liste[Index]</code>, der einzige Unterschied ist, dass <code>Index</code> eine Ganzzahl sein muss, während <code>Schlüssel</code> ein hashbarer<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Unveränderliche Werte sind &lt;a href="https://docs.python.org/3/glossary.html#term-hashable"&gt;hashbar&lt;/a&gt;, während veränderliche, wie Wörterbücher und Listen, es nicht sind. Dies liegt daran, dass sich veränderliche Objekte &lt;em&gt;ändern&lt;/em&gt; können, während das Programm läuft und daher als Schlüssel unbrauchbar sind. D.h., es ist schwer nach einem Schlüssel zu suchen, wenn der Schlüssel zur Zeit, wenn du auf das Wörterbuch zugreifen musst, anders sein kann.&lt;/p&gt;'><sup>37</sup></a> Wert sein kann.</p>
 </div>
-<div id="yesno-input" class="section level2" number="10.4">
+<div id="das-ein-trick-pony" class="section level2" number="10.5">
 <h2>
-<span class="header-section-number">10.4</span> Yes/no input<a class="anchor" aria-label="anchor" href="#yesno-input"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.5</span> Das Ein-Trick-Pony<a class="anchor" aria-label="anchor" href="#das-ein-trick-pony"><i class="fas fa-link"></i></a>
 </h2>
-<p>In our game, we will be asking yes/no question <em>a lot</em>, so let us start by programming a <code>input_yes_no</code> function that takes a prompt as a single argument and keeps asking for the response until it receives the valid one. It should return <code>True</code> if response was “yes” and <code>False</code> otherwise. For convenience, it should prepend the prompt with a message <code>'Type "y" for yes and "n" for no.", e.g., if prompt parameter was</code>“Is it a pony?” the actual input prompt should be <code>'Type "y" for yes and "n" for no. Is it a pony?'</code>. This should be easy for you by now as you implemented several similar functions during the game. Document(!), test it in exercise 7, and put the code in <code>utils.py</code>.</p>
+<p>Beginnen wir am Anfang, indem wir ein Wörterbuch mit einem einzigen Tier erstellen, das verwendet werden kann, um die Frage “Ist es ein <tier>?” zu stellen. Erstelle ein Wörterbuch gemäß der oben dargelegten Struktur und überlege, welche Felder du benötigst (Hinweis, nicht alle vier) und welche Werte sie haben sollten. In Zukunft werden wir diesen Baum modifizieren, daher ist es, obwohl du ihn hart codierst, immer noch eine Variable, keine Konstante, also verwende den entsprechenden Namensstil.</tier></p>
+<p>Als Nächstes benötigst du einen einfachen Code, der die Node <code>"Art"</code> überprüft und, wenn sie <code>"Tier"</code> ist, “Ist es ein <tier>?” fragt (welches Feld musst du dafür verwenden?) mit der Funktion <code>input_yes_no</code>, die du zuvor implementiert hast. Gratuliere dir im Moment selbst, wenn die Antwort “ja” war (der Computer hat es richtig geraten!) aber unternehme sonst keine Aktion.</tier></p>
 <div class="program">
-<p>Put <code>input_yes_no</code> into <em>utils.py</em>.<br>Test it in exercise 1.</p>
+<p>Geben Sie Ihren Code in <em>code01.py</em> ein.</p>
 </div>
 </div>
-<div id="one-trick-pony" class="section level2" number="10.5">
+<div id="einen-neuen-trick-lernen" class="section level2" number="10.6">
 <h2>
-<span class="header-section-number">10.5</span> One-trick pony<a class="anchor" aria-label="anchor" href="#one-trick-pony"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.6</span> Einen neuen Trick lernen<a class="anchor" aria-label="anchor" href="#einen-neuen-trick-lernen"><i class="fas fa-link"></i></a>
 </h2>
-<p>Let us start at the beginning by creating a dictionary with a single animal that can be used to ask a question “Is it <animal>?”. Create a dictionary following the structure layed out above and think about which field you need (hint, not all four) and what values they should have. In the future, we will modify this tree, so even though you hard code it, it is still a variable, not a constant, so use the appropriate naming style.</animal></p>
-<p>Next, you need a simple code that checks if the node <code>"kind"</code> is <code>"animal"</code>, it asks “Is it <animal>?” (which field you need to use for that?) using the <code>input_yes_no</code> function you implemented before. For the moment, congratulate yourself if the answer was “yes” (computer guess it correctly!) but perform no action otherwise.</animal></p>
+<p>In der endgültigen Implementierung wird unser Entscheidungsbaum durch Versuch und Irrtum wachsen, aber zunächst lassen wir einen kleinen Entscheidungsbaum von Hand fest einprogrammieren. Erstelle zuerst ein Verzeichnis von Verzeichnissen für den Entscheidungsbaum in <em>Runde 2</em>. Es hat nur drei Knoten, der höchste ist ein Aktionsbaum mit zwei Unterbäumen. Jeder Unterbaum ist ein Blattknoten für Tiere. Wenn du dir nicht sicher bist, wie du das machen sollst, schreibe zuerst ein Verzeichnis für die Tierknoten. Dann schreibe den “Aktion”-Knoten und setze entweder Referenzen auf Tierverzeichnisse in die Felder “yes” und “no” oder füge die tatsächlichen Verzeichnisse ein. Da Unterbäume selbst Verzeichnisse sind, bedeutet das, dass du ein Verzeichnis in ein entsprechendes Feld einfügst. Daher wird <code>decision_tree['yes']</code> zu <code>{"kind" : "animal", "text" : "duck"}</code> und deshalb wird <code>decision_tree['yes']['animal']</code> zu <code>"duck"</code>. Sobald du es definiert hast, erkunde es von Hand in einem Jupyter-Notebook. Versuche verschiedene Felder und verschiedene Ebenen, wie im oben gezeigten Beispiel.</p>
+<p>Jetzt, wo wir zwei Arten von Knoten haben, müssen wir den Abfragecode so aktualisieren, dass er bei einem <em>Tier</em>-Knoten nach “Ist es <tier>?” fragt (du hast diesen Code schon), aber bei einem <em>Aktions</em>-Knoten nach “Tut es <aktion>?”. Implementiere das, aber unternimm noch keine Aktion für die Antwort auf die Aktion-Knoten-Frage. Packe den Code in eine Funktion <code>ask_question</code> ein, die nur das Baumverzeichnis als Parameter nimmt. Dokumentiere die Funktion und teste, dass sie funktioniert, indem du Bäume aus Runde 1 und Runde 2 verwendest (sollte unterschiedliche Fragen stellen!)</aktion></tier></p>
 <div class="program">
-<p>Put your code into <em>code01.py</em>.</p>
+<p>Füge die Funktion <code>ask_question</code> in <em>utils.py</em> ein.<br>
+Teste den Code in <em>code02.py</em>.</p>
 </div>
 </div>
-<div id="learning-a-new-trick" class="section level2" number="10.6">
+<div id="rekursion" class="section level2" number="10.7">
 <h2>
-<span class="header-section-number">10.6</span> Learning a new trick<a class="anchor" aria-label="anchor" href="#learning-a-new-trick"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.7</span> Rekursion<a class="anchor" aria-label="anchor" href="#rekursion"><i class="fas fa-link"></i></a>
 </h2>
-<p>In the final implementation, our decision tree will grow through trial-and-error but initially, let us hard code a small decision tree by hand. Create a dictionary of dictionaries for the <em>Round 2</em> decision tree. It has just three nodes, the top one is an action tree with two subtrees, each subtree is an animal leaf node. Since subtrees a dictionaries, it means that you put a dictionary into a corresponding field, so <code>decision_tree['yes']</code> will yield <code>{"kind" : "animal", "text" : "duck"} and, therefore,</code>decision_tree[‘yes’][‘animal’]<code>will be</code>“duck”`. Once you defined it, explore it by hand in a jupiter notebook, trying different field and different levels, as in the example I’ve shown above.</p>
-<p>Now that we have two kinds of nodes, we need to update the query code, so that is asks “Is it <animal>?” for <em>animal</em> node (you have this code already) but “Does it <action>?” for the <em>action</em> node. Implement it but take no action for the response to the action node question yet. Test that it works by changing node kind.</action></animal></p>
-<div class="program">
-<p>Put your code into <em>code02.py</em>.</p>
-</div>
-</div>
-<div id="recursion" class="section level2" number="10.7">
-<h2>
-<span class="header-section-number">10.7</span> Recursion<a class="anchor" aria-label="anchor" href="#recursion"><i class="fas fa-link"></i></a>
-</h2>
-<p>Our trees have many nodes at different depths but when we need to act on a node (ask a relevant question), the only thing that matters is the node itself, not the tree it belongs to or where it is within this tree. E.g., look at the figure below for a full and trunkated decision trees. Once we are at the node “meow?”, it makes no difference whether we arrived to it from some upper-level node or it was the top node itself, the question we ask and the decision we make is the same. Similarly, once we are at the node <code>"cat"</code>, it makes no difference to us whether we ended up where after a long exploration or it was the only node that we have.</p>
+<p>Unsere Bäume haben viele Knoten in verschiedenen Tiefen. Aber wenn wir an einem Knoten arbeiten müssen (eine relevante Frage stellen), ist das Einzige, was zählt, der Knoten selbst, nicht der Baum, zu dem er gehört, oder wo er in diesem Baum ist. Zum Beispiel, betrachte die untenstehenden Abbildungen mit vollständigen und verkürzten Entscheidungsbäumen. Sobald wir beim Knoten “miaut?” angekommen sind, macht es keinen Unterschied, ob wir von einem höheren Knoten kamen oder ob es der höchste Knoten selbst war. Die Frage, die wir stellen und die Entscheidung, die wir treffen, sind die gleichen. Ebenso macht es für uns keinen Unterschied, ob wir beim Knoten “Katze” nach langer Suche landen oder ob es der einzige Knoten war, den wir hatten.</p>
 <div class="float">
-<img src="images/guess-the-animal-truncated.png" style="width:100.0%" alt="Truncated decision tree."><div class="figcaption">Truncated decision tree.</div>
+<img src="images/guess-the-animal-truncated.png" style="width:100.0%" alt="Verkürzter Entscheidungsbaum."><div class="figcaption">Verkürzter Entscheidungsbaum.</div>
 </div>
-<p>This means that we need just one function that will act on the node and that the <em>same</em> function will be applied to a relevant subnode for the <em>action</em> node. I.e., the function will call itself! This is called a recursion and a classic example<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Actually, it is somewhat misleading, as you do not need recursion for factorial, a for loop will suffice, but this a nice and simple toy example, so we’ll walk with the crowd on this one.&lt;/p&gt;"><sup>38</sup></a> to illustrate the concept is computation of a <a href="https://en.wikipedia.org/wiki/Factorial">factorial</a>:
+<p>Das bedeutet, dass wir nur eine Funktion benötigen, die auf den Knoten reagiert und diese <em>gleiche</em> Funktion wird auf einen relevanten Unter-Knoten für den <em>Aktions</em>-Knoten angewendet. D.h., die Funktion ruft sich selbst auf! Dies wird als Rekursion bezeichnet und ein klassisches Beispiel<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Eigentlich ist es etwas irreführend, da man für die Fakultät keine Rekursion benötigt, eine For-Schleife reicht aus. Aber es ist ein schönes und einfaches Spielzeugbeispiel, also gehen wir hier mit der Masse mit.&lt;/p&gt;"><sup>38</sup></a> zur Veranschaulichung des Konzepts ist die Berechnung einer <a href="https://de.wikipedia.org/wiki/Fakult%C3%A4t_(Mathematik)">Fakultät</a>:
 <span class="math display">\[!n = n \times (n - 1) \times (n - 2) \times ...\times3\times2\times1\]</span></p>
-<p>It is easy to see a recursive nature of the computation here as the formula can be rewritten as
+<p>Es ist leicht zu erkennen, dass die Berechnung hier von Natur aus rekursiv ist, da die Formel wie folgt umgeschrieben werden kann:
 <span class="math display">\[!n = n \times !(n - 1)\]</span></p>
-<p>The only exception is when <span class="math inline">\(n = 1\)</span>, so the complete formula is
+<p>Die einzige Ausnahme ist, wenn <span class="math inline">\(n = 1\)</span>, daher lautet die vollständige Formel:
 <span class="math display">\[\ !n = \begin{cases}
   1 &amp; \text{if n = 1} \\
   n \times !(n - 1) &amp; \text{if n &gt; 1}
 \end{cases}\]</span></p>
-<p>Your task is to write a function (document!) that computes a factorial for a given positive integer using the formula above. As long as <span class="math inline">\(n &gt; 1\)</span> it should use itself to compute a factorial of the remaining terms. Test the function to check that computation works correctly.</p>
+<p>Deine Aufgabe ist es, eine Funktion zu schreiben (dokumentiere sie!), die eine Fakultät für eine gegebene positive ganze Zahl mit der obigen Formel berechnet. Solange <span class="math inline">\(n &gt; 1\)</span> sollte es sich selbst verwenden, um die Fakultät der verbleibenden Zahlen zu berechnen. Teste die Funktion, um zu überprüfen, ob die Berechnung korrekt funktioniert. Setze einen Haltepunkt in die Funktion und verwende einen Debugger, um zu sehen, wie die Rekursion funktioniert.</p>
 <div class="program">
-<p>Implement and test function in exercise 2.</p>
+<p>Implementiere und teste die <code>factorial</code> Funktion in Übung 2.</p>
 </div>
 </div>
-<div id="exploring-the-decision-tree" class="section level2" number="10.8">
+<div id="erkundung-des-entscheidungsbaums" class="section level2" number="10.8">
 <h2>
-<span class="header-section-number">10.8</span> Exploring the decision tree<a class="anchor" aria-label="anchor" href="#exploring-the-decision-tree"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.8</span> Erkundung des Entscheidungsbaums<a class="anchor" aria-label="anchor" href="#erkundung-des-entscheidungsbaums"><i class="fas fa-link"></i></a>
 </h2>
-<p>Let us apply the same idea of a recursion to explore the decision tree while playing the game. For now, hardcode the decision tree shown in the figure below</p>
+<p>Lassen uns die Idee der Rekursion anwenden, um den Entscheidungsbaum zu erkunden, während wir das Spiel spielen. Du kannst für den Moment den Entscheidungsbaum, der unten in der Figur gezeigt wird, hardcodieren. Du kannst Wörterbücher direkt verschachteln, aber ich fand es einfacher, ein <code>meow_action</code> Wörterbuch für den zweiten Unterbaum separat zu definieren und es dann dem <code>"no"</code> Feld des Quack-Wörterbuchs aus dem <code>code02</code> zuzuweisen.</p>
 <div class="float">
-<img src="images/guess-the-animal-three.png" style="width:100.0%" alt="Decision tree for three animals."><div class="figcaption">Decision tree for three animals.</div>
+<img src="images/guess-the-animal-three.png" style="width:100.0%" alt="Entscheidungsbaum für drei Tiere."><div class="figcaption">Entscheidungsbaum für drei Tiere.</div>
 </div>
-<p>Next, we need to convert the code from <em>code02.py</em> that used a single node to a function. Extend it, so that if the node is an <em>action</em> node, the function goes one level deeper by applying itself the corresponding “yes” or “no” subtree (that is determined by player’s response). Call it <code>explore_tree</code>. It should have just a single parameter (the current node) and it does not need to return any value. Once implemented, call it starting with hardcoded tree and test by giving different answers. The tree is small, so you should be able to quickly try all paths. There should be positive “yay!”, if at the end you agree that computer’s guess about an animal was correct and no output, if you said “no”.</p>
+<p>Als Nächstes müssen wir die Funktion <code>ask_question</code> erweitern, nennen wir die neue Version <code>explore_tree</code>. Der Schlüssel und einzige Änderung: Wenn der Knoten ein <em>Aktions</em>-Knoten ist, geht die Funktion eine Ebene tiefer und ruft <em>sich selbst</em> (Rekursion!) mit dem entsprechenden “Ja” oder “Nein” Unterbaum auf, der durch die Antwort des Spielers bestimmt wird.</p>
+<p>Unser Hauptproblem hier ist, dass die von der Funktion <code>input_yes_no</code> zurückgegebenen Werte nicht mit den entsprechenden Feldschlüsseln übereinstimmen, daher müssen wir die logischen Werte in die Strings <code>"yes"</code> und <code>"no"</code> “umwandeln”. Es gibt zwei Möglichkeiten, dies zu tun, eine, die für binäre Fälle wie unsere funktioniert, verwendet <a href="https://docs.python.org/3/reference/expressions.html#conditional-expressions">bedingte Ausdrücke</a>, eine andere ist allgemeiner und funktioniert zur Übersetzung einer beliebigen Anzahl von Dateien mit <a href="guess-the-animal.html#dictionaries">Wörterbüchern</a>.</p>
+<p>Die bedingte Zuweisung ist eine Syntactic Sugar, die eine if-else-Anweisung für spezielle Fälle der Wertauswahl basierend auf Bedingungen vereinfacht. Hier ist ein Beispiel für eine vollständige und kompakte Version des gleichen Codes, beachte, dass du <em>prinzipiell</em> die Aufrufe verschachteln könntest, um eine “if else if else”-Struktur zu erstellen, aber das ist garantiert, dass der Code unleserlich wird, daher würde ich immer eine Standard-If-elif-else für Fälle wie diesen verwenden.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb86-1"><a href="guess-the-animal.html#cb86-1" tabindex="-1"></a>a_value <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb86-2"><a href="guess-the-animal.html#cb86-2" tabindex="-1"></a></span>
+<span id="cb86-3"><a href="guess-the-animal.html#cb86-3" tabindex="-1"></a><span class="co"># standard if-else</span></span>
+<span id="cb86-4"><a href="guess-the-animal.html#cb86-4" tabindex="-1"></a><span class="cf">if</span> a_value <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb86-5"><a href="guess-the-animal.html#cb86-5" tabindex="-1"></a>  value_kind <span class="op">=</span> <span class="st">"positive"</span></span>
+<span id="cb86-6"><a href="guess-the-animal.html#cb86-6" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb86-7"><a href="guess-the-animal.html#cb86-7" tabindex="-1"></a>  value_kind <span class="op">=</span> <span class="st">"zero or negative"</span></span>
+<span id="cb86-8"><a href="guess-the-animal.html#cb86-8" tabindex="-1"></a>  </span>
+<span id="cb86-9"><a href="guess-the-animal.html#cb86-9" tabindex="-1"></a><span class="co"># conditional assignment</span></span>
+<span id="cb86-10"><a href="guess-the-animal.html#cb86-10" tabindex="-1"></a>value_kind <span class="op">=</span> <span class="st">"positive"</span> <span class="cf">if</span> a_value <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"zero or negative"</span></span></code></pre></div>
+<p>Implementiere und teste den Code zur Umwandlung eines logischen Werts, der in einer <code>user_response</code> Variable gespeichert ist, mit bedingten Ausdrücken in Übung 3.</p>
 <div class="program">
-<p>Implement function in <em>utils.py</em><br>
-Use it in code <em>code03.py</em>.</p>
+<p>Implementiere und teste Bedingte Ausdrücke<br>
+in Übung 3.</p>
 </div>
-<p>Our next step is to write the code that extends the tree but before that you need to learn about mutable objects and advantages and dangers that they bring.</p>
+<p>Bedingte Ausdrücke funktionieren gut für binäre Fälle, werden aber umständlich und unlesbar, selbst wenn du nur drei Werte zum Umwandeln hast. Eine einfachere Lösung besteht darin, Wörterbücher zu verwenden, die <original> → &lt;Übersetzung&gt; als Feld: Schlüsselpaar definieren: “{Original: Übersetzung}”. Dann kannst du einfach den Originalwert als Schlüssel verwenden und die Übersetzung direkt erhalten. In Übung 4, implementiere die gleiche Umwandlung von logischen zu “Ja”/“Nein”-Strings wie zuvor, aber mit Wörterbüchern.</original></p>
+<div class="program">
+<p>Implementiere die Übersetzung mit Wörterbüchern<br>
+in Übung 4.</p>
 </div>
-<div id="variables-as-boxes-immutable-objects" class="section level2" number="10.9">
+<p>Kehren wir zurück zu <code>explore_tree</code>: Sobald du eine Benutzerantwort für einen <em>Aktions</em>-Knoten erhältst, wandele sie mit einer der beiden Methoden (wähle diejenige, die du einfacher zu lesen und zu verstehen findest) in einen “Ja”/“Nein”-Schlüssel um. Die Funktion sollte sich selbst aufrufen (wieder Rekursion!) und den entsprechenden Unterbaum als Parameter übergeben. Einmal implementiert, rufe es mit dem hardcodierten Baum auf und teste es, indem du verschiedene Antworten gibst. Der Baum ist klein, du solltest also schnell alle Pfade ausprobieren können. Es sollte ein positives “Juhu!” (oder eine beliebige von dir gewählte Nachricht) geben, wenn du am Ende zustimmst, dass die Vermutung des Computers über ein Tier korrekt war, und keine Ausgabe, wenn du “Nein” gesagt hast.</p>
+<div class="program">
+<p>Implementiere die Funktion <code>explore_tree</code> in <em>utils.py</em><br>
+Verwende sie im Code <em>code03.py</em>.</p>
+</div>
+<p>Unser nächster Schritt ist das Schreiben des Codes, der den Baum erweitert, aber bevor wir damit beginnen, musst du mehr über veränderbare Objekte und die Vorteile und Gefahren, die sie mit sich bringen, lernen.</p>
+</div>
+<div id="variablen-als-schachteln-unveränderliche-objekte" class="section level2" number="10.9">
 <h2>
-<span class="header-section-number">10.9</span> Variables as boxes (immutable objects)<a class="anchor" aria-label="anchor" href="#variables-as-boxes-immutable-objects"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.9</span> Variablen als Schachteln (unveränderliche Objekte)<a class="anchor" aria-label="anchor" href="#variablen-als-schachteln-unver%C3%A4nderliche-objekte"><i class="fas fa-link"></i></a>
 </h2>
-<p>In this game, you will use <a href="guess-the-animal.html#dictionaries">dictionaries</a>. These are <em>mutable</em>, like <a href="One-armed-bandit.html#lists">lists</a> in contrast to “normal” <em>immutable</em> values (integers, floats, strings). You need to learn about this distinction as these two kinds of objects (values) behave very differently under some circumstances, which is both good (power!) and bad (weird unexpected behavior!) news.</p>
-<p>You may remember the <em>variable-as-a-box</em> metaphor that I used to introduce <a href="#variables">variables</a>. In short, a variable can be thought of as a “box” with a variable name written on it and a value being stored “inside”. When you use this value or assign it to a different variable, you can assume that Python <em>makes a copy</em> of it<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Not really, but this makes it easier to understand.&lt;/p&gt;"><sup>39</sup></a> and puts that <em>copy</em> into a different variable “box”. When you <em>replace</em> value of a variable, you take out the old value, destroy it (by throwing it into a nearest black hole, I assume), create a new one, and put it into the variable “box”. When you <em>change</em> a variable based on its current state, the same thing happens. You take out the value, create a new value (by adding to the original one or doing some other operation), destroy the old one, and put the new one back into the variable “box”. The important point is that although a <em>variable</em> can have different immutable values (we <a href="#random-mole">changed</a> <code>imole</code> variable on every round), the immutable <em>value</em> itself never changes. It gets <em>replaced</em> with another immutable value but <em>never changes</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;A metaphor attempt: You can wear different shirts, so your &lt;em&gt;look&lt;/em&gt; (variable) changes but each individual shirt (potential values) remains the same (we ignore the wear and tear here) irrespective of whether your are wearing it (value is assigned to a variable) or not.&lt;/p&gt;"><sup>40</sup></a>.</p>
-<p>The box metaphor explains why <a href="#scopes-for-immutable-values">scopes</a> work the way they do. Each scope has its own set of boxes and whenever you pass information between scopes, e.g., from a global script to a function, a copy of a value (from a variable) is created and put into a new box (e.g., a parameter) inside the function. When a function returns a value, it is copied and put in one of the boxes in the global script (variable you assigned the returned value to), etc.</p>
-<p>However, this is true only for <em>immutable</em> objects (values) such as numbers, strings, logical values, etc. but also <a href="https://docs.python.org/3/library/stdtypes.html?highlight=tuple#tuple">tuples</a> (see below for what these are). As you could have guessed from the name, this means that there are other <em>mutable</em> objects and they behave very differently.</p>
+<p>In diesem Spiel wirst du <a href="guess-the-animal.html#dictionaries">Wörterbücher</a> verwenden. Diese sind <em>veränderlich</em>, wie <a href="#listen">Listen</a>, im Gegensatz zu “normalen” <em>unveränderlichen</em> Werten (Ganzzahlen, Fließkommazahlen, Zeichenketten). Du musst diesen Unterschied lernen, da diese beiden Arten von Objekten (Werten) unter bestimmten Umständen sehr unterschiedlich reagieren, was sowohl gut (Macht!) als auch schlecht (merkwürdiges, unerwartetes Verhalten!) ist.</p>
+<p>Vielleicht erinnerst du dich an die Metapher <em>variable-as-a-box</em>, die ich verwendet habe, um <a href="#variables">Variablen</a> einzuführen. Kurz gesagt, eine Variable kann als eine “Schachtel” gedacht werden, auf der der Name der Variable geschrieben steht und ein Wert “innen” gespeichert wird. Wenn du diesen Wert benutzt oder ihm eine andere Variable zuweist, kannst du davon ausgehen, dass Python <em>eine Kopie</em> davon macht<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Nicht wirklich, aber das macht es einfacher zu verstehen.&lt;/p&gt;"><sup>39</sup></a> und diese <em>Kopie</em> in eine andere Variable “Schachtel” steckt. Wenn du den Wert einer Variable <em>ersetzt</em>, nimmst du den alten Wert heraus, zerstörst ihn (indem du ihn in das nächste Schwarze Loch wirfst, nehme ich an), erstellst einen neuen und steckst ihn in die Variable “Schachtel”. Wenn du eine Variable auf Basis ihres aktuellen Zustands <em>änderst</em>, passiert dasselbe. Du nimmst den Wert heraus, erzeugst einen neuen Wert (indem du zum ursprünglichen hinzufügst oder eine andere Operation ausführst), zerstörst den alten und legst den neuen zurück in die Variable “Schachtel”. Der wichtige Punkt ist, dass, obwohl eine <em>Variable</em> verschiedene unveränderliche Werte haben kann (wir haben die <code>imole</code> Variable in jeder Runde <a href="#random-mole">geändert</a>), der unveränderliche <em>Wert</em> selbst sich nie ändert. Er wird <em>ersetzt</em> durch einen anderen unveränderlichen Wert, aber <em>ändert sich nie</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ein Metaphernversuch: Du kannst verschiedene Hemden tragen, daher ändert sich dein &lt;em&gt;Look&lt;/em&gt; (Variable), aber jedes einzelne Hemd (potentielle Werte) bleibt gleich (wir ignorieren hier Verschleiß) unabhängig davon, ob du es trägst (Wert ist einer Variable zugewiesen) oder nicht.&lt;/p&gt;"><sup>40</sup></a>.</p>
+<p>Die Schachtel-Metapher erklärt, warum <a href="#scopes-for-immutable-values">Anwendungsbereiche</a> so funktionieren, wie sie es tun. Jeder Anwendungsbereich hat sein eigenes Set an Schachteln und wann immer du Informationen zwischen Anwendungsbereichen austauscht, zum Beispiel von einem globalen Skript zu einer Funktion, wird eine Kopie eines Werts (aus einer Variable) erstellt und in eine neue Schachtel (z.B. ein Parameter) innerhalb der Funktion gestellt. Wenn eine Funktion einen Wert zurückgibt, wird er kopiert und in eine der Schachteln im globalen Skript (Variable, der du den zurückgegebenen Wert zugewiesen hast) gestellt, usw.</p>
+<p>Dies gilt jedoch nur für <em>unveränderliche</em> Objekte (Werte) wie Zahlen, Zeichenketten, logische Werte usw., aber auch <a href="https://docs.python.org/3/library/stdtypes.html?highlight=tuple#tuple">Tupel</a> (siehe unten für was diese sind). Wie du aus dem Namen erraten kannst, bedeutet das, dass es auch andere <em>veränderbare</em> Objekte gibt und diese verhalten sich sehr unterschiedlich.</p>
 </div>
 <div id="mutable-objects" class="section level2" number="10.10">
 <h2>
-<span class="header-section-number">10.10</span> Variables as post-it stickers (mutable objects)<a class="anchor" aria-label="anchor" href="#mutable-objects"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.10</span> Variablen als Post-its (veränderbare Objekte)<a class="anchor" aria-label="anchor" href="#mutable-objects"><i class="fas fa-link"></i></a>
 </h2>
-<p>Mutable objects are, for example, lists or dictionaries<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Coming up shortly!&lt;/p&gt;"><sup>41</sup></a>, i.e., things that can change. The key difference is that <em>immutable</em> objects can be thought as fixed in their size. A number takes up that many bytes to store, same goes for a given string (although a different string would require more or fewer bytes). Still, they do not change, they are created and destroyed when unneeded but never truly updated.</p>
-<p><em>Mutable</em> objects can be changed<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Building on the looks metaphor: You can change your look by using a different (immutable) shirt or by &lt;em&gt;changing&lt;/em&gt; your haircut. You hair is mutable, you do not wear a different one on different days to look different, you need to modify it to look different.&lt;/p&gt;"><sup>42</sup></a>. For example, you can add elements to your list, or remove them, or shuffle them. Same goes for <a href="https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries">dictionaries</a>. Making such object <em>immutable</em> would be computationally inefficient: Every time you add a value a (long) list is destroyed and recreated with just that one additional value. Which is why Python simply <em>updates</em> the original object. For further computation efficiency, these objects are not copied when you assign them to a different variable or use as a parameter value but are <em>passed by reference</em>. This means that the variable is no longer a “box” you put values into but a “sticker” you put on an object (a list, a dictionary). And you can put as many stickers on an object as you want <em>and it still will be the same object</em>!</p>
-<p>What on Earth do I mean? Keeping in mind that a variable is just a sticker (one of many) on a mutable object, try figuring out what will be the output below:</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb86-1"><a href="guess-the-animal.html#cb86-1" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
-<span id="cb86-2"><a href="guess-the-animal.html#cb86-2" tabindex="-1"></a>y <span class="op">=</span> x</span>
-<span id="cb86-3"><a href="guess-the-animal.html#cb86-3" tabindex="-1"></a>y.append(<span class="dv">4</span>)</span>
-<span id="cb86-4"><a href="guess-the-animal.html#cb86-4" tabindex="-1"></a><span class="bu">print</span>(x)</span></code></pre></div>
-<div class="rmdnote practice">
-<p>Do exercise #3.</p>
+<p>Beispiele für veränderbare Objekte sind Listen oder Wörterbücher<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Kommt gleich!&lt;/p&gt;"><sup>41</sup></a>, also Dinge, die sich ändern können. Der entscheidende Unterschied ist, dass <em>unveränderliche</em> Objekte als fest in ihrer Größe betrachtet werden können. Eine Zahl benötigt so viele Bytes zum Speichern, das Gleiche gilt für eine gegebene Zeichenkette (obwohl eine andere Zeichenkette mehr oder weniger Bytes benötigen würde). Trotzdem ändern sie sich nicht, sie werden erstellt und zerstört, wenn sie nicht mehr benötigt werden, aber niemals wirklich aktualisiert.</p>
+<p><em>Veränderbare</em> Objekte können geändert werden<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Fortführend mit der Aussehens-Metapher: Du kannst dein Aussehen ändern, indem du ein anderes (unveränderliches) Hemd benutzt oder indem du deine Frisur &lt;em&gt;änderst&lt;/em&gt;. Deine Haare sind veränderbar, du trägst nicht an verschiedenen Tagen eine andere, um anders auszusehen, du musst sie modifizieren, um anders auszusehen.&lt;/p&gt;"><sup>42</sup></a>. Du kannst beispielsweise Elemente zu deiner Liste hinzufügen, entfernen oder sie mischen. Das Gleiche gilt für <a href="https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries">Wörterbücher</a>. Ein solches Objekt <em>unveränderlich</em> zu machen, wäre rechnerisch ineffizient: Jedes Mal, wenn du einen Wert hinzufügst, wird eine (lange) Liste zerstört und mit nur diesem einen zusätzlichen Wert neu erstellt. Aus diesem Grund <em>aktualisiert</em> Python einfach das ursprüngliche Objekt. Für weitere Recheneffizienz werden diese Objekte nicht kopiert, wenn du sie einer anderen Variable zuweist oder als Parameterwert verwendest, sondern werden <em>per Referenz übergeben</em>. Das bedeutet, dass die Variable nicht mehr eine “Schachtel” ist, in die du Werte legst, sondern ein “Aufkleber”, den du auf ein Objekt (eine Liste, ein Wörterbuch) klebst. Und du kannst so viele Aufkleber auf ein Objekt kleben, wie du willst <em>und es wird immer noch dasselbe Objekt sein</em>!</p>
+<p>Was zum Teufel meine ich damit? Denke daran, dass eine Variable nur ein Aufkleber (einer von vielen) auf einem veränderbaren Objekt ist, und versuche herauszufinden, was die Ausgabe unten sein wird:</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb87-1"><a href="guess-the-animal.html#cb87-1" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb87-2"><a href="guess-the-animal.html#cb87-2" tabindex="-1"></a>y <span class="op">=</span> x</span>
+<span id="cb87-3"><a href="guess-the-animal.html#cb87-3" tabindex="-1"></a>y.append(<span class="dv">4</span>)</span>
+<span id="cb87-4"><a href="guess-the-animal.html#cb87-4" tabindex="-1"></a><span class="bu">print</span>(x)</span></code></pre></div>
+<div class="practice">
+<p>Mach Übung #5.</p>
 </div>
-<p>Huh? That is precisely what I meant with “stickers on the same object”. First, we create a list and put an <code>x</code> sticker on it. Then, we assign <em>the same list</em> to <code>y</code>, in other words, we put a <code>y</code> sticker <em>on the same list</em>. Since both <code>x</code> and <code>y</code> are stickers on the <em>same</em> object, they are, effectively, synonyms. In that specific situation, once you set <code>x = y</code>, it does not matter which variable name you use to change <em>the</em> object, they are just two stickers hanging side-by-side on the <em>same</em> list. Again, just a reminder, this is <em>not</em> what would happen for <em>immutable</em> values, like numbers, where things would behave the way you expect them to behave.</p>
-<p>This variable-as-a-sticker, a.k.a. “passing value by reference”, has very important implications for function calls, as it breaks your scope without ever giving you a warning. Look at the code below and try figuring out what the output will be.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb87-1"><a href="guess-the-animal.html#cb87-1" tabindex="-1"></a><span class="kw">def</span> change_it(y):</span>
-<span id="cb87-2"><a href="guess-the-animal.html#cb87-2" tabindex="-1"></a>    y.append(<span class="dv">4</span>)</span>
-<span id="cb87-3"><a href="guess-the-animal.html#cb87-3" tabindex="-1"></a></span>
-<span id="cb87-4"><a href="guess-the-animal.html#cb87-4" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
-<span id="cb87-5"><a href="guess-the-animal.html#cb87-5" tabindex="-1"></a>change_it(x)</span>
-<span id="cb87-6"><a href="guess-the-animal.html#cb87-6" tabindex="-1"></a><span class="bu">print</span>(x)</span></code></pre></div>
-<div class="rmdnote practice">
-<p>Do exercise #4.</p>
+<p>Hä? Das ist genau das, was ich mit “Aufklebern auf demselben Objekt” meinte. Zuerst erstellen wir eine Liste und kleben einen <code>x</code> Aufkleber darauf. Dann weisen wir <em>die gleiche Liste</em> <code>y</code> zu, mit anderen Worten, wir kleben einen <code>y</code> Aufkleber <em>auf die gleiche Liste</em>. Da sowohl <code>x</code> als auch <code>y</code> Aufkleber auf dem <em>gleichen</em> Objekt sind, sind sie effektiv Synonyme. In dieser speziellen Situation, sobald du <code>x = y</code> festlegst, ist es egal, welchen Variablennamen du verwendest, um <em>das</em> Objekt zu ändern, sie sind nur zwei Aufkleber, die nebeneinander an der <em>gleichen</em> Liste hängen. Nochmals zur Erinnerung, das ist <em>nicht</em> das, was bei <em>unveränderlichen</em> Werten wie Zahlen passieren würde, wo die Dinge sich so verhalten würden, wie du es erwartest.</p>
+<p>Diese Theorie von Variablen als Aufkleber, auch bekannnt als “Wertübergabe per Referenz”, hat sehr wichtige Auswirkungen auf Funktionsaufrufe, da sie deinen Umfang bricht, ohne dir jemals eine Warnung zu geben. Schau dir den untenstehenden Code an und versuche herauszufinden, welche Ausgabe es geben wird.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb88-1"><a href="guess-the-animal.html#cb88-1" tabindex="-1"></a><span class="kw">def</span> change_it(y):</span>
+<span id="cb88-2"><a href="guess-the-animal.html#cb88-2" tabindex="-1"></a>    y.append(<span class="dv">4</span>)</span>
+<span id="cb88-3"><a href="guess-the-animal.html#cb88-3" tabindex="-1"></a></span>
+<span id="cb88-4"><a href="guess-the-animal.html#cb88-4" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb88-5"><a href="guess-the-animal.html#cb88-5" tabindex="-1"></a>change_it(x)</span>
+<span id="cb88-6"><a href="guess-the-animal.html#cb88-6" tabindex="-1"></a><span class="bu">print</span>(x)</span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #6.</p>
 </div>
-<p>How did we manage to modify a <em>global</em> variable from inside the function? Didn’t we change the <em>local</em> parameter of the function? Yep, that is exactly the problem with passing by reference. Your function parameter is yet another sticker on the <em>same</em> object, so even though it <em>looks</em> like you do not need to worry about global variables (that’s why you wrote the function and learned about scopes!), you still do. If you are perplexed by this, you are in a good company. This is one of the most unexpected and confusing bits in Python that routinely catches people<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Well, at least me!&lt;/p&gt;"><sup>43</sup></a> by surprise. Let us do a few more exercises, before I show you how to solve the scope problem for mutable objects.</p>
-<div class="rmdnote practice">
-<p>Do exercise #5.</p>
+<p>Wie haben wir es geschafft, eine <em>globale</em> Variable von innerhalb der Funktion zu ändern? Haben wir nicht den <em>lokalen</em> Parameter der Funktion geändert? Ja, genau das ist das Problem bei der Übergabe per Referenz. Dein Funktionsparameter ist nur ein weiterer Sticker auf dem <em>gleichen</em> Objekt. Selbst wenn es also <em>aussieht</em>, als müsstest du dir keine Sorgen um globale Variablen machen (dafür hast du ja die Funktion geschrieben und über Scopes gelernt!), musst du das doch. Wenn dich das verwirrt, bist du in guter Gesellschaft. Dies ist eine der unerwartetsten und verwirrendsten Stellen in Python, die immer wieder Leute<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Naja, zumindest mich!&lt;/p&gt;"><sup>43</sup></a> überrascht. Lass uns noch ein paar Übungen machen, bevor ich dir zeige, wie du das Scope-Problem bei veränderbaren Objekten lösen kannst.</p>
+<div class="practice">
+<p>Mach die Übung #7.</p>
 </div>
 </div>
 <div id="tuple" class="section level2" number="10.11">
 <h2>
-<span class="header-section-number">10.11</span> Tuple: a frozen list<a class="anchor" aria-label="anchor" href="#tuple"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.11</span> Tupel: eine eingefrorene Liste<a class="anchor" aria-label="anchor" href="#tuple"><i class="fas fa-link"></i></a>
 </h2>
-<p>The wise people who created Python were acutely aware of the problem that the <em>variable-as-a-sticker</em> creates. Which is why, they added an <strong>immutable</strong> version of a list, called a <a href="https://docs.python.org/3/library/stdtypes.html?highlight=tuple#tuple">tuple</a>. It is a “frozen” list of values, which you can loop over, access its items by index, or figure out how many items it has, but you <em>cannot modify it</em>. No appending, removing, replacing values, etc. For you this means that a variable with a frozen list is a box rather than a sticker and that it behaves just like any other “normal” <strong>immutable</strong> object. You can create a <code>tuple</code> by using round brackets.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb88-1"><a href="guess-the-animal.html#cb88-1" tabindex="-1"></a>i_am_a_tuple <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
-<p>You can loop over it, e.g.,</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb89-1"><a href="guess-the-animal.html#cb89-1" tabindex="-1"></a>i_am_a_tuple <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb89-2"><a href="guess-the-animal.html#cb89-2" tabindex="-1"></a><span class="cf">for</span> number <span class="kw">in</span> i_am_a_tuple:</span>
-<span id="cb89-3"><a href="guess-the-animal.html#cb89-3" tabindex="-1"></a>    <span class="bu">print</span>(number)</span>
-<span id="cb89-4"><a href="guess-the-animal.html#cb89-4" tabindex="-1"></a><span class="co">#&gt; 1</span></span>
-<span id="cb89-5"><a href="guess-the-animal.html#cb89-5" tabindex="-1"></a><span class="co">#&gt; 2</span></span>
-<span id="cb89-6"><a href="guess-the-animal.html#cb89-6" tabindex="-1"></a><span class="co">#&gt; 3</span></span></code></pre></div>
-<p>but, as I said, appending will throw a mistake</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb90-1"><a href="guess-the-animal.html#cb90-1" tabindex="-1"></a>i_am_a_tuple <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb90-2"><a href="guess-the-animal.html#cb90-2" tabindex="-1"></a></span>
-<span id="cb90-3"><a href="guess-the-animal.html#cb90-3" tabindex="-1"></a><span class="co"># throws AttributeError: 'tuple' object has no attribute 'append'</span></span>
-<span id="cb90-4"><a href="guess-the-animal.html#cb90-4" tabindex="-1"></a>i_am_a_tuple.append(<span class="dv">4</span>)</span>
-<span id="cb90-5"><a href="guess-the-animal.html#cb90-5" tabindex="-1"></a><span class="co">#&gt; 'tuple' object has no attribute 'append'</span></span></code></pre></div>
-<p>Same goes for trying to change it</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb91-1"><a href="guess-the-animal.html#cb91-1" tabindex="-1"></a>i_am_a_tuple <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<p>Die klugen Leute, die Python entwickelt haben, waren sich des Problems, das die <em>Variable-als-Sticker</em>-Methode schafft, sehr bewusst. Darum haben sie eine <strong>unveränderliche</strong> Version einer Liste hinzugefügt, genannt <a href="https://docs.python.org/3/library/stdtypes.html?highlight=tuple#tuple">Tupel</a>. Es handelt sich um eine “eingefrorene” Liste von Werten, über die du iterieren kannst, auf deren Elemente du per Index zugreifen kannst oder herausfinden, wie viele Elemente sie hat, aber du <em>kannst sie nicht ändern</em>. Kein Anhängen, Entfernen, Ersetzen von Werten, etc. Für dich bedeutet das, dass eine Variable mit einer eingefrorenen Liste eher eine Box als ein Sticker ist und dass sie sich genau wie jedes andere “normale” <strong>unveränderliche</strong> Objekt verhält. Du kannst ein <code>Tupel</code> erstellen, indem du runde Klammern verwendest.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb89-1"><a href="guess-the-animal.html#cb89-1" tabindex="-1"></a>ich_bin_ein_tupel <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+<p>Du kannst über es iterieren, z.B.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb90-1"><a href="guess-the-animal.html#cb90-1" tabindex="-1"></a>ich_bin_ein_tupel <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb90-2"><a href="guess-the-animal.html#cb90-2" tabindex="-1"></a><span class="cf">for</span> number <span class="kw">in</span> ich_bin_ein_tupel:</span>
+<span id="cb90-3"><a href="guess-the-animal.html#cb90-3" tabindex="-1"></a>    <span class="bu">print</span>(number)</span>
+<span id="cb90-4"><a href="guess-the-animal.html#cb90-4" tabindex="-1"></a><span class="co">#&gt; 1</span></span>
+<span id="cb90-5"><a href="guess-the-animal.html#cb90-5" tabindex="-1"></a><span class="co">#&gt; 2</span></span>
+<span id="cb90-6"><a href="guess-the-animal.html#cb90-6" tabindex="-1"></a><span class="co">#&gt; 3</span></span></code></pre></div>
+<p>wie ich aber schon sagte, wird das Anhängen einen Fehler verursachen</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb91-1"><a href="guess-the-animal.html#cb91-1" tabindex="-1"></a>ich_bin_ein_tupel <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
 <span id="cb91-2"><a href="guess-the-animal.html#cb91-2" tabindex="-1"></a></span>
-<span id="cb91-3"><a href="guess-the-animal.html#cb91-3" tabindex="-1"></a><span class="co"># throws TypeError: 'tuple' object does not support item assignment</span></span>
-<span id="cb91-4"><a href="guess-the-animal.html#cb91-4" tabindex="-1"></a>i_am_a_tuple[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">1</span> </span>
-<span id="cb91-5"><a href="guess-the-animal.html#cb91-5" tabindex="-1"></a><span class="co">#&gt; 'tuple' object does not support item assignment</span></span></code></pre></div>
-<p>This means that when you need to pass a list of values to a function and you want them to have no link to the original variable, you should instead pass <em>a tuple of values</em> to the function. The function still has a list of values but the link to the original list object is now broken. You can turn a list into a tuple using <code>tuple()</code>. Keeping in mind that <code>tuple()</code> creates a frozen copy of the list, what will happen below?</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb92-1"><a href="guess-the-animal.html#cb92-1" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
-<span id="cb92-2"><a href="guess-the-animal.html#cb92-2" tabindex="-1"></a>y <span class="op">=</span> <span class="bu">tuple</span>(x)</span>
-<span id="cb92-3"><a href="guess-the-animal.html#cb92-3" tabindex="-1"></a>x.append(<span class="dv">4</span>)</span>
-<span id="cb92-4"><a href="guess-the-animal.html#cb92-4" tabindex="-1"></a><span class="bu">print</span>(y)</span></code></pre></div>
-<div class="rmdnote practice">
-<p>Do exercise #6.</p>
+<span id="cb91-3"><a href="guess-the-animal.html#cb91-3" tabindex="-1"></a><span class="co"># wirft AttributeError: 'tuple' object has no attribute 'append'</span></span>
+<span id="cb91-4"><a href="guess-the-animal.html#cb91-4" tabindex="-1"></a>ich_bin_ein_tupel.append(<span class="dv">4</span>)</span>
+<span id="cb91-5"><a href="guess-the-animal.html#cb91-5" tabindex="-1"></a><span class="co">#&gt; 'tuple' object has no attribute 'append'</span></span></code></pre></div>
+<p>Das Gleiche passiert, wenn du es versuchst zu ändern</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb92-1"><a href="guess-the-animal.html#cb92-1" tabindex="-1"></a>ich_bin_ein_tupel <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb92-2"><a href="guess-the-animal.html#cb92-2" tabindex="-1"></a></span>
+<span id="cb92-3"><a href="guess-the-animal.html#cb92-3" tabindex="-1"></a><span class="co"># wirft TypeError: 'tuple' object does not support item assignment</span></span>
+<span id="cb92-4"><a href="guess-the-animal.html#cb92-4" tabindex="-1"></a>ich_bin_ein_tupel[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">1</span> </span>
+<span id="cb92-5"><a href="guess-the-animal.html#cb92-5" tabindex="-1"></a><span class="co">#&gt; 'tuple' object does not support item assignment</span></span></code></pre></div>
+<p>Das bedeutet, dass wenn du eine Liste von Werten an eine Funktion übergeben musst und du nicht möchtest, dass sie eine Verbindung zur ursprünglichen Variable hat, solltest du stattdessen <em>ein Tupel von Werten</em> an die Funktion übergeben. Die Funktion hat immer noch eine Liste von Werten, aber die Verbindung zum ursprünglichen Listenobjekt ist jetzt unterbrochen. Du kannst eine Liste in ein Tupel umwandeln, indem du <code>tuple()</code> verwendest. Wenn du bedenkst, dass <code>tuple()</code> eine eingefrorene Kopie der Liste erstellt, was wird dann im Folgenden passieren?</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb93-1"><a href="guess-the-animal.html#cb93-1" tabindex="-1"></a>x <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb93-2"><a href="guess-the-animal.html#cb93-2" tabindex="-1"></a>y <span class="op">=</span> <span class="bu">tuple</span>(x)</span>
+<span id="cb93-3"><a href="guess-the-animal.html#cb93-3" tabindex="-1"></a>x.append(<span class="dv">4</span>)</span>
+<span id="cb93-4"><a href="guess-the-animal.html#cb93-4" tabindex="-1"></a><span class="bu">print</span>(y)</span></code></pre></div>
+<div class="practice">
+<p>Mach die Übung #8.</p>
 </div>
-<p>As you probably figured out, when <code>y = tuple(x)</code>, Python creates <strong>a copy</strong> of the list values, freezes them (they are immutable now), and puts them into the “y” box. Hence, whatever you do to the original list, has no effect on the immutable “y”.</p>
-<p>Conversely, you “unfreeze” a tuple by turning it into a list via <code><a href="https://rdrr.io/r/base/list.html">list()</a></code>. Please note that it creates <strong>a new list</strong>, which has no relation to any other existing list, even if values are the same or were originally taken from any of them!</p>
-<div class="rmdnote practice">
-<p>Do exercise #7.</p>
+<p>Wie du wahrscheinlich herausgefunden hast, erstellt Python bei <code>y = tuple(x)</code> <strong>eine Kopie</strong> der Listeneinträge, friert sie ein (sie sind jetzt unveränderlich) und legt sie in die “y”-Box. Daher hat alles, was du mit der ursprünglichen Liste machst, keinen Einfluss auf das unveränderliche “y”.</p>
+<p>Umgekehrt kannst du ein Tupel “auftauen”, indem du es mit <code><a href="https://rdrr.io/r/base/list.html">list()</a></code> in eine Liste umwandelst. Bitte beachte, dass dies <strong>eine neue Liste</strong> erstellt, die keinen Bezug zu jeder anderen existierenden Liste hat, auch wenn die Werte gleich sind oder ursprünglich von einer von ihnen stammen!</p>
+<div class="practice">
+<p>Mach die Übung #9.</p>
 </div>
-<p>Remember I just said that <code><a href="https://rdrr.io/r/base/list.html">list()</a></code> creates a new list? This means that you can use it to create a copy of a list directly, without an intermediate tuple step. This way you can two <em>different</em> lists with <em>identical</em> values. You can also achieve the same results by slicing an entire list, e.g. <code>list(x)</code>, is the same as <code>x[:]</code>.</p>
-<div class="rmdnote practice">
-<p>Do exercise #8.</p>
+<p>Erinnerst du dich, dass ich gerade gesagt habe, dass <code><a href="https://rdrr.io/r/base/list.html">list()</a></code> eine neue Liste erstellt? Das bedeutet, dass du es verwenden kannst, um direkt eine Kopie einer Liste zu erstellen, ohne einen Zwischenschritt über ein Tupel. Auf diese Weise kannst du zwei <em>verschiedene</em> Listen mit <em>identischen</em> Werten erstellen. Du kannst das gleiche Ergebnis auch erzielen, indem du eine gesamte Liste ausschneidest, z.B. ist <code>list(x)</code> das Gleiche wie <code>x[:]</code>.</p>
+<div class="practice">
+<p>Mach die Übung #10.</p>
 </div>
-<p>Here, <code>y = list(x)</code> created a new list (which was a carbon copy of the one with the “x” sticker on it) and the “y” sticker was put on that new list, while the “x” remained hanging on the original.</p>
-<p>If you feel your head spinning then, unfortunately, I have to tell that it gets even worse. The following paragraph covers fairly advanced scenario but I want you to know about it, as things work extremely counterintuitively and I personally have been caught by this issue a few times and it always took me <em>forever</em> to figure out the problem. Thus, I want you to be at least aware of it. What if you have a tuple (immutable!) that contains a list (mutable) inside? As I told you before, you cannot modify the item itself but that item is merely a reference to list (a sticker on a <em>mutable</em> object!), so even though tuple is immutable, you can still fiddle with the list itself. Moreover, making a copy of a tuple will merely make a copy of a reference that still points to the same list! So, you could be thinking that since it is all tuples everything is immutatable and well-behaving and be caught out by that<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;If this makes you want to scream, tell me and will do it together.&lt;/p&gt;"><sup>44</sup></a>. Here is an example of such a mess:</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb93-1"><a href="guess-the-animal.html#cb93-1" tabindex="-1"></a>tuple_1 <span class="op">=</span> <span class="bu">tuple</span>([<span class="dv">1</span>, [<span class="st">"A"</span>, <span class="st">"B"</span>], <span class="dv">2</span>])</span>
-<span id="cb93-2"><a href="guess-the-animal.html#cb93-2" tabindex="-1"></a>tuple_2 <span class="op">=</span> tuple_1</span>
-<span id="cb93-3"><a href="guess-the-animal.html#cb93-3" tabindex="-1"></a></span>
-<span id="cb93-4"><a href="guess-the-animal.html#cb93-4" tabindex="-1"></a><span class="co"># This (correctly) does not work</span></span>
-<span id="cb93-5"><a href="guess-the-animal.html#cb93-5" tabindex="-1"></a>tuple_1[<span class="dv">0</span>] <span class="op">=</span> [<span class="st">"C"</span>, <span class="st">"D"</span>]</span>
-<span id="cb93-6"><a href="guess-the-animal.html#cb93-6" tabindex="-1"></a><span class="co">#&gt; 'tuple' object does not support item assignment</span></span>
-<span id="cb93-7"><a href="guess-the-animal.html#cb93-7" tabindex="-1"></a></span>
-<span id="cb93-8"><a href="guess-the-animal.html#cb93-8" tabindex="-1"></a><span class="co"># But we can change first element of the list to "C" and second to "D"</span></span>
-<span id="cb93-9"><a href="guess-the-animal.html#cb93-9" tabindex="-1"></a><span class="co"># Reference to the list is frozen, but the list itself is mutable!</span></span>
-<span id="cb93-10"><a href="guess-the-animal.html#cb93-10" tabindex="-1"></a>tuple_1[<span class="dv">1</span>][<span class="dv">0</span>] <span class="op">=</span> <span class="st">"C"</span></span>
-<span id="cb93-11"><a href="guess-the-animal.html#cb93-11" tabindex="-1"></a>tuple_2[<span class="dv">1</span>][<span class="dv">1</span>] <span class="op">=</span> <span class="st">"D"</span></span>
-<span id="cb93-12"><a href="guess-the-animal.html#cb93-12" tabindex="-1"></a></span>
-<span id="cb93-13"><a href="guess-the-animal.html#cb93-13" tabindex="-1"></a><span class="bu">print</span>(tuple_1)</span>
-<span id="cb93-14"><a href="guess-the-animal.html#cb93-14" tabindex="-1"></a><span class="co">#&gt; (1, ['C', 'D'], 2)</span></span>
-<span id="cb93-15"><a href="guess-the-animal.html#cb93-15" tabindex="-1"></a><span class="bu">print</span>(tuple_2)</span>
-<span id="cb93-16"><a href="guess-the-animal.html#cb93-16" tabindex="-1"></a><span class="co">#&gt; (1, ['C', 'D'], 2)</span></span></code></pre></div>
-<p>Confusing? You bet! If you feel overwhelmed by this whole immutable/mutable, tuple/list, copy/reference confusion, you are just being a normal human being. I understand the (computational) reasons for doing things this way, I am aware of this difference and how useful this can be but it still catches me by surprise from time to time! So, the word of advice, be careful and double-check your code using debugger whenever you are assigning list or dictionaries, passing them to functions, making copies, having lists inside lists, etc. Be aware that things may not work as you think they should!</p>
+<p>Hier hat <code>y = list(x)</code> eine neue Liste erstellt (die eine genaue Kopie derjenigen war, auf der der “x”-Sticker klebte) und der “y”-Sticker wurde auf diese neue Liste geklebt, während der “x” am Original hängen blieb.</p>
+<p>Wenn dir jetzt der Kopf schwirrt, muss ich dir leider sagen, dass es noch schlimmer wird. Der folgende Absatz behandelt ein ziemlich fortgeschrittenes Szenario, aber ich möchte, dass du davon weißt, da die Dinge extrem kontraintuitiv funktionieren und ich persönlich schon ein paar Mal auf dieses Problem gestoßen bin und es hat mich immer <em>ewig</em> gekostet, das Problem herauszufinden. Deshalb möchte ich, dass du dir zumindest dessen bewusst bist. Was ist, wenn du ein Tupel (unveränderlich!) hast, das eine Liste (veränderlich) enthält? Wie ich dir schon früher sagte, kannst du den Eintrag selbst nicht ändern, aber dieser Eintrag ist nur eine Referenz auf die Liste (ein Sticker auf einem <em>veränderlichen</em> Objekt!), so dass du selbst wenn das Tupel unveränderlich ist, immer noch mit der Liste selbst herumhantieren kannst. Darüber hinaus wird das Anfertigen einer Kopie eines Tupels lediglich eine Kopie der Referenz erstellen, die immer noch auf die gleiche Liste zeigt! Also könntest du denken, dass, weil alles Tupel sind, alles unveränderlich und gut verhält, und von dem erwischt werden<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Wenn dich das zum Schreien bringen will, sag es mir und wir machen es zusammen.&lt;/p&gt;"><sup>44</sup></a>. Hier ist ein Beispiel für ein solches Durcheinander:</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb94-1"><a href="guess-the-animal.html#cb94-1" tabindex="-1"></a>tuple_1 <span class="op">=</span> <span class="bu">tuple</span>([<span class="dv">1</span>, [<span class="st">"A"</span>, <span class="st">"B"</span>], <span class="dv">2</span>])</span>
+<span id="cb94-2"><a href="guess-the-animal.html#cb94-2" tabindex="-1"></a>tuple_2 <span class="op">=</span> tuple_1</span>
+<span id="cb94-3"><a href="guess-the-animal.html#cb94-3" tabindex="-1"></a></span>
+<span id="cb94-4"><a href="guess-the-animal.html#cb94-4" tabindex="-1"></a><span class="co"># Das funktioniert (korrekterweise) nicht.</span></span>
+<span id="cb94-5"><a href="guess-the-animal.html#cb94-5" tabindex="-1"></a>tuple_1[<span class="dv">0</span>] <span class="op">=</span> [<span class="st">"C"</span>, <span class="st">"D"</span>]</span>
+<span id="cb94-6"><a href="guess-the-animal.html#cb94-6" tabindex="-1"></a><span class="co">#&gt; 'tuple' object does not support item assignment</span></span>
+<span id="cb94-7"><a href="guess-the-animal.html#cb94-7" tabindex="-1"></a></span>
+<span id="cb94-8"><a href="guess-the-animal.html#cb94-8" tabindex="-1"></a><span class="co"># Aber wir können das erste Element der Liste zu "C" ändern und das zweite zu "D"</span></span>
+<span id="cb94-9"><a href="guess-the-animal.html#cb94-9" tabindex="-1"></a><span class="co"># Die Referenz zur Liste ist eingefroren, aber die Liste selbst ist veränderlich!</span></span>
+<span id="cb94-10"><a href="guess-the-animal.html#cb94-10" tabindex="-1"></a>tuple_1[<span class="dv">1</span>][<span class="dv">0</span>] <span class="op">=</span> <span class="st">"C"</span></span>
+<span id="cb94-11"><a href="guess-the-animal.html#cb94-11" tabindex="-1"></a>tuple_2[<span class="dv">1</span>][<span class="dv">1</span>] <span class="op">=</span> <span class="st">"D"</span></span>
+<span id="cb94-12"><a href="guess-the-animal.html#cb94-12" tabindex="-1"></a></span>
+<span id="cb94-13"><a href="guess-the-animal.html#cb94-13" tabindex="-1"></a><span class="bu">print</span>(tuple_1)</span>
+<span id="cb94-14"><a href="guess-the-animal.html#cb94-14" tabindex="-1"></a><span class="co">#&gt; (1, ['C', 'D'], 2)</span></span>
+<span id="cb94-15"><a href="guess-the-animal.html#cb94-15" tabindex="-1"></a><span class="bu">print</span>(tuple_2)</span>
+<span id="cb94-16"><a href="guess-the-animal.html#cb94-16" tabindex="-1"></a><span class="co">#&gt; (1, ['C', 'D'], 2)</span></span></code></pre></div>
+<p>Verwirrend? Wetten, dass! Wenn du dich von dieser ganzen unveränderlich/veränderlich, Tupel/Liste, Kopie/Referenz-Verwirrung überwältigt fühlst, bist du nur ein normaler Mensch. Ich verstehe die (rechnerischen) Gründe, warum man die Dinge auf diese Weise macht, ich bin mir dieser Unterschiede und wie nützlich sie sein können bewusst, aber trotzdem überraschen sie mich immer wieder! Also, ein Rat, sei vorsichtig und überprüfe deinen Code immer mit dem Debugger, wenn du Listen oder Wörterbücher zuweist, sie an Funktionen übergibst, Kopien anfertigst, Listen in Listen hast, etc. Sei dir bewusst, dass die Dinge vielleicht nicht so funktionieren, wie du denkst, dass sie sollten!</p>
 </div>
-<div id="extending-the-tree" class="section level2" number="10.12">
+<div id="erweitern-des-baumes" class="section level2" number="10.12">
 <h2>
-<span class="header-section-number">10.12</span> Extending the tree<a class="anchor" aria-label="anchor" href="#extending-the-tree"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.12</span> Erweitern des Baumes<a class="anchor" aria-label="anchor" href="#erweitern-des-baumes"><i class="fas fa-link"></i></a>
 </h2>
-<p>Each node that we have in a tree is a <a href="https://docs.python.org/3/library/stdtypes.html#dict">dictionary</a>, which is mutable and that is makes easy if a bit confusing. The good thing is, we can modify tree from inside the function. As I showed you above, you are not passing a dictionary itself to the function, you a passing a <em>reference</em> to it, so anything you do to any dictionary within the tree will be applied to the global tree itself. The confusing bit is that we need to keep in mind that we are always with a <em>reference</em>, so simple copy won’t do us any good. We have two options illustrated in the figure below. The original tree has just one node represented by <span style="color=red;">Dict #1.</span>. When we extend the tree that node must move down and become a leaf of an action node that now becomes the starting point. The can create a new action node dictionary (<em>Dict #2</em>), a new animal node for the cat (<em>Dict #3</em>) and arrange them as in option #1. However, in this case, we need to make sure that reference in <code>tree</code> variable is updated, so that it now points to <em>Dict #2</em>. Alternatively, we can keep <span style="color=red;">Dict #1.</span> as the top node but completely replace its content turning it into an action node. The original information will be copied to a new <em>Dict #3</em>. Let us try both of these approaches, starting with</p>
+<p>Zurück zur Aufgabe, den Baum zu erweitern. Jeder Knoten, den wir in einem Baum haben, ist ein <a href="https://docs.python.org/3/library/stdtypes.html#dict">Wörterbuch</a>, welches veränderlich ist und das macht es einfach, wenn auch ein bisschen verwirrend. Das Gute ist, wir können den Baum von <em>innen</em> der Funktion aus verändern. Wie ich dir oben gezeigt habe, gibst du nicht das Wörterbuch selbst an die Funktion weiter, sondern eine <em>Referenz</em> darauf, also wird alles, was du mit irgendeinem Wörterbuch innerhalb des Baumes machst, in der globalen Baumvariable reflektiert. Das verwirrende dabei ist, dass wir im Hinterkopf behalten müssen, dass wir immer mit einer <em>Referenz</em> arbeiten, also wenn wir die Daten kopieren müssen, wird eine einfache Zuweisung nicht ausreichen (weil sie nur die Referenz kopiert, erinnerst du dich?) Wir haben zwei Optionen, die in der unten stehenden Abbildung dargestellt sind. Der ursprüngliche Baum hat nur einen Knoten, dargestellt durch <span style="color=red;">Dict #1.</span>. Wenn wir den Baum erweitern, muss dieser Knoten nach unten versetzt werden und zu einem Blatt eines Aktionsknotens werden, der nun zum Ausgangspunkt wird. Wir können ein neues Aktionsknoten-Wörterbuch (<em>Dict #2</em>) erstellen, einen neuen Tierknoten für die Katze (<em>Dict #3</em>) und sie wie in Option #1 anordnen. In diesem Fall müssen wir jedoch sicherstellen, dass die Referenz in der Variable <code>tree</code> aktualisiert wird, so dass sie nun auf <em>Dict #2</em> zeigt. Alternativ können wir <span style="color=red;">Dict #1.</span> als obersten Knoten behalten, aber seinen Inhalt komplett ersetzen und ihn in einen Aktionsknoten umwandeln. Die ursprünglichen Informationen werden in ein neues <em>Dict #3</em> kopiert. Lass uns beide Ansätze ausprobieren, angefangen mit Option #1.</p>
 <div class="float">
-<img src="images/guess-the-animal-extend.png" style="width:100.0%" alt="Two options for extending tree."><div class="figcaption">Two options for extending tree.</div>
+<img src="images/guess-the-animal-extend.png" style="width:100.0%" alt="Zwei Optionen zum Erweitern des Baums."><div class="figcaption">Zwei Optionen zum Erweitern des Baums.</div>
 </div>
 </div>
-<div id="extending-the-tree-via-returning-new-reference" class="section level2" number="10.13">
+<div id="den-baum-durch-zurückgeben-einer-neuen-referenz-erweitern" class="section level2" number="10.13">
 <h2>
-<span class="header-section-number">10.13</span> Extending the tree via returning new reference<a class="anchor" aria-label="anchor" href="#extending-the-tree-via-returning-new-reference"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.13</span> Den Baum durch Zurückgeben einer neuen Referenz erweitern<a class="anchor" aria-label="anchor" href="#den-baum-durch-zur%C3%BCckgeben-einer-neuen-referenz-erweitern"><i class="fas fa-link"></i></a>
 </h2>
-<p>Let us proceed in small steps, as per usual. First, write code that takes an <em>animal</em> node (set <code>tree</code> variable by hand) and creates a three node tree as in option #1 above. You need to create two additional dictionaries and link them via <code>"yes"</code> and <code>"no"</code> fields. First, hardcode both new animal and new action. Once your code works, replace hardcoded values with <code>input</code> calls asking user “Who is it?” and “What does <animal> do?”.</animal></p>
-<div class="rmdnote practice">
-<p>Test code in exercise #9.</p>
+<p>Lass uns wie gewohnt in kleinen Schritten vorgehen. Schreibe zuerst einen Code, der einen <em>Tier</em>-Knoten nimmt (setze die <code>tree</code> Variable per Hand) und erstelle einen Baum mit drei Knoten, wie in Option #1 oben. Du musst zwei zusätzliche Wörterbücher erstellen und sie auf die Felder <code>"ja"</code> und <code>"nein"</code> setzen, damit du ein Wörterbuch erhältst, das dem Baum in Option #1 entspricht. Harte zunächst das neue Tier und die neue Aktion. Sobald dein Code funktioniert, ersetze die fest codierten Werte durch <code>input</code> Aufrufe, die den Benutzer fragen: “Wer ist es?” und “Was macht <tier>?”.</tier></p>
+<div class="practice">
+<p>Teste den Code in Übung #11.</p>
 </div>
-<p>This gives us the code we need for the <code>explore_and_extend_tree_via_return</code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;A mouthful, I know.&lt;/p&gt;"><sup>45</sup></a> function that extends<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Pun intended.&lt;/p&gt;"><sup>46</sup></a> the <code>explore_tree</code> function you implemented earlier. Think about where the new code goes to.</p>
-<p>A more important modification is that the function must now return a reference to the tree (dictionary that has the tree). It is either the <em>original</em> tree or, if you exteded it, the <em>new</em> tree. Also, that means for action nodes either <code>"yes"</code> or <code>"no"</code> dictionaries must be assigned a reference that a recursive call to <code>explore_and_extend_tree_via_return</code> returned. E.g., if nothing happened, the same reference to the original dictionary will be assigned. However, if we created a <em>new</em> tree, the references to that <em>new</em> tree must now be stored in the <code>"yes"</code> or <code>"no"</code> field. If we do not do this, the field will still point to the original node with our modifications being invisible. Same goes for the top level, as this means not only passing our global <code>tree</code> to the function but also assigning the returned reference back to it. Update the function (double check which function you are calling recursively, it should be <code>explore_and_extend_tree_via_return</code> not the original <code>explore_tree</code>!) and test it by starting with a single animal node tree and calling it in an endless loop (we will use emergency stop via debugger as an exit strategy for now). I would suggest printing out the dictionary after each call (to see how it grows), as well as putting a break point inside or after the function to explore the process, see the calling stack and parameter values for each level.</p>
+<p>Das gibt uns den Code, den wir für die <code>explore_and_extend_tree_via_return</code> Funktion benötigen (Ich weiß, dass ist ein Mundvoll), die die <code>explore_tree</code> Funktion, die du zuvor implementiert hast, erweitert. Denke darüber nach, wo der neue Code hinkommt.</p>
+<p>Eine wichtige Änderung ist, dass die Funktion nun eine Referenz zum Baum (dem Wörterbuch mit dem Baum) zurückgeben muss. Es handelt sich entweder um den <em>ursprünglichen</em> Baum oder, falls du ihn erweitert hast, um den <em>neuen</em> Baum. Das bedeutet auch, dass den Aktionsknoten entweder die <code>"ja"</code> oder <code>"nein"</code> Wörterbücher eine Referenz zugewiesen werden muss, die von einem rekursiven Aufruf der Funktion <code>explore_and_extend_tree_via_return</code> zurückgegeben wird. Zum Beispiel, wenn nichts passiert ist, wird die gleiche Referenz auf das ursprüngliche Wörterbuch zurückgegeben und zugewiesen. Wenn wir jedoch einen <em>neuen</em> Baum erstellt haben, müssen die Referenzen auf diesen <em>neuen</em> Baum nun im Feld <code>"ja"</code> oder <code>"nein"</code> gespeichert werden. Wenn wir das nicht tun, wird das Feld immer noch auf den ursprünglichen Knoten zeigen und unsere Änderungen sind unsichtbar. Das Gleiche gilt für die oberste Ebene, da dies bedeutet, dass wir nicht nur unseren globalen <code>tree</code> an die Funktion übergeben, sondern auch die zurückgegebene Referenz wieder zuweisen müssen. Überlege, wann/wo du das aktualisierte oder ursprüngliche Wörterbuch zurückgeben und wann/wo du den zurückgegebenen Wert einem “ja”/“nein” Feld zuweisen musst.</p>
+<p>Aktualisiere die Funktion (überprüfe doppelt, welche Funktion du rekursiv aufrufst, es sollte <code>explore_and_extend_tree_via_return</code> sein, nicht die ursprüngliche <code>explore_tree</code>!) und teste sie, indem du mit einem einzelnen Tierknotenbaum beginnst und ihn in einer endlosen Schleife aufrufst (wir verwenden vorerst den Notstopp über den Debugger als Exit-Strategie). Ich würde vorschlagen, das Wörterbuch nach jedem Aufruf (Erkunden und Erweitern des Baums) auszudrucken, um zu sehen, wie es wächst, sowie einen Haltepunkt innerhalb oder nach der Funktion zu setzen, um den Prozess zu erforschen, den Aufrufstapel zu sehen und die Parameterwerte für jede Stufe zu prüfen.</p>
 <div class="program">
-<p>Implement function in <em>utils.py</em><br>
-Use it in code <em>code04.py</em>.</p>
+<p>Implementiere die Funktion in <em>utils.py</em><br>
+Verwende sie im Code <em>code04.py</em>.</p>
 </div>
 </div>
-<div id="extending-the-tree-via-modifying-the-dictionary-in-place" class="section level2" number="10.14">
+<div id="den-baum-durch-modifikation-eines-wörterbuchs-am-ort-erweitern" class="section level2" number="10.14">
 <h2>
-<span class="header-section-number">10.14</span> Extending the tree via modifying the dictionary in-place<a class="anchor" aria-label="anchor" href="#extending-the-tree-via-modifying-the-dictionary-in-place"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.14</span> Den Baum durch Modifikation eines Wörterbuchs am Ort erweitern<a class="anchor" aria-label="anchor" href="#den-baum-durch-modifikation-eines-w%C3%B6rterbuchs-am-ort-erweitern"><i class="fas fa-link"></i></a>
 </h2>
-<p>The second option (see illustration above) is simpler (we do not need to return anything) but more opaque (we modify things behind the scenes and these modifications are not obvious because there is no return). First, write the code that creates two new animal nodes and replaces the content of the original node with new action (as before, first hardcode the new animal and new action, later repace it with <code>input</code> calls as in previous function). You can check that the <code>tree</code> references the same object by checking its <a href="https://docs.python.org/3/library/functions.html#id">id</a>. It should remain the same even though the content is different (the <code>id</code> for the top node should change in the exercise #9, go back to the code and check).</p>
-<p>Important catch, remember, <code>tree</code> is a <em>reference</em>, so writing <code>no_animal = tree</code> to store original information in a new node will do you no good, as it will mean that both <code>tree</code> and <code>no_animal</code> will refer to the same dictionary. Do <code>no_animal = tree</code> and then print out the <a href="https://docs.python.org/3/library/functions.html#id">id</a> for both (the same) and write <code>tree is no_animal</code> (<code>is</code> checks whether two objects are identical, i.e., same objects, so it will be <code>True</code>). Oddly enough, once you write <code>tree["no"] = no_animal</code> after that it will reference <em>itself</em> (<code>tree is tree["no"]</code> will be <code>True</code>)!</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb94-1"><a href="guess-the-animal.html#cb94-1" tabindex="-1"></a><span class="co"># assignment copies reference but object is the same</span></span>
-<span id="cb94-2"><a href="guess-the-animal.html#cb94-2" tabindex="-1"></a>dict1 <span class="op">=</span> {<span class="st">"a"</span>: <span class="dv">1</span>}</span>
-<span id="cb94-3"><a href="guess-the-animal.html#cb94-3" tabindex="-1"></a>dict2 <span class="op">=</span> dict1</span>
-<span id="cb94-4"><a href="guess-the-animal.html#cb94-4" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(dict1), <span class="bu">id</span>(dict2), dict1 <span class="kw">is</span> dict2)</span>
-<span id="cb94-5"><a href="guess-the-animal.html#cb94-5" tabindex="-1"></a><span class="co">#&gt; 2646583900480 2646583900480 True</span></span>
-<span id="cb94-6"><a href="guess-the-animal.html#cb94-6" tabindex="-1"></a></span>
-<span id="cb94-7"><a href="guess-the-animal.html#cb94-7" tabindex="-1"></a><span class="co"># object references itself!</span></span>
-<span id="cb94-8"><a href="guess-the-animal.html#cb94-8" tabindex="-1"></a>dict1[<span class="st">"a"</span>] <span class="op">=</span> dict1</span>
-<span id="cb94-9"><a href="guess-the-animal.html#cb94-9" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(dict1), <span class="bu">id</span>(dict1[<span class="st">"a"</span>]), dict1 <span class="kw">is</span> dict1[<span class="st">"a"</span>])</span>
-<span id="cb94-10"><a href="guess-the-animal.html#cb94-10" tabindex="-1"></a><span class="co">#&gt; 2646583900480 2646583900480 True</span></span></code></pre></div>
-<p>There are two ways to solve this problem. You can create a new dictionary assigning <em>field</em> values one by one. Since field values are immutable strings, this will create a <em>different</em> object with same <em>content</em>.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb95-1"><a href="guess-the-animal.html#cb95-1" tabindex="-1"></a>dict1 <span class="op">=</span> {<span class="st">"a"</span>: <span class="dv">1</span>}</span>
-<span id="cb95-2"><a href="guess-the-animal.html#cb95-2" tabindex="-1"></a>dict2 <span class="op">=</span> {<span class="st">"a"</span> : dict1[<span class="st">"a"</span>]}</span>
-<span id="cb95-3"><a href="guess-the-animal.html#cb95-3" tabindex="-1"></a></span>
-<span id="cb95-4"><a href="guess-the-animal.html#cb95-4" tabindex="-1"></a><span class="co"># same content!</span></span>
-<span id="cb95-5"><a href="guess-the-animal.html#cb95-5" tabindex="-1"></a><span class="bu">print</span>(dict1 <span class="op">==</span> dict2)</span>
-<span id="cb95-6"><a href="guess-the-animal.html#cb95-6" tabindex="-1"></a><span class="co">#&gt; True</span></span>
-<span id="cb95-7"><a href="guess-the-animal.html#cb95-7" tabindex="-1"></a></span>
-<span id="cb95-8"><a href="guess-the-animal.html#cb95-8" tabindex="-1"></a><span class="co"># different objects</span></span>
-<span id="cb95-9"><a href="guess-the-animal.html#cb95-9" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(dict1), <span class="bu">id</span>(dict2), dict1 <span class="kw">is</span> dict2)</span>
-<span id="cb95-10"><a href="guess-the-animal.html#cb95-10" tabindex="-1"></a><span class="co">#&gt; 2646578529216 2646584002048 False</span></span></code></pre></div>
-<p>Alternatively, you can create a either a shallow <a href="https://docs.python.org/3/library/copy.html#copy.copy">copy</a> or <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy">deep copy</a> of an object using <a href="https://docs.python.org/3/library/copy.html">copy</a> library. The former — <a href="https://docs.python.org/3/library/copy.html#copy.copy">copy</a> — makes a “shallow” copy by copying the context “as is”. In this case, a reference to another object is copied as is and still points to the same object. The <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy">deepcopy</a> goes, well, deeper and creates copy for object that the original references. The latter is more computationally expensive (you make copies of <em>everything</em>!) but is guaranteed to create a copy with no hidden ties to the original. So, when in doubt, go for the <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy">deepcopy</a>. In our case, there is no difference as our original dictionary has just two immutable string, so both <a href="https://docs.python.org/3/library/copy.html">copy</a> and <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy">deepcopy</a> would do the same.</p>
-<p>In our code, use the latter option via <a href="https://docs.python.org/3/library/copy.html">copy</a> library.</p>
-<div class="rmdnote practice">
-<p>Test code in exercise #10.</p>
+<p>Die zweite Option (siehe Illustration oben) ist einfacher, weil wir nichts zurückgeben müssen. Sie ist jedoch weniger transparent, da wir Dinge hinter den Kulissen verändern und diese Änderungen nicht offensichtlich durch eine Rückgabe signalisiert werden. Schreibe zuerst den Code, der <em>zwei</em> neue Tierknoten erstellt und den Inhalt des ursprünglichen Knotens durch eine neue Aktion ersetzt (wie zuvor, codiere zuerst das neue Tier und die neue Aktion hart, später ersetze es durch <code>input</code> Aufrufe wie in der vorherigen Funktion). Du kannst prüfen, ob der <code>tree</code> das gleiche Objekt referenziert, indem du seine <a href="https://docs.python.org/3/library/functions.html#id">id</a> überprüfst. Sie sollte gleich bleiben, auch wenn der Inhalt anders ist (die <code>id</code> für den obersten Knoten sollte sich in Übung #11 ändern, gehe zurück zum Code und überprüfe).</p>
+<p>Wichtiger Hinweis! Denke daran, dass <code>tree</code> eine <em>Referenz</em> ist, daher wird dir <code>no_animal = tree</code> nicht helfen, die ursprünglichen Informationen in einem neuen Knoten zu speichern, da dies bedeutet, dass sowohl <code>tree</code> als auch <code>no_animal</code> auf dasselbe Wörterbuch verweisen werden. Denke daran, dass es die Referenz auf ein Wörterbuch ist, die kopiert wird, nicht der tatsächliche Inhalt des Wörterbuchs. Mache <code>no_animal = tree</code> und drucke dann die <a href="https://docs.python.org/3/library/functions.html#id">id</a> für beide (die gleiche) aus und schreibe <code>tree is no_animal</code> (<code>is</code> überprüft, ob zwei Objekte identisch sind, d.h. dieselben Objekte, daher wird es <code>True</code> sein). Seltsamerweise wird, sobald du danach <code>tree["no"] = no_animal</code> schreibst, es <em>sich selbst</em> referenzieren (<code>tree is tree["no"]</code> wird <code>True</code> sein)!</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb95-1"><a href="guess-the-animal.html#cb95-1" tabindex="-1"></a><span class="co"># Zuweisung kopiert Referenz, das Objekt bleibt jedoch gleich.</span></span>
+<span id="cb95-2"><a href="guess-the-animal.html#cb95-2" tabindex="-1"></a>dict1 <span class="op">=</span> {<span class="st">"a"</span>: <span class="dv">1</span>}</span>
+<span id="cb95-3"><a href="guess-the-animal.html#cb95-3" tabindex="-1"></a>dict2 <span class="op">=</span> dict1</span>
+<span id="cb95-4"><a href="guess-the-animal.html#cb95-4" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(dict1), <span class="bu">id</span>(dict2), dict1 <span class="kw">is</span> dict2)</span>
+<span id="cb95-5"><a href="guess-the-animal.html#cb95-5" tabindex="-1"></a><span class="co">#&gt; 2367081167552 2367081167552 True</span></span>
+<span id="cb95-6"><a href="guess-the-animal.html#cb95-6" tabindex="-1"></a></span>
+<span id="cb95-7"><a href="guess-the-animal.html#cb95-7" tabindex="-1"></a><span class="co"># Das Objekt referenziert sich selbst!</span></span>
+<span id="cb95-8"><a href="guess-the-animal.html#cb95-8" tabindex="-1"></a>dict1[<span class="st">"a"</span>] <span class="op">=</span> dict1</span>
+<span id="cb95-9"><a href="guess-the-animal.html#cb95-9" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(dict1), <span class="bu">id</span>(dict1[<span class="st">"a"</span>]), dict1 <span class="kw">is</span> dict1[<span class="st">"a"</span>])</span>
+<span id="cb95-10"><a href="guess-the-animal.html#cb95-10" tabindex="-1"></a><span class="co">#&gt; 2367081167552 2367081167552 True</span></span></code></pre></div>
+<p>Es gibt zwei Wege, dieses Problem zu lösen. Du kannst ein neues Wörterbuch erstellen, indem du die <em>Feld-</em> Werte einzeln zuweist. Da unsere “Tier”-Wörterbuchfeldwerte unveränderliche Zeichenketten sind, wird dieses Vorgehen ein <em>anderes</em> Objekt mit dem gleichen <em>Inhalt</em> erstellen.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb96-1"><a href="guess-the-animal.html#cb96-1" tabindex="-1"></a>dict1 <span class="op">=</span> {<span class="st">"a"</span>: <span class="dv">1</span>}</span>
+<span id="cb96-2"><a href="guess-the-animal.html#cb96-2" tabindex="-1"></a>dict2 <span class="op">=</span> {<span class="st">"a"</span> : dict1[<span class="st">"a"</span>]}</span>
+<span id="cb96-3"><a href="guess-the-animal.html#cb96-3" tabindex="-1"></a></span>
+<span id="cb96-4"><a href="guess-the-animal.html#cb96-4" tabindex="-1"></a><span class="co"># gleicher Inhalt!</span></span>
+<span id="cb96-5"><a href="guess-the-animal.html#cb96-5" tabindex="-1"></a><span class="bu">print</span>(dict1 <span class="op">==</span> dict2)</span>
+<span id="cb96-6"><a href="guess-the-animal.html#cb96-6" tabindex="-1"></a><span class="co">#&gt; True</span></span>
+<span id="cb96-7"><a href="guess-the-animal.html#cb96-7" tabindex="-1"></a></span>
+<span id="cb96-8"><a href="guess-the-animal.html#cb96-8" tabindex="-1"></a><span class="co"># verschiedene Objekte</span></span>
+<span id="cb96-9"><a href="guess-the-animal.html#cb96-9" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">id</span>(dict1), <span class="bu">id</span>(dict2), dict1 <span class="kw">is</span> dict2)</span>
+<span id="cb96-10"><a href="guess-the-animal.html#cb96-10" tabindex="-1"></a><span class="co">#&gt; 2367081105216 2367278805504 False</span></span></code></pre></div>
+<p>Alternativ kannst du entweder eine flache <a href="https://docs.python.org/3/library/copy.html#copy.copy">Kopie</a> oder eine <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy">tiefe Kopie</a> von einem Objekt erstellen, indem du die <a href="https://docs.python.org/3/library/copy.html">copy</a> Bibliothek verwendest. Die erstere - <a href="https://docs.python.org/3/library/copy.html#copy.copy">copy</a> - erstellt eine “flache” Kopie indem sie den Kontext “wie er ist” kopiert. In diesem Fall wird eine Referenz zu einem anderen Objekt kopiert, so wie sie ist, und verweist immer noch auf das gleiche Objekt. Die <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy">deepcopy</a> geht tiefer und erstellt eine Kopie für das Objekt, auf das das Original verweist. Letzteres ist rechenintensiver (du erstellst Kopien von <em>allem</em>!), aber es garantiert, dass eine Kopie erstellt wird, die keine versteckten Verbindungen zum Original hat. Also, im Zweifelsfall, nimm die <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy">deepcopy</a>. In unserem Fall gibt es keinen Unterschied, da unser ursprüngliches Wörterbuch gerade mal zwei unveränderliche Zeichenketten hat, so dass sowohl <a href="https://docs.python.org/3/library/copy.html#copy.copy">copy</a> als auch <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy">deepcopy</a> das Gleiche tun würden.</p>
+<p>In unserem Code verwenden wir die letztere Option über die <a href="https://docs.python.org/3/library/copy.html">copy</a> Bibliothek. Schreibe den Code, der den Baum erweitert, indem er den Inhalt des ursprünglichen Knotens ersetzt und neue Tierknoten in Übung 12 hinzufügt. Beachte, dass du einen Baum nicht mit der Notation <code>tree = {...}</code> verändern kannst, da dies ein <em>neues</em> Objekt erzeugen würde. Um vor Ort zu verändern, musst du die Felder einzeln über die Zuweisung <code>tree[field] = value</code> ändern.</p>
+<div class="practice">
+<p>Teste den Code in Übung #12.</p>
 </div>
-<p>Now that the code is working, you can use it in a new function called <code>explore_and_modify_tree</code> which builds upon the <code>explore_tree</code> function. Again, use the new code when you are in the <em>animal</em> node and the guess was wrong (answer was “no”). Test it the same way in an endless loop, as you did for <code>explore_and_extend_tree_via_return</code>.</p>
+<p>Jetzt, wo der Code funktioniert, kannst du ihn in einer neuen Funktion namens <code>explore_and_modify_tree</code> verwenden, die auf der <code>explore_tree</code> Funktion aufbaut. Wiederum verwende den neuen Code, wenn du dich im <em>Tier</em>-Knoten befindest und die Vermutung falsch war (Antwort war “nein”). Diese Funktion ist einfacher als <code>explore_and_extend_tree_via_return</code>, da du dir keine Gedanken über Rückgabewerte und deren Rückzuweisung machen musst. Teste sie auf die gleiche Weise in einer endlosen Schleife, wie du es für <code>explore_and_extend_tree_via_return</code> getan hast. Überprüfe doppelt, welche Funktion du beim rekursiven Aufruf aufrufst!</p>
 <div class="program">
-<p>Implement function in <em>utils.py</em><br>
-Use it in code <em>code05.py</em>.</p>
+<p>Implementiere die Funktion in <em>utils.py</em><br>
+Verwende sie im Code <em>code05.py</em>.</p>
 </div>
 </div>
-<div id="can-i-go-home-now" class="section level2" number="10.15">
+<div id="kann-ich-jetzt-nach-hause-gehen" class="section level2" number="10.15">
 <h2>
-<span class="header-section-number">10.15</span> Can I go home now?<a class="anchor" aria-label="anchor" href="#can-i-go-home-now"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.15</span> Kann ich jetzt nach Hause gehen?<a class="anchor" aria-label="anchor" href="#kann-ich-jetzt-nach-hause-gehen"><i class="fas fa-link"></i></a>
 </h2>
-<p>Our program works nicely but the current idea is to play, literally, forever. We should be friendlier than that, so after each round ask the player whether they want to play again and continue only if the answer was “yes” (remember, you already have a function to ask “yes” / “no” questions, use it!).</p>
+<p>Unser Programm funktioniert gut, aber die aktuelle Idee ist, buchstäblich, für immer zu spielen. Wir sollten freundlicher sein, also frage den Spieler nach jeder Runde, ob er wieder spielen möchte und fahre nur fort, wenn die Antwort “ja” war (denke daran, du hast bereits eine Funktion, um “ja” / “nein” Fragen zu stellen, verwende sie!).</p>
 <div class="program">
-<p>Update loop in code <em>code06.py</em>.</p>
+<p>Aktualisiere die Schleife im Code <em>code06.py</em>.</p>
 </div>
 </div>
 <div id="pickle" class="section level2" number="10.16">
 <h2>
-<span class="header-section-number">10.16</span> Saving tree for future use via pickle<a class="anchor" aria-label="anchor" href="#pickle"><i class="fas fa-link"></i></a>
+<span class="header-section-number">10.16</span> Den Baum über pickle für die zukünftige Verwendung speichern<a class="anchor" aria-label="anchor" href="#pickle"><i class="fas fa-link"></i></a>
 </h2>
-<p>Our game works, our decision tree grows with every round but the problem is that we start from scratch every time with start the program. This is wasteful and no fun, so we should save our tree at the end of each game and load it again whenever the program starts again. One option is to use <a href="https://docs.python.org/3/library/pickle.html">pickle</a> library that allows you to <a href="https://docs.python.org/3/library/pickle.html#pickle.dump">dump</a> and <a href="https://docs.python.org/3/library/pickle.html#pickle.load">load</a> Python objects. Here’s how it works (use the unfamiliar <code>with open("dict1.p", "wb") as pickle_file:</code> as):</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb96-1"><a href="guess-the-animal.html#cb96-1" tabindex="-1"></a><span class="im">import</span> pickle</span>
-<span id="cb96-2"><a href="guess-the-animal.html#cb96-2" tabindex="-1"></a></span>
-<span id="cb96-3"><a href="guess-the-animal.html#cb96-3" tabindex="-1"></a>dict1 <span class="op">=</span> {<span class="st">"a"</span>: <span class="dv">1</span>}</span>
-<span id="cb96-4"><a href="guess-the-animal.html#cb96-4" tabindex="-1"></a><span class="bu">print</span>(dict1)</span>
-<span id="cb96-5"><a href="guess-the-animal.html#cb96-5" tabindex="-1"></a><span class="co">#&gt; {'a': 1}</span></span>
-<span id="cb96-6"><a href="guess-the-animal.html#cb96-6" tabindex="-1"></a></span>
-<span id="cb96-7"><a href="guess-the-animal.html#cb96-7" tabindex="-1"></a><span class="co"># dumping dictionary to a file</span></span>
-<span id="cb96-8"><a href="guess-the-animal.html#cb96-8" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dict1.p"</span>, <span class="st">"wb"</span>) <span class="im">as</span> pickle_file:</span>
-<span id="cb96-9"><a href="guess-the-animal.html#cb96-9" tabindex="-1"></a>  pickle.dump(dict1, pickle_file)</span>
-<span id="cb96-10"><a href="guess-the-animal.html#cb96-10" tabindex="-1"></a></span>
-<span id="cb96-11"><a href="guess-the-animal.html#cb96-11" tabindex="-1"></a><span class="co"># loading a dictionary from a file</span></span>
-<span id="cb96-12"><a href="guess-the-animal.html#cb96-12" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dict1.p"</span>, <span class="st">"rb"</span>) <span class="im">as</span> pickle_file:</span>
-<span id="cb96-13"><a href="guess-the-animal.html#cb96-13" tabindex="-1"></a>  dict2 <span class="op">=</span> pickle.load(pickle_file)</span>
-<span id="cb96-14"><a href="guess-the-animal.html#cb96-14" tabindex="-1"></a><span class="bu">print</span>(dict2)</span>
-<span id="cb96-15"><a href="guess-the-animal.html#cb96-15" tabindex="-1"></a><span class="co">#&gt; {'a': 1}</span></span></code></pre></div>
-<p>In our program, we need to <a href="https://docs.python.org/3/library/pickle.html#pickle.load">load</a> the tree from a file (I called it <code>animal_tree.p</code>) at the beginning and <a href="https://docs.python.org/3/library/pickle.html#pickle.dump">dump</a> either at the end (once the player does not want to play anymore) or after each round (this means that the latest version of the tree would be saved <em>even</em> if the player exits via emergency interrupt).</p>
-<p>Note that we need an <em>initial</em> tree, created even before the first run of the program. Create that tree (single animal node) and <a href="https://docs.python.org/3/library/pickle.html#pickle.dump">dump</a> into the file in a separate script or a Jupyter cell.</p>
-<div class="program">
-<p>Implement program in <em>code07.py</em>.</p>
-</div>
-</div>
-<div id="json" class="section level2" number="10.17">
-<h2>
-<span class="header-section-number">10.17</span> Saving tree for future use via JSON<a class="anchor" aria-label="anchor" href="#json"><i class="fas fa-link"></i></a>
-</h2>
-<p>Pickle is a Python-specific serialization format, so you won’t be able to use this tree elsewhere (you cannot give to your friend who uses R or C). Plus, it is a <em>binary</em> (so, not human readble) and <strong>not a secure</strong> format (see big red warning at the top of <a href="https://docs.python.org/3/library/pickle.html">official documentation</a>), so you should never trust a pickle file unless it is your own.</p>
-<p>An alternative way are <a href="https://en.wikipedia.org/wiki/JSON">JSON</a> files that are widely used in interactive Web (JSON stands for JavaScript Object Notation), are human readable (it is a text file you can open in any editor), and are supported by any other software (any language your friend uses will have a JSON library to work with your file).</p>
-<p>Using JSON is very similar to using pickle:</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb97-1"><a href="guess-the-animal.html#cb97-1" tabindex="-1"></a><span class="im">import</span> json</span>
+<p>Unser Spiel funktioniert, unser Entscheidungsbaum wächst mit jeder Runde, aber das Problem ist, dass wir jedes Mal von vorne anfangen, wenn wir das Programm starten. Das ist verschwenderisch und macht keinen Spaß, daher sollten wir unseren Baum am Ende jedes Spiels speichern und ihn immer wieder laden, wenn das Programm erneut gestartet wird. Eine Option ist die Verwendung der <a href="https://docs.python.org/3/library/pickle.html">pickle</a> Bibliothek, die es dir ermöglicht, Python-Objekte zu <a href="https://docs.python.org/3/library/pickle.html#pickle.dump">dump</a> und zu <a href="https://docs.python.org/3/library/pickle.html#pickle.load">laden</a>. Hier ist, wie es funktioniert (benutze das unbekannte <code>with open("dict1.p", "wb") as pickle_file:</code> als):</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb97-1"><a href="guess-the-animal.html#cb97-1" tabindex="-1"></a><span class="im">import</span> pickle</span>
 <span id="cb97-2"><a href="guess-the-animal.html#cb97-2" tabindex="-1"></a></span>
 <span id="cb97-3"><a href="guess-the-animal.html#cb97-3" tabindex="-1"></a>dict1 <span class="op">=</span> {<span class="st">"a"</span>: <span class="dv">1</span>}</span>
 <span id="cb97-4"><a href="guess-the-animal.html#cb97-4" tabindex="-1"></a><span class="bu">print</span>(dict1)</span>
 <span id="cb97-5"><a href="guess-the-animal.html#cb97-5" tabindex="-1"></a><span class="co">#&gt; {'a': 1}</span></span>
 <span id="cb97-6"><a href="guess-the-animal.html#cb97-6" tabindex="-1"></a></span>
-<span id="cb97-7"><a href="guess-the-animal.html#cb97-7" tabindex="-1"></a><span class="co"># dumping dictionary to a file</span></span>
-<span id="cb97-8"><a href="guess-the-animal.html#cb97-8" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dict1.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> json_file:</span>
-<span id="cb97-9"><a href="guess-the-animal.html#cb97-9" tabindex="-1"></a>  json.dump(dict1, json_file)</span>
+<span id="cb97-7"><a href="guess-the-animal.html#cb97-7" tabindex="-1"></a><span class="co"># Wörterbuch in eine Datei dumpen</span></span>
+<span id="cb97-8"><a href="guess-the-animal.html#cb97-8" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dict1.p"</span>, <span class="st">"wb"</span>) <span class="im">as</span> pickle_file:</span>
+<span id="cb97-9"><a href="guess-the-animal.html#cb97-9" tabindex="-1"></a>  pickle.dump(dict1, pickle_file)</span>
 <span id="cb97-10"><a href="guess-the-animal.html#cb97-10" tabindex="-1"></a></span>
-<span id="cb97-11"><a href="guess-the-animal.html#cb97-11" tabindex="-1"></a><span class="co"># loading a dictionary from a file</span></span>
-<span id="cb97-12"><a href="guess-the-animal.html#cb97-12" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dict1.json"</span>, <span class="st">"r"</span>) <span class="im">as</span> json_file:</span>
-<span id="cb97-13"><a href="guess-the-animal.html#cb97-13" tabindex="-1"></a>  dict2 <span class="op">=</span> json.load(json_file)</span>
+<span id="cb97-11"><a href="guess-the-animal.html#cb97-11" tabindex="-1"></a><span class="co"># Ein Wörterbuch aus einer Datei laden</span></span>
+<span id="cb97-12"><a href="guess-the-animal.html#cb97-12" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dict1.p"</span>, <span class="st">"rb"</span>) <span class="im">as</span> pickle_file:</span>
+<span id="cb97-13"><a href="guess-the-animal.html#cb97-13" tabindex="-1"></a>  dict2 <span class="op">=</span> pickle.load(pickle_file)</span>
 <span id="cb97-14"><a href="guess-the-animal.html#cb97-14" tabindex="-1"></a><span class="bu">print</span>(dict2)</span>
 <span id="cb97-15"><a href="guess-the-animal.html#cb97-15" tabindex="-1"></a><span class="co">#&gt; {'a': 1}</span></span></code></pre></div>
+<p>In unserem Programm müssen wir den Baum zu Beginn aus einer Datei (ich habe sie <code>animal_tree.p</code> genannt) <a href="https://docs.python.org/3/library/pickle.html#pickle.load">laden</a> und entweder am Ende (sobald der Spieler nicht mehr spielen möchte) oder nach jeder Runde <a href="https://docs.python.org/3/library/pickle.html#pickle.dump">dumpen</a> (das bedeutet, dass die neueste Version des Baumes <em>sogar</em> gespeichert wird, wenn der Spieler über einen Notausstieg aussteigt).</p>
+<p>Beachte, dass wir einen <em>ursprünglichen</em> Baum benötigen, der sogar vor dem ersten Ausführen des Programms erstellt wurde. Erstelle diesen Baum (einzelner Tierknoten) und <a href="https://docs.python.org/3/library/pickle.html#pickle.dump">dumpe</a> ihn in einer separaten Skript oder Jupyter-Zelle in die Datei. Das ist der Baum, den du lesen, ändern und in <em>code07</em> schreiben musst. Sobald du die ursprüngliche Datei erstellt hast, lade sie zurück und überprüfe, ob das Wörterbuch das ist, das du gedumpt hast.</p>
+<p>Sobald das Laden am Anfang und das Dumpen am Ende eingebaut sind, teste es, indem du Ein-Runden-Spiele spielst und das Programm neu startest. Der Baum sollte erhalten bleiben und weiter wachsen.</p>
 <div class="program">
-<p>Implement program in <em>code08.py</em>.</p>
+<p>Implementiere das Programm in <em>code07.py</em>.</p>
 </div>
+</div>
+<div id="json" class="section level2" number="10.17">
+<h2>
+<span class="header-section-number">10.17</span> Den Baum über JSON für die zukünftige Verwendung speichern<a class="anchor" aria-label="anchor" href="#json"><i class="fas fa-link"></i></a>
+</h2>
+<p>Pickle ist ein Python-spezifisches Serialisierungsformat, sodass du diesen Baum nicht anderswo verwenden kannst (du kannst ihn nicht an deinen Freund weitergeben, der R oder C verwendet). Außerdem handelt es sich um ein <em>binäres</em> Format (also nicht vom Menschen lesbar) und es ist <strong>nicht sicher</strong> (siehe die große rote Warnung am Anfang der <a href="https://docs.python.org/3/library/pickle.html">offiziellen Dokumentation</a>), sodass du niemals einer Pickle-Datei vertrauen solltest, es sei denn, sie ist von dir selbst.</p>
+<p>Eine alternative Methode sind <a href="https://en.wikipedia.org/wiki/JSON">JSON</a>-Dateien, die häufig im interaktiven Web verwendet werden (JSON steht für JavaScript Object Notation), sie sind vom Menschen lesbar (es handelt sich um eine Textdatei, die du in jedem Editor öffnen kannst) und werden von jeder anderen Software unterstützt (jede Sprache, die dein Freund verwendet, wird eine JSON-Bibliothek haben, um mit deiner Datei zu arbeiten).</p>
+<p>Die Verwendung von JSON ist sehr ähnlich wie die Verwendung von Pickle:</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb98-1"><a href="guess-the-animal.html#cb98-1" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb98-2"><a href="guess-the-animal.html#cb98-2" tabindex="-1"></a></span>
+<span id="cb98-3"><a href="guess-the-animal.html#cb98-3" tabindex="-1"></a>dict1 <span class="op">=</span> {<span class="st">"a"</span>: <span class="dv">1</span>}</span>
+<span id="cb98-4"><a href="guess-the-animal.html#cb98-4" tabindex="-1"></a><span class="bu">print</span>(dict1)</span>
+<span id="cb98-5"><a href="guess-the-animal.html#cb98-5" tabindex="-1"></a><span class="co">#&gt; {'a': 1}</span></span>
+<span id="cb98-6"><a href="guess-the-animal.html#cb98-6" tabindex="-1"></a></span>
+<span id="cb98-7"><a href="guess-the-animal.html#cb98-7" tabindex="-1"></a><span class="co"># Wörterbuch in eine Datei dumpen</span></span>
+<span id="cb98-8"><a href="guess-the-animal.html#cb98-8" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dict1.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> json_file:</span>
+<span id="cb98-9"><a href="guess-the-animal.html#cb98-9" tabindex="-1"></a>  json.dump(dict1, json_file)</span>
+<span id="cb98-10"><a href="guess-the-animal.html#cb98-10" tabindex="-1"></a></span>
+<span id="cb98-11"><a href="guess-the-animal.html#cb98-11" tabindex="-1"></a><span class="co"># Ein Wörterbuch aus einer Datei laden</span></span>
+<span id="cb98-12"><a href="guess-the-animal.html#cb98-12" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dict1.json"</span>, <span class="st">"r"</span>) <span class="im">as</span> json_file:</span>
+<span id="cb98-13"><a href="guess-the-animal.html#cb98-13" tabindex="-1"></a>  dict2 <span class="op">=</span> json.load(json_file)</span>
+<span id="cb98-14"><a href="guess-the-animal.html#cb98-14" tabindex="-1"></a><span class="bu">print</span>(dict2)</span>
+<span id="cb98-15"><a href="guess-the-animal.html#cb98-15" tabindex="-1"></a><span class="co">#&gt; {'a': 1}</span></span></code></pre></div>
+<p>Wie zuvor benötigst du ein Startwörterbuch für dein Programm. Du kannst von vorne anfangen (definiere ein alleinstehendes Tierknoten-Wörterbuch und speichere es) oder du kannst dein gepickeltes Wörterbuch laden, es aber in ein JSON dumpen (dies verwendet den Baum, den du bereits erstellt hast). Beachte, dass du im Gegensatz zu <a href="guess-the-animal.html#pickle">pickle</a>-Dateien den Inhalt der Datei im VS Code betrachten kannst.</p>
+<div class="program">
+<p>Implementiere das Programm in <em>code08.py</em>.</p>
+</div>
+</div>
+<div id="zusammenfassung" class="section level2" number="10.18">
+<h2>
+<span class="header-section-number">10.18</span> Zusammenfassung<a class="anchor" aria-label="anchor" href="#zusammenfassung"><i class="fas fa-link"></i></a>
+</h2>
+<p>Glückwunsch, du hast nun ein selbstlernendes KI-System programmiert! Verpacke alle Dateien in eine Zip-Datei und reiche sie ein.</p>
 
 </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <div class="chapter-nav">
-<div class="prev"><a href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Hunt the Wumpus</a></div>
-<div class="next"><a href="Sudoku.html"><span class="header-section-number">11</span> Sudoku</a></div>
+<div class="prev"><a href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></div>
+<div class="empty"></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#guess-the-animal"><span class="header-section-number">10</span> Guess the animal</a></li>
-<li><a class="nav-link" href="#chapter-concepts-2"><span class="header-section-number">10.1</span> Chapter concepts</a></li>
-<li><a class="nav-link" href="#game-structure"><span class="header-section-number">10.2</span> Game structure</a></li>
-<li><a class="nav-link" href="#dictionaries"><span class="header-section-number">10.3</span> Dictionaries</a></li>
-<li><a class="nav-link" href="#yesno-input"><span class="header-section-number">10.4</span> Yes/no input</a></li>
-<li><a class="nav-link" href="#one-trick-pony"><span class="header-section-number">10.5</span> One-trick pony</a></li>
-<li><a class="nav-link" href="#learning-a-new-trick"><span class="header-section-number">10.6</span> Learning a new trick</a></li>
-<li><a class="nav-link" href="#recursion"><span class="header-section-number">10.7</span> Recursion</a></li>
-<li><a class="nav-link" href="#exploring-the-decision-tree"><span class="header-section-number">10.8</span> Exploring the decision tree</a></li>
-<li><a class="nav-link" href="#variables-as-boxes-immutable-objects"><span class="header-section-number">10.9</span> Variables as boxes (immutable objects)</a></li>
-<li><a class="nav-link" href="#mutable-objects"><span class="header-section-number">10.10</span> Variables as post-it stickers (mutable objects)</a></li>
-<li><a class="nav-link" href="#tuple"><span class="header-section-number">10.11</span> Tuple: a frozen list</a></li>
-<li><a class="nav-link" href="#extending-the-tree"><span class="header-section-number">10.12</span> Extending the tree</a></li>
-<li><a class="nav-link" href="#extending-the-tree-via-returning-new-reference"><span class="header-section-number">10.13</span> Extending the tree via returning new reference</a></li>
-<li><a class="nav-link" href="#extending-the-tree-via-modifying-the-dictionary-in-place"><span class="header-section-number">10.14</span> Extending the tree via modifying the dictionary in-place</a></li>
-<li><a class="nav-link" href="#can-i-go-home-now"><span class="header-section-number">10.15</span> Can I go home now?</a></li>
-<li><a class="nav-link" href="#pickle"><span class="header-section-number">10.16</span> Saving tree for future use via pickle</a></li>
-<li><a class="nav-link" href="#json"><span class="header-section-number">10.17</span> Saving tree for future use via JSON</a></li>
+<li><a class="nav-link" href="#guess-the-animal"><span class="header-section-number">10</span> Rate das Tier</a></li>
+<li><a class="nav-link" href="#konzepte-des-kapitels-4"><span class="header-section-number">10.1</span> Konzepte des Kapitels</a></li>
+<li><a class="nav-link" href="#spielstruktur"><span class="header-section-number">10.2</span> Spielstruktur</a></li>
+<li><a class="nav-link" href="#janein-eingabe"><span class="header-section-number">10.3</span> Ja/Nein-Eingabe</a></li>
+<li><a class="nav-link" href="#dictionaries"><span class="header-section-number">10.4</span> Wörterbücher</a></li>
+<li><a class="nav-link" href="#das-ein-trick-pony"><span class="header-section-number">10.5</span> Das Ein-Trick-Pony</a></li>
+<li><a class="nav-link" href="#einen-neuen-trick-lernen"><span class="header-section-number">10.6</span> Einen neuen Trick lernen</a></li>
+<li><a class="nav-link" href="#rekursion"><span class="header-section-number">10.7</span> Rekursion</a></li>
+<li><a class="nav-link" href="#erkundung-des-entscheidungsbaums"><span class="header-section-number">10.8</span> Erkundung des Entscheidungsbaums</a></li>
+<li><a class="nav-link" href="#variablen-als-schachteln-unver%C3%A4nderliche-objekte"><span class="header-section-number">10.9</span> Variablen als Schachteln (unveränderliche Objekte)</a></li>
+<li><a class="nav-link" href="#mutable-objects"><span class="header-section-number">10.10</span> Variablen als Post-its (veränderbare Objekte)</a></li>
+<li><a class="nav-link" href="#tuple"><span class="header-section-number">10.11</span> Tupel: eine eingefrorene Liste</a></li>
+<li><a class="nav-link" href="#erweitern-des-baumes"><span class="header-section-number">10.12</span> Erweitern des Baumes</a></li>
+<li><a class="nav-link" href="#den-baum-durch-zur%C3%BCckgeben-einer-neuen-referenz-erweitern"><span class="header-section-number">10.13</span> Den Baum durch Zurückgeben einer neuen Referenz erweitern</a></li>
+<li><a class="nav-link" href="#den-baum-durch-modifikation-eines-w%C3%B6rterbuchs-am-ort-erweitern"><span class="header-section-number">10.14</span> Den Baum durch Modifikation eines Wörterbuchs am Ort erweitern</a></li>
+<li><a class="nav-link" href="#kann-ich-jetzt-nach-hause-gehen"><span class="header-section-number">10.15</span> Kann ich jetzt nach Hause gehen?</a></li>
+<li><a class="nav-link" href="#pickle"><span class="header-section-number">10.16</span> Den Baum über pickle für die zukünftige Verwendung speichern</a></li>
+<li><a class="nav-link" href="#json"><span class="header-section-number">10.17</span> Den Baum über JSON für die zukünftige Verwendung speichern</a></li>
+<li><a class="nav-link" href="#zusammenfassung"><span class="header-section-number">10.18</span> Zusammenfassung</a></li>
 </ul>
 
       <div class="book-extra">
@@ -459,7 +539,7 @@ Use it in code <em>code05.py</em>.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Lerne Python, indem du Spiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-23.</p>
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-10-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
