@@ -1,7 +1,7 @@
 """One trick pony
 """
 
-from utils import input_yes_no
+from utils import ask_question
 
 decision_tree = {"kind" : "action",
                  "text" : "quack",
@@ -10,8 +10,4 @@ decision_tree = {"kind" : "action",
                  "no" :  {"kind" : "animal",
                           "text" : "dog"}}
 
-if decision_tree["kind"] == "animal":
-    if input_yes_no("Is this " + decision_tree["text"] + "?"):
-        print("I knew it!")
-else:
-    input_yes_no("Does it " + decision_tree["text"] + "?")
+ask_question(decision_tree)

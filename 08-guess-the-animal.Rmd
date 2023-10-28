@@ -53,12 +53,13 @@ Put your code into _code01.py_.
 :::
 
 ## Learning a new trick
-In the final implementation, our decision tree will grow through trial-and-error but initially, let us hard code a small decision tree by hand. Create a dictionary of dictionaries for the _Round 2_ decision tree. It has just three nodes, the top one is an action tree with two subtrees, each subtree is an animal leaf node. Since subtrees a dictionaries, it means that you put a dictionary into a corresponding field, so `decision_tree['yes']` will yield `{"kind" : "animal", "text" : "duck"} and, therefore, `decision_tree['yes']['animal']` will be `"duck"`. Once you defined it, explore it by hand in a jupyter notebook, trying different field and different levels, as in the example I've shown above.
+In the final implementation, our decision tree will grow through trial-and-error but initially, let us hard code a small decision tree by hand. First, create a dictionary of dictionaries for the _Round 2_ decision tree. It has just three nodes, the top one is an action tree with two subtrees, each subtree is an animal leaf node. If you are not sure how to do this, write down a dictionaries for the animal nodes first. Then, write down the "action" node and either put references to animal dictionaries into the "yes" and "no" fields or paste the actual dictionaries. Since subtrees a dictionaries, it means that you put a dictionary into a corresponding field, so `decision_tree['yes']` will yield `{"kind" : "animal", "text" : "duck"} and, therefore, `decision_tree['yes']['animal']` will be `"duck"`. Once you defined it, explore it by hand in a jupyter notebook, trying different field and different levels, as in the example I've shown above.
 
-Now that we have two kinds of nodes, we need to update the query code, so that is asks  "Is it <animal>?" for _animal_ node (you have this code already) but "Does it <action>?" for the _action_ node. Implement it but take no action for the response to the action node question yet. Test that it works by defining changing node kind.
+Now that we have two kinds of nodes, we need to update the query code, so that is asks  "Is it <animal>?" for _animal_ node (you have this code already) but "Does it <action>?" for the _action_ node. Implement it but take no action for the response to the action node question yet. Package the code into a function `ask_question` that takes tree dictionary as the only parameter. Document the function, test that it works using trees from round 1 and round 2 (should ask different questions!)
 
 ::: {.program}
-Put your code into _code02.py_.
+Put function `ask_question` into _utils.py_<br/>
+Test code in _code02.py_.
 :::
 
 ## Recursion
@@ -78,18 +79,51 @@ $$\ !n = \begin{cases}
   n \times !(n - 1) & \text{if n > 1}
 \end{cases}$$
 
-Your task is to write a function (document it!) that computes a factorial for a given positive integer using the formula above. As long as $n > 1$ it should use itself to compute a factorial of the remaining terms. Test the function to check that computation works correctly.
+Your task is to write a function (document it!) that computes a factorial for a given positive integer using the formula above. As long as $n > 1$ it should use itself to compute a factorial of the remaining terms. Test the function to check that computation works correctly. Set a breakpoint inside the function and use a debugger to see how the recursion works.
 
 ::: {.program}
-Implement and test function in exercise 2.
+Implement and test `factorial` function in exercise 2.
 :::
 
 ## Exploring the decision tree
-Let us apply the same idea of a recursion to explore the decision tree while playing the game. For now, hardcode the decision tree shown in the figure below 
+Let us apply the same idea of a recursion to explore the decision tree while playing the game. For now, hard code the decision tree shown in the figure below. You can nest dictionaries directly, but I found it easier to define a `meow_action` dictionary for the second sub tree separately and then assign it to the `"no"` field of the quack dictionary from the `code02`.
 
 ![Decision tree for three animals.](images/guess-the-animal-three.png){width=100%}
 
-Next, we need to convert the code from _code02.py_ that used a single node to a function. Extend it, so that if the node is an _action_ node, the function goes one level deeper calling itself with the corresponding "yes" or "no" subtree (that is determined by player's response). Call it `explore_tree`. It should have just a single parameter (the current tree) and it does not need to return any value. Once implemented, call it starting with hard coded tree and test by giving different answers. The tree is small, so you should be able to quickly try all paths. There should be positive "yay!", if at the end you agree that computer's guess about an animal was correct and no output, if you said "no".
+Next, we need to to extend `ask_question` function, call its new version `explore_tree`. The key and only change: If the node is an _action_ node, the function goes one level deeper calling _itself_ (recursion!) with the corresponding "yes" or "no" subtree that is determined by player's response.
+
+Our key problem here is that values returned by the `input_yes_no` function do not match the corresponding field keys, so we need to "convert" logical values to the  `"yes"` and `"no"` strings. There two ways to do this, one that works for binary cases like ours using [conditional expressions](https://docs.python.org/3/reference/expressions.html#conditional-expressions), another one is more general a work for translation of any number of files using [dictionaries](#dictionaries).
+
+The conditional assignment is a syntactic sugar that simplifies an if-else statement for specific cases of selecting a value based on condition. Here is an example of both full and compact version of the same code, note that you _could_ in principle nest the calls building "if else if else" structure but that is guaranteed to make code unreadable, so I would always use a standard if-elif-else for cases like that.
+
+```{python}
+a_value = 1
+
+# standard if-else
+if a_value > 0:
+  value_kind = "positive"
+else:
+  value_kind = "zero or negative"
+  
+# conditional assignment
+value_kind = "positive" if a_value > 0 else "zero or negative"
+```
+
+Implement and test the code for converting a logical value, stored in a `user_response` variable, using conditional expressions in exercise 3.
+
+::: {.program}
+Implement and test conditional expressions<br/>
+in exercise 3.
+:::
+
+Conditional expressions work well for binary cases but become cumbersome and unreadable even if you have just three values to convert. A simpler solution is to use dictionaries that define <original> → <translation> as a field : key pair: "{original : translation}". Then you can just use the original value as a key and get translation directly. In exercise 4, implement the same conversion from logical to "yes"/"no" strings as before but using dictionaries.
+
+::: {.program}
+Implement translation using dictionaries<br/>
+in exercise 4.
+:::
+
+Getting back to `explore_tree`: once you get a user response for an _action_ node, convert it to a "yes"/"no" key using either method (pick the one you find easier to read and understand), function should call itself (again, recursion!) passing the corresponding subtree as a parameter. Once implemented, call it starting with hard coded tree and test by giving different answers. The tree is small, so you should be able to quickly try all paths. There should be positive "yay!" (or any message of your choice), if at the end you agree that computer's guess about an animal was correct, and no output if you said "no".
 
 ::: {.program}
 Implement function `explore_tree` in _utils.py_<br/>
@@ -122,7 +156,7 @@ print(x)
 ```
 
 ::: {.rmdnote .practice}
-Do exercise #3.
+Do exercise #5.
 :::
 
 Huh? That is precisely what I meant with "stickers on the same object". First, we create a list and put an `x` sticker on it. Then, we assign _the same list_ to `y`, in other words, we put a `y` sticker _on the same list_. Since both `x` and `y` are stickers on the _same_ object, they are, effectively, synonyms. In that specific situation, once you set `x = y`, it does not matter which variable name you use to change _the_ object, they are just two stickers hanging side-by-side on the _same_ list. Again, just a reminder, this is _not_ what would happen for _immutable_ values, like numbers, where things would behave the way you expect them to behave.
@@ -138,13 +172,13 @@ change_it(x)
 print(x)
 ```
 ::: {.rmdnote .practice}
-Do exercise #4.
+Do exercise #6.
 :::
 
 How did we manage to modify a _global_ variable from inside the function? Didn't we change the _local_ parameter of the function? Yep, that is exactly the problem with passing by reference. Your function parameter is yet another sticker on the _same_ object, so even though it _looks_ like you do not need to worry about global variables (that's why you wrote the function and learned about scopes!), you still do. If you are perplexed by this, you are in a good company. This is one of the most unexpected and confusing bits in Python that routinely catches people^[Well, at least me!] by surprise. Let us do a few more exercises, before I show you how to solve the scope problem for mutable objects.
 
 ::: {.rmdnote .practice}
-Do exercise #5.
+Do exercise #7.
 :::
 
 ## Tuple: a frozen list {#tuple}
@@ -183,7 +217,7 @@ x.append(4)
 print(y)
 ```
 ::: {.rmdnote .practice}
-Do exercise #6.
+Do exercise #8.
 :::
 
 As you probably figured out, when `y = tuple(x)`, Python creates **a copy** of the list values, freezes them (they are immutable now), and puts them into the "y" box. Hence, whatever you do to the original list, has no effect on the immutable "y".
@@ -191,13 +225,13 @@ As you probably figured out, when `y = tuple(x)`, Python creates **a copy** of t
 Conversely, you "unfreeze" a tuple by turning it into a list via `list()`. Please note that it creates **a new list**, which has no relation to any other existing list, even if values are the same or were originally taken from any of them!
 
 ::: {.rmdnote .practice}
-Do exercise #7.
+Do exercise #9.
 :::
 
 Remember I just said that `list()` creates a new list? This means that you can use it to create a copy of a list directly, without an intermediate tuple step. This way you can two _different_ lists with _identical_ values. You can also achieve the same results by slicing an entire list, e.g. `list(x)`, is the same as `x[:]`.
 
 ::: {.rmdnote .practice}
-Do exercise #8.
+Do exercise #10.
 :::
 
 Here, `y = list(x)` created a new list (which was a carbon copy of the one with the "x" sticker on it) and the "y" sticker was put on that new list, while the "x" remained hanging on the original.
@@ -222,31 +256,33 @@ print(tuple_2)
 Confusing? You bet! If you feel overwhelmed by this whole immutable/mutable, tuple/list, copy/reference confusion, you are just being a normal human being. I understand the (computational) reasons for doing things this way, I am aware of this difference and how useful this can be but it still catches me by surprise from time to time! So, the word of advice, be careful and double-check your code using debugger whenever you are assigning list or dictionaries, passing them to functions, making copies, having lists inside lists, etc. Be aware that things may not work as you think they should!
 
 ## Extending the tree
-Each node that we have in a tree is a [dictionary](https://docs.python.org/3/library/stdtypes.html#dict), which is mutable and that is makes easy if a bit confusing. The good thing is, we can modify tree from inside the function. As I showed you above, you are not passing a dictionary itself to the function, you a passing a _reference_ to it, so anything you do to any dictionary within the tree will be applied to the global tree itself. The confusing bit is that we need to keep in mind that we are always with a _reference_, so simple copy won't do us any good. We have two options illustrated in the figure below. The original tree has just one node represented by <span style="color=red;">Dict #1.</span>. When we extend the tree that node must move down and become a leaf of an action node that now becomes the starting point. The can create a new action node dictionary (_Dict #2_), a new animal node for the cat (_Dict #3_) and arrange them as in option #1. However, in this case, we need to make sure that reference in `tree` variable is updated, so that it now points to _Dict #2_. Alternatively, we can keep <span style="color=red;">Dict #1.</span> as the top node but completely replace its content turning it into an action node. The original information will be copied to a new _Dict #3_. Let us try both of these approaches, starting with 
+Getting back to the task of extending the tree. Each node that we have in a tree is a [dictionary](https://docs.python.org/3/library/stdtypes.html#dict), which is mutable and that is makes easy if a bit confusing. The good thing is, we can modify tree from _inside_ the function. As I showed you above, you are not passing a dictionary itself to the function, you a passing a _reference_ to it, so anything you do to any dictionary within the tree will be reflected in the global tree variable. The confusing bit is that we need to keep in mind that we always work with a _reference_, so when we need to copy the data a simple assignment won't do (because it will just copy the reference, remember?) We have two options illustrated in the figure below. The original tree has just one node represented by <span style="color=red;">Dict #1.</span>. When we extend the tree that node must move down and become a leaf of an action node that now becomes the starting point. We can create a new action node dictionary (_Dict #2_), a new animal node for the cat (_Dict #3_) and arrange them as in option #1. However, in this case, we need to make sure that reference in `tree` variable is updated, so that it now points to _Dict #2_. Alternatively, we can keep <span style="color=red;">Dict #1.</span> as the top node but completely replace its content turning it into an action node. The original information will be copied to a new _Dict #3_. Let us try both of these approaches, starting with option #1.
 
 ![Two options for extending tree.](images/guess-the-animal-extend.png){width=100%}
 
 
-## Extending the tree via returning new reference
-Let us proceed in small steps, as per usual. First, write code that takes an _animal_ node (set `tree` variable by hand) and creates a three node tree as in option #1 above. You need to create two additional dictionaries and link them via `"yes"` and `"no"` fields. First, hardcode both new animal and new action. Once your code works, replace hardcoded values with `input` calls asking user "Who is it?" and "What does <animal> do?".
+## Extending the tree via returning a new reference
+Let us proceed in small steps, as per usual. First, write code that takes an _animal_ node (set `tree` variable by hand) and creates a three node tree as in option #1 above. You need to create two additional dictionaries and set them to `"yes"` and `"no"` fields, so you get a dictionary that correspond to the tree in option #1. Hard code both new animal and new action initially. Once your code works, replace hard coded values with `input` calls asking user "Who is it?" and "What does <animal> do?".
 
 ::: {.rmdnote .practice}
-Test code in exercise #9.
+Test code in exercise #11.
 :::
 
-This gives us the code we need for the `explore_and_extend_tree_via_return`^[A mouthful, I know.] function that extends^[Pun intended.] the `explore_tree` function you implemented earlier. Think about where the new code goes to. 
+This gives us the code we need for the `explore_and_extend_tree_via_return`^[A mouthful, I know.] function that extends^[Pun intended.] the `explore_tree` function you implemented earlier. Think about where the new code goes to.
 
-A more important modification is that the function must now return a reference to the tree (dictionary that has the tree). It is either the _original_ tree or, if you exteded it, the _new_ tree. Also, that means for action nodes either `"yes"` or `"no"` dictionaries must be assigned a reference that a recursive call to `explore_and_extend_tree_via_return` returned. E.g., if nothing happened, the same reference to the original dictionary will be assigned. However, if we created a _new_ tree, the references to that _new_ tree must now be stored in the `"yes"` or `"no"` field. If we do not do this, the field will still point to the original node with our modifications being invisible. Same goes for the top level, as this means not only passing our global `tree` to the function but also assigning the returned reference back to it. Update the function (double check which function you are calling recursively, it should be `explore_and_extend_tree_via_return` not the original `explore_tree`!) and test it by starting with a single animal node tree and calling it in an endless loop (we will use emergency stop via debugger as an exit strategy for now). I would suggest printing out the dictionary after each call (to see how it grows), as well as putting a break point inside or after the function to explore the process, see the calling stack and parameter values for each level.
+A more important modification is that the function must now return a reference to the tree (dictionary that has the tree). It is either the _original_ tree or, if you extended it, the _new_ tree. Also, that means for action nodes either `"yes"` or `"no"` dictionaries must be assigned a reference returned from a recursive call to `explore_and_extend_tree_via_return`. E.g., if nothing happened, the same reference to the original dictionary will be return and assigned. However, if we created a _new_ tree, the references to that _new_ tree must now be stored in the `"yes"` or `"no"` field. If we do not do this, the field will still point to the original node with our modifications being invisible. Same goes for the top level, as this means not only passing our global `tree` to the function but also assigning the returned reference back to it. Think when/where do you return updated or original dictionary and when/where do you need to assign returned value to a "yes"/"no" field. 
+
+Update the function (double check which function you are calling recursively, it should be `explore_and_extend_tree_via_return` not the original `explore_tree`!) and test it by starting with a single animal node tree and calling it in an endless loop (we will use emergency stop via debugger as an exit strategy for now). I would suggest printing out the dictionary after each call (exploration and extension of the tree) to see how it grows, as well as putting a break point inside or after the function to explore the process, see the calling stack and parameter values for each level.
 
 ::: {.program}
 Implement function in _utils.py_<br/>
 Use it in code _code04.py_.
 :::
 
-## Extending the tree via modifying the dictionary in-place
-The second option (see illustration above) is simpler (we do not need to return anything) but more opaque (we modify things behind the scenes and these modifications are not obvious because there is no return). First, write the code that creates two new animal nodes and replaces the content of the original node with new action (as before, first hardcode the new animal and new action, later repace it with `input` calls as in previous function). You can check that the `tree` references the same object by checking its [id](https://docs.python.org/3/library/functions.html#id). It should remain the same even though the content is different (the `id` for the top node should change in the exercise #9, go back to the code and check). 
+## Extending the tree via modifying a dictionary in-place
+The second option (see illustration above) is simpler because we do not need to return anything. However, it is less transparent, as we modify things behind the scenes and these modifications are not obviously signaled via return. First, write the code that creates _two_ new animal nodes and replaces the content of the original node with new action (as before, first hard code the new animal and new action, later repalce it with `input` calls as in the previous function). You can check that the `tree` references the same object by checking its [id](https://docs.python.org/3/library/functions.html#id). It should remain the same even though the content is different (the `id` for the top node should change in the exercise #11, go back to the code and check). 
 
-Important catch, remember, `tree` is a _reference_, so writing `no_animal = tree` to store original information in a new node will do you no good, as it will mean that both `tree` and `no_animal` will refer to the same dictionary. Do `no_animal = tree` and then print out the [id](https://docs.python.org/3/library/functions.html#id) for both (the same) and write `tree is no_animal` (`is` checks whether two objects are identical, i.e., same objects, so it will  be `True`). Oddly enough, once you write `tree["no"] = no_animal` after that it will reference _itself_ (`tree is tree["no"]` will be `True`)! 
+Important catch! Remember, `tree` is a _reference_, so writing `no_animal = tree` to store original information in a new node will do you no good, as it will mean that both `tree` and `no_animal` will refer to the same dictionary. Remember that it is the reference to a dictionary, not the actual dictionary contect that is being copied. Do `no_animal = tree` and then print out the [id](https://docs.python.org/3/library/functions.html#id) for both (the same) and write `tree is no_animal` (`is` checks whether two objects are identical, i.e., same objects, so it will  be `True`). Oddly enough, once you write `tree["no"] = no_animal` after that it will reference _itself_ (`tree is tree["no"]` will be `True`)! 
 
 ```{python}
 # assignment copies reference but object is the same
@@ -259,7 +295,7 @@ dict1["a"] = dict1
 print(id(dict1), id(dict1["a"]), dict1 is dict1["a"])
 ```
 
-There are two ways to solve this problem. You can create a new dictionary assigning _field_ values one by one. Since field values are immutable strings, this will create a _different_ object with same _content_. 
+There are two ways to solve this problem. You can create a new dictionary assigning _field_ values one by one. Since our "animal" dictionary field values are immutable strings, this will create a _different_ object with same _content_. 
 
 ```{python}
 dict1 = {"a": 1}
@@ -274,14 +310,13 @@ print(id(dict1), id(dict2), dict1 is dict2)
 
 Alternatively, you can create a either a shallow [copy](https://docs.python.org/3/library/copy.html#copy.copy) or [deep copy](https://docs.python.org/3/library/copy.html#copy.deepcopy) of an object using [copy](https://docs.python.org/3/library/copy.html) library. The former --- [copy](https://docs.python.org/3/library/copy.html#copy.copy) --- makes a "shallow" copy by copying the context "as is". In this case, a reference to another object is copied as is and still points to the same object. The [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) goes, well, deeper and creates copy for object that the original references. The latter is more computationally expensive (you make copies of _everything_!) but is guaranteed to create a copy with no hidden ties to the original. So, when in doubt, go for the [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy). In our case, there is no difference as our original dictionary has just two immutable string, so both [copy](https://docs.python.org/3/library/copy.html) and [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) would do the same.
 
-In our code, use the latter option via [copy](https://docs.python.org/3/library/copy.html) library.
-
+In our code, use the latter option via [copy](https://docs.python.org/3/library/copy.html) library. Write the code that extends the tree by replacing the content of the original node and adds new animal nodes in exercise 12. Note that you cannot modify a tree using `tree = {...}` notation as that will create a _new_ object. To modify in-place you need to alter fields one by one via `tree[field] = value` assignment.
 
 ::: {.rmdnote .practice}
-Test code in exercise #10.
+Test code in exercise #12.
 :::
 
-Now that the code is working, you can use it in a new function called `explore_and_modify_tree` which builds upon the `explore_tree` function. Again, use the new code when you are in the _animal_ node and the guess was wrong (answer was "no"). Test it the same way in an endless loop, as you did for `explore_and_extend_tree_via_return`.
+Now that the code is working, you can use it in a new function called `explore_and_modify_tree` which builds upon the `explore_tree` function. Again, use the new code when you are in the _animal_ node and the guess was wrong (answer was "no"). This function is simpler than `explore_and_extend_tree_via_return` as you do not need to worry about returning values and assigning them back. Test it the same way in an endless loop, as you did for `explore_and_extend_tree_via_return`. Double check which function you call during recursive call!
 
 ::: {.program}
 Implement function in _utils.py_<br/>
@@ -316,14 +351,16 @@ print(dict2)
 
 In our program, we need to [load](https://docs.python.org/3/library/pickle.html#pickle.load) the tree from a file (I called it `animal_tree.p`) at the beginning and [dump](https://docs.python.org/3/library/pickle.html#pickle.dump) either at the end (once the player does not want to play anymore) or after each round (this means that the latest version of the tree would be saved _even_ if the player exits via emergency interrupt).
  
-Note that we need an _initial_ tree, created even before the first run of the program. Create that tree (single animal node) and [dump](https://docs.python.org/3/library/pickle.html#pickle.dump) into the file in a separate script or a Jupyter cell.
+Note that we need an _initial_ tree, created even before the first run of the program. Create that tree (single animal node) and [dump](https://docs.python.org/3/library/pickle.html#pickle.dump) it into the file in a separate script or a Jupyter cell. That's the tree that you need to read, modify, and write in _code07_. Once you created the initial file, load it back and check that the dictionary is the one you that you dumped.
+
+Once you incorporate the loading at the beginning and dumping at the end, test it by playing one round games and restarting the program. The tree should be retained and keep growing.
 
 ::: {.program}
 Implement program in _code07.py_.
 :::
 
 ## Saving tree for future use via JSON {#json}
-Pickle is a Python-specific serialization format, so you won't be able to use this tree elsewhere (you cannot give to your friend who uses R or C). Plus, it is a _binary_ (so, not human readble) and **not a secure** format (see big red warning at the top of [official documentation](https://docs.python.org/3/library/pickle.html)), so you should never trust a pickle file unless it is your own. 
+Pickle is a Python-specific serialization format, so you won't be able to use this tree elsewhere (you cannot give it to your friend who uses R or C). Plus, it is a _binary_ (so, not human readable) and **not a secure** format (see big red warning at the top of [official documentation](https://docs.python.org/3/library/pickle.html)), so you should never trust a pickle file unless it is your own. 
 
 An alternative way are [JSON](https://en.wikipedia.org/wiki/JSON) files that are widely used in interactive Web (JSON stands for JavaScript Object Notation), are human readable (it is a text file you can open in any editor), and are supported by any other software (any language your friend uses will have a JSON library to work with your file).
 
@@ -343,6 +380,12 @@ with open("dict1.json", "r") as json_file:
   dict2 = json.load(json_file)
 print(dict2)
 ```
+
+As before, you need a starting dictionary for your program. You can start from scratch (define a single animal node dictionary and save it) or you can load your pickled dictionary but dump it into a JSON (this reuses the tree you already built). Note that, unlike with [pickle](#pickle) files, you can take a look at the file's content opening it in VS Code.
+
 ::: {.program}
 Implement program in _code08.py_.
 :::
+
+## Wrap up
+Congrats, now you programmed a self-learning artificial intelligence system! Zip all the files and submit.
