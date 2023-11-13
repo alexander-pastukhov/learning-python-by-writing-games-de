@@ -354,28 +354,28 @@ np.tile(np.array([1, 2, 3]), (2, 3))
 Mache Übung #11.
 :::
 
-## Generating Sudoku via brute force: order and chaos
-Our take on generating Sudoku will be conceptually simple but very inefficient: We will create an ordered matrix (by row or by column, not a valid initial solution), shuffle it (by row or by column), and then check if, accidentally, we ended up with a valid Sudoku matrix. If not, keep shuffling until we have one.
+## Sudoku-Erzeugung mittels Brute-Force: Ordnung und Chaos
+Unser Ansatz zur Erzeugung von Sudoku wird konzeptionell einfach, aber sehr ineffizient sein: Wir werden eine geordnete Matrix erstellen (nach Zeile oder Spalte; keine gültige Ausgangslösung), diese mischen (zeilen- oder spaltenweise), und dann prüfen, ob wir zufällig eine gültige Sudoku-Matrix erhalten haben. Wenn nicht, weiter mischen, bis wir eine haben.
 
-You already know how to create an ordered matrix that has four or nine rows and columns. To randomize it, use [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) that shuffles an array or a _part of_ an array _in place_. The latter part means that the function does not return any value and the array you supplied (it is passed by reference, recall [mutable objects and functions](#mutable-objects)).
+Du weißt bereits, wie man eine geordnete Matrix erstellt, die vier oder neun Zeilen und Spalten hat. Um sie zu randomisieren, verwende [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html), das ein Array oder einen _Teil eines_ Arrays _am Ort_ mischt. Der letzte Teil bedeutet, dass die Funktion keinen Wert zurückgibt und das von dir gelieferte Array (es wird per Referenz übergeben, erinnere dich an [veränderliche Objekte und Funktionen](#mutable-objects)).
 
 
 ```python
-# shuffle the entire array
+#Das gesamte Array mischen
 an_array = np.arange(5)
 np.random.shuffle(an_array)
 print(an_array)
-#> [2 1 4 0 3]
+#> [4 2 3 1 0]
 
-# shuffle part of an array
+# Einen Teil eines Arrays mischen
 an_array = np.arange(5)
 np.random.shuffle(an_array[:3])
 print(an_array)
 #> [0 1 2 3 4]
 ```
 
-Write the code that creates a $4\times4$ matrix (define matrix size via `SUDOKU_SIZE` constant) ordered by row 
-(so, each row goes from 1 till `SUDOKU_SIZE` but each column has a the same number in it) and write the code that shuffles just one row (put its index in `irow` variable). Change `irow` value to test that your code works. For example, your output for a randomly shuffle row #2 could look like this.
+Schreibe den Code, der eine $4\times4$-Matrix erstellt (definiere die Größe der Matrix über die Konstante `SUDOKU_SIZE`), die nach Zeilen geordnet ist 
+(also jede Zeile geht von 1 bis `SUDOKU_SIZE`, aber jede Spalte hat die gleiche Zahl darin), und schreibe den Code, der genau eine Zeile mischt (lege ihren Index in der Variablen `irow` fest). Ändere den Wert von `irow`, um zu testen, ob dein Code funktioniert. Beispielsweise könnte dein Output für eine zufällig gemischte Zeile #2 so aussehen.
 
 
 ```
@@ -386,26 +386,26 @@ Write the code that creates a $4\times4$ matrix (define matrix size via `SUDOKU_
 ```
 
 ::: {.program}
-Write code for creating matrix<br/>
-and shuffling one row in exercise #12.
+Schreibe Code für das Erstellen einer Matrix<br/>
+und das Mischen einer Zeile in Übung #12.
 :::
 
-Once a single row code works, modify it to shuffle all rows but one at a time (you can shuffle the entire matrix but then even rows will most likely be invalid). Once the shuffling code works, turn it into a function `shuffle_by_row`. Just like [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) it does not need to return anything, as shuffling occurs in place. Write the code that generates an ordered-by-row matrix of `SUDOKU_SIZE`, shuffles it by row, and prints it out. You definitely need to know matrix [shape](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html) and loop over the [range](https://docs.python.org/3/library/functions.html#func-range) of rows.
+Sobald der Code für das Mischen einer einzelnen Zeile funktioniert, modifiziere ihn so, dass alle Zeilen einzeln gemischt werden (du kannst das gesamte Matrix mischen, aber dann werden die Zeilen höchstwahrscheinlich ungültig sein). Sobald der Misch-Code funktioniert, verwandle ihn in eine Funktion `shuffle_by_row`. Wie bei [np.random.shuffle](https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html) muss sie nichts zurückgeben, da das Mischen direkt im übergebenen Array erfolgt. Schreibe den Code, der eine nach Zeilen geordnete Matrix der Größe `SUDOKU_SIZE` generiert, diese zeilenweise mischt und ausgibt. Du musst definitiv die [Form](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html) der Matrix kennen und über den [Bereich](https://docs.python.org/3/library/functions.html#func-range) der Zeilen iterieren.
 
 ::: {.program}
-Put `shuffle_by_row` into _utils.py_<br/>
-Write program in _code01.py_
+Füge `shuffle_by_row` in _utils.py_ ein<br/>
+Schreibe das Programm in _code01.py_
 :::
 
-We are here to learn, so to solidify your skills program the same routine by both stacking and shuffling the matrix _by column_ (create a separate function `shuffle_by_column` for this).
+Wir sind hier, um zu lernen, also um deine Fähigkeiten zu festigen, programmiere dieselbe Routine sowohl durch das Stapeln als auch durch das Mischen der Matrix _spaltenweise_ (erstelle hierfür eine separate Funktion `shuffle_by_column`).
 
 ::: {.program}
-Put `shuffle_by_column` into _utils.py_<br/>
-Write program in _code02.py_
+Füge `shuffle_by_column` in _utils.py_ ein<br/>
+Schreibe das Programm in _code02.py_
 :::
 
-## Validation examples
-In the following section, you will write functions that check validity of row, columns, and blocks. For this, we need examples that are valid for all or some checks. Use the cell below to run the check later.
+## Beispiele für Validierungen
+Im folgenden Abschnitt wirst du Funktionen schreiben, die die Gültigkeit von Zeilen, Spalten und Blöcken überprüfen. Dafür benötigen wir Beispiele, die für alle oder einige Überprüfungen gültig sind. Verwende die Zelle unten, um später die Überprüfung durchzuführen.
 
 ```python
 all_valid = np.array([[4, 1, 3, 2],
@@ -439,42 +439,42 @@ all_invalid = np.array([[4, 1, 3, 2],
                         [1, 3, 2, 4]])
 ```
 
-## Is this row even valid?
-For a matrix to be a Sudoku, it must adhere to "only unique numbers in each row, column, and block" rule. Let us implement code for checking the rows (turning it into a column-check will be trivial).
+## Ist diese Zeile überhaupt gültig?
+Damit eine Matrix ein Sudoku ist, muss sie der Regel "nur eindeutige Zahlen in jeder Zeile, jeder Spalte und jedem Block" folgen. Lass uns einen Code implementieren, um die Zeilen zu überprüfen (ihn in eine Spaltenüberprüfung umzusetzen, wird trivial sein).
 
-For the row to be valid, it must contain `SUDOKU_SIZE` different, i.e., [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) numbers. Use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) function to write a comparison for row `irow` (set it to some valid index by hand) that it indeed has `SUDOKU_SIZE` unique numbers, i.e., the array [size](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm) of unique numbers is equal to `SUDOKU_SIZE`. However, do not pass the `SUDOKU_SIZE` constant to the function, instead infer the number of necessary unique element from the [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) of the matrix itself.
+Damit eine Zeile gültig ist, muss sie `SUDOKU_SIZE` verschiedene, d.h. [einzigartige](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) Zahlen enthalten. Verwende die Funktion [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html), um einen Vergleich für die Zeile `irow` zu schreiben (setze sie von Hand auf einen gültigen Index), dass sie tatsächlich `SUDOKU_SIZE` einzigartige Zahlen hat, d.h. die [Größe](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.html) des Arrays einzigartiger Zahlen ist gleich `SUDOKU_SIZE`. Gib jedoch nicht die Konstante `SUDOKU_SIZE` an die Funktion weiter, sondern leite die Anzahl der erforderlichen einzigartigen Elemente aus der [Form](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) der Matrix selbst ab.
 
-Use example matrices (see above) to check that it works correctly.
-
-::: {.program}
-Write and test single row validation<br/>
-in exercise #12.
-:::
-
-Once, we have the code working for a single row, we can use [list comprehension](#list-comprehension) to generate a list of validity values, one for each row. Matrix is valid (at least with respect to rows) only if _all_ rows are valid. Handily, NumPy has a function [all](https://numpy.org/doc/stable/reference/generated/numpy.all.html) that tests whether _all_ elements of the array or list are `True`. Package this code into function `validate_rows`, think about its inputs and outputs, document.
+Verwende Beispielmatrizen (siehe oben), um zu überprüfen, ob es korrekt funktioniert.
 
 ::: {.program}
-Put `validate_rows` into _utils.py_<br/>
-Extend program from _code01.py_ in _code03.py_<br/>
-Test code using example matrices.
+Schreibe und teste die Überprüfung einer einzelnen Zeile<br/>
+in Übung #12.
 :::
 
-Now, do the same for columns and use both checks to see if the matrix is a valid Sudoku (rows should be fine but columns should fail the check).
+Sobald der Code für eine einzelne Zeile funktioniert, können wir eine [List Comprehension](#list-comprehension) verwenden, um eine Liste von Gültigkeitswerten zu generieren, einen für jede Zeile. Eine Matrix ist gültig (zumindest was die Zeilen angeht), nur wenn _alle_ Zeilen gültig sind. Praktischerweise hat NumPy eine Funktion [all](https://numpy.org/doc/stable/reference/generated/numpy.all.html), die testet, ob _alle_ Elemente des Arrays oder der Liste `True` sind. Verpacke diesen Code in die Funktion `validate_rows`, überlege dir ihre Eingaben und Ausgaben, dokumentiere sie.
+
 ::: {.program}
-Put `validate_columns` into _utils.py_<br/>
-Extend program from in _code03.py_ in _code04.py_<br/>
-Test code using example matrices.
+Füge `validate_rows` in _utils.py_ ein<br/>
+Erweitere das Programm aus _code01.py_ in _code03.py_<br/>
+Teste den Code mit Beispielmatrizen.
 :::
 
-## Blocks
-Blocks are a touch trickier to work with as we do not have simple single axis to use for slicing. However, we can think about each as having a row and column index, which both go from 0 to 2 for $9\times9$ Sudoku as we have $3\times3$ blocks, or from 0 to 1 for $4\times4$ Sudoku where we have $2\times2$ blocks. 
+Mache nun dasselbe für Spalten und verwende beide Überprüfungen, um zu sehen, ob die Matrix ein gültiges Sudoku ist (Zeilen sollten in Ordnung sein, aber Spalten sollten den Test nicht bestehen).
+::: {.program}
+Füge `validate_columns` in _utils.py_ ein<br/>
+Erweitere das Programm aus _code03.py_ in _code04.py_<br/>
+Teste den Code mit Beispielmatrizen.
+:::
 
-![Sudoku blocks indexing](images/sudoku-blocks.png){width=50% style="display: block; margin: 0 auto"}
+## Blöcke
+Blöcke zu bearbeiten ist etwas kniffliger, da wir keine einfache einzelne Achse zum Schneiden (Slicing) verwenden können. Wir können jedoch jeden Block so betrachten, als hätte er einen Zeilen- und einen Spaltenindex, die beide von 0 bis 2 für ein $9\times9$ Sudoku gehen, weil wir $3\times3$ Blöcke haben, oder von 0 bis 1 für ein $4\times4$ Sudoku, wo wir $2\times2$ Blöcke haben.
+
+![Sudoku-Block-Indizierung](images/sudoku-blocks.png){width=50% style="display: block; margin: 0 auto"}
 
 <br/><br/>
-Write the code that uses [slicing](https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding) to extract a single block defined by `i_block_row` and `i_block_col`. Compute matrix row for the block top left corner and then get a vertical slice relative to it. Same for the horizontal slice relative to the top-left block column in the matrix. To make debugging easier, generate a $9\times9$ matrix of integers stacked either by row or by columns, so that it is easier to see whether you code works. Test it for all combinations for `i_block_row` and `i_block_col`. You will also need to compute or define the block size. Do the former as it is very straightforward to compute from matrix [shape](https://numpy.org/doc/stable/reference/generated/numpy.shape.html). In a square Sudoku, block size is a [square root](https://docs.python.org/3/library/math.html#math.sqrt) of the board size ($4\times4$ boards have $2\times2$ blocks, $9\times9$ boards have $3\times3$ blocks, etc.). However, you size should be an integer, so you must take care of the [type conversion](https://docs.python.org/3/library/functions.html#int) yourself.
+Schreibe den Code, der [Slicing](https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding) verwendet, um einen einzelnen Block zu extrahieren, der durch `i_block_row` und `i_block_col` definiert ist. Berechne die Matrixzeile für die obere linke Ecke des Blocks und nimm dann einen vertikalen Ausschnitt bezüglich dieser. Das Gleiche gilt für den horizontalen Ausschnitt in Bezug auf die linke obere Blockspalte in der Matrix. Um das Debuggen zu erleichtern, erzeuge eine $9\times9$ Matrix aus ganzen Zahlen, gestapelt entweder nach Zeilen oder Spalten, damit leichter zu sehen ist, ob dein Code funktioniert. Teste ihn für alle Kombinationen von `i_block_row` und `i_block_col`. Du musst auch die Blockgröße berechnen oder definieren. Tue letzteres, da es sehr einfach ist, aus der Matrixform zu berechnen. In einem quadratischen Sudoku ist die Blockgröße eine [Quadratwurzel](https://docs.python.org/3/library/math.html#math.sqrt) der Brettgröße (Bretter der Größe $4\times4$ haben Blöcke der Größe $2\times2$, Bretter der Größe $9\times9$ haben Blöcke der Größe $3\times3$ usw.). Deine Größe sollte jedoch eine ganze Zahl sein, also musst du dich selbst um die [Typumwandlung](https://docs.python.org/3/library/functions.html#int) kümmern.
 
-This is how the output should look like if `i_block_row = 1` and `i_block_col = 0` when you stack matrix by row
+So sollte die Ausgabe aussehen, wenn `i_block_row = 1` und `i_block_col = 0` sind, wenn du die Matrix zeilenweise stapelst.
 
 ```
 #> array([[1, 2, 3],
@@ -482,7 +482,7 @@ This is how the output should look like if `i_block_row = 1` and `i_block_col = 
 #>        [1, 2, 3]])
 ```
 
-and when stacked by column
+und wenn sie spaltenweise gestapelt ist
 
 ```
 #> array([[4, 4, 4],
@@ -491,27 +491,27 @@ and when stacked by column
 ```
 
 ::: {.program}
-Write and test single block extraction code<br/>
-in exercise #13.
+Schreibe und teste den Code für die Extraktion eines einzelnen Blocks<br/>
+in Übung #13.
 :::
 
-Once you have the code to extract block values, the validation logic is very similar to that of the row / column validation. Note that you can use [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) directly on the 2D array you extracted or, optionally, you can  [flatten](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html) it to a 1D array first. Once you have a list of nine logical values (one per block), you can check whether they are (all)[https://numpy.org/doc/stable/reference/generated/numpy.all.html] `True`. The main difference here is that you need nested loops to go over 2D grid of blocks. My solution is to create an empty list for validation values and then loop of block row and block column [appending](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) values to the list.
+Sobald du den Code hast, um Blockwerte zu extrahieren, ist die Logik zur Überprüfung der Gültigkeit sehr ähnlich wie bei der Überprüfung von Zeilen und Spalten. Beachte, dass du [unique](https://numpy.org/doc/stable/reference/generated/numpy.unique.html) direkt auf das extrahierte 2D-Array anwenden kannst oder optional kannst du es zuerst mit [flatten](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html) in ein 1D-Array umwandeln. Sobald du eine Liste von neun logischen Werten (einer pro Block) hast, kannst du überprüfen, ob diese [alle](https://numpy.org/doc/stable/reference/generated/numpy.all.html) `True` sind. Der Hauptunterschied hier ist, dass du verschachtelte Schleifen benötigst, um über das 2D-Netz der Blöcke zu iterieren. Meine Lösung besteht darin, eine leere Liste für die Validierungswerte zu erstellen und dann über die Blockzeile und Blockspalte zu iterieren, [indem ich](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) Werte der Liste hinzufüge.
 
 
 ::: {.program}
-Put `validate_blocks` into _utils.py_<br/>
-Test all three validation functions using <br/>
-example matrices in _code05.py_</br>
+Füge `validate_blocks` in _utils.py_ ein<br/>
+Teste alle drei Validierungsfunktionen mithilfe von<br/>
+Beispielmatrizen in _code05.py_</br>
 :::
 
-## Brute force in action
-We have all the building blocks to try to generate Sudoku via brute force. Package three validation functions that you created into a single `validate_matrix` function that returns `True` only if all rows, all columns, and blocks are valid. Then, generate an ordered matrix by row and in a for loop (I would use a for loop and limit it to say 1000 iterations) shuffle this matrix by row and check whether it is valid. If it is, break our of the loop and print out the Sudoku. Write a sad message (without a matrix print out) once you run out of trials (but no sad message otherwise!). Alternatively, you can generate matrix ordered by columns and then shuffle by columns as well (why generating by row and shuffling by columns won't work?). Set matrix size to 4 but note that our code will work with any correct matrix size ($9\times9$, $16\times16$, etc.)
+## Brute-Force in Aktion
+Wir haben alle Bausteine, um den Versuch zu starten, Sudoku mittels Brute-Force zu generieren. Fasse die drei Validierungsfunktionen, die du erstellt hast, in einer einzelnen Funktion `validate_matrix` zusammen, die nur dann `True` zurückgibt, wenn alle Zeilen, alle Spalten und alle Blöcke gültig sind. Dann generiere eine geordnete Matrix zeilenweise und mische in einer Schleife (ich würde eine for-Schleife nutzen und sie auf zum Beispiel 1000 Iterationen beschränken) diese Matrix zeilenweise und prüfe, ob sie gültig ist. Wenn sie es ist, brich aus der Schleife aus und drucke das Sudoku aus. Schreibe eine traurige Nachricht (ohne Ausdruck einer Matrix), sobald du die Versuche aufgebraucht hast (aber ansonsten keine traurige Nachricht!). Alternativ kannst du die Matrix auch spaltenweise ordnen und dann ebenso spaltenweise mischen (warum funktioniert es nicht, sie zeilenweise zu ordnen und spaltenweise zu mischen?). Setze die Matrixgröße auf 4, aber beachte, dass unser Code mit jeder korrekten Matrixgröße funktionieren wird ($9\times9$, $16\times16$ usw.).
 
 ::: {.program}
-Put `validate_matrix` into _utils.py_<br/>
-Write program in _code06.py_
+Füge `validate_matrix` in _utils.py_ ein<br/>
+Schreibe das Programm in _code06.py_
 :::
 
-## Wrap up
-Excellent, we have a working program that (very rarely) generates a complete Sudoku matrix. Zip and submit and next time we will write a different, more efficient implementation of the algorithm.
+## Zusammenfassung
+Ausgezeichnet, wir haben ein funktionierendes Programm, das (sehr selten) eine vollständige Sudoku-Matrix erzeugt. Zippe und reiche ein, und nächstes Mal werden wir eine andere, effizientere Implementierung des Algorithmus schreiben.
 

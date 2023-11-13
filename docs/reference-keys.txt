@@ -157,9 +157,9 @@ erstellen-von-arrays-mit-sequenzen
 stack
 zeilen--und-spaltenvektoren-versus-1d-arrays-row-col-vectors
 wiederholen-und-kacheln
-generating-sudoku-via-brute-force-order-and-chaos
-validation-examples
-is-this-row-even-valid
-blocks
-brute-force-in-action
-wrap-up
+sudoku-erzeugung-mittels-brute-force-ordnung-und-chaos
+beispiele-für-validierungen
+ist-diese-zeile-überhaupt-gültig
+blöcke
+brute-force-in-aktion
+zusammenfassung-1

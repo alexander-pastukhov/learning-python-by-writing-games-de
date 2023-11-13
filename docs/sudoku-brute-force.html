@@ -346,49 +346,49 @@ Das Rätsel basiert auf einem 2D-Gitter und prinzipiell könntest du <a href="On
 <p>Mache Übung #11.</p>
 </div>
 </div>
-<div id="generating-sudoku-via-brute-force-order-and-chaos" class="section level2" number="11.10">
+<div id="sudoku-erzeugung-mittels-brute-force-ordnung-und-chaos" class="section level2" number="11.10">
 <h2>
-<span class="header-section-number">11.10</span> Generating Sudoku via brute force: order and chaos<a class="anchor" aria-label="anchor" href="#generating-sudoku-via-brute-force-order-and-chaos"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.10</span> Sudoku-Erzeugung mittels Brute-Force: Ordnung und Chaos<a class="anchor" aria-label="anchor" href="#sudoku-erzeugung-mittels-brute-force-ordnung-und-chaos"><i class="fas fa-link"></i></a>
 </h2>
-<p>Our take on generating Sudoku will be conceptually simple but very inefficient: We will create an ordered matrix (by row or by column, not a valid initial solution), shuffle it (by row or by column), and then check if, accidentally, we ended up with a valid Sudoku matrix. If not, keep shuffling until we have one.</p>
-<p>You already know how to create an ordered matrix that has four or nine rows and columns. To randomize it, use <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html">np.random.shuffle</a> that shuffles an array or a <em>part of</em> an array <em>in place</em>. The latter part means that the function does not return any value and the array you supplied (it is passed by reference, recall <a href="guess-the-animal.html#mutable-objects">mutable objects and functions</a>).</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb120-1"><a href="sudoku-brute-force.html#cb120-1" tabindex="-1"></a><span class="co"># shuffle the entire array</span></span>
+<p>Unser Ansatz zur Erzeugung von Sudoku wird konzeptionell einfach, aber sehr ineffizient sein: Wir werden eine geordnete Matrix erstellen (nach Zeile oder Spalte; keine gültige Ausgangslösung), diese mischen (zeilen- oder spaltenweise), und dann prüfen, ob wir zufällig eine gültige Sudoku-Matrix erhalten haben. Wenn nicht, weiter mischen, bis wir eine haben.</p>
+<p>Du weißt bereits, wie man eine geordnete Matrix erstellt, die vier oder neun Zeilen und Spalten hat. Um sie zu randomisieren, verwende <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html">np.random.shuffle</a>, das ein Array oder einen <em>Teil eines</em> Arrays <em>am Ort</em> mischt. Der letzte Teil bedeutet, dass die Funktion keinen Wert zurückgibt und das von dir gelieferte Array (es wird per Referenz übergeben, erinnere dich an <a href="guess-the-animal.html#mutable-objects">veränderliche Objekte und Funktionen</a>).</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb120-1"><a href="sudoku-brute-force.html#cb120-1" tabindex="-1"></a><span class="co">#Das gesamte Array mischen</span></span>
 <span id="cb120-2"><a href="sudoku-brute-force.html#cb120-2" tabindex="-1"></a>an_array <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
 <span id="cb120-3"><a href="sudoku-brute-force.html#cb120-3" tabindex="-1"></a>np.random.shuffle(an_array)</span>
 <span id="cb120-4"><a href="sudoku-brute-force.html#cb120-4" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
-<span id="cb120-5"><a href="sudoku-brute-force.html#cb120-5" tabindex="-1"></a><span class="co">#&gt; [2 1 4 0 3]</span></span>
+<span id="cb120-5"><a href="sudoku-brute-force.html#cb120-5" tabindex="-1"></a><span class="co">#&gt; [4 2 3 1 0]</span></span>
 <span id="cb120-6"><a href="sudoku-brute-force.html#cb120-6" tabindex="-1"></a></span>
-<span id="cb120-7"><a href="sudoku-brute-force.html#cb120-7" tabindex="-1"></a><span class="co"># shuffle part of an array</span></span>
+<span id="cb120-7"><a href="sudoku-brute-force.html#cb120-7" tabindex="-1"></a><span class="co"># Einen Teil eines Arrays mischen</span></span>
 <span id="cb120-8"><a href="sudoku-brute-force.html#cb120-8" tabindex="-1"></a>an_array <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
 <span id="cb120-9"><a href="sudoku-brute-force.html#cb120-9" tabindex="-1"></a>np.random.shuffle(an_array[:<span class="dv">3</span>])</span>
 <span id="cb120-10"><a href="sudoku-brute-force.html#cb120-10" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
 <span id="cb120-11"><a href="sudoku-brute-force.html#cb120-11" tabindex="-1"></a><span class="co">#&gt; [0 1 2 3 4]</span></span></code></pre></div>
-<p>Write the code that creates a <span class="math inline">\(4\times4\)</span> matrix (define matrix size via <code>SUDOKU_SIZE</code> constant) ordered by row
-(so, each row goes from 1 till <code>SUDOKU_SIZE</code> but each column has a the same number in it) and write the code that shuffles just one row (put its index in <code>irow</code> variable). Change <code>irow</code> value to test that your code works. For example, your output for a randomly shuffle row #2 could look like this.</p>
+<p>Schreibe den Code, der eine <span class="math inline">\(4\times4\)</span>-Matrix erstellt (definiere die Größe der Matrix über die Konstante <code>SUDOKU_SIZE</code>), die nach Zeilen geordnet ist
+(also jede Zeile geht von 1 bis <code>SUDOKU_SIZE</code>, aber jede Spalte hat die gleiche Zahl darin), und schreibe den Code, der genau eine Zeile mischt (lege ihren Index in der Variablen <code>irow</code> fest). Ändere den Wert von <code>irow</code>, um zu testen, ob dein Code funktioniert. Beispielsweise könnte dein Output für eine zufällig gemischte Zeile #2 so aussehen.</p>
 <pre><code>#&gt; array([[1, 2, 3, 4],
 #&gt;        [2, 4, 1, 3],
 #&gt;        [1, 2, 3, 4],
 #&gt;        [1, 2, 3, 4]])</code></pre>
 <div class="program">
-<p>Write code for creating matrix<br>
-and shuffling one row in exercise #12.</p>
+<p>Schreibe Code für das Erstellen einer Matrix<br>
+und das Mischen einer Zeile in Übung #12.</p>
 </div>
-<p>Once a single row code works, modify it to shuffle all rows but one at a time (you can shuffle the entire matrix but then even rows will most likely be invalid). Once the shuffling code works, turn it into a function <code>shuffle_by_row</code>. Just like <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html">np.random.shuffle</a> it does not need to return anything, as shuffling occurs in place. Write the code that generates an ordered-by-row matrix of <code>SUDOKU_SIZE</code>, shuffles it by row, and prints it out. You definitely need to know matrix <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">shape</a> and loop over the <a href="https://docs.python.org/3/library/functions.html#func-range">range</a> of rows.</p>
+<p>Sobald der Code für das Mischen einer einzelnen Zeile funktioniert, modifiziere ihn so, dass alle Zeilen einzeln gemischt werden (du kannst das gesamte Matrix mischen, aber dann werden die Zeilen höchstwahrscheinlich ungültig sein). Sobald der Misch-Code funktioniert, verwandle ihn in eine Funktion <code>shuffle_by_row</code>. Wie bei <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html">np.random.shuffle</a> muss sie nichts zurückgeben, da das Mischen direkt im übergebenen Array erfolgt. Schreibe den Code, der eine nach Zeilen geordnete Matrix der Größe <code>SUDOKU_SIZE</code> generiert, diese zeilenweise mischt und ausgibt. Du musst definitiv die <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">Form</a> der Matrix kennen und über den <a href="https://docs.python.org/3/library/functions.html#func-range">Bereich</a> der Zeilen iterieren.</p>
 <div class="program">
-<p>Put <code>shuffle_by_row</code> into <em>utils.py</em><br>
-Write program in <em>code01.py</em></p>
+<p>Füge <code>shuffle_by_row</code> in <em>utils.py</em> ein<br>
+Schreibe das Programm in <em>code01.py</em></p>
 </div>
-<p>We are here to learn, so to solidify your skills program the same routine by both stacking and shuffling the matrix <em>by column</em> (create a separate function <code>shuffle_by_column</code> for this).</p>
+<p>Wir sind hier, um zu lernen, also um deine Fähigkeiten zu festigen, programmiere dieselbe Routine sowohl durch das Stapeln als auch durch das Mischen der Matrix <em>spaltenweise</em> (erstelle hierfür eine separate Funktion <code>shuffle_by_column</code>).</p>
 <div class="program">
-<p>Put <code>shuffle_by_column</code> into <em>utils.py</em><br>
-Write program in <em>code02.py</em></p>
+<p>Füge <code>shuffle_by_column</code> in <em>utils.py</em> ein<br>
+Schreibe das Programm in <em>code02.py</em></p>
 </div>
 </div>
-<div id="validation-examples" class="section level2" number="11.11">
+<div id="beispiele-für-validierungen" class="section level2" number="11.11">
 <h2>
-<span class="header-section-number">11.11</span> Validation examples<a class="anchor" aria-label="anchor" href="#validation-examples"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.11</span> Beispiele für Validierungen<a class="anchor" aria-label="anchor" href="#beispiele-f%C3%BCr-validierungen"><i class="fas fa-link"></i></a>
 </h2>
-<p>In the following section, you will write functions that check validity of row, columns, and blocks. For this, we need examples that are valid for all or some checks. Use the cell below to run the check later.</p>
+<p>Im folgenden Abschnitt wirst du Funktionen schreiben, die die Gültigkeit von Zeilen, Spalten und Blöcken überprüfen. Dafür benötigen wir Beispiele, die für alle oder einige Überprüfungen gültig sind. Verwende die Zelle unten, um später die Überprüfung durchzuführen.</p>
 <div class="sourceCode" id="cb122"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb122-1"><a href="sudoku-brute-force.html#cb122-1" tabindex="-1"></a>all_valid <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
 <span id="cb122-2"><a href="sudoku-brute-force.html#cb122-2" tabindex="-1"></a>                      [<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>],</span>
 <span id="cb122-3"><a href="sudoku-brute-force.html#cb122-3" tabindex="-1"></a>                      [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>],</span>
@@ -419,74 +419,74 @@ Write program in <em>code02.py</em></p>
 <span id="cb122-28"><a href="sudoku-brute-force.html#cb122-28" tabindex="-1"></a>                        [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>],</span>
 <span id="cb122-29"><a href="sudoku-brute-force.html#cb122-29" tabindex="-1"></a>                        [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>]])</span></code></pre></div>
 </div>
-<div id="is-this-row-even-valid" class="section level2" number="11.12">
+<div id="ist-diese-zeile-überhaupt-gültig" class="section level2" number="11.12">
 <h2>
-<span class="header-section-number">11.12</span> Is this row even valid?<a class="anchor" aria-label="anchor" href="#is-this-row-even-valid"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.12</span> Ist diese Zeile überhaupt gültig?<a class="anchor" aria-label="anchor" href="#ist-diese-zeile-%C3%BCberhaupt-g%C3%BCltig"><i class="fas fa-link"></i></a>
 </h2>
-<p>For a matrix to be a Sudoku, it must adhere to “only unique numbers in each row, column, and block” rule. Let us implement code for checking the rows (turning it into a column-check will be trivial).</p>
-<p>For the row to be valid, it must contain <code>SUDOKU_SIZE</code> different, i.e., <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">unique</a> numbers. Use <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">unique</a> function to write a comparison for row <code>irow</code> (set it to some valid index by hand) that it indeed has <code>SUDOKU_SIZE</code> unique numbers, i.e., the array <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm">size</a> of unique numbers is equal to <code>SUDOKU_SIZE</code>. However, do not pass the <code>SUDOKU_SIZE</code> constant to the function, instead infer the number of necessary unique element from the <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">shape</a> of the matrix itself.</p>
-<p>Use example matrices (see above) to check that it works correctly.</p>
+<p>Damit eine Matrix ein Sudoku ist, muss sie der Regel “nur eindeutige Zahlen in jeder Zeile, jeder Spalte und jedem Block” folgen. Lass uns einen Code implementieren, um die Zeilen zu überprüfen (ihn in eine Spaltenüberprüfung umzusetzen, wird trivial sein).</p>
+<p>Damit eine Zeile gültig ist, muss sie <code>SUDOKU_SIZE</code> verschiedene, d.h. <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">einzigartige</a> Zahlen enthalten. Verwende die Funktion <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">unique</a>, um einen Vergleich für die Zeile <code>irow</code> zu schreiben (setze sie von Hand auf einen gültigen Index), dass sie tatsächlich <code>SUDOKU_SIZE</code> einzigartige Zahlen hat, d.h. die <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.html">Größe</a> des Arrays einzigartiger Zahlen ist gleich <code>SUDOKU_SIZE</code>. Gib jedoch nicht die Konstante <code>SUDOKU_SIZE</code> an die Funktion weiter, sondern leite die Anzahl der erforderlichen einzigartigen Elemente aus der <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">Form</a> der Matrix selbst ab.</p>
+<p>Verwende Beispielmatrizen (siehe oben), um zu überprüfen, ob es korrekt funktioniert.</p>
 <div class="program">
-<p>Write and test single row validation<br>
-in exercise #12.</p>
+<p>Schreibe und teste die Überprüfung einer einzelnen Zeile<br>
+in Übung #12.</p>
 </div>
-<p>Once, we have the code working for a single row, we can use <a href="One-armed-bandit.html#list-comprehension">list comprehension</a> to generate a list of validity values, one for each row. Matrix is valid (at least with respect to rows) only if <em>all</em> rows are valid. Handily, NumPy has a function <a href="https://numpy.org/doc/stable/reference/generated/numpy.all.html">all</a> that tests whether <em>all</em> elements of the array or list are <code>True</code>. Package this code into function <code>validate_rows</code>, think about its inputs and outputs, document.</p>
+<p>Sobald der Code für eine einzelne Zeile funktioniert, können wir eine <a href="One-armed-bandit.html#list-comprehension">List Comprehension</a> verwenden, um eine Liste von Gültigkeitswerten zu generieren, einen für jede Zeile. Eine Matrix ist gültig (zumindest was die Zeilen angeht), nur wenn <em>alle</em> Zeilen gültig sind. Praktischerweise hat NumPy eine Funktion <a href="https://numpy.org/doc/stable/reference/generated/numpy.all.html">all</a>, die testet, ob <em>alle</em> Elemente des Arrays oder der Liste <code>True</code> sind. Verpacke diesen Code in die Funktion <code>validate_rows</code>, überlege dir ihre Eingaben und Ausgaben, dokumentiere sie.</p>
 <div class="program">
-<p>Put <code>validate_rows</code> into <em>utils.py</em><br>
-Extend program from <em>code01.py</em> in <em>code03.py</em><br>
-Test code using example matrices.</p>
+<p>Füge <code>validate_rows</code> in <em>utils.py</em> ein<br>
+Erweitere das Programm aus <em>code01.py</em> in <em>code03.py</em><br>
+Teste den Code mit Beispielmatrizen.</p>
 </div>
-<p>Now, do the same for columns and use both checks to see if the matrix is a valid Sudoku (rows should be fine but columns should fail the check).
+<p>Mache nun dasselbe für Spalten und verwende beide Überprüfungen, um zu sehen, ob die Matrix ein gültiges Sudoku ist (Zeilen sollten in Ordnung sein, aber Spalten sollten den Test nicht bestehen).
 ::: {.program}
-Put <code>validate_columns</code> into <em>utils.py</em><br>
-Extend program from in <em>code03.py</em> in <em>code04.py</em><br>
-Test code using example matrices.
+Füge <code>validate_columns</code> in <em>utils.py</em> ein<br>
+Erweitere das Programm aus <em>code03.py</em> in <em>code04.py</em><br>
+Teste den Code mit Beispielmatrizen.
 :::</p>
 </div>
-<div id="blocks" class="section level2" number="11.13">
+<div id="blöcke" class="section level2" number="11.13">
 <h2>
-<span class="header-section-number">11.13</span> Blocks<a class="anchor" aria-label="anchor" href="#blocks"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.13</span> Blöcke<a class="anchor" aria-label="anchor" href="#bl%C3%B6cke"><i class="fas fa-link"></i></a>
 </h2>
-<p>Blocks are a touch trickier to work with as we do not have simple single axis to use for slicing. However, we can think about each as having a row and column index, which both go from 0 to 2 for <span class="math inline">\(9\times9\)</span> Sudoku as we have <span class="math inline">\(3\times3\)</span> blocks, or from 0 to 1 for <span class="math inline">\(4\times4\)</span> Sudoku where we have <span class="math inline">\(2\times2\)</span> blocks.</p>
+<p>Blöcke zu bearbeiten ist etwas kniffliger, da wir keine einfache einzelne Achse zum Schneiden (Slicing) verwenden können. Wir können jedoch jeden Block so betrachten, als hätte er einen Zeilen- und einen Spaltenindex, die beide von 0 bis 2 für ein <span class="math inline">\(9\times9\)</span> Sudoku gehen, weil wir <span class="math inline">\(3\times3\)</span> Blöcke haben, oder von 0 bis 1 für ein <span class="math inline">\(4\times4\)</span> Sudoku, wo wir <span class="math inline">\(2\times2\)</span> Blöcke haben.</p>
 <div class="float">
-<img src="images/sudoku-blocks.png" style="display: block; margin: 0 auto;width:50.0%" alt="Sudoku blocks indexing"><div class="figcaption">Sudoku blocks indexing</div>
+<img src="images/sudoku-blocks.png" style="display: block; margin: 0 auto;width:50.0%" alt="Sudoku-Block-Indizierung"><div class="figcaption">Sudoku-Block-Indizierung</div>
 </div>
 <p><br><br>
-Write the code that uses <a href="https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding">slicing</a> to extract a single block defined by <code>i_block_row</code> and <code>i_block_col</code>. Compute matrix row for the block top left corner and then get a vertical slice relative to it. Same for the horizontal slice relative to the top-left block column in the matrix. To make debugging easier, generate a <span class="math inline">\(9\times9\)</span> matrix of integers stacked either by row or by columns, so that it is easier to see whether you code works. Test it for all combinations for <code>i_block_row</code> and <code>i_block_col</code>. You will also need to compute or define the block size. Do the former as it is very straightforward to compute from matrix <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">shape</a>. In a square Sudoku, block size is a <a href="https://docs.python.org/3/library/math.html#math.sqrt">square root</a> of the board size (<span class="math inline">\(4\times4\)</span> boards have <span class="math inline">\(2\times2\)</span> blocks, <span class="math inline">\(9\times9\)</span> boards have <span class="math inline">\(3\times3\)</span> blocks, etc.). However, you size should be an integer, so you must take care of the <a href="https://docs.python.org/3/library/functions.html#int">type conversion</a> yourself.</p>
-<p>This is how the output should look like if <code>i_block_row = 1</code> and <code>i_block_col = 0</code> when you stack matrix by row</p>
+Schreibe den Code, der <a href="https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding">Slicing</a> verwendet, um einen einzelnen Block zu extrahieren, der durch <code>i_block_row</code> und <code>i_block_col</code> definiert ist. Berechne die Matrixzeile für die obere linke Ecke des Blocks und nimm dann einen vertikalen Ausschnitt bezüglich dieser. Das Gleiche gilt für den horizontalen Ausschnitt in Bezug auf die linke obere Blockspalte in der Matrix. Um das Debuggen zu erleichtern, erzeuge eine <span class="math inline">\(9\times9\)</span> Matrix aus ganzen Zahlen, gestapelt entweder nach Zeilen oder Spalten, damit leichter zu sehen ist, ob dein Code funktioniert. Teste ihn für alle Kombinationen von <code>i_block_row</code> und <code>i_block_col</code>. Du musst auch die Blockgröße berechnen oder definieren. Tue letzteres, da es sehr einfach ist, aus der Matrixform zu berechnen. In einem quadratischen Sudoku ist die Blockgröße eine <a href="https://docs.python.org/3/library/math.html#math.sqrt">Quadratwurzel</a> der Brettgröße (Bretter der Größe <span class="math inline">\(4\times4\)</span> haben Blöcke der Größe <span class="math inline">\(2\times2\)</span>, Bretter der Größe <span class="math inline">\(9\times9\)</span> haben Blöcke der Größe <span class="math inline">\(3\times3\)</span> usw.). Deine Größe sollte jedoch eine ganze Zahl sein, also musst du dich selbst um die <a href="https://docs.python.org/3/library/functions.html#int">Typumwandlung</a> kümmern.</p>
+<p>So sollte die Ausgabe aussehen, wenn <code>i_block_row = 1</code> und <code>i_block_col = 0</code> sind, wenn du die Matrix zeilenweise stapelst.</p>
 <pre><code>#&gt; array([[1, 2, 3],
 #&gt;        [1, 2, 3],
 #&gt;        [1, 2, 3]])</code></pre>
-<p>and when stacked by column</p>
+<p>und wenn sie spaltenweise gestapelt ist</p>
 <pre><code>#&gt; array([[4, 4, 4],
 #&gt;        [5, 5, 5],
 #&gt;        [6, 6, 6]])</code></pre>
 <div class="program">
-<p>Write and test single block extraction code<br>
-in exercise #13.</p>
+<p>Schreibe und teste den Code für die Extraktion eines einzelnen Blocks<br>
+in Übung #13.</p>
 </div>
-<p>Once you have the code to extract block values, the validation logic is very similar to that of the row / column validation. Note that you can use <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">unique</a> directly on the 2D array you extracted or, optionally, you can <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html">flatten</a> it to a 1D array first. Once you have a list of nine logical values (one per block), you can check whether they are (all)[<a href="https://numpy.org/doc/stable/reference/generated/numpy.all.html" class="uri">https://numpy.org/doc/stable/reference/generated/numpy.all.html</a>] <code>True</code>. The main difference here is that you need nested loops to go over 2D grid of blocks. My solution is to create an empty list for validation values and then loop of block row and block column <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">appending</a> values to the list.</p>
+<p>Sobald du den Code hast, um Blockwerte zu extrahieren, ist die Logik zur Überprüfung der Gültigkeit sehr ähnlich wie bei der Überprüfung von Zeilen und Spalten. Beachte, dass du <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">unique</a> direkt auf das extrahierte 2D-Array anwenden kannst oder optional kannst du es zuerst mit <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html">flatten</a> in ein 1D-Array umwandeln. Sobald du eine Liste von neun logischen Werten (einer pro Block) hast, kannst du überprüfen, ob diese <a href="https://numpy.org/doc/stable/reference/generated/numpy.all.html">alle</a> <code>True</code> sind. Der Hauptunterschied hier ist, dass du verschachtelte Schleifen benötigst, um über das 2D-Netz der Blöcke zu iterieren. Meine Lösung besteht darin, eine leere Liste für die Validierungswerte zu erstellen und dann über die Blockzeile und Blockspalte zu iterieren, <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">indem ich</a> Werte der Liste hinzufüge.</p>
 <div class="program">
-<p>Put <code>validate_blocks</code> into <em>utils.py</em><br>
-Test all three validation functions using <br>
-example matrices in <em>code05.py</em></p>
+<p>Füge <code>validate_blocks</code> in <em>utils.py</em> ein<br>
+Teste alle drei Validierungsfunktionen mithilfe von<br>
+Beispielmatrizen in <em>code05.py</em></p>
 </div>
 </div>
-<div id="brute-force-in-action" class="section level2" number="11.14">
+<div id="brute-force-in-aktion" class="section level2" number="11.14">
 <h2>
-<span class="header-section-number">11.14</span> Brute force in action<a class="anchor" aria-label="anchor" href="#brute-force-in-action"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.14</span> Brute-Force in Aktion<a class="anchor" aria-label="anchor" href="#brute-force-in-aktion"><i class="fas fa-link"></i></a>
 </h2>
-<p>We have all the building blocks to try to generate Sudoku via brute force. Package three validation functions that you created into a single <code>validate_matrix</code> function that returns <code>True</code> only if all rows, all columns, and blocks are valid. Then, generate an ordered matrix by row and in a for loop (I would use a for loop and limit it to say 1000 iterations) shuffle this matrix by row and check whether it is valid. If it is, break our of the loop and print out the Sudoku. Write a sad message (without a matrix print out) once you run out of trials (but no sad message otherwise!). Alternatively, you can generate matrix ordered by columns and then shuffle by columns as well (why generating by row and shuffling by columns won’t work?). Set matrix size to 4 but note that our code will work with any correct matrix size (<span class="math inline">\(9\times9\)</span>, <span class="math inline">\(16\times16\)</span>, etc.)</p>
+<p>Wir haben alle Bausteine, um den Versuch zu starten, Sudoku mittels Brute-Force zu generieren. Fasse die drei Validierungsfunktionen, die du erstellt hast, in einer einzelnen Funktion <code>validate_matrix</code> zusammen, die nur dann <code>True</code> zurückgibt, wenn alle Zeilen, alle Spalten und alle Blöcke gültig sind. Dann generiere eine geordnete Matrix zeilenweise und mische in einer Schleife (ich würde eine for-Schleife nutzen und sie auf zum Beispiel 1000 Iterationen beschränken) diese Matrix zeilenweise und prüfe, ob sie gültig ist. Wenn sie es ist, brich aus der Schleife aus und drucke das Sudoku aus. Schreibe eine traurige Nachricht (ohne Ausdruck einer Matrix), sobald du die Versuche aufgebraucht hast (aber ansonsten keine traurige Nachricht!). Alternativ kannst du die Matrix auch spaltenweise ordnen und dann ebenso spaltenweise mischen (warum funktioniert es nicht, sie zeilenweise zu ordnen und spaltenweise zu mischen?). Setze die Matrixgröße auf 4, aber beachte, dass unser Code mit jeder korrekten Matrixgröße funktionieren wird (<span class="math inline">\(9\times9\)</span>, <span class="math inline">\(16\times16\)</span> usw.).</p>
 <div class="program">
-<p>Put <code>validate_matrix</code> into <em>utils.py</em><br>
-Write program in <em>code06.py</em></p>
+<p>Füge <code>validate_matrix</code> in <em>utils.py</em> ein<br>
+Schreibe das Programm in <em>code06.py</em></p>
 </div>
 </div>
-<div id="wrap-up" class="section level2" number="11.15">
+<div id="zusammenfassung-1" class="section level2" number="11.15">
 <h2>
-<span class="header-section-number">11.15</span> Wrap up<a class="anchor" aria-label="anchor" href="#wrap-up"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.15</span> Zusammenfassung<a class="anchor" aria-label="anchor" href="#zusammenfassung-1"><i class="fas fa-link"></i></a>
 </h2>
-<p>Excellent, we have a working program that (very rarely) generates a complete Sudoku matrix. Zip and submit and next time we will write a different, more efficient implementation of the algorithm.</p>
+<p>Ausgezeichnet, wir haben ein funktionierendes Programm, das (sehr selten) eine vollständige Sudoku-Matrix erzeugt. Zippe und reiche ein, und nächstes Mal werden wir eine andere, effizientere Implementierung des Algorithmus schreiben.</p>
 
 </div>
 </div>
@@ -558,12 +558,12 @@ Write program in <em>code06.py</em></p>
 <li><a class="nav-link" href="#stack"><span class="header-section-number">11.7</span> Arrays zu einer Matrix stapeln</a></li>
 <li><a class="nav-link" href="#zeilen--und-spaltenvektoren-versus-1d-arrays-row-col-vectors"><span class="header-section-number">11.8</span> Zeilen- und Spaltenvektoren versus 1D-Arrays (#row-col-vectors)</a></li>
 <li><a class="nav-link" href="#wiederholen-und-kacheln"><span class="header-section-number">11.9</span> Wiederholen und Kacheln</a></li>
-<li><a class="nav-link" href="#generating-sudoku-via-brute-force-order-and-chaos"><span class="header-section-number">11.10</span> Generating Sudoku via brute force: order and chaos</a></li>
-<li><a class="nav-link" href="#validation-examples"><span class="header-section-number">11.11</span> Validation examples</a></li>
-<li><a class="nav-link" href="#is-this-row-even-valid"><span class="header-section-number">11.12</span> Is this row even valid?</a></li>
-<li><a class="nav-link" href="#blocks"><span class="header-section-number">11.13</span> Blocks</a></li>
-<li><a class="nav-link" href="#brute-force-in-action"><span class="header-section-number">11.14</span> Brute force in action</a></li>
-<li><a class="nav-link" href="#wrap-up"><span class="header-section-number">11.15</span> Wrap up</a></li>
+<li><a class="nav-link" href="#sudoku-erzeugung-mittels-brute-force-ordnung-und-chaos"><span class="header-section-number">11.10</span> Sudoku-Erzeugung mittels Brute-Force: Ordnung und Chaos</a></li>
+<li><a class="nav-link" href="#beispiele-f%C3%BCr-validierungen"><span class="header-section-number">11.11</span> Beispiele für Validierungen</a></li>
+<li><a class="nav-link" href="#ist-diese-zeile-%C3%BCberhaupt-g%C3%BCltig"><span class="header-section-number">11.12</span> Ist diese Zeile überhaupt gültig?</a></li>
+<li><a class="nav-link" href="#bl%C3%B6cke"><span class="header-section-number">11.13</span> Blöcke</a></li>
+<li><a class="nav-link" href="#brute-force-in-aktion"><span class="header-section-number">11.14</span> Brute-Force in Aktion</a></li>
+<li><a class="nav-link" href="#zusammenfassung-1"><span class="header-section-number">11.15</span> Zusammenfassung</a></li>
 </ul>
 
       <div class="book-extra">
