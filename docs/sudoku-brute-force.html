@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 11 Sudoku: Brute-Force-Algorithmus | Lerne Python, indem du Textspiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="In diesem Kapitel werden wir ein Programm schreiben, das ein Sudoku-Rätsel generiert. In einem typischen Sudoku-Rätsel musst du ein \(9\times9\) Gitter mit den Zahlen 1 bis 9 so vervollständigen,...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 11 Sudoku: Brute-Force-Algorithmus | Lerne Python, indem du Textspiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/sudoku-brute-force.html">
+<meta property="og:description" content="In diesem Kapitel werden wir ein Programm schreiben, das ein Sudoku-Rätsel generiert. In einem typischen Sudoku-Rätsel musst du ein \(9\times9\) Gitter mit den Zahlen 1 bis 9 so vervollständigen,...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 11 Sudoku: Brute-Force-Algorithmus | Lerne Python, indem du Textspiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="In diesem Kapitel werden wir ein Programm schreiben, das ein Sudoku-Rätsel generiert. In einem typischen Sudoku-Rätsel musst du ein \(9\times9\) Gitter mit den Zahlen 1 bis 9 so vervollständigen,...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/python-text-favicon.svg">
+<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Textspiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
+<li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+<li><a class="" href="One-armed-bandit.html"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></li>
+<li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
+<li><a class="" href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></li>
+<li><a class="active" href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="sudoku-brute-force" class="section level1" number="11">
+<h1>
+<span class="header-section-number">Kapitel 11</span> Sudoku: Brute-Force-Algorithmus<a class="anchor" aria-label="anchor" href="#sudoku-brute-force"><i class="fas fa-link"></i></a>
+</h1>
+<p>In diesem Kapitel werden wir ein Programm schreiben, das ein <a href="https://de.wikipedia.org/wiki/Sudoku">Sudoku-Rätsel</a> generiert. In einem typischen Sudoku-Rätsel musst du ein <span class="math inline">\(9\times9\)</span> Gitter mit den Zahlen 1 bis 9 so vervollständigen, dass sich die Zahlen in jeder Reihe, jeder Spalte und jedem <span class="math inline">\(3\times3\)</span> Quadratblock nicht wiederholen. Wenn du das Spiel spielst, hast du ein unvollständiges Puzzle und je mehr Lücken es hat, desto schwieriger tendiert das Rätsel zu sein. Aber bevor du das Spiel spielen kannst, muss jemand (das bist du heute) 1) ein komplettes Rätsel generieren (woran wir uns heute konzentrieren werden), 2) einige Zahlen entfernen, während sichergestellt wird, dass die Lösung des Rätsels eindeutig bleibt. Heute werden wir uns auf die erste Aufgabe konzentrieren: Das Generieren eines vollständigen Bretts.</p>
+<div class="float">
+<img src="images/sudoku.png" style="display: block; margin: 0 auto;width:100.0%" alt="Ein Beispiel-Sudoku-Rätsel und die Lösung"><div class="figcaption">Ein Beispiel-Sudoku-Rätsel und die Lösung</div>
+</div>
+<p><br>
+Das Rätsel basiert auf einem 2D-Gitter und prinzipiell könntest du <a href="One-armed-bandit.html#lists">Listen</a> von Zeilen (die selbst Listen sind) verwenden, um dieses Gitter zu erstellen. Das wäre ähnlich der Liste von Listen, die Informationen über verbundene Höhlen im Spiel <a href="hunt-the-wumpus.html#hunt-the-wumpus">Hunt the Wumpus</a> enthielten. Allerdings macht eine geschachtelte Listenstruktur das Arbeiten mit Spalten und Blöcken schwierig, da ihre Elemente verschiedenen Listen angehören und du anstelle von einfacherem Listen-Slicing (was nur für Zeilen funktioniert) Schleifen verwenden musst.</p>
+<p>Stattdessen werden wir es als Gelegenheit nutzen, um etwas über die <a href="https://numpy.org/">NumPy</a> Bibliothek zu lernen, die eines der Schlüsselpakete für wissenschaftliches Rechnen in Python ist und die Grundlage für viele Bibliotheken zur Datenanalyse bildet. Beachte, dass das untenstehende Material keinesfalls vollständig ist. Es kratzt, wenn überhaupt, nur an der Oberfläche von NumPy. Wenn du NumPy für deine Projekte benötigst, empfehle ich dringend, einen Blick in den offiziellen <a href="https://numpy.org/doc/stable/user/absolute_beginners.html">Getting Started für absolute Anfänger</a> Leitfaden und das offizielle <a href="https://numpy.org/doc/stable/user/index.html">Benutzerhandbuch</a> zu werfen.</p>
+<p>Nimm dir das <a href="notebooks/sudoku-brute-force.ipynb">Übungs-Notebook</a> und lass uns loslegen.</p>
+<div id="numpy-importieren" class="section level2" number="11.1">
+<h2>
+<span class="header-section-number">11.1</span> NumPy importieren<a class="anchor" aria-label="anchor" href="#numpy-importieren"><i class="fas fa-link"></i></a>
+</h2>
+<p>NumPy ist keine Standardbibliothek von Python, daher musst du sie eventuell <a href="https://numpy.org/install/">installieren</a>. Wie bei allen Bibliotheken, musst du NumPy importieren, bevor du es in deinem Skript verwenden kannst. Dies ist jedoch einer der seltenen Fälle, bei denen das Umbenennen der Bibliothek beim Importieren der Standard und der empfohlene Weg ist:</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb99-1"><a href="sudoku-brute-force.html#cb99-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code></pre></div>
+</div>
+<div id="d-numpy-arrays-versus-python-listen" class="section level2" number="11.2">
+<h2>
+<span class="header-section-number">11.2</span> 1D-NumPy-Arrays versus Python-Listen<a class="anchor" aria-label="anchor" href="#d-numpy-arrays-versus-python-listen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die Schlüsseldatenstruktur, die NumPy einführt, ist ein NumPy-Array, das beliebig viele Dimensionen haben kann. Ein eindimensionales Array, typischerweise “Vektor” genannt, ist am direktsten mit einer Python-<a href="One-armed-bandit.html#lists">Liste</a> verwandt, hat aber sowohl einige Einschränkungen als auch zusätzliche Funktionalität. Im Gegensatz zu Python-Listen, die alles enthalten können, einschließlich anderer Listen, müssen alle Elemente eines Arrays vom gleichen Typ sein. Der Vorteil dieser Einschränkung besteht darin, dass, da alle Elemente vom gleichen Typ sind, du eine Funktion auf alle Elemente anwenden kannst. Beachte, dass dies keine Garantie dafür bietet, dass es bei intrinsisch heterogenen Python-Listen funktioniert, was der Grund ist, warum du Operationen auf jedes Element einzeln ausführen musst.</p>
+<p>Du kannst aus einer Liste ein NumPy-Array über die <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html">array</a>-Funktion erstellen:</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb100-1"><a href="sudoku-brute-force.html#cb100-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb100-2"><a href="sudoku-brute-force.html#cb100-2" tabindex="-1"></a></span>
+<span id="cb100-3"><a href="sudoku-brute-force.html#cb100-3" tabindex="-1"></a><span class="co"># Eine Python-Liste von Zahlen</span></span>
+<span id="cb100-4"><a href="sudoku-brute-force.html#cb100-4" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">7</span>]</span>
+<span id="cb100-5"><a href="sudoku-brute-force.html#cb100-5" tabindex="-1"></a><span class="bu">print</span>(a_list)</span>
+<span id="cb100-6"><a href="sudoku-brute-force.html#cb100-6" tabindex="-1"></a><span class="co">#&gt; [1, 5, 7]</span></span>
+<span id="cb100-7"><a href="sudoku-brute-force.html#cb100-7" tabindex="-1"></a></span>
+<span id="cb100-8"><a href="sudoku-brute-force.html#cb100-8" tabindex="-1"></a><span class="co"># Ein aus der Liste erstelltes NumPy-Array</span></span>
+<span id="cb100-9"><a href="sudoku-brute-force.html#cb100-9" tabindex="-1"></a>an_array <span class="op">=</span> np.array(a_list)</span>
+<span id="cb100-10"><a href="sudoku-brute-force.html#cb100-10" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
+<span id="cb100-11"><a href="sudoku-brute-force.html#cb100-11" tabindex="-1"></a><span class="co">#&gt; [1 5 7]</span></span></code></pre></div>
+<p>Beachte, dass aufgrund der Einschränkung “alle Werte müssen vom gleichen Typ sein”, wenn die ursprüngliche Python-Liste Daten verschiedener Typen enthielt, alle Werte in den flexibelsten Typ umgewandelt werden. Zum Beispiel wird eine Mischung aus logischen Werten und Ganzzahlen dir Ganzzahlen geben, eine Mischung aus Ganzzahlen und Fließkommazahlen wird dir Fließkommazahlen geben, eine Mischung aus irgendetwas mit Zeichenketten wird dir Zeichenketten geben usw.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb101-1"><a href="sudoku-brute-force.html#cb101-1" tabindex="-1"></a><span class="co"># Logische Werte und Ganzzahlen -&gt; alle Ganzzahlen</span></span>
+<span id="cb101-2"><a href="sudoku-brute-force.html#cb101-2" tabindex="-1"></a><span class="bu">print</span>(np.array([<span class="va">True</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="va">False</span>]))</span>
+<span id="cb101-3"><a href="sudoku-brute-force.html#cb101-3" tabindex="-1"></a><span class="co">#&gt; [1 2 3 0]</span></span>
+<span id="cb101-4"><a href="sudoku-brute-force.html#cb101-4" tabindex="-1"></a></span>
+<span id="cb101-5"><a href="sudoku-brute-force.html#cb101-5" tabindex="-1"></a><span class="co"># Ganzzahlen und Fließkommazahlen -&gt; alle Fließkommazahlen</span></span>
+<span id="cb101-6"><a href="sudoku-brute-force.html#cb101-6" tabindex="-1"></a><span class="bu">print</span>(np.array([<span class="fl">1.0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="fl">0.0</span>]))</span>
+<span id="cb101-7"><a href="sudoku-brute-force.html#cb101-7" tabindex="-1"></a><span class="co">#&gt; [1. 2. 3. 0.]</span></span>
+<span id="cb101-8"><a href="sudoku-brute-force.html#cb101-8" tabindex="-1"></a></span>
+<span id="cb101-9"><a href="sudoku-brute-force.html#cb101-9" tabindex="-1"></a><span class="co"># Logische Werte, Ganzzahlen, Fließkommazahlen und Zeichenketten -&gt; alle Zeichenketten</span></span>
+<span id="cb101-10"><a href="sudoku-brute-force.html#cb101-10" tabindex="-1"></a><span class="bu">print</span>(np.array([<span class="va">False</span>, <span class="dv">1</span>, <span class="fl">2.0</span>, <span class="st">"a"</span>]))</span>
+<span id="cb101-11"><a href="sudoku-brute-force.html#cb101-11" tabindex="-1"></a><span class="co">#&gt; ['False' '1' '2.0' 'a']</span></span></code></pre></div>
+<p>Der Typ eines Arrays wird bei der Erstellung festgelegt, und wenn du einen Wert eines anderen Typs einfügst, wird dieser entweder in diesen Typ umgewandelt oder, falls eine Umwandlung nicht möglich ist, wird NumPy einen Fehler ausgeben.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb102-1"><a href="sudoku-brute-force.html#cb102-1" tabindex="-1"></a><span class="co"># Array von Booleschen Werten</span></span>
+<span id="cb102-2"><a href="sudoku-brute-force.html#cb102-2" tabindex="-1"></a>array_of_bool <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">False</span>, <span class="va">True</span>])</span>
+<span id="cb102-3"><a href="sudoku-brute-force.html#cb102-3" tabindex="-1"></a></span>
+<span id="cb102-4"><a href="sudoku-brute-force.html#cb102-4" tabindex="-1"></a><span class="co"># Ein Fließkommawert wird automatisch in einen logischen Wert umgewandelt.</span></span>
+<span id="cb102-5"><a href="sudoku-brute-force.html#cb102-5" tabindex="-1"></a><span class="co"># es ergibt 'True', weil nur 0.0 'False' ist</span></span>
+<span id="cb102-6"><a href="sudoku-brute-force.html#cb102-6" tabindex="-1"></a>array_of_bool[<span class="dv">1</span>] <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb102-7"><a href="sudoku-brute-force.html#cb102-7" tabindex="-1"></a><span class="bu">print</span>(array_of_bool)</span>
+<span id="cb102-8"><a href="sudoku-brute-force.html#cb102-8" tabindex="-1"></a><span class="co">#&gt; [ True  True  True]</span></span>
+<span id="cb102-9"><a href="sudoku-brute-force.html#cb102-9" tabindex="-1"></a></span>
+<span id="cb102-10"><a href="sudoku-brute-force.html#cb102-10" tabindex="-1"></a><span class="co"># Ein beliebiger Zeichenkettenwert, der nicht automatisch in eine Ganzzahl umgewandelt werden kann</span></span>
+<span id="cb102-11"><a href="sudoku-brute-force.html#cb102-11" tabindex="-1"></a>array_of_int <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb102-12"><a href="sudoku-brute-force.html#cb102-12" tabindex="-1"></a>array_of_int[<span class="dv">1</span>] <span class="op">=</span> <span class="st">"A text"</span></span>
+<span id="cb102-13"><a href="sudoku-brute-force.html#cb102-13" tabindex="-1"></a><span class="co">#&gt; invalid literal for int() with base 10: 'A text'</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #1.</p>
+</div>
+<p>Im Allgemeinen kannst du mit einem 1D-NumPy-Array das Gleiche tun wie mit einer Liste. Zum Beispiel funktioniert das Slicing auf die gleiche Weise, du kannst genauso über Elemente eines Arrays iterieren usw.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb103-1"><a href="sudoku-brute-force.html#cb103-1" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">7</span>]</span>
+<span id="cb103-2"><a href="sudoku-brute-force.html#cb103-2" tabindex="-1"></a>an_array <span class="op">=</span> np.array(a_list)</span>
+<span id="cb103-3"><a href="sudoku-brute-force.html#cb103-3" tabindex="-1"></a></span>
+<span id="cb103-4"><a href="sudoku-brute-force.html#cb103-4" tabindex="-1"></a><span class="co"># Slicing (Teilauswahl)</span></span>
+<span id="cb103-5"><a href="sudoku-brute-force.html#cb103-5" tabindex="-1"></a><span class="bu">print</span>(a_list[:<span class="dv">2</span>])</span>
+<span id="cb103-6"><a href="sudoku-brute-force.html#cb103-6" tabindex="-1"></a><span class="co">#&gt; [1, 5]</span></span>
+<span id="cb103-7"><a href="sudoku-brute-force.html#cb103-7" tabindex="-1"></a><span class="bu">print</span>(an_array[<span class="dv">1</span>:])</span>
+<span id="cb103-8"><a href="sudoku-brute-force.html#cb103-8" tabindex="-1"></a><span class="co">#&gt; [5 7]</span></span>
+<span id="cb103-9"><a href="sudoku-brute-force.html#cb103-9" tabindex="-1"></a></span>
+<span id="cb103-10"><a href="sudoku-brute-force.html#cb103-10" tabindex="-1"></a><span class="co"># for-Schleife</span></span>
+<span id="cb103-11"><a href="sudoku-brute-force.html#cb103-11" tabindex="-1"></a><span class="cf">for</span> value <span class="kw">in</span> an_array:</span>
+<span id="cb103-12"><a href="sudoku-brute-force.html#cb103-12" tabindex="-1"></a>  <span class="bu">print</span>(value)</span>
+<span id="cb103-13"><a href="sudoku-brute-force.html#cb103-13" tabindex="-1"></a><span class="co">#&gt; 1</span></span>
+<span id="cb103-14"><a href="sudoku-brute-force.html#cb103-14" tabindex="-1"></a><span class="co">#&gt; 5</span></span>
+<span id="cb103-15"><a href="sudoku-brute-force.html#cb103-15" tabindex="-1"></a><span class="co">#&gt; 7</span></span></code></pre></div>
+<p>Allerdings wird bestimmte Funktionalität anders implementiert, wie das <a href="https://numpy.org/doc/stable/reference/generated/numpy.append.html#numpy-append">Anhängen</a> im folgenden Beispiel. Andere Funktionalitäten, wie ein <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">Entfernen</a> (pop), fehlen, können aber durch Slicing emuliert werden.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb104-1"><a href="sudoku-brute-force.html#cb104-1" tabindex="-1"></a><span class="co"># Werte anhängen</span></span>
+<span id="cb104-2"><a href="sudoku-brute-force.html#cb104-2" tabindex="-1"></a>an_array <span class="op">=</span> np.append(an_array, <span class="dv">4</span>)</span>
+<span id="cb104-3"><a href="sudoku-brute-force.html#cb104-3" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
+<span id="cb104-4"><a href="sudoku-brute-force.html#cb104-4" tabindex="-1"></a><span class="co">#&gt; [1 5 7 4]</span></span></code></pre></div>
+<p>Der wichtigste praktische Unterschied zwischen Listen und NumPy-Arrays liegt darin, dass Letztere homogen sind und Operationen an ihnen vektorisiert werden. Das bedeutet, dass du eine Funktion auf das gesamte Array auf einmal anwenden kannst, was es sowohl einfacher in der Handhabung macht als auch schneller, da die meisten Operationen an Arrays stark optimiert sind. Hier ist ein Beispiel dafür, wie du den gleichen Wert mit jedem Element eines Arrays multiplizierst und dann diesen Wert zu jedem Element hinzufügst, etwas, das bei einer normalen Liste eine for-Schleife erfordert.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb105-1"><a href="sudoku-brute-force.html#cb105-1" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb105-2"><a href="sudoku-brute-force.html#cb105-2" tabindex="-1"></a>an_array <span class="op">=</span> np.array(a_list)</span>
+<span id="cb105-3"><a href="sudoku-brute-force.html#cb105-3" tabindex="-1"></a><span class="dv">2</span> <span class="op">*</span> an_array <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb105-4"><a href="sudoku-brute-force.html#cb105-4" tabindex="-1"></a><span class="co">#&gt; array([3, 5, 7])</span></span></code></pre></div>
+<p>Du kannst auch elementweise Operationen auf zwei (oder mehr) Arrays gleichzeitig ausführen. Zum Beispiel, hier ist ein Beispiel für elementweises Addieren von zwei Arrays.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb106-1"><a href="sudoku-brute-force.html#cb106-1" tabindex="-1"></a>array1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>])</span>
+<span id="cb106-2"><a href="sudoku-brute-force.html#cb106-2" tabindex="-1"></a>array2 <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">3</span>, <span class="dv">5</span>])</span>
+<span id="cb106-3"><a href="sudoku-brute-force.html#cb106-3" tabindex="-1"></a>array1 <span class="op">+</span> array2</span>
+<span id="cb106-4"><a href="sudoku-brute-force.html#cb106-4" tabindex="-1"></a><span class="co">#&gt; array([ 0, -1,  9])</span></span></code></pre></div>
+<p>Beachte, dass dies nur funktioniert, wenn die <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">Formen</a> (shapes) der Arrays gleich sind. Im Falle von 1D-Arrays (auch Vektoren genannt), bedeutet das, dass ihre Länge gleich sein muss.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb107-1"><a href="sudoku-brute-force.html#cb107-1" tabindex="-1"></a>array1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>])</span>
+<span id="cb107-2"><a href="sudoku-brute-force.html#cb107-2" tabindex="-1"></a>array2 <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>])</span>
+<span id="cb107-3"><a href="sudoku-brute-force.html#cb107-3" tabindex="-1"></a>array1 <span class="op">+</span> array2</span>
+<span id="cb107-4"><a href="sudoku-brute-force.html#cb107-4" tabindex="-1"></a><span class="co">#&gt; operands could not be broadcast together with shapes (3,)</span></span>
+<span id="cb107-5"><a href="sudoku-brute-force.html#cb107-5" tabindex="-1"></a><span class="co">#&gt; (4,)</span></span></code></pre></div>
+<p>Gleichzeitig kannst du immer Vektoren mit einem einzelnen Element verwenden, die “Skalare” genannt werden, und dieser einzelne Wert wird für jedes Element im anderen Vektor verwendet.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb108-1"><a href="sudoku-brute-force.html#cb108-1" tabindex="-1"></a>a_vector <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="op">-</span><span class="dv">4</span>])</span>
+<span id="cb108-2"><a href="sudoku-brute-force.html#cb108-2" tabindex="-1"></a>a_scalar <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb108-3"><a href="sudoku-brute-force.html#cb108-3" tabindex="-1"></a>a_vector <span class="op">*</span> a_scalar</span>
+<span id="cb108-4"><a href="sudoku-brute-force.html#cb108-4" tabindex="-1"></a><span class="co">#&gt; array([-1, -2,  4])</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #2.</p>
+</div>
+<p>Vektorisierung bedeutet auch, dass du aggregierende Funktionen – <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html">Mittelwert</a> (mean), <a href="https://numpy.org/doc/stable/reference/generated/numpy.median.html">Median</a>, <a href="https://numpy.org/doc/stable/reference/generated/numpy.min.html">Minimum</a> (min) usw. – auf das Array anwenden kannst, anstatt diese von Hand zu berechnen.</p>
+<div class="practice">
+<p>Mache Übung #3.</p>
+</div>
+</div>
+<div id="d-numpy-arrays-auch-matrizen-genannt" class="section level2" number="11.3">
+<h2>
+<span class="header-section-number">11.3</span> 2D-NumPy-Arrays, auch Matrizen genannt<a class="anchor" aria-label="anchor" href="#d-numpy-arrays-auch-matrizen-genannt"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die wahre Stärke von NumPy entfaltet sich, sobald dein Array zwei oder mehr Dimensionen hat. 2D-Arrays werden als Matrizen bezeichnet, während Arrays mit drei oder mehr Dimensionen als Tensoren bekannt sind. Erstere spielen eine Schlüsselrolle in der klassischen linearen Algebra in Python, während letztere für künstliche neuronale Netzwerke erforderlich sind (deshalb auch “Tensor” in <a href="https://www.tensorflow.org/">TensorFlow</a>).</p>
+<p>Wie bei Vektoren (1D-Arrays) im Vergleich zu Python-Listen, ergibt sich der Vorteil aus Einschränkungen. Matrizen sind rechteckig, d.h., sie bestehen aus mehreren Reihen, aber jede Reihe hat die gleiche Anzahl von Elementen. Im Gegensatz dazu <em>kannst</em> du eine rechteckige Matrix als Liste von Listen erstellen (auch hier war unser <code>CONNECTED_CAVES</code> eine <span class="math inline">\(20\times3\)</span> rechteckige Matrix), aber dies ist nicht garantiert. Darüber hinaus bedeutet die Homogenität der Matrix (alle Werte müssen vom gleichen Typ sein), dass du einen rechteckigen Teil der Matrix extrahieren kannst und es garantiert eine weitere Matrix des gleichen Typs ist. Und Slicing macht das Arbeiten mit 2D-Arrays viel einfacher. Zum Beispiel, hier ist der Code, um eine Spalte aus einer Liste von Listen im Vergleich zu einer NumPy-Matrix zu extrahieren.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb109-1"><a href="sudoku-brute-force.html#cb109-1" tabindex="-1"></a>matrix_as_list <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb109-2"><a href="sudoku-brute-force.html#cb109-2" tabindex="-1"></a>                  [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb109-3"><a href="sudoku-brute-force.html#cb109-3" tabindex="-1"></a>                  [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]]</span>
+<span id="cb109-4"><a href="sudoku-brute-force.html#cb109-4" tabindex="-1"></a>matrix_as_array <span class="op">=</span> np.array(matrix_as_list)</span>
+<span id="cb109-5"><a href="sudoku-brute-force.html#cb109-5" tabindex="-1"></a></span>
+<span id="cb109-6"><a href="sudoku-brute-force.html#cb109-6" tabindex="-1"></a>icolumn <span class="op">=</span> <span class="dv">1</span> <span class="co"># der Spaltenindex, den wir extrahieren möchten</span></span>
+<span id="cb109-7"><a href="sudoku-brute-force.html#cb109-7" tabindex="-1"></a></span>
+<span id="cb109-8"><a href="sudoku-brute-force.html#cb109-8" tabindex="-1"></a><span class="co"># Extrahieren einer Spalte mittels List Comprehension</span></span>
+<span id="cb109-9"><a href="sudoku-brute-force.html#cb109-9" tabindex="-1"></a>column_as_list <span class="op">=</span> [row[icolumn] <span class="cf">for</span> row <span class="kw">in</span> matrix_as_list]</span>
+<span id="cb109-10"><a href="sudoku-brute-force.html#cb109-10" tabindex="-1"></a><span class="bu">print</span>(column_as_list)</span>
+<span id="cb109-11"><a href="sudoku-brute-force.html#cb109-11" tabindex="-1"></a><span class="co">#&gt; [2, 5, 8]</span></span>
+<span id="cb109-12"><a href="sudoku-brute-force.html#cb109-12" tabindex="-1"></a></span>
+<span id="cb109-13"><a href="sudoku-brute-force.html#cb109-13" tabindex="-1"></a><span class="co"># Extrahieren einer Spalte aus einer Matrix</span></span>
+<span id="cb109-14"><a href="sudoku-brute-force.html#cb109-14" tabindex="-1"></a><span class="bu">print</span>(matrix_as_array[:, <span class="dv">1</span>])</span>
+<span id="cb109-15"><a href="sudoku-brute-force.html#cb109-15" tabindex="-1"></a><span class="co">#&gt; [2 5 8]</span></span></code></pre></div>
+<p>Das Extrahieren von Zeilen, Spalten und quadratischen Blöcken aus einer Matrix wird entscheidend sein, um den Code für Sudoku zu schreiben, also lass uns üben!</p>
+<div class="practice">
+<p>Mache Übung #4.</p>
+</div>
+</div>
+<div id="arrays-einer-bestimmten-form-erstellen" class="section level2" number="11.4">
+<h2>
+<span class="header-section-number">11.4</span> Arrays einer bestimmten Form erstellen<a class="anchor" aria-label="anchor" href="#arrays-einer-bestimmten-form-erstellen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Es gibt verschiedene Möglichkeiten, NumPy-Arrays zu erstellen. Oben haben wir Listen oder Listen von Listen verwendet, um sie zu erstellen. Aber manchmal musst du ein Array einer bestimmten <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">Form</a> anlegen, das mit <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html">Nullen</a> oder <a href="https://numpy.org/doc/stable/reference/generated/numpy.ones.html">Einsen</a> gefüllt ist. Der Schlüsselparameter in diesen Funktionen ist die <em>Form</em> des Arrays: eine Liste mit den Dimensionen des Arrays. Für ein 1D-Array kann dies entweder <code>&lt;Anzahl der Elemente&gt;</code> oder <code>(&lt;Anzahl der Elemente&gt;, )</code> sein. Für ein 2D-Array bedeutet dies <code>(&lt;Anzahl der Zeilen&gt;, &lt;Anzahl der Spalten&gt;)</code>.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb110-1"><a href="sudoku-brute-force.html#cb110-1" tabindex="-1"></a>zeros_matrix_3_by_2 <span class="op">=</span> np.zeros((<span class="dv">3</span>, <span class="dv">2</span>))</span>
+<span id="cb110-2"><a href="sudoku-brute-force.html#cb110-2" tabindex="-1"></a><span class="bu">print</span>(zeros_matrix_3_by_2)</span>
+<span id="cb110-3"><a href="sudoku-brute-force.html#cb110-3" tabindex="-1"></a><span class="co">#&gt; [[0. 0.]</span></span>
+<span id="cb110-4"><a href="sudoku-brute-force.html#cb110-4" tabindex="-1"></a><span class="co">#&gt;  [0. 0.]</span></span>
+<span id="cb110-5"><a href="sudoku-brute-force.html#cb110-5" tabindex="-1"></a><span class="co">#&gt;  [0. 0.]]</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #5.</p>
+</div>
+</div>
+<div id="zufällige-arrays-einer-bestimmten-größe-erstellen" class="section level2" number="11.5">
+<h2>
+<span class="header-section-number">11.5</span> Zufällige Arrays einer bestimmten Größe erstellen<a class="anchor" aria-label="anchor" href="#zuf%C3%A4llige-arrays-einer-bestimmten-gr%C3%B6%C3%9Fe-erstellen"><i class="fas fa-link"></i></a>
+</h2>
+<p>NumPy hat ein Modul zur Generierung von Zufallszahlen — <a href="https://numpy.org/doc/stable/reference/random/index.html#module-numpy.random">numpy.random</a> — das konzeptuell ähnlich zur Python-standardmäßigen <a href="https://docs.python.org/3/library/random.html">random</a> Bibliothek ist, aber es ermöglicht dir die Erstellung von Arrays von Werten anstatt eines einzigen Wertes. Aus Bequemlichkeit sind die Namen gleich geblieben. Zum Beispiel hat die Funktion <a href="https://docs.python.org/3/library/random.html#random.randint">random.randint</a>, die eine einzige zufällige Ganzzahl generiert, einen Zwillingsbruder <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html">numpy.random.randint</a>, der dieselben Parameter akzeptiert und standardmäßig ebenfalls einen einzigen Wert generiert. Du kannst jedoch das ganze Vektor-/Matrix-/Tensor-Array von Zufallszahlen auf einen Schlag generieren, indem du seine <code>Größe</code> angibst. Verwirrenderweise wird der Parameter <code>size</code> genannt, obwohl er sich auf die “Ausgabeform” bezieht (nicht sicher, warum sie es nicht “Form” genannt haben).</p>
+<div class="practice">
+<p>Mache Übung #6.</p>
+</div>
+</div>
+<div id="erstellen-von-arrays-mit-sequenzen" class="section level2" number="11.6">
+<h2>
+<span class="header-section-number">11.6</span> Erstellen von Arrays mit Sequenzen<a class="anchor" aria-label="anchor" href="#erstellen-von-arrays-mit-sequenzen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Ähnlich wie man eine Folge von Ganzzahlen mit <a href="https://docs.python.org/3/library/functions.html#func-range">range</a> erstellen kann, kann man einen Vektor von Ganzzahlen mit <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html">arange</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Der Name ist verwirrend, aber anscheinend steht dies als Abkürzung für “array range”&lt;/p&gt;"><sup>45</sup></a> erstellen und dies ist gleichwertig mit <code>np.array(range(...))</code>:</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb111-1"><a href="sudoku-brute-force.html#cb111-1" tabindex="-1"></a><span class="bu">print</span>(np.arange(<span class="dv">5</span>))</span>
+<span id="cb111-2"><a href="sudoku-brute-force.html#cb111-2" tabindex="-1"></a><span class="co">#&gt; [0 1 2 3 4]</span></span>
+<span id="cb111-3"><a href="sudoku-brute-force.html#cb111-3" tabindex="-1"></a><span class="bu">print</span>(np.array(<span class="bu">range</span>(<span class="dv">5</span>)))</span>
+<span id="cb111-4"><a href="sudoku-brute-force.html#cb111-4" tabindex="-1"></a><span class="co">#&gt; [0 1 2 3 4]</span></span></code></pre></div>
+<p>NumPy hat auch eine praktische Funktion namens <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html">linspace</a>, mit der du eine Sequenz von <em>Fließkommazahlen</em> mit einer beliebigen Fließkommazahl-Schrittweite erzeugen kannst.</p>
+<div class="practice">
+<p>Mache Übung #7.</p>
+</div>
+</div>
+<div id="stack" class="section level2" number="11.7">
+<h2>
+<span class="header-section-number">11.7</span> Arrays zu einer Matrix stapeln<a class="anchor" aria-label="anchor" href="#stack"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die Funktion <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html">arange</a> wird für uns nützlich sein, um eine Sequenz von Ganzzahlen von 1 bis 9 (oder 1 bis 4, wenn wir an einer kleineren Version von Sudoku arbeiten) zu erzeugen. Beachte jedoch, dass du in beiden Fällen nur einen Vektor, aber nicht die Matrix erzeugen kannst, die wir brauchen! Die Lösung in diesem Fall ist, einzelne Vektoren zu <a href="https://numpy.org/doc/stable/reference/generated/numpy.stack.html">stapeln</a> (stack). Beim Stapeln spielen die <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">Formen</a> (shapes) der einzelnen Vektoren eine wichtige Rolle, da sie kompatibel sein müssen. Dies ist ein Schlüsselpunkt im Unterschied zu Python-Listen, die nur eine <a href="https://docs.python.org/3/library/functions.html#len">Länge</a> haben.</p>
+<p>Für wirklich eindimensionale Arrays ist es einfach. Dies sind Arrays, die aus Listen oder über Funktionen wie <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html">zeros</a> oder <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html">linspace</a> erstellt wurden. Wenn du dir ihre <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">Form</a> ansiehst, wirst du nur eine Dimension sehen.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb112-1"><a href="sudoku-brute-force.html#cb112-1" tabindex="-1"></a><span class="bu">print</span>(np.array([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>]).shape)</span>
+<span id="cb112-2"><a href="sudoku-brute-force.html#cb112-2" tabindex="-1"></a><span class="co">#&gt; (3,)</span></span>
+<span id="cb112-3"><a href="sudoku-brute-force.html#cb112-3" tabindex="-1"></a><span class="bu">print</span>(np.zeros(<span class="dv">5</span>).shape)</span>
+<span id="cb112-4"><a href="sudoku-brute-force.html#cb112-4" tabindex="-1"></a><span class="co">#&gt; (5,)</span></span></code></pre></div>
+<p>Diese Vektoren haben keine “Orientierung” (wenn du dich mit linearer Algebra auskennst, würdest du entweder Spalten- oder Zeilenvektoren erwarten), daher kannst du beim Kombinieren dieser Arrays zu einer Matrix sie als Zeilen verwenden (stapeln entlang <code>axis=0</code>, das ist der Standard, siehe auch <a href="https://numpy.org/doc/stable/reference/generated/numpy.vstack.html">vstack</a>) oder als Spalten (stapeln entlang <code>axis=1</code>, siehe auch <a href="https://numpy.org/doc/stable/reference/generated/numpy.hstack.html">hstack</a>).</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb113-1"><a href="sudoku-brute-force.html#cb113-1" tabindex="-1"></a>one_d_vector <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
+<span id="cb113-2"><a href="sudoku-brute-force.html#cb113-2" tabindex="-1"></a></span>
+<span id="cb113-3"><a href="sudoku-brute-force.html#cb113-3" tabindex="-1"></a><span class="co"># Vertikal stapeln: Vektoren werden als Zeilen verwendet</span></span>
+<span id="cb113-4"><a href="sudoku-brute-force.html#cb113-4" tabindex="-1"></a><span class="bu">print</span>(np.stack([one_d_vector, one_d_vector]))</span>
+<span id="cb113-5"><a href="sudoku-brute-force.html#cb113-5" tabindex="-1"></a><span class="co">#&gt; [[0 1 2 3 4]</span></span>
+<span id="cb113-6"><a href="sudoku-brute-force.html#cb113-6" tabindex="-1"></a><span class="co">#&gt;  [0 1 2 3 4]]</span></span>
+<span id="cb113-7"><a href="sudoku-brute-force.html#cb113-7" tabindex="-1"></a><span class="bu">print</span>(np.stack([one_d_vector, one_d_vector]).shape)</span>
+<span id="cb113-8"><a href="sudoku-brute-force.html#cb113-8" tabindex="-1"></a><span class="co">#&gt; (2, 5)</span></span>
+<span id="cb113-9"><a href="sudoku-brute-force.html#cb113-9" tabindex="-1"></a></span>
+<span id="cb113-10"><a href="sudoku-brute-force.html#cb113-10" tabindex="-1"></a><span class="co"># Horizontal stapeln: Vektoren werden als Spalten verwendet</span></span>
+<span id="cb113-11"><a href="sudoku-brute-force.html#cb113-11" tabindex="-1"></a><span class="bu">print</span>(np.stack([one_d_vector, one_d_vector], axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb113-12"><a href="sudoku-brute-force.html#cb113-12" tabindex="-1"></a><span class="co">#&gt; [[0 0]</span></span>
+<span id="cb113-13"><a href="sudoku-brute-force.html#cb113-13" tabindex="-1"></a><span class="co">#&gt;  [1 1]</span></span>
+<span id="cb113-14"><a href="sudoku-brute-force.html#cb113-14" tabindex="-1"></a><span class="co">#&gt;  [2 2]</span></span>
+<span id="cb113-15"><a href="sudoku-brute-force.html#cb113-15" tabindex="-1"></a><span class="co">#&gt;  [3 3]</span></span>
+<span id="cb113-16"><a href="sudoku-brute-force.html#cb113-16" tabindex="-1"></a><span class="co">#&gt;  [4 4]]</span></span>
+<span id="cb113-17"><a href="sudoku-brute-force.html#cb113-17" tabindex="-1"></a><span class="bu">print</span>(np.stack([one_d_vector, one_d_vector], axis<span class="op">=</span><span class="dv">1</span>).shape)</span>
+<span id="cb113-18"><a href="sudoku-brute-force.html#cb113-18" tabindex="-1"></a><span class="co">#&gt; (5, 2)</span></span></code></pre></div>
+<p>Übe das Stapeln. Das Ergebnis für eine durch Zeilen gestapelte Matrix sieht so aus:</p>
+<pre><code>#&gt; array([[1, 2, 3, 4],
+#&gt;        [1, 2, 3, 4],
+#&gt;        [1, 2, 3, 4],
+#&gt;        [1, 2, 3, 4]])</code></pre>
+<p>und für eine durch Spalten gestapelte Matrix sieht es so aus:</p>
+<pre><code>#&gt; array([[1, 1, 1, 1],
+#&gt;        [2, 2, 2, 2],
+#&gt;        [3, 3, 3, 3],
+#&gt;        [4, 4, 4, 4]])</code></pre>
+<div class="practice">
+<p>Mache Übung #8.</p>
+</div>
+</div>
+<div id="zeilen--und-spaltenvektoren-versus-1d-arrays-row-col-vectors" class="section level2" number="11.8">
+<h2>
+<span class="header-section-number">11.8</span> Zeilen- und Spaltenvektoren versus 1D-Arrays (#row-col-vectors)<a class="anchor" aria-label="anchor" href="#zeilen--und-spaltenvektoren-versus-1d-arrays-row-col-vectors"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wie oben erwähnt, sind 1D-Arrays wirklich eindimensional, da ihre Form <code>(N, )</code> ist (beachte die leere Stelle nach dem Komma). Jedoch benötigst du oft denselben Vektor in einer 2D-Form entweder als Zeilenvektor <code>(1, N)</code> oder als Spaltenvektor <code>(N, 1)</code>. Der Unterschied zwischen einem 1D-Array und einem 2D-Zeilen-/Spaltenvektor ist, dass Letztere eine “Orientierung” haben<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Dies ist besonders wichtig für die lineare Algebra.&lt;/p&gt;"><sup>46</sup></a> und trotz der gleichen Anzahl von Elementen unterschiedlich gestapelte Arrays erzeugen werden.</p>
+<p>Du kannst ein 1D-Array <code>(N, )</code> in einen Zeilenvektor <code>(1, N)</code> umwandeln, indem du es in eine weitere Liste packst: <code>np.array([&lt;original Liste oder 1D-Array&gt;])</code>. Wie du unten sehen kannst, obwohl die <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">Formen</a> der beiden Arrays unterschiedlich sind, ist ihre <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.html">Größe</a> (Gesamtanzahl der Elemente) gleich.</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb116-1"><a href="sudoku-brute-force.html#cb116-1" tabindex="-1"></a><span class="co"># Ein 1D-Array</span></span>
+<span id="cb116-2"><a href="sudoku-brute-force.html#cb116-2" tabindex="-1"></a>oned_array <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb116-3"><a href="sudoku-brute-force.html#cb116-3" tabindex="-1"></a>(oned_array.shape, oned_array.size)</span>
+<span id="cb116-4"><a href="sudoku-brute-force.html#cb116-4" tabindex="-1"></a><span class="co">#&gt; ((3,), 3)</span></span>
+<span id="cb116-5"><a href="sudoku-brute-force.html#cb116-5" tabindex="-1"></a></span>
+<span id="cb116-6"><a href="sudoku-brute-force.html#cb116-6" tabindex="-1"></a><span class="co"># Ein 2D-Array, jedoch mit der gleichen Anzahl von Elementen und der gleichen größten Dimension</span></span>
+<span id="cb116-7"><a href="sudoku-brute-force.html#cb116-7" tabindex="-1"></a>row_vector <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]])</span>
+<span id="cb116-8"><a href="sudoku-brute-force.html#cb116-8" tabindex="-1"></a>(row_vector.shape, row_vector.size)</span>
+<span id="cb116-9"><a href="sudoku-brute-force.html#cb116-9" tabindex="-1"></a><span class="co">#&gt; ((1, 3), 3)</span></span></code></pre></div>
+<p>Es gibt zwei Möglichkeiten, einen Spaltenvektor mit der Form <code>(N, 1)</code> zu erstellen. Erstens kannst du ihn als Liste von Listen mit einem Wert pro Zeile (innere Liste) angeben. Alternativ kannst du einen Zeilenvektor erstellen und dann <a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html">transponieren</a>.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb117-1"><a href="sudoku-brute-force.html#cb117-1" tabindex="-1"></a><span class="co"># Spaltenvektor aus Liste von Listen</span></span>
+<span id="cb117-2"><a href="sudoku-brute-force.html#cb117-2" tabindex="-1"></a>np.array([[<span class="dv">1</span>], [<span class="dv">2</span>], [<span class="dv">3</span>]])</span>
+<span id="cb117-3"><a href="sudoku-brute-force.html#cb117-3" tabindex="-1"></a><span class="co">#&gt; array([[1],</span></span>
+<span id="cb117-4"><a href="sudoku-brute-force.html#cb117-4" tabindex="-1"></a><span class="co">#&gt;        [2],</span></span>
+<span id="cb117-5"><a href="sudoku-brute-force.html#cb117-5" tabindex="-1"></a><span class="co">#&gt;        [3]])</span></span>
+<span id="cb117-6"><a href="sudoku-brute-force.html#cb117-6" tabindex="-1"></a></span>
+<span id="cb117-7"><a href="sudoku-brute-force.html#cb117-7" tabindex="-1"></a><span class="co"># Spaltenvektor durch Transposition eines Zeilenvektors</span></span>
+<span id="cb117-8"><a href="sudoku-brute-force.html#cb117-8" tabindex="-1"></a>np.transpose(np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]]))</span>
+<span id="cb117-9"><a href="sudoku-brute-force.html#cb117-9" tabindex="-1"></a><span class="co">#&gt; array([[1],</span></span>
+<span id="cb117-10"><a href="sudoku-brute-force.html#cb117-10" tabindex="-1"></a><span class="co">#&gt;        [2],</span></span>
+<span id="cb117-11"><a href="sudoku-brute-force.html#cb117-11" tabindex="-1"></a><span class="co">#&gt;        [3]])</span></span></code></pre></div>
+<p>Wie oben erwähnt, macht die “Orientierung” von Vektoren einen Unterschied beim Stapeln. Erkunde diese Unterschiede in der Übung 9.</p>
+<div class="practice">
+<p>Mache Übung #9.</p>
+</div>
+</div>
+<div id="wiederholen-und-kacheln" class="section level2" number="11.9">
+<h2>
+<span class="header-section-number">11.9</span> Wiederholen und Kacheln<a class="anchor" aria-label="anchor" href="#wiederholen-und-kacheln"><i class="fas fa-link"></i></a>
+</h2>
+<p>In der oben genannten Übung hast du vier Zeilen- oder Spaltenvektoren gestapelt, aber sie waren alle identisch. NumPy kann solche wiederholten Sequenzen über die Funktionen <a href="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html">repeat</a> und <a href="https://numpy.org/doc/stable/reference/generated/numpy.tile.html">tile</a> generieren. Beide wiederholen die angeforderten Werte eine bestimmte Anzahl von Malen, aber es gibt ein paar wichtige Unterschiede. Erstens wiederholt <a href="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html">repeat</a> jeden Wert N Mal, bevor es zum nächsten Wert übergeht, während <a href="https://numpy.org/doc/stable/reference/generated/numpy.tile.html">tile</a> die gesamte Sequenz in Reihenfolge N Mal wiederholt.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb118-1"><a href="sudoku-brute-force.html#cb118-1" tabindex="-1"></a><span class="bu">print</span>(np.repeat(np.arange(<span class="dv">5</span>), <span class="dv">2</span>))</span>
+<span id="cb118-2"><a href="sudoku-brute-force.html#cb118-2" tabindex="-1"></a><span class="co">#&gt; [0 0 1 1 2 2 3 3 4 4]</span></span>
+<span id="cb118-3"><a href="sudoku-brute-force.html#cb118-3" tabindex="-1"></a><span class="bu">print</span>(np.tile(np.arange(<span class="dv">5</span>), <span class="dv">2</span>))</span>
+<span id="cb118-4"><a href="sudoku-brute-force.html#cb118-4" tabindex="-1"></a><span class="co">#&gt; [0 1 2 3 4 0 1 2 3 4]</span></span></code></pre></div>
+<p>Der zweite Unterschied besteht darin, wie du die Wiederholung beim Erstellen von 2D-Matrizen spezifizierst. Im Falle von <a href="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html">repeat</a> gibst du an, entlang welcher <code>Achse</code> (axis) du die Sequenz wiederholst (gleich wie der <code>Achse</code>-Parameter beim <a href="sudoku-brute-force.html#stack">Stapeln</a>).</p>
+<div class="practice">
+<p>Mache Übung #10.</p>
+</div>
+<p>Für <a href="https://numpy.org/doc/stable/reference/generated/numpy.tile.html">tile</a> gibt man die Wiederholungen (<code>reps</code>-Parameter) an, und man kann die Wiederholungen <em>pro Achse</em> spezifizieren.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb119-1"><a href="sudoku-brute-force.html#cb119-1" tabindex="-1"></a><span class="co"># Ein Array zweimal zeilenweise und dreimal spaltenweise kacheln (tile)</span></span>
+<span id="cb119-2"><a href="sudoku-brute-force.html#cb119-2" tabindex="-1"></a>np.tile(np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]), (<span class="dv">2</span>, <span class="dv">3</span>))</span>
+<span id="cb119-3"><a href="sudoku-brute-force.html#cb119-3" tabindex="-1"></a><span class="co">#&gt; array([[1, 2, 3, 1, 2, 3, 1, 2, 3],</span></span>
+<span id="cb119-4"><a href="sudoku-brute-force.html#cb119-4" tabindex="-1"></a><span class="co">#&gt;        [1, 2, 3, 1, 2, 3, 1, 2, 3]])</span></span></code></pre></div>
+<div class="practice">
+<p>Mache Übung #11.</p>
+</div>
+</div>
+<div id="generating-sudoku-via-brute-force-order-and-chaos" class="section level2" number="11.10">
+<h2>
+<span class="header-section-number">11.10</span> Generating Sudoku via brute force: order and chaos<a class="anchor" aria-label="anchor" href="#generating-sudoku-via-brute-force-order-and-chaos"><i class="fas fa-link"></i></a>
+</h2>
+<p>Our take on generating Sudoku will be conceptually simple but very inefficient: We will create an ordered matrix (by row or by column, not a valid initial solution), shuffle it (by row or by column), and then check if, accidentally, we ended up with a valid Sudoku matrix. If not, keep shuffling until we have one.</p>
+<p>You already know how to create an ordered matrix that has four or nine rows and columns. To randomize it, use <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html">np.random.shuffle</a> that shuffles an array or a <em>part of</em> an array <em>in place</em>. The latter part means that the function does not return any value and the array you supplied (it is passed by reference, recall <a href="guess-the-animal.html#mutable-objects">mutable objects and functions</a>).</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb120-1"><a href="sudoku-brute-force.html#cb120-1" tabindex="-1"></a><span class="co"># shuffle the entire array</span></span>
+<span id="cb120-2"><a href="sudoku-brute-force.html#cb120-2" tabindex="-1"></a>an_array <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
+<span id="cb120-3"><a href="sudoku-brute-force.html#cb120-3" tabindex="-1"></a>np.random.shuffle(an_array)</span>
+<span id="cb120-4"><a href="sudoku-brute-force.html#cb120-4" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
+<span id="cb120-5"><a href="sudoku-brute-force.html#cb120-5" tabindex="-1"></a><span class="co">#&gt; [2 1 4 0 3]</span></span>
+<span id="cb120-6"><a href="sudoku-brute-force.html#cb120-6" tabindex="-1"></a></span>
+<span id="cb120-7"><a href="sudoku-brute-force.html#cb120-7" tabindex="-1"></a><span class="co"># shuffle part of an array</span></span>
+<span id="cb120-8"><a href="sudoku-brute-force.html#cb120-8" tabindex="-1"></a>an_array <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
+<span id="cb120-9"><a href="sudoku-brute-force.html#cb120-9" tabindex="-1"></a>np.random.shuffle(an_array[:<span class="dv">3</span>])</span>
+<span id="cb120-10"><a href="sudoku-brute-force.html#cb120-10" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
+<span id="cb120-11"><a href="sudoku-brute-force.html#cb120-11" tabindex="-1"></a><span class="co">#&gt; [0 1 2 3 4]</span></span></code></pre></div>
+<p>Write the code that creates a <span class="math inline">\(4\times4\)</span> matrix (define matrix size via <code>SUDOKU_SIZE</code> constant) ordered by row
+(so, each row goes from 1 till <code>SUDOKU_SIZE</code> but each column has a the same number in it) and write the code that shuffles just one row (put its index in <code>irow</code> variable). Change <code>irow</code> value to test that your code works. For example, your output for a randomly shuffle row #2 could look like this.</p>
+<pre><code>#&gt; array([[1, 2, 3, 4],
+#&gt;        [2, 4, 1, 3],
+#&gt;        [1, 2, 3, 4],
+#&gt;        [1, 2, 3, 4]])</code></pre>
+<div class="program">
+<p>Write code for creating matrix<br>
+and shuffling one row in exercise #12.</p>
+</div>
+<p>Once a single row code works, modify it to shuffle all rows but one at a time (you can shuffle the entire matrix but then even rows will most likely be invalid). Once the shuffling code works, turn it into a function <code>shuffle_by_row</code>. Just like <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.shuffle.html">np.random.shuffle</a> it does not need to return anything, as shuffling occurs in place. Write the code that generates an ordered-by-row matrix of <code>SUDOKU_SIZE</code>, shuffles it by row, and prints it out. You definitely need to know matrix <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">shape</a> and loop over the <a href="https://docs.python.org/3/library/functions.html#func-range">range</a> of rows.</p>
+<div class="program">
+<p>Put <code>shuffle_by_row</code> into <em>utils.py</em><br>
+Write program in <em>code01.py</em></p>
+</div>
+<p>We are here to learn, so to solidify your skills program the same routine by both stacking and shuffling the matrix <em>by column</em> (create a separate function <code>shuffle_by_column</code> for this).</p>
+<div class="program">
+<p>Put <code>shuffle_by_column</code> into <em>utils.py</em><br>
+Write program in <em>code02.py</em></p>
+</div>
+</div>
+<div id="validation-examples" class="section level2" number="11.11">
+<h2>
+<span class="header-section-number">11.11</span> Validation examples<a class="anchor" aria-label="anchor" href="#validation-examples"><i class="fas fa-link"></i></a>
+</h2>
+<p>In the following section, you will write functions that check validity of row, columns, and blocks. For this, we need examples that are valid for all or some checks. Use the cell below to run the check later.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb122-1"><a href="sudoku-brute-force.html#cb122-1" tabindex="-1"></a>all_valid <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb122-2"><a href="sudoku-brute-force.html#cb122-2" tabindex="-1"></a>                      [<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>],</span>
+<span id="cb122-3"><a href="sudoku-brute-force.html#cb122-3" tabindex="-1"></a>                      [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb122-4"><a href="sudoku-brute-force.html#cb122-4" tabindex="-1"></a>                      [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>]])</span>
+<span id="cb122-5"><a href="sudoku-brute-force.html#cb122-5" tabindex="-1"></a></span>
+<span id="cb122-6"><a href="sudoku-brute-force.html#cb122-6" tabindex="-1"></a>invalid_row <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>],</span>
+<span id="cb122-7"><a href="sudoku-brute-force.html#cb122-7" tabindex="-1"></a>                        [<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">2</span>],</span>
+<span id="cb122-8"><a href="sudoku-brute-force.html#cb122-8" tabindex="-1"></a>                        [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb122-9"><a href="sudoku-brute-force.html#cb122-9" tabindex="-1"></a>                        [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>]])</span>
+<span id="cb122-10"><a href="sudoku-brute-force.html#cb122-10" tabindex="-1"></a></span>
+<span id="cb122-11"><a href="sudoku-brute-force.html#cb122-11" tabindex="-1"></a>invalid_column <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb122-12"><a href="sudoku-brute-force.html#cb122-12" tabindex="-1"></a>                           [<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>],</span>
+<span id="cb122-13"><a href="sudoku-brute-force.html#cb122-13" tabindex="-1"></a>                           [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb122-14"><a href="sudoku-brute-force.html#cb122-14" tabindex="-1"></a>                           [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>]])</span>
+<span id="cb122-15"><a href="sudoku-brute-force.html#cb122-15" tabindex="-1"></a></span>
+<span id="cb122-16"><a href="sudoku-brute-force.html#cb122-16" tabindex="-1"></a>invalid_block_and_column <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>],</span>
+<span id="cb122-17"><a href="sudoku-brute-force.html#cb122-17" tabindex="-1"></a>                                     [<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>],</span>
+<span id="cb122-18"><a href="sudoku-brute-force.html#cb122-18" tabindex="-1"></a>                                     [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb122-19"><a href="sudoku-brute-force.html#cb122-19" tabindex="-1"></a>                                     [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb122-20"><a href="sudoku-brute-force.html#cb122-20" tabindex="-1"></a></span>
+<span id="cb122-21"><a href="sudoku-brute-force.html#cb122-21" tabindex="-1"></a>invalid_block_and_row <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb122-22"><a href="sudoku-brute-force.html#cb122-22" tabindex="-1"></a>                                  [<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>],</span>
+<span id="cb122-23"><a href="sudoku-brute-force.html#cb122-23" tabindex="-1"></a>                                  [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb122-24"><a href="sudoku-brute-force.html#cb122-24" tabindex="-1"></a>                                  [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>]])</span>
+<span id="cb122-25"><a href="sudoku-brute-force.html#cb122-25" tabindex="-1"></a></span>
+<span id="cb122-26"><a href="sudoku-brute-force.html#cb122-26" tabindex="-1"></a>all_invalid <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb122-27"><a href="sudoku-brute-force.html#cb122-27" tabindex="-1"></a>                        [<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>],</span>
+<span id="cb122-28"><a href="sudoku-brute-force.html#cb122-28" tabindex="-1"></a>                        [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb122-29"><a href="sudoku-brute-force.html#cb122-29" tabindex="-1"></a>                        [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>]])</span></code></pre></div>
+</div>
+<div id="is-this-row-even-valid" class="section level2" number="11.12">
+<h2>
+<span class="header-section-number">11.12</span> Is this row even valid?<a class="anchor" aria-label="anchor" href="#is-this-row-even-valid"><i class="fas fa-link"></i></a>
+</h2>
+<p>For a matrix to be a Sudoku, it must adhere to “only unique numbers in each row, column, and block” rule. Let us implement code for checking the rows (turning it into a column-check will be trivial).</p>
+<p>For the row to be valid, it must contain <code>SUDOKU_SIZE</code> different, i.e., <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">unique</a> numbers. Use <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">unique</a> function to write a comparison for row <code>irow</code> (set it to some valid index by hand) that it indeed has <code>SUDOKU_SIZE</code> unique numbers, i.e., the array <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.htm">size</a> of unique numbers is equal to <code>SUDOKU_SIZE</code>. However, do not pass the <code>SUDOKU_SIZE</code> constant to the function, instead infer the number of necessary unique element from the <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">shape</a> of the matrix itself.</p>
+<p>Use example matrices (see above) to check that it works correctly.</p>
+<div class="program">
+<p>Write and test single row validation<br>
+in exercise #12.</p>
+</div>
+<p>Once, we have the code working for a single row, we can use <a href="One-armed-bandit.html#list-comprehension">list comprehension</a> to generate a list of validity values, one for each row. Matrix is valid (at least with respect to rows) only if <em>all</em> rows are valid. Handily, NumPy has a function <a href="https://numpy.org/doc/stable/reference/generated/numpy.all.html">all</a> that tests whether <em>all</em> elements of the array or list are <code>True</code>. Package this code into function <code>validate_rows</code>, think about its inputs and outputs, document.</p>
+<div class="program">
+<p>Put <code>validate_rows</code> into <em>utils.py</em><br>
+Extend program from <em>code01.py</em> in <em>code03.py</em><br>
+Test code using example matrices.</p>
+</div>
+<p>Now, do the same for columns and use both checks to see if the matrix is a valid Sudoku (rows should be fine but columns should fail the check).
+::: {.program}
+Put <code>validate_columns</code> into <em>utils.py</em><br>
+Extend program from in <em>code03.py</em> in <em>code04.py</em><br>
+Test code using example matrices.
+:::</p>
+</div>
+<div id="blocks" class="section level2" number="11.13">
+<h2>
+<span class="header-section-number">11.13</span> Blocks<a class="anchor" aria-label="anchor" href="#blocks"><i class="fas fa-link"></i></a>
+</h2>
+<p>Blocks are a touch trickier to work with as we do not have simple single axis to use for slicing. However, we can think about each as having a row and column index, which both go from 0 to 2 for <span class="math inline">\(9\times9\)</span> Sudoku as we have <span class="math inline">\(3\times3\)</span> blocks, or from 0 to 1 for <span class="math inline">\(4\times4\)</span> Sudoku where we have <span class="math inline">\(2\times2\)</span> blocks.</p>
+<div class="float">
+<img src="images/sudoku-blocks.png" style="display: block; margin: 0 auto;width:50.0%" alt="Sudoku blocks indexing"><div class="figcaption">Sudoku blocks indexing</div>
+</div>
+<p><br><br>
+Write the code that uses <a href="https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding">slicing</a> to extract a single block defined by <code>i_block_row</code> and <code>i_block_col</code>. Compute matrix row for the block top left corner and then get a vertical slice relative to it. Same for the horizontal slice relative to the top-left block column in the matrix. To make debugging easier, generate a <span class="math inline">\(9\times9\)</span> matrix of integers stacked either by row or by columns, so that it is easier to see whether you code works. Test it for all combinations for <code>i_block_row</code> and <code>i_block_col</code>. You will also need to compute or define the block size. Do the former as it is very straightforward to compute from matrix <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">shape</a>. In a square Sudoku, block size is a <a href="https://docs.python.org/3/library/math.html#math.sqrt">square root</a> of the board size (<span class="math inline">\(4\times4\)</span> boards have <span class="math inline">\(2\times2\)</span> blocks, <span class="math inline">\(9\times9\)</span> boards have <span class="math inline">\(3\times3\)</span> blocks, etc.). However, you size should be an integer, so you must take care of the <a href="https://docs.python.org/3/library/functions.html#int">type conversion</a> yourself.</p>
+<p>This is how the output should look like if <code>i_block_row = 1</code> and <code>i_block_col = 0</code> when you stack matrix by row</p>
+<pre><code>#&gt; array([[1, 2, 3],
+#&gt;        [1, 2, 3],
+#&gt;        [1, 2, 3]])</code></pre>
+<p>and when stacked by column</p>
+<pre><code>#&gt; array([[4, 4, 4],
+#&gt;        [5, 5, 5],
+#&gt;        [6, 6, 6]])</code></pre>
+<div class="program">
+<p>Write and test single block extraction code<br>
+in exercise #13.</p>
+</div>
+<p>Once you have the code to extract block values, the validation logic is very similar to that of the row / column validation. Note that you can use <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">unique</a> directly on the 2D array you extracted or, optionally, you can <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html">flatten</a> it to a 1D array first. Once you have a list of nine logical values (one per block), you can check whether they are (all)[<a href="https://numpy.org/doc/stable/reference/generated/numpy.all.html" class="uri">https://numpy.org/doc/stable/reference/generated/numpy.all.html</a>] <code>True</code>. The main difference here is that you need nested loops to go over 2D grid of blocks. My solution is to create an empty list for validation values and then loop of block row and block column <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">appending</a> values to the list.</p>
+<div class="program">
+<p>Put <code>validate_blocks</code> into <em>utils.py</em><br>
+Test all three validation functions using <br>
+example matrices in <em>code05.py</em></p>
+</div>
+</div>
+<div id="brute-force-in-action" class="section level2" number="11.14">
+<h2>
+<span class="header-section-number">11.14</span> Brute force in action<a class="anchor" aria-label="anchor" href="#brute-force-in-action"><i class="fas fa-link"></i></a>
+</h2>
+<p>We have all the building blocks to try to generate Sudoku via brute force. Package three validation functions that you created into a single <code>validate_matrix</code> function that returns <code>True</code> only if all rows, all columns, and blocks are valid. Then, generate an ordered matrix by row and in a for loop (I would use a for loop and limit it to say 1000 iterations) shuffle this matrix by row and check whether it is valid. If it is, break our of the loop and print out the Sudoku. Write a sad message (without a matrix print out) once you run out of trials (but no sad message otherwise!). Alternatively, you can generate matrix ordered by columns and then shuffle by columns as well (why generating by row and shuffling by columns won’t work?). Set matrix size to 4 but note that our code will work with any correct matrix size (<span class="math inline">\(9\times9\)</span>, <span class="math inline">\(16\times16\)</span>, etc.)</p>
+<div class="program">
+<p>Put <code>validate_matrix</code> into <em>utils.py</em><br>
+Write program in <em>code06.py</em></p>
+</div>
+</div>
+<div id="wrap-up" class="section level2" number="11.15">
+<h2>
+<span class="header-section-number">11.15</span> Wrap up<a class="anchor" aria-label="anchor" href="#wrap-up"><i class="fas fa-link"></i></a>
+</h2>
+<p>Excellent, we have a working program that (very rarely) generates a complete Sudoku matrix. Zip and submit and next time we will write a different, more efficient implementation of the algorithm.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#sudoku-brute-force"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
+<li><a class="nav-link" href="#numpy-importieren"><span class="header-section-number">11.1</span> NumPy importieren</a></li>
+<li><a class="nav-link" href="#d-numpy-arrays-versus-python-listen"><span class="header-section-number">11.2</span> 1D-NumPy-Arrays versus Python-Listen</a></li>
+<li><a class="nav-link" href="#d-numpy-arrays-auch-matrizen-genannt"><span class="header-section-number">11.3</span> 2D-NumPy-Arrays, auch Matrizen genannt</a></li>
+<li><a class="nav-link" href="#arrays-einer-bestimmten-form-erstellen"><span class="header-section-number">11.4</span> Arrays einer bestimmten Form erstellen</a></li>
+<li><a class="nav-link" href="#zuf%C3%A4llige-arrays-einer-bestimmten-gr%C3%B6%C3%9Fe-erstellen"><span class="header-section-number">11.5</span> Zufällige Arrays einer bestimmten Größe erstellen</a></li>
+<li><a class="nav-link" href="#erstellen-von-arrays-mit-sequenzen"><span class="header-section-number">11.6</span> Erstellen von Arrays mit Sequenzen</a></li>
+<li><a class="nav-link" href="#stack"><span class="header-section-number">11.7</span> Arrays zu einer Matrix stapeln</a></li>
+<li><a class="nav-link" href="#zeilen--und-spaltenvektoren-versus-1d-arrays-row-col-vectors"><span class="header-section-number">11.8</span> Zeilen- und Spaltenvektoren versus 1D-Arrays (#row-col-vectors)</a></li>
+<li><a class="nav-link" href="#wiederholen-und-kacheln"><span class="header-section-number">11.9</span> Wiederholen und Kacheln</a></li>
+<li><a class="nav-link" href="#generating-sudoku-via-brute-force-order-and-chaos"><span class="header-section-number">11.10</span> Generating Sudoku via brute force: order and chaos</a></li>
+<li><a class="nav-link" href="#validation-examples"><span class="header-section-number">11.11</span> Validation examples</a></li>
+<li><a class="nav-link" href="#is-this-row-even-valid"><span class="header-section-number">11.12</span> Is this row even valid?</a></li>
+<li><a class="nav-link" href="#blocks"><span class="header-section-number">11.13</span> Blocks</a></li>
+<li><a class="nav-link" href="#brute-force-in-action"><span class="header-section-number">11.14</span> Brute force in action</a></li>
+<li><a class="nav-link" href="#wrap-up"><span class="header-section-number">11.15</span> Wrap up</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/09-sudoku-brute-force.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/09-sudoku-brute-force.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-13.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
