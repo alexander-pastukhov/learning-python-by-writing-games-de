@@ -64,6 +64,7 @@
 <li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
 <li><a class="" href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></li>
 <li><a class="active" href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
+<li><a class="" href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></li>
 </ul>
 
         <div class="book-extra">
@@ -356,13 +357,13 @@ Das Rätsel basiert auf einem 2D-Gitter und prinzipiell könntest du <a href="On
 <span id="cb120-2"><a href="sudoku-brute-force.html#cb120-2" tabindex="-1"></a>an_array <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
 <span id="cb120-3"><a href="sudoku-brute-force.html#cb120-3" tabindex="-1"></a>np.random.shuffle(an_array)</span>
 <span id="cb120-4"><a href="sudoku-brute-force.html#cb120-4" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
-<span id="cb120-5"><a href="sudoku-brute-force.html#cb120-5" tabindex="-1"></a><span class="co">#&gt; [4 2 3 1 0]</span></span>
+<span id="cb120-5"><a href="sudoku-brute-force.html#cb120-5" tabindex="-1"></a><span class="co">#&gt; [1 4 0 2 3]</span></span>
 <span id="cb120-6"><a href="sudoku-brute-force.html#cb120-6" tabindex="-1"></a></span>
 <span id="cb120-7"><a href="sudoku-brute-force.html#cb120-7" tabindex="-1"></a><span class="co"># Einen Teil eines Arrays mischen</span></span>
 <span id="cb120-8"><a href="sudoku-brute-force.html#cb120-8" tabindex="-1"></a>an_array <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
 <span id="cb120-9"><a href="sudoku-brute-force.html#cb120-9" tabindex="-1"></a>np.random.shuffle(an_array[:<span class="dv">3</span>])</span>
 <span id="cb120-10"><a href="sudoku-brute-force.html#cb120-10" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
-<span id="cb120-11"><a href="sudoku-brute-force.html#cb120-11" tabindex="-1"></a><span class="co">#&gt; [0 1 2 3 4]</span></span></code></pre></div>
+<span id="cb120-11"><a href="sudoku-brute-force.html#cb120-11" tabindex="-1"></a><span class="co">#&gt; [1 0 2 3 4]</span></span></code></pre></div>
 <p>Schreibe den Code, der eine <span class="math inline">\(4\times4\)</span>-Matrix erstellt (definiere die Größe der Matrix über die Konstante <code>SUDOKU_SIZE</code>), die nach Zeilen geordnet ist
 (also jede Zeile geht von 1 bis <code>SUDOKU_SIZE</code>, aber jede Spalte hat die gleiche Zahl darin), und schreibe den Code, der genau eine Zeile mischt (lege ihren Index in der Variablen <code>irow</code> fest). Ändere den Wert von <code>irow</code>, um zu testen, ob dein Code funktioniert. Beispielsweise könnte dein Output für eine zufällig gemischte Zeile #2 so aussehen.</p>
 <pre><code>#&gt; array([[1, 2, 3, 4],
@@ -491,60 +492,9 @@ Schreibe das Programm in <em>code06.py</em></p>
 </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <div class="chapter-nav">
 <div class="prev"><a href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></div>
-<div class="empty"></div>
+<div class="next"><a href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
@@ -581,7 +531,7 @@ Schreibe das Programm in <em>code06.py</em></p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-13.</p>
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-20.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

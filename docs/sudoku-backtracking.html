@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 12 Sudoku: Backtracking-Algorithmus | Lerne Python, indem du Textspiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="In diesem Kapitel werden wir erneut am Sudoku arbeiten, diesmal jedoch einen effizienteren Backtracking-Algorithmus verwenden. Im Gegensatz zum völlig stochastischen Brute-Force-Algorithmus, der...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 12 Sudoku: Backtracking-Algorithmus | Lerne Python, indem du Textspiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/sudoku-backtracking.html">
+<meta property="og:description" content="In diesem Kapitel werden wir erneut am Sudoku arbeiten, diesmal jedoch einen effizienteren Backtracking-Algorithmus verwenden. Im Gegensatz zum völlig stochastischen Brute-Force-Algorithmus, der...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 12 Sudoku: Backtracking-Algorithmus | Lerne Python, indem du Textspiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="In diesem Kapitel werden wir erneut am Sudoku arbeiten, diesmal jedoch einen effizienteren Backtracking-Algorithmus verwenden. Im Gegensatz zum völlig stochastischen Brute-Force-Algorithmus, der...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/python-text-favicon.svg">
+<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Textspiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
+<li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+<li><a class="" href="One-armed-bandit.html"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></li>
+<li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
+<li><a class="" href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></li>
+<li><a class="" href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
+<li><a class="active" href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="sudoku-backtracking" class="section level1" number="12">
+<h1>
+<span class="header-section-number">Kapitel 12</span> Sudoku: Backtracking-Algorithmus<a class="anchor" aria-label="anchor" href="#sudoku-backtracking"><i class="fas fa-link"></i></a>
+</h1>
+<p>In diesem Kapitel werden wir erneut am Sudoku arbeiten, diesmal jedoch einen effizienteren Backtracking-Algorithmus verwenden. Im Gegensatz zum völlig stochastischen <a href="sudoku-brute-force.html#sudoku-brute-force">Brute-Force-Algorithmus</a>, der versucht, das gesamte Spielbrett auf einmal zu “erraten”, macht der Backtracking-Algorithmus eine fundierte Vermutung über jeweils eine Zelle zur Zeit. Wie in den vorherigen Kapiteln werden wir das Programm Schritt für Schritt aufbauen, aber die gute Nachricht ist, dass du fast alles, was du zur Implementierung brauchst, bereits kennst: Matrizen, Slicing und rekursive Funktionen. Zusätzlich werden wir es als Gelegenheit nutzen, um mehr über Listen und NumPy zu lernen. Schnapp dir das <a href="notebooks/sudoku-backtracking.ipynb">Übungs-Notebook</a> und lies weiter.</p>
+<div id="kapitelkonzepte" class="section level2" number="12.1">
+<h2>
+<span class="header-section-number">12.1</span> Kapitelkonzepte<a class="anchor" aria-label="anchor" href="#kapitelkonzepte"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li><a href="sudoku-backtracking.html#list-repetition">Wiederholung von Listen</a></li>
+<li>
+<a href="#unpack-tuple">Entpacken von Tupeln</a> und Listen</li>
+<li>
+<a href="sudoku-backtracking.html#random-seed">Seeding</a> des Zufallsgenerators</li>
+<li>
+<a href="#reshape">Umformen</a> von Arrays</li>
+<li>
+<a href="sudoku-backtracking.html#exceptions">Ausnahmen</a> Auslösen und Behandeln</li>
+</ul>
+</div>
+<div id="backtracking-algorithmus" class="section level2" number="12.2">
+<h2>
+<span class="header-section-number">12.2</span> Backtracking-Algorithmus<a class="anchor" aria-label="anchor" href="#backtracking-algorithmus"><i class="fas fa-link"></i></a>
+</h2>
+<p>Dieser Algorithmus ist sehr intuitiv, wenn man ihn sich als Erforschung eines Baumes vorstellt. Jeder Knoten ist eine Zelle, und unser Baum ist 82 Ebenen tief (beginnend mit einem leeren Gitter und durchgehend durch alle 81 Zellen). Jeder Knoten hat <em>bis zu</em> neun mögliche Kanten, die von ihm ausgehen. Warum <em>bis zu</em> neun? Wir können die Zahlen 1 bis 9 verwenden (also maximal neun Kanten), aber es sei denn, eine Zelle befindet sich in einer völlig leeren Reihe, Spalte und Block, werden einige Werte bereits vergeben sein, was die gültigen Kanten einschränkt.</p>
+<p>Ein Beispiel für einen solchen Baum für <span class="math inline">\(4\times4\)</span> Sudoku wird in der Abbildung unten illustriert. Du beginnst oben mit einem leeren Raster und du hast vier mögliche Wege, um die erste Zelle (in Rot markiert) auszufüllen. Wenn du jedoch zu einer anderen Zelle wechselst (eine Ebene tiefer gehst), sind deine Wahlmöglichkeiten eingeschränkt, da beide Zellen zur selben Reihe gehören. Das bedeutet, wenn du <span class="math inline">\(1\)</span> gewählt hast, hast du drei Möglichkeiten bis auf die <span class="math inline">\(1\)</span>, und wenn du <span class="math inline">\(3\)</span> gewählt hast, hast du drei Möglichkeiten bis auf die <span class="math inline">\(3\)</span>. Sobald du eine der verfügbaren Optionen gewählt hast, gehst du zur nächsten Zelle. Es kann jedoch vorkommen, dass du in eine Sackgasse gerätst, wie unten rechts gezeigt: Alle vier Zahlen wurden bereits verwendet, also gibt es keinen gültigen Wert für die Zelle und dieser Weg durch den Baum ist ungültig. Die Lösung ist, ein Stück zurückzugehen: Eine Ebene nach oben gehen, eine andere Zahl für die Zelle anstelle von <span class="math inline">\(4\)</span> wählen. Hier könntest du mit sowohl <span class="math inline">\(1\)</span> als auch <span class="math inline">\(2\)</span> ein vollständiges Brett enden. Dies ist wichtig, da der Baum <em>alle möglichen Wege</em> und daher <em>alle möglichen</em> <span class="math inline">\(4\times4\)</span> gültigen Sudoku-Matrizen definiert!</p>
+<p><img src="images/sudoku-tree.svg" style="display: block; margin: 0 auto;width:100.0%" alt="Sudoku erstellen durch das Erforschen eines Baumes"><br></p>
+<p>Wenn du geduldig genug bist, alle Pfade in diesem Baum systematisch zu erkunden, wirst du alle gültigen Sudoku-Matrizen finden. Jedoch wollen wir nicht <em>alle</em>, sondern genau <em>eine</em>. Gleichzeitig möchten wir, dass unser Programm bei jedem Durchlauf eine <em>andere</em> Matrix generiert. Wenn wir unseren Erkundungsweg festlegen (immer durch die Zellen in derselben Reihenfolge gehen) und unsere Wahlmöglichkeiten festlegen (wir gehen immer durch verfügbare Zahlen in aufsteigender Reihenfolge), werden wir immer mit der gleichen Matrix enden. Daher wird unsere Erkundungsstrategie Zufälligkeit beinhalten. Zunächst werden wir mit kleineren <span class="math inline">\(4\times4\)</span> Matrizen arbeiten, aber sobald der Algorithmus funktioniert, wird es einfach sein, ihn so anzupassen, dass er die richtigen <span class="math inline">\(9\times9\)</span> Matrizen erzeugt.</p>
+</div>
+<div id="leere-matrix-voller-nullen" class="section level2" number="12.3">
+<h2>
+<span class="header-section-number">12.3</span> Leere Matrix (voller Nullen)<a class="anchor" aria-label="anchor" href="#leere-matrix-voller-nullen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die allererste Matrix in unserem Baum ist leer. Zur Vereinfachung bezeichnen wir Leerstellen mit <span class="math inline">\(0\)</span>, daher musst du eine <span class="math inline">\(4\times4\)</span> Matrix erzeugen, die mit Nullen gefüllt ist. Schreibe den Code dafür unter Verwendung von <a href="https://numpy.org/">NumPy</a>: Es gibt eine Funktion, über die du das letzte Mal gelernt hast, die genau diese Aufgabe erledigt. Ein wichtiges Detail, definiere die Größe der Matrix (<span class="math inline">\(4\)</span>) als eine KONSTANTE (nennen wir sie <code>SUDOKU_SIZE</code>). Diese Zahl definiert sowohl die Größe der Matrix als auch den Bereich der Zahlen, sodass dies die einzige Änderung sein wird, die erforderlich ist, um Sudoku unterschiedlicher Größe zu erzeugen.</p>
+<div class="practice">
+<p>Mache Übung #1.</p>
+</div>
+</div>
+<div id="list-repetition" class="section level2" number="12.4">
+<h2>
+<span class="header-section-number">12.4</span> Empty matrix but via list repetitions<a class="anchor" aria-label="anchor" href="#list-repetition"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="list-repetition" class="section level2" number="12.5">
+<h2>
+<span class="header-section-number">12.5</span> Leere Matrix, aber durch List-Wiederholungen<a class="anchor" aria-label="anchor" href="#list-repetition"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die NumPy-Lösung erfüllt ihren Zweck, es gibt jedoch auch eine alternative Methode zur Erstellung über Wiederholungen von Listen. Das vereinfacht die Dinge hier zwar nicht, aber es ist ein netter Trick, der hilfreich sein kann, wenn man mit Listen arbeitet. Nämlich, du kannst eine Liste <span class="math inline">\(N\)</span>-mal wiederholen mit <code>&lt;Liste&gt; * N</code>, wobei <code>* N</code> bedeutet “N-mal wiederholen”. Hier ist ein Beispiel für die viermalige Wiederholung eines Arrays mit drei Elementen.</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb125-1"><a href="sudoku-backtracking.html#cb125-1" tabindex="-1"></a>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>] <span class="op">*</span> <span class="dv">4</span></span>
+<span id="cb125-2"><a href="sudoku-backtracking.html#cb125-2" tabindex="-1"></a><span class="co">#&gt; [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]</span></span></code></pre></div>
+<p>Angesichts der Tatsache, dass du eine Liste von Listen wiederholen kannst, erzeuge eine <span class="math inline">\(4\times4\)</span> Liste von Listen, die alle Nullen enthält (diese kann in eine <span class="math inline">\(4\times4\)</span> Matrix mittels <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html">np.array</a> umgewandelt werden). Dafür benötigst du nur eine Zeile Code, du darfst die <span class="math inline">\(0\)</span> nicht von Hand wiederholen (also nur <em>eine</em> <span class="math inline">\(0\)</span> in deinem Code!) und verwende die Konstante <code>SUDOKU_SIZE</code>.</p>
+<pre><code>#&gt; [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]</code></pre>
+<div class="practice">
+<p>Mache Übung #2.</p>
+</div>
+<p>Ein wichtiger Hinweis zum Gebrauch von <code>*</code> für Listen im Vergleich zu NumPy-Arrays. Im letzteren Fall bedeutet <code>*</code> “multiplizieren mit”, also selbst wenn die Dinge <em>ähnlich aussehen</em>, werden sie sich sehr unterschiedlich verhalten!</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb127-1"><a href="sudoku-backtracking.html#cb127-1" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb127-2"><a href="sudoku-backtracking.html#cb127-2" tabindex="-1"></a>an_array <span class="op">=</span> np.array(a_list)</span>
+<span id="cb127-3"><a href="sudoku-backtracking.html#cb127-3" tabindex="-1"></a></span>
+<span id="cb127-4"><a href="sudoku-backtracking.html#cb127-4" tabindex="-1"></a><span class="co"># Wiederholung für Listen</span></span>
+<span id="cb127-5"><a href="sudoku-backtracking.html#cb127-5" tabindex="-1"></a>a_list <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb127-6"><a href="sudoku-backtracking.html#cb127-6" tabindex="-1"></a><span class="co">#&gt; [1, 2, 3, 1, 2, 3]</span></span>
+<span id="cb127-7"><a href="sudoku-backtracking.html#cb127-7" tabindex="-1"></a></span>
+<span id="cb127-8"><a href="sudoku-backtracking.html#cb127-8" tabindex="-1"></a><span class="co"># Multiplikation für NumPy-Arrays</span></span>
+<span id="cb127-9"><a href="sudoku-backtracking.html#cb127-9" tabindex="-1"></a>an_array <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb127-10"><a href="sudoku-backtracking.html#cb127-10" tabindex="-1"></a><span class="co">#&gt; array([2, 4, 6])</span></span></code></pre></div>
+</div>
+<div id="zellenreihe-und--spalte-aus-index" class="section level2" number="12.6">
+<h2>
+<span class="header-section-number">12.6</span> Zellenreihe und -spalte aus Index<a class="anchor" aria-label="anchor" href="#zellenreihe-und--spalte-aus-index"><i class="fas fa-link"></i></a>
+</h2>
+<p>Es gibt verschiedene Möglichkeiten, einen zufälligen Weg durch die Zellen zu definieren. In der Matrix wird jede Zelle durch ihre Reihe und Spalte identifiziert, aber wir können auch davon ausgehen, dass die Zellen einen eindeutigen Index haben, der von 0 bis <code>SUDOKU_SIZE * SUDOKU_SIZE - 1</code> geht (warum minus eins?). Hier ist eine Illustration von dem, was ich meine. Der Index geht von der Zelle oben links nach rechts und unten, also wenn du die Zellenreihe und -spalte kennst, kannst du ihren Index berechnen. Umgekehrt, wenn du den Zellenindex kennst, kannst du berechnen, in welcher Reihe und Spalte sie sich befindet. Zum Beispiel befindet sich die hervorgehobene Zelle mit Index <span class="math inline">\(9\)</span> in Reihe <span class="math inline">\(2\)</span> und Spalte <span class="math inline">\(1\)</span>. Das Gleiche gilt für die Reihe und Spalte des Blocks, zu dem die Zelle gehört.</p>
+<p><img src="images/sudoku-cell-index-row-col.svg" style="display: block; margin: 0 auto;width:25.0%" alt="Zellenindex sowie Reihen- und Spaltenindizes."><br></p>
+<p>Deine Aufgabe ist es, eine Funktion zu schreiben, die einen Zellenindex und die Reihenbreite als Parameter nimmt und ein <a href="https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences">Tupel</a> (eine unveränderliche Liste) mit <code>(Reihe, Spalte)</code> zurückgibt. Um einen Gesamtindex in Reihe und Spalte umzuwandeln, solltest du zwei spezielle Division-Operatoren verwenden: den <a href="https://python-reference.readthedocs.io/en/latest/docs/operators/floor_division.html">Ganzzahl-Division-Operator //</a> und den <a href="https://python-reference.readthedocs.io/en/latest/docs/operators/modulus.html">Modulo, Rest-Division-Operator %</a>. Der erste gibt nur den ganzzahligen Teil der Division zurück, sodass 4 // 3 gleich 1 ist (weil 4/3 gleich 1.33333 ist) und 1 // 4 gleich 0 ist (weil 1/4 gleich 0.25 ist). Der letztere gibt die verbleibenden Ganzzahlen zurück, so dass 4 % 3 gleich 1 und 1 % 4 gleich 0 ist. Diese beiden Operatoren reichen aus, um die Indizes für Reihe und Spalte zu berechnen.</p>
+<p>Schreibe die Funktion und teste sie, indem du die zurückgegebenen Werte überprüfst. Zur Erinnerung, du solltest ein Tupel mit zwei Werten erhalten (<code>return (Reihe, Spalte)</code>), also sollte deine Ausgabe für den Index <span class="math inline">\(9\)</span> wie folgt aussehen:</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb128-1"><a href="sudoku-backtracking.html#cb128-1" tabindex="-1"></a>row_col_from_index(<span class="dv">9</span>, SUDOKU_SIZE)</span>
+<span id="cb128-2"><a href="sudoku-backtracking.html#cb128-2" tabindex="-1"></a><span class="co">#&gt; (2, 1)</span></span></code></pre></div>
+<div class="program">
+<p>Füge <code>row_col_from_index</code> in <em>utils.py</em> ein
+Teste es in <em>code01.py</em></p>
+</div>
+</div>
+<div id="zellenblock-reihe-und-spalte-aus-index" class="section level2" number="12.7">
+<h2>
+<span class="header-section-number">12.7</span> Zellenblock (Reihe und Spalte) aus Index<a class="anchor" aria-label="anchor" href="#zellenblock-reihe-und-spalte-aus-index"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unsere Zelle gehört auch zu einem Block, der durch ihre Reihen- und Spaltenindizes definiert werden kann, wie in der folgenden Abbildung dargestellt.</p>
+<div class="float">
+<img src="images/sudoku-cell-index.svg" style="display: block; margin: 0 auto;width:50.0%" alt="Zellenindex sowie Block-Reihen- und Spaltenindizes."><div class="figcaption">Zellenindex sowie Block-Reihen- und Spaltenindizes.</div>
+</div>
+<p>Du kannst den Block-Reihen- und Spaltenindex aus der Reihe und Spalte berechnen, die du zuvor ermittelt hast. Denke darüber nach, welchen Operator du dafür benötigst, und du wirst auch die Blockbreite benötigen, die du leicht aus der <code>Reihenbreite</code> berechnen kannst: Überlege dir, wie du dies entweder mit <a href="https://docs.python.org/3/library/math.html">Python</a> oder <a href="https://numpy.org/doc/stable/reference/routines.math.html">NumPy</a> tun kannst, wenn du bedenkst, dass du bei einem <span class="math inline">\(4\times4\)</span> Gitter 2 Blöcke, bei einem <span class="math inline">\(9\times9\)</span> — 3, bei einem <span class="math inline">\(16\times16\)</span> — 4 usw. hast. Beachte, dass die Blockbreite <em>zwingend</em> eine ganze Zahl sein muss, also stelle sicher, dass du den Wert <a href="https://docs.python.org/3/library/functions.html#int">umwandelst</a>. Erweitere deine vorherige Funktion (ich habe sie <code>coords_from_index</code> genannt), sodass sie ein Vierer-Tupel (Reihe, Spalte, Blockreihe, Blockspalte) wie im untenstehenden Ausgabebeispiel zurückgibt. Teste sie für verschiedene Zellenindizes, wobei du die obige Abbildung als Referenz verwendest.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb129-1"><a href="sudoku-backtracking.html#cb129-1" tabindex="-1"></a>coords_from_index(<span class="dv">9</span>, SUDOKU_SIZE)</span>
+<span id="cb129-2"><a href="sudoku-backtracking.html#cb129-2" tabindex="-1"></a><span class="co">#&gt; (2, 1, 1, 0)</span></span></code></pre></div>
+<div class="program">
+<p>Füge <code>coords_from_index</code> in <em>utils.py</em> ein
+Teste den Code in <em>code02.py</em></p>
+</div>
+</div>
+<div id="tupel-entpacken" class="section level2" number="12.8">
+<h2>
+<span class="header-section-number">12.8</span> Tupel entpacken<a class="anchor" aria-label="anchor" href="#tupel-entpacken"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unsere Funktion gibt ein <a href="https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences">Tupel</a> der Form <code>(Reihe, Spalte, Blockreihe, Blockspalte)</code> zurück. Theoretisch könnten wir es über Indizes verwenden, sodass <code>row_col[0]</code> die Reihe und <code>row_col[1]</code> die Spalte usw. bedeutet, aber das ist schwer lesbar. Es gibt eine bessere Lösung durch sogenanntes “Entpacken” (“unpacking”). Wenn du ein Tupel erstellst, “verpackst” du vier Werte darin, das “Entpacken” kehrt diesen Vorgang um<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ja, mir ist die Ironie bewusst, dass Werte ausgepackt werden, um sie wieder für das &lt;code&gt;print&lt;/code&gt; zu verpacken.&lt;/p&gt;"><sup>47</sup></a>.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb130-1"><a href="sudoku-backtracking.html#cb130-1" tabindex="-1"></a>row, col, block_row, block_col <span class="op">=</span> coords_from_index(<span class="dv">9</span>, SUDOKU_SIZE)</span>
+<span id="cb130-2"><a href="sudoku-backtracking.html#cb130-2" tabindex="-1"></a></span>
+<span id="cb130-3"><a href="sudoku-backtracking.html#cb130-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Row: </span><span class="sc">%d</span><span class="st">, column </span><span class="sc">%d</span><span class="st">, block row </span><span class="sc">%d</span><span class="st">, block column </span><span class="sc">%d</span><span class="st">"</span><span class="op">%</span>(row, col, block_row, block_col))</span>
+<span id="cb130-4"><a href="sudoku-backtracking.html#cb130-4" tabindex="-1"></a><span class="co">#&gt; Row: 2, column 1, block row 1, block column 0</span></span></code></pre></div>
+<p>Dieser Trick funktioniert nur, wenn die Anzahl der Elemente und Variablen übereinstimmt, also nur geeignet, wenn zurückgegebene Tupel in ihrer Größe fest sind. Beachte, dass derselbe Trick auch bei einer Liste funktioniert, aber dies bricht die Semantik. Es ist okay für Tupel, weil sie unveränderlich sind und ihre Verwendung dem Leser anzeigt, dass ihre Größe zumindest konzeptionell festgelegt ist. Im Gegensatz dazu sind Listen veränderlich, sodass ihre Verwendung darauf hinweist, dass sie beliebig lang sein können. Nochmals, es macht keinen tatsächlichen Unterschied im Programm für ein Tupel oder eine Liste von identischer Größe, aber diese Unterscheidung dient dazu, den Leser über deine Absichten zu informieren, und jegliche Hilfe beim Lesen von Code sollte willkommen sein.</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb131-1"><a href="sudoku-backtracking.html#cb131-1" tabindex="-1"></a><span class="co"># zu wenige Werte (oder zu viele Variablen)</span></span>
+<span id="cb131-2"><a href="sudoku-backtracking.html#cb131-2" tabindex="-1"></a>row, col, depth <span class="op">=</span> row_col_from_index(<span class="dv">9</span>, SUDOKU_SIZE)</span>
+<span id="cb131-3"><a href="sudoku-backtracking.html#cb131-3" tabindex="-1"></a><span class="co">#&gt; not enough values to unpack (expected 3, got 2)</span></span>
+<span id="cb131-4"><a href="sudoku-backtracking.html#cb131-4" tabindex="-1"></a></span>
+<span id="cb131-5"><a href="sudoku-backtracking.html#cb131-5" tabindex="-1"></a><span class="co"># zu viele Werte (oder zu wenige Variablen)</span></span>
+<span id="cb131-6"><a href="sudoku-backtracking.html#cb131-6" tabindex="-1"></a>row, col, depth <span class="op">=</span> coords_from_index(<span class="dv">9</span>, SUDOKU_SIZE)</span>
+<span id="cb131-7"><a href="sudoku-backtracking.html#cb131-7" tabindex="-1"></a><span class="co">#&gt; too many values to unpack (expected 3)</span></span></code></pre></div>
+</div>
+<div id="reihenfolge-des-pfades-zufällig-gestalten" class="section level2" number="12.9">
+<h2>
+<span class="header-section-number">12.9</span> Reihenfolge des Pfades zufällig gestalten<a class="anchor" aria-label="anchor" href="#reihenfolge-des-pfades-zuf%C3%A4llig-gestalten"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, wo du die Funktion hast, lass uns einen zufälligen Pfad generieren und ihn visualisieren. Dafür:</p>
+<ul>
+<li>erzeuge eine leere (Nullen) Matrix</li>
+<li>erzeuge eine Sequenz aller gültigen Zellenindizes (du kannst entweder die Python- oder die NumPy-Lösung dafür verwenden, je nachdem, was du bevorzugst)</li>
+<li>mische die Reihenfolge der Sequenz durch</li>
+<li>iteriere über die Sequenz und trage für jeden Index den <em>Besuchsreihenfolge</em>-Index in die Zelle ein (z.B. bekommt die erste besuchte Zelle <span class="math inline">\(1\)</span>, die zweite <span class="math inline">\(2\)</span>, …, die letzte <span class="math inline">\(16\)</span>). <a href="One-armed-bandit.html#enumerate">Hinweis!</a>
+</li>
+<li>drucke die Matrix wie unten aus</li>
+</ul>
+<pre><code>#&gt; [[ 1.  2.  9. 15.]
+#&gt;  [11.  3. 16. 12.]
+#&gt;  [ 7.  8. 13.  6.]
+#&gt;  [14.  5.  4. 10.]]</code></pre>
+<div class="program">
+<p>Teste den Code in <em>code03.py</em></p>
+</div>
+</div>
+<div id="random-seed" class="section level2" number="12.10">
+<h2>
+<span class="header-section-number">12.10</span> Zufallsgenerator seeden<a class="anchor" aria-label="anchor" href="#random-seed"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die Wahrscheinlichkeit ist hoch, dass deine Matrix anders aussieht als meine. Das macht Sinn, wir <em>wollten</em>, dass die Dinge zufällig sind, also ist es höchst unwahrscheinlich, genau dieselbe Reihenfolge des Zellenbesuchs zu erhalten. Manchmal benötigst du jedoch ein Paradoxon: Zufällige Zahlen, die gleich sind. D.h., du möchtest zwar zufällige Zahlen, aber du möchtest <em>dieselben</em> zufälligen Zahlen wie jemand anders. Das klingt seltsam, wird aber häufig benötigt, wenn du Zufälligkeit verwenden und jemand anders in der Lage sein möchtest, deine Ergebnisse genau zu replizieren. Zum Beispiel bestimmen die anfänglich zufälligen Gewichte eines künstlichen neuronalen Netzwerks letztendlich dessen finalen Zustand. Wenn du also <em>genau</em> dasselbe NN wie ich haben willst, sollten wir die gleichen zufälligen Gewichte verwenden (und natürlich alles andere auf genau die gleiche Weise tun).</p>
+<p>Du kannst dies erreichen, indem du den Pseudo-Zufallszahlengenerator mit einer beliebigen Zahl <a href="https://docs.python.org/3/library/random.html#random.seed">seedest</a> (es gibt natürlich auch das NumPy-Pendant mit dem <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html">gleichen Namen</a>). Dadurch startet ein Pseudo-Zufallszahlengenerator bei einem bestimmten Wert, der durch den Seed bestimmt wird (aber nicht gleich diesem ist), sodass wir, wenn wir beide den gleichen Seed verwenden, genau dieselbe zufällige Sequenz erhalten. Wie kann eine Sequenz sowohl zufällig als auch gleich sein? Dies liegt daran, dass von einem Computer erzeugte Sequenzen “pseudo”-zufällig sind: Es gibt keine Korrelation zwischen aufeinanderfolgenden Zahlen, die er generiert, sodass du nicht leicht vorhersagen kannst, welche Zahl als Nächstes kommt, wenn du dir die Sequenz ansiehst, die du bereits hast. Die Zahlen werden jedoch nach einem Algorithmus generiert, sodass du, wenn du den Algorithmus und seinen internen Zustand kennst (oder diesen Zustand über einen Seed bestimmst), genau die gleiche Sequenz erhältst wie ich und scheinbar “zufällig” vorhersagen kannst, was ich tue. Diese “pseudo”-zufällige Natur von Computern generierter Zufallszahlen ist für uns hier und in vielen anderen Fällen (Probenahme in der Bayes-Statistik, Generierung von Anfangsgewichten für neuronale Netzwerke usw.) kein Dealbreaker, ist aber kritisch, wenn das Wissen um deine “zufälligen” Zahlen mir erlaubt, dich auszunutzen. Cybersicherheit ist ein offensichtliches Beispiel für einen Bereich, in dem der Unterschied zwischen wirklich zufällig und pseudo-zufällig den Unterschied zwischen sicher und gehackt bedeutet. In diesem Fall nutzen Unternehmen sogar tatsächliche <a href="https://www.atlasobscura.com/places/encryption-lava-lamps">physikalische Systeme mit chaotischer Dynamik</a>, um Zufallszahlen zu generieren.</p>
+<div class="program">
+<p>Aktualisiere <em>code03.py</em> unter Verwendung des Seeds <code>42</code>.</p>
+</div>
+<p>Sobald wir wissen, an welcher Zelle wir arbeiten, müssen wir unsere Optionen kennen: Welche Zahlen sind noch verfügbar (falls überhaupt). Überlege, wie du das lösen würdest, bevor du weiterliest<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Du solltest dir vorstellen, wie ich dich wie Dora die Entdeckerin anstarre, während du dies tust.&lt;/p&gt;"><sup>48</sup></a>.</p>
+<p>Die Antwort sollte ziemlich offensichtlich sein: <a href="hunt-the-wumpus.html#sets">Sets</a>: Ziehe einfach eine Menge von bereits verwendeten Werten von der Menge aller möglichen Werte ab, und der Unterschied sind die verfügbaren Optionen. Eine leere Menge würde einen ungültigen Pfad bedeuten. Das Generieren eines kompletten Sets ist einfach, da du die <code>SUDOKU_SIZE</code> kennst. Die Menge der bereits verwendeten Werte besteht aus Werten, die in der Reihe, der Spalte und dem Block verwendet werden, zu dem die Zelle gehört. Du weißt bereits, wie du eine Menge einzigartiger Werte für Reihe und Spalte/Block extrahieren kannst (das brauchen wir, wenn wir die Matrix im vorherigen Kapitel validiert haben). Sobald du diese drei Arrays hast, kannst du dir die <a href="https://numpy.org/doc/stable/reference/generated/numpy.union1d.html">Vereinigung</a> ihrer <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">eindeutigen</a> Werte ansehen. Beachte, dass du drei Arrays und keine zwei hast, also denke darüber nach, wie du das machen kannst. Implementiere den Code und teste ihn, indem du eine <span class="math inline">\(4\times4\)</span> Matrix per Hand definierst (du kannst die verwenden, die ich unten erstellt habe).</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb133-1"><a href="sudoku-backtracking.html#cb133-1" tabindex="-1"></a>example_matrix <span class="op">=</span> np.zeros((SUDOKU_SIZE, SUDOKU_SIZE))</span>
+<span id="cb133-2"><a href="sudoku-backtracking.html#cb133-2" tabindex="-1"></a>example_matrix[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb133-3"><a href="sudoku-backtracking.html#cb133-3" tabindex="-1"></a>example_matrix[<span class="dv">2</span>, <span class="dv">2</span>] <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb133-4"><a href="sudoku-backtracking.html#cb133-4" tabindex="-1"></a>example_matrix[<span class="dv">3</span>, <span class="dv">1</span>] <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb133-5"><a href="sudoku-backtracking.html#cb133-5" tabindex="-1"></a>example_matrix[<span class="dv">3</span>, <span class="dv">0</span>] <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb133-6"><a href="sudoku-backtracking.html#cb133-6" tabindex="-1"></a>example_matrix</span>
+<span id="cb133-7"><a href="sudoku-backtracking.html#cb133-7" tabindex="-1"></a><span class="co">#&gt; array([[0., 0., 0., 0.],</span></span>
+<span id="cb133-8"><a href="sudoku-backtracking.html#cb133-8" tabindex="-1"></a><span class="co">#&gt;        [0., 1., 0., 0.],</span></span>
+<span id="cb133-9"><a href="sudoku-backtracking.html#cb133-9" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 2., 0.],</span></span>
+<span id="cb133-10"><a href="sudoku-backtracking.html#cb133-10" tabindex="-1"></a><span class="co">#&gt;        [4., 2., 0., 0.]])</span></span></code></pre></div>
+<p>Das Finden einzigartiger bereits verwendeter Werte für Zelle #9 unter Verwendung der obigen Matrix sollte dir die folgenden Ergebnisse liefern (2 für die Reihe, 1 und 2 für die Spalte, 2 und 4 für den Block):</p>
+<pre><code>#&gt; array([0., 1., 2., 4.])</code></pre>
+<p>Jetzt bleibt nur noch, alle möglichen gültigen Zahlen zu generieren, die bereits verwendeten <a href="https://numpy.org/doc/stable/reference/generated/numpy.setdiff1d.html">abzuziehen</a> und zu sehen, was übrig bleibt.</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb135-1"><a href="sudoku-backtracking.html#cb135-1" tabindex="-1"></a>np.setdiff1d(np.arange(SUDOKU_SIZE <span class="op">+</span> <span class="dv">1</span>), already_used)</span>
+<span id="cb135-2"><a href="sudoku-backtracking.html#cb135-2" tabindex="-1"></a><span class="co">#&gt; array([3])</span></span></code></pre></div>
+<div class="program">
+<p>Teste in <em>code04.py</em> .</p>
+</div>
+</div>
+<div id="arrays-umformen" class="section level2" number="12.11">
+<h2>
+<span class="header-section-number">12.11</span> Arrays umformen<a class="anchor" aria-label="anchor" href="#arrays-umformen"><i class="fas fa-link"></i></a>
+</h2>
+<p>In unserer vorherigen Implementierung haben wir zunächst ein 1D-Array von einzigartigen Werten berechnet und dann deren Vereinigung bestimmt. Eine alternative (wenn auch weniger effiziente) Methode wäre, zuerst alle drei Arrays zu (verknüpfen)[<a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html" class="uri">https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html</a>] und dann die <a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html">eindeutigen Werte</a> zu finden. Es gibt allerdings einen Haken, alle deine Arrays haben eine unterschiedliche <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">Form</a>: Reihen- und Spaltenvektoren sind <code>(4, )</code> (eindimensional), während ein quadratischer Block die Form <code>(2, 2)</code> hat. Du musst entweder beide Reihen-/Spaltenvektoren in eine <code>(2, 2)</code> Form <a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html">umformen</a> oder nur die Blockmatrix auf <code>(4, )</code>. Mache es auf beide Arten, aber stelle sicher, dass du die <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html">Form</a> der Blockmatrix zur Umformung der Reihen-/Spaltenvektoren anstelle von hartkodierten Werten verwendest. Ebenso verwende die Form des Reihen-/Spaltenvektors, um die Blockmatrix umzuformen. Mache es ein drittes Mal, indem du die Blockmatrix in ein 1D-Array umformst, indem du ihre eigene <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.size.html">Größe</a> benutzt. Schließlich gibt es noch eine andere Möglichkeit, jedes Array/Matrix/Tensor in ein 1D-Array umzuwandeln, indem man es <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html">abflacht</a>.</p>
+<div class="practice">
+<p>Mache Übung #3.</p>
+</div>
+<p>Sobald du herausgefunden hast, wie du Arrays umformen kannst, forme die Blockmatrix in einen 1D-Vektor um, verknüpfe alle, finde eindeutige Werte, subtrahiere sie von einer vollständigen Menge und du solltest die gleichen Werte wie zuvor erhalten.</p>
+<div class="program">
+<p>Teste in <em>code05.py</em> .</p>
+</div>
+</div>
+<div id="funktion-get_available_values" class="section level2" number="12.12">
+<h2>
+<span class="header-section-number">12.12</span> Funktion <code>get_available_values</code><a class="anchor" aria-label="anchor" href="#funktion-get_available_values"><i class="fas fa-link"></i></a>
+</h2>
+<p>Verpacke einfach den Code aus <code>code04</code> (den effizienteren) in eine Funktion. Ihre Eingaben sollten die Matrix selbst, der Zellenindex, die Größe des Sudoku (kein heimlicher Zugriff auf globale Konstanten oder Variablen!) und wahrscheinlich die Größe des Blocks sein. Du könntest es on-the-fly berechnen, aber wir werden diese Funktion <em>sehr oft</em> aufrufen, also ist es besser, es einmal zu berechnen. Sie sollte ein Array von einzigartigen Werten zurückgeben, die du berechnet hast. Schreibe, dokumentiere und teste!</p>
+<div class="program">
+<p>Füge <code>get_available_values</code> in <em>utils.py</em> ein<br>
+Teste den Code in <em>code06.py</em></p>
+</div>
+</div>
+<div id="nur-eine-zelle" class="section level2" number="12.13">
+<h2>
+<span class="header-section-number">12.13</span> Nur eine Zelle<a class="anchor" aria-label="anchor" href="#nur-eine-zelle"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wir haben fast alle Teile, die wir brauchen, um das Programm zu schreiben. Lass uns langsam beginnen, indem wir den Code erstellen, der einen zufälligen Wert in nur eine zufällige Zelle setzt. Du musst eine Funktion schreiben (nennen wir sie <code>add_one_cell</code>), die eine erweiterte Version der <code>get_available_values</code> Funktion sein wird. Zusätzlich zum Finden der verfügbaren Werte sollte sie diese <a href="https://numpy.org/doc/1.21/reference/random/generated/numpy.random.shuffle.html">mischen</a> und den ersten Wert (aus dem gemischten Array) in die Zelle einfügen. Da Arrays veränderbar sind, brauchen wir uns keine Gedanken über Rückgabewerte zu machen. Teste die Funktion, indem du sie mehrmals ausführst (die Zelle sollte dieselbe sein, aber die Werte sollten unterschiedlich sein), aber denke daran, wenn du deinen Zufallszahlengenerator mit <code>42</code> <a href="https://numpy.org/doc/1.21/reference/random/generated/numpy.random.seed.html">seedest</a>, wirst du die gleiche Matrix erhalten wie ich.</p>
+<pre><code>#&gt; array([[4., 0., 0., 0.],
+#&gt;        [0., 0., 0., 0.],
+#&gt;        [0., 0., 0., 0.],
+#&gt;        [0., 0., 0., 0.]])</code></pre>
+<div class="program">
+<p>Füge <code>add_one_cell</code> in <em>utils.py</em> ein<br>
+Teste den Code in <em>code07.py</em></p>
+</div>
+</div>
+<div id="exceptions" class="section level2" number="12.14">
+<h2>
+<span class="header-section-number">12.14</span> Ausnahmen<a class="anchor" aria-label="anchor" href="#exceptions"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unser Programm wird den Baum erkunden, bis es die erforderliche Lösung findet, und dann sollte die Ausführung zum Hauptskript zurückkehren. Die Frage ist, wie können wir dieses “sobald die gültige Lösung gefunden wurde, Ausführung abbrechen und zur obersten Ebene zurückkehren” Verhalten implementieren? Im Spiel <a href="guess-the-animal.html#guess-the-animal">Ratet das Tier</a> hatten wir dieses Problem nicht, weil wir <em>einen</em> Weg durch den Baum verfolgt haben, bis wir das Endknoten (Blatt) erreichten. Sobald die notwendigen Aktualisierungen am Blattknoten durchgeführt wurden, kehrte die Funktion einfach zur vorherigen Ebene zurück, die zur vorherigen Ebene zurückkehrte usw., da keine weiteren Maßnahmen erforderlich waren und die Tatsache, dass die Funktion ihre Aktion abgeschlossen hatte, bedeutete, dass wir den Baum vollständig durchforscht hatten. Im Falle von Sudoku bedeutet jedoch die Tatsache, dass die Funktion eine Ebene nach oben zurückkehren muss, entweder 1) dass sie die letzte Zelle erreicht und gefüllt hat oder 2) dass sie keine Möglichkeit hat, sie auf gültige Weise zu vervollständigen und die vorherige Ebene (Funktion) sich anpassen muss. Um dies zu handhaben, könnten wir das Verhalten der Funktion so implementieren, dass es von einem Rückgabewert abhängt (.z.B. null bedeutet “kann die Zelle nicht füllen”, nicht null bedeutet “Erfolg”). Es gibt jedoch einen alternativen Ansatz, der zwei verschiedene Mechanismen verwendet, um diese beiden Situationen zu behandeln. Die Funktion wird <em>zurückkehren</em> zur oberen Ebene, wenn sie die Zelle nicht füllen kann, aber sie wird den Mechanismus von Ausnahmen nutzen, um direkt zur obersten Ebene zurückzukehren, sobald die Matrix komplett ist. Dies macht unseren Code einfacher und verständlicher und gibt uns die Möglichkeit, über Ausnahmen zu lernen.</p>
+<p>Manchmal, wenn du ein Programm ausführst, passieren schlechte Dinge — Fehler. In einigen Fällen ist ein abstürzendes Programm einfach nur ärgerlich, aber in anderen Fällen kann es bedeuten, dass du verloren hast, welche Daten du gesammelt oder welche Berechnungen du in der Zwischenzeit durchgeführt hast. Denke nur an unser Spiel <a href="guess-the-animal.html#guess-the-animal">Ratet das Tier</a>, das du lange gespielt hast und das abgestürzt ist, <em>ohne</em> den aktualisierten Entscheidungsbaum zu speichern. Gut für uns, dass Python, wie andere Sprachen, spezielle Mechanismen hat, um <a href="https://docs.python.org/3/tutorial/errors.html">Ausnahmen</a> zu behandeln, die während der Codeausführung auftreten. Immer wenn ein Fehler zur Laufzeit auftritt, wird eine Ausnahme <a href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement">ausgelöst</a>: Es wird ein Objekt <a href="https://docs.python.org/3/library/exceptions.html#concrete-exceptions">einer speziellen Klasse</a> erstellt, das Informationen enthält, die das Problem beschreiben. Zum Beispiel wird ein <a href="https://docs.python.org/3/library/exceptions.html#ZeroDivisionError">ZeroDivisionError</a> ausgelöst, wenn du versuchst, durch Null zu teilen, z.B. <code>1 / 0</code> (du kannst dies in einem Jupyter-Notebook ausprobieren). Ein <a href="https://docs.python.org/3/library/exceptions.html#KeyError">KeyError</a> wird ausgelöst, wenn du ein Wörterbuch mit einem falschen Schlüssel benutzt; der folgende Code wird ihn auslösen:</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb137-1"><a href="sudoku-backtracking.html#cb137-1" tabindex="-1"></a>a_dict <span class="op">=</span> {<span class="st">"a_key"</span> : <span class="dv">1</span>}</span>
+<span id="cb137-2"><a href="sudoku-backtracking.html#cb137-2" tabindex="-1"></a>a_dict[<span class="st">"b_key"</span>]</span>
+<span id="cb137-3"><a href="sudoku-backtracking.html#cb137-3" tabindex="-1"></a><span class="co">#&gt; 'b_key'</span></span></code></pre></div>
+<p>Ebenso wird ein <a href="https://docs.python.org/3/library/exceptions.html#IndexError">IndexError</a> ausgelöst, wenn du versuchst, einen ungültigen Index für eine Liste zu verwenden, ein <a href="https://docs.python.org/3/library/exceptions.html#NameError">NameError</a>, wenn du versuchst, auf eine Variable zuzugreifen, die nicht existiert, ein <a href="https://docs.python.org/3/library/exceptions.html#AttributeError">AttributeError</a>, wenn ein Objekt nicht über ein Attribut verfügt, das du zu verwenden versuchst, usw.</p>
+<p>In Python verwendest du die Operatoren <code>try: ... except:...finally:</code>, um Ausnahmen vorherzusehen und zu behandeln:</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb138-1"><a href="sudoku-backtracking.html#cb138-1" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb138-2"><a href="sudoku-backtracking.html#cb138-2" tabindex="-1"></a>    <span class="co"># einige Codezeilen, die einen Laufzeitfehler erzeugen könnten</span></span>
+<span id="cb138-3"><a href="sudoku-backtracking.html#cb138-3" tabindex="-1"></a><span class="cf">except</span>:  </span>
+<span id="cb138-4"><a href="sudoku-backtracking.html#cb138-4" tabindex="-1"></a>    <span class="co"># Code, der ausgeführt wird, wenn etwas Schlechtes passiert</span></span>
+<span id="cb138-5"><a href="sudoku-backtracking.html#cb138-5" tabindex="-1"></a><span class="cf">finally</span>:</span>
+<span id="cb138-6"><a href="sudoku-backtracking.html#cb138-6" tabindex="-1"></a>    <span class="co"># Code, der sowohl mit als auch ohne Ausnahme ausgeführt wird</span></span>
+<span id="cb138-7"><a href="sudoku-backtracking.html#cb138-7" tabindex="-1"></a>    </span>
+<span id="cb138-8"><a href="sudoku-backtracking.html#cb138-8" tabindex="-1"></a>Code, der NUR ausgeführt wird, wenn keine Ausnahmen auftraten oder wenn eine Ausnahme behandelt wurde</span></code></pre></div>
+<p>Im einfachsten Fall benötigst du nur die ersten beiden Operatoren: <code>try</code> und <code>except</code>. Schreibe im Jupyter-Notebook einen Code, der einen Division-durch-Null-Fehler erzeugt, der aber mit <code>try...except...</code> abgefangen wird. Gib im <code>except</code> einfach eine Nachricht aus, damit du weißt, dass sie ausgeführt wurde. Erstelle eine weitere Zelle, kopiere den Code und prüfe nun, dass der Code zur Ausnahmebehandlung <em>nicht</em> ausgeführt wird, wenn der Fehler nicht generiert wird (d.h. teile durch eine von Null verschiedene Zahl).</p>
+<div class="practice">
+<p>Mache Übung #4.</p>
+</div>
+<p>Die Verwendung von <code>except:</code> fängt <em>alle</em> Ausnahmen ab. Das wird jedoch als schlechter Stil angesehen (zu allgemein) und ein Linter wird sich beschweren. Stattdessen kannst du spezifischer sein und Ausnahmen basierend auf ihrer Klasse behandeln.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb139-1"><a href="sudoku-backtracking.html#cb139-1" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb139-2"><a href="sudoku-backtracking.html#cb139-2" tabindex="-1"></a>    <span class="co">#  einige Codezeilen, die einen Laufzeitfehler erzeugen könnten</span></span>
+<span id="cb139-3"><a href="sudoku-backtracking.html#cb139-3" tabindex="-1"></a><span class="cf">except</span> <span class="pp">KeyError</span> <span class="im">as</span> key_error:</span>
+<span id="cb139-4"><a href="sudoku-backtracking.html#cb139-4" tabindex="-1"></a><span class="co"># Code, der nur ausgeführt wird, wenn die KeyError-Ausnahme ausgelöst wurde, </span></span>
+<span id="cb139-5"><a href="sudoku-backtracking.html#cb139-5" tabindex="-1"></a>    <span class="co"># wobei die Ausnahmeinformationen im key_error-Objekt gespeichert werden</span></span>
+<span id="cb139-6"><a href="sudoku-backtracking.html#cb139-6" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ZeroDivisionError</span> <span class="im">as</span> zero_division_error:  </span>
+<span id="cb139-7"><a href="sudoku-backtracking.html#cb139-7" tabindex="-1"></a>   <span class="co"># Code, der nur ausgeführt wird, wenn die ZeroDivisionError-Ausnahme ausgelöst wurde,</span></span>
+<span id="cb139-8"><a href="sudoku-backtracking.html#cb139-8" tabindex="-1"></a>    <span class="co"># wobei die Ausnahmeinformationen im zero_division_error-Objekt gespeichert werden</span></span>
+<span id="cb139-9"><a href="sudoku-backtracking.html#cb139-9" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb139-10"><a href="sudoku-backtracking.html#cb139-10" tabindex="-1"></a>   <span class="co"># Code, der ausgeführt wird, wenn irgendeine ANDERE Ausnahme ausgelöst wird.</span></span></code></pre></div>
+<p>Implementiere die Behandlung für <code>KeyError</code> und <code>ZeroDivisionError</code>; sie sollten unterschiedliche Nachrichten ausgeben, um zu überprüfen, ob es funktioniert. Teste es, indem du mit deinem Code diese Laufzeitfehler erzeugst.</p>
+<div class="practice">
+<p>Mache Übung #5.</p>
+</div>
+<p>Bisher hast du Ausnahmen erzeugt, indem du Laufzeitfehler im Code verursacht hast, aber du kannst diese Ausnahmen auch selbst auslösen, indem du den <a href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement">raise</a>-Operator verwendest. Statt beispielsweise durch Null zu dividieren, kannst du <code>raise ZeroDivisionError</code> benutzen. Verwende dies mit deinem vorherigen Code, anstelle einer tatsächlichen Division durch Null. Probiere andere Ausnahmen auszulösen und zu sehen, wie dein Code sie behandelt. Überprüfe auch, was passiert, wenn du die ersten beiden spezifischen Ausnahmebehandler hast, aber keinen allgemeinen <code>except:</code>, und löse einen <a href="https://docs.python.org/3/library/exceptions.html#NameError">NameError</a> aus?</p>
+<div class="program">
+<p>Mache Übung #6.</p>
+</div>
+<p>Bisher habe ich von Ausnahmen als einer Möglichkeit gesprochen, über Laufzeitfehler zu informieren. Sie können jedoch auf eine allgemeinere Weise verwendet werden, um den Ausführungsfluss zu steuern. Stelle dir zum Beispiel eine Situation mit geschachtelten Schleifen vor, ähnlich den “Spiel wiederholen - Runde mit Spiel wiederholen” Schleifen, die du zuvor implementiert hast. Bisher gab es keine Möglichkeit für einen Spieler, das Spiel vorzeitig zu beenden, aber was wäre, wenn wir ihnen diese Option geben würden?</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb140-1"><a href="sudoku-backtracking.html#cb140-1" tabindex="-1"></a><span class="co"># Spiel wiederholen</span></span>
+<span id="cb140-2"><a href="sudoku-backtracking.html#cb140-2" tabindex="-1"></a><span class="cf">while</span> want_to_play:</span>
+<span id="cb140-3"><a href="sudoku-backtracking.html#cb140-3" tabindex="-1"></a>    ...</span>
+<span id="cb140-4"><a href="sudoku-backtracking.html#cb140-4" tabindex="-1"></a>    </span>
+<span id="cb140-5"><a href="sudoku-backtracking.html#cb140-5" tabindex="-1"></a>    <span class="co"># Runden des Spiels wiederholen</span></span>
+<span id="cb140-6"><a href="sudoku-backtracking.html#cb140-6" tabindex="-1"></a>    <span class="cf">while</span> <span class="kw">not</span> game_over:</span>
+<span id="cb140-7"><a href="sudoku-backtracking.html#cb140-7" tabindex="-1"></a>      ...</span>
+<span id="cb140-8"><a href="sudoku-backtracking.html#cb140-8" tabindex="-1"></a>      </span>
+<span id="cb140-9"><a href="sudoku-backtracking.html#cb140-9" tabindex="-1"></a>      → Benutzer möchte das Spiel hier abbrechen ←</span></code></pre></div>
+<p>Dies ist eine sehr ähnliche Situation wie verschachtelte rekursive Aufrufe für unseren Sudoku-Algorithmus. Hier reicht es nicht einfach aus, mit einem einfachen <code><a href="https://rdrr.io/r/base/Control.html">break</a></code> aus der inneren Schleife auszusteigen oder <code>game_over = True</code> einzustellen, da du auch die äußere Schleife berücksichtigen musst. Du könntest eine zusätzliche Variable erstellen oder eine flexiblere <code>game_over</code>-Variable mit verschiedenen “Game Over”-Zuständen (Erfolg, Misserfolg, Benutzerabbruch usw.) und dann überprüfen, ob du den Benutzer fragen musst, ob er noch einmal spielen möchte. Sonst könntest du direkt nach einem “willst du noch mal spielen?” fragen, gleich nachdem er “aufhören” gesagt hat. Diese zusätzlichen Zustände und Überprüfungen machen den Code jedoch schwerer lesbar, besonders wenn du weitere Verschachtelungen hast, Funktionsaufrufe in Funktionsaufrufen usw. Ein alternativer Weg ist die Implementierung einer <em>benutzerdefinierten</em> Ausnahme, die signalisiert, dass der Benutzer beschlossen hat, das Spiel zu beenden.</p>
+<p>Du definierst eine benutzerdefinierte Ausnahme, indem du von einer Basis-Klasse <a href="https://docs.python.org/3/library/exceptions.html#Exception">Exception</a> erbst. Da du noch nichts über objektorientierte Programmierung gelernt hast, klingt das jetzt vielleicht wie Kauderwelsch, aber hier ist der einzige Code, den du benötigst<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;code&gt;pass&lt;/code&gt;&lt;/p&gt;"><sup>49</sup></a>(<a href="https://docs.python.org/3/reference/simple_stmts.html#the-pass-statement" class="uri">https://docs.python.org/3/reference/simple_stmts.html#the-pass-statement</a>) bedeutet “nichts tun” und wird in Fällen verwendet, in denen du aufgrund der Syntax eine Anweisung benötigst, aber nichts zu tun hast.]:</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb141-1"><a href="sudoku-backtracking.html#cb141-1" tabindex="-1"></a><span class="kw">class</span> QuitTheGame(<span class="pp">Exception</span>):</span>
+<span id="cb141-2"><a href="sudoku-backtracking.html#cb141-2" tabindex="-1"></a>    <span class="cf">pass</span></span></code></pre></div>
+<p>Als Übung implementiere den Code mit einer einfachen endlosen while-Schleife, in der du fragst, ob weitergefahren oder aufgehört werden soll (entscheide selbst, wie du die Eingabe behandeln willst). Sobald du dich schließlich dafür entscheidest, das Spiel zu beenden, wirf eine <code>QuitTheGame</code>-Ausnahme, die vom <code>try except</code>-Code, der um die Schleife gewickelt ist, behandelt werden soll. Verwende Code, um die <code>QuitTheGame</code>-Ausnahme <em>spezifisch</em> zu behandeln und gib eine Nachricht aus, um zu zeigen, wie traurig du bist, dass der Spieler geht.</p>
+<div class="program">
+<p>Mache Übung #7.</p>
+</div>
+</div>
+<div id="das-rätsel-ist-gelöst-sobald-keine-zellen-mehr-zum-überprüfen-vorhanden-sind" class="section level2" number="12.15">
+<h2>
+<span class="header-section-number">12.15</span> Das Rätsel ist gelöst, sobald keine Zellen mehr zum Überprüfen vorhanden sind<a class="anchor" aria-label="anchor" href="#das-r%C3%A4tsel-ist-gel%C3%B6st-sobald-keine-zellen-mehr-zum-%C3%BCberpr%C3%BCfen-vorhanden-sind"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unsere Funktion <code>add_one_cell</code> hat nur eine Zelle hinzugefügt und konnte nicht weitermachen, selbst wenn sie wollte, da sie keinen Index der nächsten Zelle hatte. Lassen Sie uns diese Funktion erweitern und die neue Version <code>add_few_cells</code> nennen, sodass sie anstelle eines einzelnen Zellenindex eine Liste dieser nimmt (ich habe den Parameter in <code>remaining_cells</code> umbenannt). Wenn die Liste leer ist, sollte sie die Ausnahme <code>GridComplete</code> auslösen, die im Hauptskript behandelt wird (das Gitter wird ausgegeben). Wenn die Liste noch Elemente enthält, sollte die Funktion das <em>erste</em> als Index der aktuellen Zelle verwenden. Nachdem sie die aktuelle Zelle mit dem ersten zufällig verfügbaren Wert gefüllt hat (Code, den Sie bereits implementiert haben), ruft sie sich selbst auf (Rekursion!) und übergibt die <em>verbleibende</em> Liste (ohne das erste Element).</p>
+<p>Erstelle <code>GridComplete</code> mit dem Code für die <code>QuitTheGame</code>-Ausnahme, aber denke über <em>wo</em> du den Code platzieren sollst, da du beide in der Funktion, die sich in <em>utils.py</em> befindet, und im Hauptskript verwendest. Überlege, in welcher Datei du sie definieren solltest und in welcher du sie importieren solltest (Hinweis: Das Vorhandensein von kreisförmigen Abhängigkeiten ist keine gute Idee). Du importierst eine Ausnahmeklasse ähnlich wie das Verwenden einer Funktion: <code>from &lt;file-you-decided-on&gt; import GridComplete</code>.</p>
+<p>Es gibt noch keinen Backtracking-Mechanismus, daher wird unsere Funktion abstürzen (warum?), wenn wir ihr eine vollständige Liste von Zellen geben. Testen Sie sie also nur mit den ersten vier Zellen. Diese sind garantiert ausgefüllt (wiederum, warum?) und unser Code sollte eine Matrix wie unten ausgeben (Seed immer noch <code>42</code>). Unsere Matrix ist nicht vollständig, aber das ist einfach, um unsere Testmechanismen für den Abschluss zu überprüfen. Hier ist die Verwendung eines Debuggers zum Nachverfolgen der Aufrufebenen sehr hilfreich, um den Mechanismus der Rekursion zu verstehen.</p>
+<pre><code>#&gt; array([[4., 1., 0., 0.],
+#&gt;        [0., 2., 0., 0.],
+#&gt;        [0., 0., 0., 0.],
+#&gt;        [0., 0., 2., 0.]])</code></pre>
+<div class="program">
+<p>Füge <code>add_few_cells</code> in <em>utils.py</em> ein.<br>
+Teste den Code in <em>code08.py</em></p>
+</div>
+</div>
+<div id="hinzufügen-des-backtracking-mechanismus" class="section level2" number="12.16">
+<h2>
+<span class="header-section-number">12.16</span> Hinzufügen des Backtracking-Mechanismus<a class="anchor" aria-label="anchor" href="#hinzuf%C3%BCgen-des-backtracking-mechanismus"><i class="fas fa-link"></i></a>
+</h2>
+<p>Das letzte Puzzleteil, das wir brauchen, ist der Backtracking-Mechanismus. Derzeit verwendet unsere Funktion nur den ersten Wert aus der zufällig sortierten Liste verfügbarer Werte. Dieser erste Wert kann jedoch nicht zu einem gültigen Raster führen, also muss die Funktion diese Werte durchlaufen und sich selbst aufrufen. Hier bedeutet es, wenn der innere Funktionsaufruf einen Rückgabewert liefert, dass der aktuelle Zellenwert in eine Sackgasse führt und wir den nächsten Wert ausprobieren müssen – daher die Schleife (denke daran, wenn der Pfad ein vollständiges Raster erzeugt, springt er direkt zur obersten Ebene, ohne jemals <code>return</code> zu verwenden). Wenn du jedoch die For-Schleife vollständig durchlaufen hast, bedeutet das, dass die innere Funktion jedes Mal einen Rückgabewert geliefert hat und es keinen möglichen Wert für die aktuelle Zelle gibt, der die Sackgasse auflösen kann, und du musst den Wert auf null zurücksetzen (zurück zum ursprünglichen leeren Zustand!), und zurück zur übergeordneten Ebene gehen, um zu versuchen, die vorherige Zelle zu korrigieren.</p>
+<p>Rufe die Funktion <code>add_cell</code> auf und verwende sie anstelle von <code>add_few_cells</code>, sowohl im Hauptskript als auch in der Funktion selbst. Verwende zuerst nur die ersten vier Indizes als einen Realitätscheck: Die Ausgabe sollte genau die gleiche sein wie für den Code, der <code>add_few_cells</code> verwendet hat. Verwende dann alle Indizes und wenn du den Seed auf <code>42</code> einstellst, solltest du genau die gleiche Sudoku-Lösung erhalten.</p>
+<pre><code>#&gt; array([[4, 1, 3, 2],
+#&gt;        [3, 2, 4, 1],
+#&gt;        [2, 4, 1, 3],
+#&gt;        [1, 3, 2, 4]])</code></pre>
+<div class="program">
+<p>Füge <code>add_cell</code> in <em>utils.py</em> ein.<br>
+Teste den Code in <em>code09.py</em>.</p>
+</div>
+</div>
+<div id="zusammenfassung-2" class="section level2" number="12.17">
+<h2>
+<span class="header-section-number">12.17</span> Zusammenfassung<a class="anchor" aria-label="anchor" href="#zusammenfassung-2"><i class="fas fa-link"></i></a>
+</h2>
+<p>Nun hast du eine alternative, effizientere Version des Algorithmus, der ein Sudoku generieren kann. Beim nächsten Mal werden wir fortfahren, indem wir eine vollständige Sudoku-Lösung in ein Rätsel verwandeln und lernen, wie man es mithilfe von Dateiein- und -ausgabe für die Nachwelt speichert.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#sudoku-backtracking"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></li>
+<li><a class="nav-link" href="#kapitelkonzepte"><span class="header-section-number">12.1</span> Kapitelkonzepte</a></li>
+<li><a class="nav-link" href="#backtracking-algorithmus"><span class="header-section-number">12.2</span> Backtracking-Algorithmus</a></li>
+<li><a class="nav-link" href="#leere-matrix-voller-nullen"><span class="header-section-number">12.3</span> Leere Matrix (voller Nullen)</a></li>
+<li><a class="nav-link" href="#list-repetition"><span class="header-section-number">12.4</span> Empty matrix but via list repetitions</a></li>
+<li><a class="nav-link" href="#list-repetition"><span class="header-section-number">12.5</span> Leere Matrix, aber durch List-Wiederholungen</a></li>
+<li><a class="nav-link" href="#zellenreihe-und--spalte-aus-index"><span class="header-section-number">12.6</span> Zellenreihe und -spalte aus Index</a></li>
+<li><a class="nav-link" href="#zellenblock-reihe-und-spalte-aus-index"><span class="header-section-number">12.7</span> Zellenblock (Reihe und Spalte) aus Index</a></li>
+<li><a class="nav-link" href="#tupel-entpacken"><span class="header-section-number">12.8</span> Tupel entpacken</a></li>
+<li><a class="nav-link" href="#reihenfolge-des-pfades-zuf%C3%A4llig-gestalten"><span class="header-section-number">12.9</span> Reihenfolge des Pfades zufällig gestalten</a></li>
+<li><a class="nav-link" href="#random-seed"><span class="header-section-number">12.10</span> Zufallsgenerator seeden</a></li>
+<li><a class="nav-link" href="#arrays-umformen"><span class="header-section-number">12.11</span> Arrays umformen</a></li>
+<li><a class="nav-link" href="#funktion-get_available_values"><span class="header-section-number">12.12</span> Funktion get_available_values</a></li>
+<li><a class="nav-link" href="#nur-eine-zelle"><span class="header-section-number">12.13</span> Nur eine Zelle</a></li>
+<li><a class="nav-link" href="#exceptions"><span class="header-section-number">12.14</span> Ausnahmen</a></li>
+<li><a class="nav-link" href="#das-r%C3%A4tsel-ist-gel%C3%B6st-sobald-keine-zellen-mehr-zum-%C3%BCberpr%C3%BCfen-vorhanden-sind"><span class="header-section-number">12.15</span> Das Rätsel ist gelöst, sobald keine Zellen mehr zum Überprüfen vorhanden sind</a></li>
+<li><a class="nav-link" href="#hinzuf%C3%BCgen-des-backtracking-mechanismus"><span class="header-section-number">12.16</span> Hinzufügen des Backtracking-Mechanismus</a></li>
+<li><a class="nav-link" href="#zusammenfassung-2"><span class="header-section-number">12.17</span> Zusammenfassung</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/10-sudoku-backtracking.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/10-sudoku-backtracking.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-20.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
