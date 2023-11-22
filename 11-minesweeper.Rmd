@@ -265,3 +265,7 @@ Test the code using a smaller 3×3 field with one or two mines. You can (sneakil
 Implement game in _code04.py_
 :::
 
+## Spreading through the empty space
+
+
+
