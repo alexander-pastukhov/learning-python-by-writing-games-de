@@ -1,0 +1,267 @@
+# Minesweeper {#minesweeper}
+
+We have learned a lot, so let us practice using all that knowledge. You will still learn a few new useful functions along the way.
+
+## Chapter concepts
+* Printing many times [on the same line](#print-end)
+* [Joining](#str.join) a list of a string into a single string
+* [Converting characters](#chr-ord) to their code and back
+* Creating a matrix filled with an arbitrary value or character
+
+
+## Minesweeper
+Today we are going to program a simplified text-based version of the minesweeper game. In this game, you need to clear up a rectangular patch while not hitting a mine. Every time you open a cell, you either get blown up, if there was a mine, or you are shown a number of mines in the surrounding cells. The game is over once you opened all fields which are not mines. The classic game uses graphics and mouse but we will replicate it using text only. Therefore, instead of clicking on a cell, the player will need to enter its coordinates using row (letter) and column (digit). Below is an example of how a 5×5 game field would look like in the output with all fields still unopened. As per usual, we will build the game step by step. 
+
+```{python echo=FALSE}
+import numpy as np
+
+FIELD_SIZE = 5
+MINES_N = 1
+
+field = np.full((FIELD_SIZE, FIELD_SIZE), '•')
+
+columns = '  ' + ''.join(np.arange(1, FIELD_SIZE + 1).astype(str))
+
+
+print(columns)
+print("  " + "".join(["-"] * (FIELD_SIZE)))
+for irow in range(FIELD_SIZE):
+  print(chr(ord("A") + irow) + "|", end="")
+  for cell in field[irow, ]:
+    if cell == "*":
+      print(" ", end="")
+    else:
+      print(cell, end="")
+  print()
+``` 
+
+## Printing column indexes via for loop{#print-end}
+To visually help the player to identify columns, we need to print out their indexes, as in the output above. You _could_ define a string `"  12345"` by hand and print it out but we want to be more flexible and generate this string based on the size of the playing field stored in a constant `FIELD_SIZE`. The are multiple way to achieve the same end and we will implement them all (because this is all about practice and putting your skills to the test, remember?)
+
+Our first approach is conceptually the simplest: Just loop over the range of numbers up to `FIELD_SIZE` and print them out one by one. Do remember that [range](https://docs.python.org/3/library/functions.html#range) goes from `0` to `stop - 1`, so think how you will adjust this for the output or which `start` and `stop` parameters you should use. The only problem we have is  every number will be printed in its own line. However, this is easy to fix via `end` parameter of the [print](https://docs.python.org/3/library/functions.html#print) function. By default, it is equal to `'\n'` (new line) but you can redefine it to any other string, including an empty one `''`. Use a for loop to print one digit at a time in the same line. Do not forget to prepend it with two extra spaces to account for later row indexing. 
+
+::: {.program}
+Implement code in Exercise 1.
+:::
+
+## Joining all column indexes into a single string{#str.join}
+Another way to achieve the same end is to:
+
+1. Create a list of numbers.
+2. Convert each element of a list to a string via [list comprehensions](#list-comprehension)
+3. [join](https://docs.python.org/3/library/stdtypes.html#str.join) them into a string.
+
+The first step is easy: you use the same [range](https://docs.python.org/3/library/functions.html#range) to create the sequence of numbers. The second one is also easy (at least you have done it before!): use list comprehension to loop over values produced by range and convert them to a [string](https://docs.python.org/3/library/functions.html#func-str) one by one. Do not forget to adjust numbers, as you did in the previous version, before converting them to strings. The final part is new but conceptually very simple. [join](https://docs.python.org/3/library/stdtypes.html#str.join) is a _method_ of a string that joins a list of strings (and only strings, this is why we needed list comprehension for conversion) using an "original" string as a separator. Here are couple of examples of how it works:
+
+```{python}
+a_list = ["cat", "dog", "duck"]
+print(' - '.join(a_list))
+print(''.join(a_list))
+```
+Implement this solution for our column index. Do not forget to prepend it with two extra spaces. Instead of using an extra print as before, join the two strings via `+`. E.g., 
+
+```{python}
+print('a cat and' + ' a dog')
+```
+```{python echo=FALSE, eval=FALSE}
+numbers_as_strings = [str(number + 1) for number in  range(FIELD_SIZE)]
+'  ' + ''.join(numbers_as_strings)
+```
+
+
+::: {.program}
+Implement code in Exercise 2.
+:::
+
+## Building sequence via NumPy
+You already know about [NumPy](https://numpy.org/) and, of course, it has a solution for problems like this as well. Here, we will
+
+1. Build an array of ordered numbers using [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html).
+2. Convert them all to an array via [astype](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.astype.html) method.
+3. [Join](https://docs.python.org/3/library/stdtypes.html#str.join) values just as you did before.
+
+Again, first one is easy, as you already used [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html), just think about `start` and `stop` values to get the `1`..`FIELD_SIZE` array you need. Now the second one is new but is conceptually simple. You can change type of all elements of the array by calling its [astype](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.astype.html) method and specifying a new type. For example, here is how you convert an array of integers into an array of logical values (remember, `0` is `False`, everything else is `True`):
+
+```{python}
+an_array_of_integers = np.array([0, 1, 0, 2, 3, 0])
+an_array_of_integers.astype(bool)
+```
+You need to use the same code but for the type you need: `str`. The last step ---- joining individual elements into a single string and prepanding it with two extra spaces --- is exactly the same as in the previous solution.
+
+::: {.program}
+Implement code in Exercise 3.
+:::
+
+## Drawing a horizontal line
+The next part of the output is a horizontal line `FIELD_SIZE` long (plus two extra spaces in front!) That should be easy, just use [list repetition](#list-repetition) to build a `FIELD_SIZE` long list of `-` elements and join them the same way you did for digits.
+
+::: {.program}
+Implement code in Exercise 4.
+:::
+
+## Converting character to code and back {#chr-ord}
+The rows are marked with characters, so we need a simple way of translating between letters and numbers. The simplest approach here is to convert characters to their code via [ord](https://docs.python.org/3/library/functions.html#ord) function and from the code back to a character via [chr](https://docs.python.org/3/library/functions.html#chr) function. Here is how it works:
+
+```{python}
+# code from symbol
+a_symbol = 'G'
+print(ord(a_symbol))
+
+
+# symbol from code
+a_code = 72
+print(chr(a_code))
+```
+
+Build a list of characters starting from `"A"` which is `FIELD_SIZE` letters long. Remember that codes for letters are consecutive, so code for `"B"` is larger than code for `"A"` by one, the code for `"C"` is larger than code for `"A"` by two, etc. In the exercise, simply print out this letters one-by-one in each separate line using a for loop.
+
+::: {.program}
+Implement code in Exercise 5.
+:::
+
+## Inputing coordinates
+We now have a coordinate system, so let us create an input function (`input_coords`) that will prompt user to enter the coordinates of the next cell that they want to open until they give a _valid_ input. For example, for a 5×5 playing field `A3` or `e5` should be valid inputs, but `f1`, `a6`, or `huh` will in invalid. The function should accept `field_size` as a parameter and return a list of two _numbers_, i.e., it should convert both column (originally digit) and row (originally letter) to a corresponding zero-based row and column index. So, `A3` would become `(0, 2)` and `e5` would be `(4, 4)`.
+
+You already have experience of writing functions that annoy the user until they give valid input, so this should be fairly straightforward. The main difference is that there are multiple things to check this time:
+
+1. String has [length](https://docs.python.org/3/library/functions.html#len) of $2$ (one symbol for row, one for column)
+2. First character of the string is a letter within valid range
+3. Second character of the string is a digit within a valid range.
+
+Here is the information you need to complete this. You can access individual characters of the string the same way you do it with lists:
+
+```{python}
+a_string = "cat"
+a_string[2]
+```
+
+To check whether a letter is a valid range, you need to 1) build a list of valid letters and 2) check that the first symbol is [in](#in-collection) this list. In the previous exercise, you printed these valid letters one by one, so here you need to put them all into a list via [list comprehensions](#list-comprehension) instead. You list will be either upper or lower case, so make sure that you enforce the case for the symbol via [upper](https://docs.python.org/3/library/stdtypes.html?highlight=upper#str.upper) or [lower](https://docs.python.org/3/library/stdtypes.html?highlight=upper#str.lower) case. 
+
+::: {.program}
+Do Exercise 6.
+:::
+
+To check whether the second symbol is a digit within a correct range, you can either do the same trick of 1) building a list of _strings_ with valid digits, and 2) checking whether the second symbol is in it. But instead, use the [isdigit](#isdigit) method in combination with [int](https://docs.python.org/3/library/functions.html#int), as you did when [Hunting the Wumpus](#hunt-the-wumpus).
+
+::: {.program}
+Do Exercise 7.
+:::
+
+Now that you know how to perform all the checks, you can write the `input_coords` function. As before, prompt the player in a [while loop](#while-loop) until it pass all three checks. Then convert each symbol to an index. The second symbol is easy, as you already converted it to an integer, just correct it for zero-based indexing ($1$ should be $0$, $2$ should be $1$, etc.). The first one, is a touch trickier but you already know how to convert a character to a number via [ord](https://docs.python.org/3/library/functions.html#ord) and the only thing to remember is that `"A"` is $0$ (think how this is useful).   
+
+::: {.program}
+Implement `input_coords` in _utils.py_ <br/>
+Test it in _code01.py_.
+:::
+
+## Creating an empty minefield
+Our mine field will be a 2D [NumPy array](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html), same as for our [Sudoku](#sudoku-brute-force) puzzle. The only difference is that instead of numbers, we will use characters (strings) indicate the content of the cell. A cell with a mine in it, will be `"*"`. A cell _without_ a mine, initially will be `" "` (space symbol) but once the player opens it this will be replaced with the number of mines around it (for example, `"1"` or `"0'`). We will worry about turning empty space into numbers later, as our first job is to generate a minefield itself.
+
+You start with an empty field `FIELD_SIZE` × `FIELD_SIZE`, so a NumPy array of `" "` with size `(FIELD_SIZE, FIELD_SIZE)`. As per usual, there are multiple ways of creating it. First, create a list of list via [list repetition](#list-repetition) and then convert it into a [NumPy array](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html). Recall that you can generate a list of characters by putting a single character into a list and then repeating this list `FIELD_SIZE` times. And then, you can repeat _that_ list `FIELD_SIZE` again. 
+
+::: {.program}
+Implement this in  Exercise 8.
+:::
+
+Alternatively, you can make your life easier by generating an array [full](https://numpy.org/doc/stable/reference/generated/numpy.full.html) of this symbol.
+
+::: {.program}
+Implement this in  Exercise 9.
+:::
+
+## Putting in mines
+Now that you have an empty field, you should put some mines into it! Define a constant `MINES_NUMBER` and set it to a reasonable number of mines (remember, the more you have, the harder the game is). Next, put in `MINES_NUMBER` of mines at random places. For this (=you probably need [for](#for-loop) and / or [while](#while-loop):
+
+1. generate a pair of valid row and column indexes
+2. check that that cell is empty (no mine in it)
+3. place the mine if cell is empty, go to step 1 otherwise
+
+Combined your code with that our exercise 9 to generate a minefield
+
+::: {.program}
+Implement code in  Exercise 10.
+:::
+
+## Printing out the minefield
+You have the minefield and you know how to print out the row and column index. Combine them all into a function `print_minefield` that takes the minefield array as the only input and prints out `"•"` if the field is empty but unopened (`" "`) or has a mine in it (`"*"`, remember, if player opened the mine, the game is over). The only other option is an already opened cell and that will contain a digit with number of surrounding mines (coming up shortly!). You definitely need nested [for-loops](#for-loop) and conditional statements. Recall that the output should look like this (all fields are either empty or have unopened mines):
+
+```{python echo=FALSE}
+FIELD_SIZE = 5
+MINES_N = 1
+
+field = np.full((FIELD_SIZE, FIELD_SIZE), '•')
+
+columns = '  ' + ''.join(np.arange(1, FIELD_SIZE + 1).astype(str))
+
+
+print(columns)
+print("  " + "".join(["-"] * (FIELD_SIZE)))
+for irow in range(FIELD_SIZE):
+  print(chr(ord("A") + irow) + "|", end="")
+  for cell in field[irow, ]:
+    if cell == "*":
+      print(" ", end="")
+    else:
+      print(cell, end="")
+  print()
+``` 
+
+::: {.program}
+Implement `print_minefield` in _utils.py_ <br/>
+Generate and print out minefield in _code02.py_.
+:::
+
+## Counting surrounding mines
+We are almost done, as we have a field full of mines, we can print it, and we can ask player for which field to open. However, once the player opens the field and it is not a mine, we need to count the number of mines in the surrounding cells. This can range from `$0$` (no mines at all) to `$8$` (you landed in a cell completely surrounded by mines). 
+
+----- an illustration of mines count -----
+
+The implementation of this is fairly straightforward (although there is a catch):
+
+1. Extract a 3×3 matrix that surround the cell
+2. Compute a logical array of whether these cells are equal to `"*"`
+3. Compute the total number of mines via [numpy.sum](https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum)
+
+Remember that I warned you about the catch? Well, if our cell is on the _edge_ of the field, we cannot have a 3×3 cut-out:
+
+----- an illustration of the problem -----
+
+There are two ways to solve the problem. First, you can pad the array with `" "` symbols and work with a `(FIELD_SIZE + 2, FIELD_SIZE + 2)` array. In this case, you don't have to worry about edge cases, as they always have cells near them. And you don't need convert indexes to zero-based as your actual minefield now goes from `1` to `FIELD_SIZE` and not from `0` to `FIELD_SIZE - 1` as for zero-based index. However, for didactic reasons, we will instead implement a more complicated solution that automatically adjust the limits of the cut-out area.
+
+You already cut-out rectangular part of a numpy array when you looked at validity of [Sudoku blocks](##sudoku-block). Here the logic is the same, as you need to compute 1) starting row, 2) ending row, 3) starting column, 4) ending column. However, before using these numbers you need to that both starting row and columns are no lower than $0$ and ending row and columns are no higher than `FIELD_SIZE`. You can use conditional if-else statements or you can use [min](https://docs.python.org/3/library/functions.html#min) and [max](https://docs.python.org/3/library/functions.html#max) functions to pick a lower / higher number of the two in question. Implement this code in Exercise 11 and test that it works for both easy (inside cells) and hard (edge cells) cases.
+
+::: {.program}
+Implement code in  Exercise 11.
+:::
+
+Once you have the rectangular limits, compare all the elements to `"*"` (mine). Remember, this is a vectorized NumPy array, so you can just compare the entire array to `"*"` and NumPy will do it elementwise for you. Then, just count the number of mines via [numpy.sum](https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum).
+
+Write a function `count_mines` that takes the matrix and coordinates as two parameters and returns the number of mines as the output. As per usual (and for all function above as well), document it! Here is an example array you can test it on:
+```{python eval=FALSE}
+a_minefield = np.array([
+  [' ', ' ', '*', ' ', ' '],
+  [' ', '*', ' ', ' ', ' '],
+  [' ', ' ', '*', '*', ' '],
+  [' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', '*', '*', ' '],
+])
+```
+
+::: {.program}
+Implement `count_mines` in _utils.py_ <br/>
+Test it in _code03.py_ using hard coded minefield <br/>
+and coordinates.
+:::
+
+## Putting it all together
+Now you do have everything you need! Write a program that generates a mine field and then asks the player for coordinates. If the player entered coordinates of the mine, the game is over. Otherwise, the number of mines around it computed and _put into that cell_. Next, the updated minefield is printed out and the player is asked for coordinates again. 
+
+The game is over once the player hits the main _or_ once the player open up all the empty fields. In the latter case, all empty fields will be converted from `" "` to a number, so no `" "` symbols will be left in the array. In other words, if you count the number of `" "` in the minefield matrix and it is zero, the player won!
+
+
+Test the code using a smaller 3×3 field with one or two mines. You can (sneakily) print out the raw minefield matrix to help yourself win.
+
+::: {.program}
+Implement game in _code04.py_
+:::
+
