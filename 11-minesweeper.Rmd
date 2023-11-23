@@ -1,6 +1,5 @@
 # Minesweeper {#minesweeper}
-
-You have learned a lot, so let us practice using all that knowledge. You will still learn a few new useful functions along the way. Grab the [exercise notebook](notebooks/minesweeper.ipynb) before we start.
+Du hast viel gelernt, also lass uns all dieses Wissen nutzen. Du wirst immer noch ein paar neue nützliche Funktionen auf dem Weg lernen. Schnapp dir das [Übungsnotebook]((notebooks/minesweeper.ipynb)), bevor wir anfangen.
 
 ## Chapter concepts
 * Printing many times [on the same line](#print-end)
