@@ -1,6 +1,6 @@
 # Minesweeper {#minesweeper}
 
-You have learned a lot, so let us practice using all that knowledge. You will still learn a few new useful functions along the way. Grab the [exercise notebook](notebooks/minesweeper.ipynb) before we start.
+You have learned a lot, so let us practice using all that knowledge. You will still learn a few new useful functions along the way.
 
 ## Chapter concepts
 * Printing many times [on the same line](#print-end)
