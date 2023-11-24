@@ -103,7 +103,7 @@ Jetzt, da du weißt, wie man prüft, ob ein Wert in der Liste ist, lass uns das 
 Füge deinen Code in _code03.py_ ein.
 :::
 
-## Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann
+## Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann {#isdigit}
 Es gibt eine weitere Gefahr bei unserer Eingabe: Der Spieler ist nicht garantiert eine gültige Ganzzahl einzugeben! Bisher haben wir uns darauf verlassen, dass du dich benimmst, aber im wirklichen Leben werden die Leute, selbst wenn sie nicht absichtlich versuchen, dein Programm zu stören, gelegentlich die falsche Taste drücken. Daher müssen wir überprüfen, ob die _Zeichenfolge_, die sie eingegeben haben, in eine _Ganzzahl_ umgewandelt werden kann.
 
 Die Python-Zeichenkette ist ein Objekt (mehr dazu in ein paar Kapiteln) mit verschiedenen Methoden, die es ermöglichen, verschiedene Operationen an ihnen durchzuführen. Eine Teilmenge von Methoden ermöglicht es dir, eine grobe Überprüfung ihres Inhalts durchzuführen. Die Methode, die uns interessiert, ist [str.isdigit()](https://docs.python.org/3/library/stdtypes.html#str.isdigit), die überprüft, ob alle Symbole Ziffern sind und dass die Zeichenfolge nicht leer ist (sie hat mindestens ein Symbol). Du kannst dem obigen Link folgen, um andere Alternativen wie `str.islower()`, `str.isalpha()`, usw. zu überprüfen.

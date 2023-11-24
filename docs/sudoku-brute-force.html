@@ -65,6 +65,7 @@
 <li><a class="" href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></li>
 <li><a class="active" href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
 <li><a class="" href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></li>
+<li><a class="" href="minesweeper.html"><span class="header-section-number">13</span> Minesweeper</a></li>
 </ul>
 
         <div class="book-extra">
@@ -357,7 +358,7 @@ Das Rätsel basiert auf einem 2D-Gitter und prinzipiell könntest du <a href="On
 <span id="cb120-2"><a href="sudoku-brute-force.html#cb120-2" tabindex="-1"></a>an_array <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
 <span id="cb120-3"><a href="sudoku-brute-force.html#cb120-3" tabindex="-1"></a>np.random.shuffle(an_array)</span>
 <span id="cb120-4"><a href="sudoku-brute-force.html#cb120-4" tabindex="-1"></a><span class="bu">print</span>(an_array)</span>
-<span id="cb120-5"><a href="sudoku-brute-force.html#cb120-5" tabindex="-1"></a><span class="co">#&gt; [1 4 0 2 3]</span></span>
+<span id="cb120-5"><a href="sudoku-brute-force.html#cb120-5" tabindex="-1"></a><span class="co">#&gt; [4 0 1 2 3]</span></span>
 <span id="cb120-6"><a href="sudoku-brute-force.html#cb120-6" tabindex="-1"></a></span>
 <span id="cb120-7"><a href="sudoku-brute-force.html#cb120-7" tabindex="-1"></a><span class="co"># Einen Teil eines Arrays mischen</span></span>
 <span id="cb120-8"><a href="sudoku-brute-force.html#cb120-8" tabindex="-1"></a>an_array <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
@@ -444,9 +445,9 @@ Erweitere das Programm aus <em>code03.py</em> in <em>code04.py</em><br>
 Teste den Code mit Beispielmatrizen.
 :::</p>
 </div>
-<div id="blöcke" class="section level2" number="11.13">
+<div id="sudoku-block" class="section level2" number="11.13">
 <h2>
-<span class="header-section-number">11.13</span> Blöcke<a class="anchor" aria-label="anchor" href="#bl%C3%B6cke"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.13</span> Blöcke<a class="anchor" aria-label="anchor" href="#sudoku-block"><i class="fas fa-link"></i></a>
 </h2>
 <p>Blöcke zu bearbeiten ist etwas kniffliger, da wir keine einfache einzelne Achse zum Schneiden (Slicing) verwenden können. Wir können jedoch jeden Block so betrachten, als hätte er einen Zeilen- und einen Spaltenindex, die beide von 0 bis 2 für ein <span class="math inline">\(9\times9\)</span> Sudoku gehen, weil wir <span class="math inline">\(3\times3\)</span> Blöcke haben, oder von 0 bis 1 für ein <span class="math inline">\(4\times4\)</span> Sudoku, wo wir <span class="math inline">\(2\times2\)</span> Blöcke haben.</p>
 <div class="float">
@@ -511,7 +512,7 @@ Schreibe das Programm in <em>code06.py</em></p>
 <li><a class="nav-link" href="#sudoku-erzeugung-mittels-brute-force-ordnung-und-chaos"><span class="header-section-number">11.10</span> Sudoku-Erzeugung mittels Brute-Force: Ordnung und Chaos</a></li>
 <li><a class="nav-link" href="#beispiele-f%C3%BCr-validierungen"><span class="header-section-number">11.11</span> Beispiele für Validierungen</a></li>
 <li><a class="nav-link" href="#ist-diese-zeile-%C3%BCberhaupt-g%C3%BCltig"><span class="header-section-number">11.12</span> Ist diese Zeile überhaupt gültig?</a></li>
-<li><a class="nav-link" href="#bl%C3%B6cke"><span class="header-section-number">11.13</span> Blöcke</a></li>
+<li><a class="nav-link" href="#sudoku-block"><span class="header-section-number">11.13</span> Blöcke</a></li>
 <li><a class="nav-link" href="#brute-force-in-aktion"><span class="header-section-number">11.14</span> Brute-Force in Aktion</a></li>
 <li><a class="nav-link" href="#zusammenfassung-1"><span class="header-section-number">11.15</span> Zusammenfassung</a></li>
 </ul>
@@ -531,7 +532,7 @@ Schreibe das Programm in <em>code06.py</em></p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-20.</p>
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

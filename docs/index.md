@@ -1,7 +1,7 @@
 --- 
 title: "Lerne Python, indem du Textspiele entwickels"
 author: "Alexander (Sasha) Pastukhov"
-date: "2023-11-20"
+date: "2023-11-24"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib]

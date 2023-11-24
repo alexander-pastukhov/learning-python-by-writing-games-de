@@ -10,80 +10,28 @@ Du hast viel gelernt, also lass uns all dieses Wissen nutzen. Du wirst immer noc
 ## Minesweeper
 Heute werden wir eine vereinfachte textbasierte Version des Minesweeper-Spiels programmieren. In diesem Spiel musst du ein rechteckiges Feld räumen, dabei aber keine Mine treffen. Jedes Mal, wenn du eine Zelle öffnest, wird entweder eine Explosion ausgelöst, falls dort eine Mine war, oder dir wird die Anzahl der Minen in den umliegenden Zellen angezeigt. Das Spiel ist zu Ende, sobald du alle Felder, die keine Minen sind, geöffnet hast. Das klassische Spiel verwendet Grafiken und die Maus, aber wir werden es nur mit Text nachbilden. Daher wird der Spieler statt auf eine Zelle zu klicken ihre Koordinaten eingeben müssen, und zwar mittels Zeile (Buchstabe) und Spalte (Ziffer). Unten ist ein Beispiel dafür, wie ein 5×5-Spielfeld in der Ausgabe aussehen würde, wenn alle Felder noch ungeöffnet sind.
 
-```{python echo=FALSE}
-import numpy as np
 
-FIELD_SIZE = 5
-MINES_N = 5
-
-def print_minefield(minefied):
-  """Print minefield.
-  
-  Parameters
-  ----------
-  minefield : np.array
-  """
-  columns = '  ' + ''.join(np.arange(1, minefied.shape[0] + 1).astype(str))
-  
-  
-  print(columns)
-  print("  " + "".join(["-"] * (minefied.shape[0])))
-  for irow in range(minefied.shape[0]):
-    print(chr(ord("A") + irow) + "|", end="")
-    for cell in field[irow, ]:
-      if cell in ["*", " "]:
-        print("•", end="")
-      else:
-        print(cell, end="")
-    print()  
-
-
-# create an empty field
-field = np.full((FIELD_SIZE, FIELD_SIZE), ' ')
-
-np.random.seed(42)
-
-# place mines
-for _ in range(MINES_N):
-  # finding a vacant spot
-  xy = np.random.randint(0, FIELD_SIZE, 2)
-  while field[xy[0], xy[1]] == "*":
-    xy = np.random.randint(0, FIELD_SIZE, 2)
-  field[xy[0], xy[1]] = "*"
-
-# print out an empty one
-print_minefield(field)
-``` 
+```
+#>   12345
+#>   -----
+#> A|•••••
+#> B|•••••
+#> C|•••••
+#> D|•••••
+#> E|•••••
+```
 
 Und so sollte es aussehen, wenn alle Zellen außer den Minen geöffnet sind.
 
-```{python echo=FALSE}
-def count_mines(minefield, xy):
-  """Count mines in surrounding cells.
-  
-  Parameters
-  ----------
-  minefield : np.array
-  xy : tuple
-  
-  Returns
-  ----------
-  int
-  """
-  # figuring out slice limits given the edge problem
-  left = max(xy[1] - 1, 0)
-  right = min(xy[1] + 2, minefield.shape[1])
-  top = max(xy[0] - 1, 0)
-  bottom = min(xy[0] + 2, minefield.shape[0])
-  
-  return np.sum(minefield[top:bottom, left:right] == "*")
-  
-for ix in range(FIELD_SIZE):
-  for iy in range(FIELD_SIZE):
-    if field[ix, iy] != "*":
-      field[ix, iy] = count_mines(field, (ix, iy))
-      
-print_minefield(field)
+
+```
+#>   12345
+#>   -----
+#> A|00000
+#> B|01121
+#> C|02•4•
+#> D|13•4•
+#> E|1•221
 ```
 
 Wie üblich werden wir das Spiel Schritt für Schritt aufbauen.
@@ -106,21 +54,23 @@ Ein anderer Weg, dasselbe Ziel zu erreichen, besteht darin:
 
 Der erste Schritt ist einfach: Du benutzt denselben [range](https://docs.python.org/3/library/functions.html#range), um die Folge von Zahlen zu erstellen. Der zweite Schritt ist auch einfach (zumindest hast du es schon einmal gemacht!): Verwende List Comprehension, um über die von range erzeugten Werte zu iterieren und sie nacheinander in einen [String](https://docs.python.org/3/library/functions.html#func-str) umzuwandeln. Vergiss nicht, die Zahlen anzupassen, wie du es in der vorherigen Version getan hast, bevor du sie in Strings umwandelst. Der letzte Teil ist neu, aber konzeptionell sehr einfach. [join](https://docs.python.org/3/library/stdtypes.html#str.join) ist eine _Methode_ eines Strings, die eine Liste von Strings (und nur Strings, deshalb brauchten wir List Comprehension zur Umwandlung) mit einem "ursprünglichen" String als Separator verbindet. Hier sind ein paar Beispiele, wie es funktioniert:
 
-```{python}
+
+```python
 a_list = ["cat", "dog", "duck"]
 print(' - '.join(a_list))
+#> cat - dog - duck
 print(''.join(a_list))
+#> catdogduck
 ```
 
 Implementiere diese Lösung für unseren Spaltenindex. Vergiss nicht, ihm zwei zusätzliche Leerzeichen voranzustellen. Verwende anstelle eines zusätzlichen Prints wie zuvor, um die beiden Strings mit `+` zu verbinden. Zum Beispiel:
 
-```{python}
+
+```python
 print('a cat and' + ' a dog')
+#> a cat and a dog
 ```
-```{python echo=FALSE, eval=FALSE}
-numbers_as_strings = [str(number + 1) for number in  range(FIELD_SIZE)]
-'  ' + ''.join(numbers_as_strings)
-```
+
 
 
 ::: {.program}
@@ -136,9 +86,11 @@ Du kennst bereits [NumPy](https://numpy.org/), und natürlich hat es auch für s
 
 Wieder einmal ist der erste Schritt einfach, da du [arange](https://numpy.org/doc/stable/reference/generated/numpy.arange.html) bereits verwendet hast, denke nur über die `start`- und `stop`-Werte nach, um das Array von `1` bis `FIELD_SIZE`, das du benötigst, zu erhalten. Der zweite Schritt ist neu, aber konzeptionell einfach. Du kannst den Typ aller Elemente des Arrays ändern, indem du seine Methode [astype](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.astype.html) aufrufst und einen neuen Typ angibst. Hier ist zum Beispiel, wie du ein Array von Ganzzahlen in ein Array von logischen Werten umwandelst (denke daran, `0` ist `False`, alles andere ist `True`):
 
-```{python}
+
+```python
 an_array_of_integers = np.array([0, 1, 0, 2, 3, 0])
 an_array_of_integers.astype(bool)
+#> array([False,  True, False,  True,  True, False])
 ```
 
 Du musst denselben Code verwenden, aber für den Typ, den du benötigst: `str`. Der letzte Schritt ---- das Verbinden einzelner Elemente zu einer einzigen Zeichenkette und das Voranstellen von zwei zusätzlichen Leerzeichen ---- ist genau wie in der vorherigen Lösung.
@@ -157,15 +109,18 @@ Implementiere Code in Übung 4.
 ## Zeichen in Code umwandeln und zurück {#chr-ord}
 Die Zeilen sind mit Buchstaben markiert, daher brauchen wir eine einfache Methode zur Umwandlung zwischen Buchstaben und Zahlen. Der einfachste Ansatz hierbei ist, Zeichen über die [ord](https://docs.python.org/3/library/functions.html#ord)-Funktion in ihren Code umzuwandeln und vom Code zurück zum Zeichen über die [chr](https://docs.python.org/3/library/functions.html#chr)-Funktion. Hier ist die Funktionsweise:
 
-```{python}
+
+```python
 # Code aus Symbol
 a_symbol = 'G'
 print(ord(a_symbol))
+#> 71
 
 
 # Symbol aus Code
 a_code = 72
 print(chr(a_code))
+#> H
 ```
 
 Erstelle eine Liste von Buchstaben, beginnend mit `"A"`, die `FIELD_SIZE` Buchstaben lang ist. Denke daran, dass die Codes für Buchstaben aufeinanderfolgend sind, also ist der Code für `"B"` um eins größer als der Code für `"A"`, der Code für `"C"` ist um zwei größer als der Code für `"A"` usw. In der Übung drucke einfach diese Buchstaben jeweils einzeln in jeder separaten Zeile mit einer for-Schleife aus.
@@ -185,9 +140,11 @@ Du hast bereits Erfahrung darin, Funktionen zu schreiben, die den Benutzer so la
 
 Hier sind die Informationen, die du benötigst, um dies zu vervollständigen. Du kannst auf einzelne Zeichen des Strings genauso zugreifen, wie du es bei Listen tust:
 
-```{python}
+
+```python
 a_string = "cat"
 a_string[2]
+#> 't'
 ```
 
 Um zu überprüfen, ob ein Buchstabe in einem gültigen Bereich ist, musst du 1) eine Liste gültiger Buchstaben erstellen und 2) überprüfen, dass das erste Symbol [in](#in-collection) dieser Liste ist. In der vorherigen Übung hast du diese gültigen Buchstaben einzeln ausgedruckt, also musst du sie hier alle mithilfe von [List-Comprehensions](#list-comprehension) in eine Liste setzen. Deine Liste wird entweder aus Groß- oder Kleinbuchstaben bestehen, also stelle sicher, dass du die Groß-/Kleinschreibung des Symbols über [upper](https://docs.python.org/3/library/stdtypes.html?highlight=upper#str.upper) oder [lower](https://docs.python.org/3/library/stdtypes.html?highlight=upper#str.lower) festlegst.
@@ -240,26 +197,16 @@ Implementiere Code in Übung 10.
 ## Das Minenfeld ausdrucken
 Du hast das Minenfeld und du weißt, wie man die Zeilen- und Spaltenindizes ausdruckt. Kombiniere alles in einer Funktion `print_minefield`, die das Minenfeldarray als einzigen Eingabewert nimmt und `"•"` ausdruckt, wenn das Feld leer, aber noch nicht geöffnet (`" "`) ist oder eine Mine enthält (`"*"`, denke daran, wenn der Spieler die Mine geöffnet hat, ist das Spiel vorbei). Die einzige andere Möglichkeit ist eine bereits geöffnete Zelle, und diese wird eine Ziffer mit der Anzahl der umgebenden Minen enthalten (wird in Kürze behandelt!). Du benötigst definitiv verschachtelte [For-Schleifen](#for-loop) und bedingte Anweisungen. Denke daran, dass die Ausgabe so aussehen sollte (alle Felder sind entweder leer oder haben uneröffnete Minen):
 
-```{python echo=FALSE}
-FIELD_SIZE = 5
-MINES_N = 1
 
-field = np.full((FIELD_SIZE, FIELD_SIZE), '•')
-
-columns = '  ' + ''.join(np.arange(1, FIELD_SIZE + 1).astype(str))
-
-
-print(columns)
-print("  " + "".join(["-"] * (FIELD_SIZE)))
-for irow in range(FIELD_SIZE):
-  print(chr(ord("A") + irow) + "|", end="")
-  for cell in field[irow, ]:
-    if cell == "*":
-      print(" ", end="")
-    else:
-      print(cell, end="")
-  print()
-``` 
+```
+#>   12345
+#>   -----
+#> A|•••••
+#> B|•••••
+#> C|•••••
+#> D|•••••
+#> E|•••••
+```
 
 ::: {.program}
 Implementiere `print_minefield` in _utils.py_ <br/>
@@ -299,7 +246,8 @@ Implementiere Code in Übung 12.
 Die Logik für die Zeilengrenzen ist dieselbe. Sobald du die rechteckigen Grenzen hast, vergleiche alle Elemente mit `"*"` (Mine). Denk daran, dies ist ein vektorisiertes NumPy-Array, sodass du das gesamte Array mit `"*"` vergleichen kannst und NumPy wird es elementweise für dich durchführen. Zähle dann die Anzahl der Minen mit [numpy.sum](https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum).
 
 Schreibe eine Funktion `count_mines`, die die Matrix und Koordinaten als zwei Parameter nimmt und die Anzahl der Minen als Ergebnis zurückgibt. Beachte, dass du die Konstante `FIELD_SIZE` nicht explizit übergeben musst, da du sie aus der [Form](https://numpy.org/doc/stable/reference/generated/numpy.shape.html) des Minenfelds selbst berechnen kannst. Wie üblich, dokumentiere sie (das gilt auch für alle oben genannten Funktionen!)! Hier ist ein Beispiel-Array, an dem du es testen kannst:
-```{python eval=FALSE}
+
+```python
 a_minefield = np.array(
   [[' ', ' ', ' ', ' ', ' '],
    [' ', ' ', ' ', ' ', ' '],

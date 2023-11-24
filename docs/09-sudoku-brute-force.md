@@ -365,7 +365,7 @@ Du weißt bereits, wie man eine geordnete Matrix erstellt, die vier oder neun Ze
 an_array = np.arange(5)
 np.random.shuffle(an_array)
 print(an_array)
-#> [1 4 0 2 3]
+#> [4 0 1 2 3]
 
 # Einen Teil eines Arrays mischen
 an_array = np.arange(5)
@@ -466,7 +466,7 @@ Erweitere das Programm aus _code03.py_ in _code04.py_<br/>
 Teste den Code mit Beispielmatrizen.
 :::
 
-## Blöcke
+## Blöcke {#sudoku-block}
 Blöcke zu bearbeiten ist etwas kniffliger, da wir keine einfache einzelne Achse zum Schneiden (Slicing) verwenden können. Wir können jedoch jeden Block so betrachten, als hätte er einen Zeilen- und einen Spaltenindex, die beide von 0 bis 2 für ein $9\times9$ Sudoku gehen, weil wir $3\times3$ Blöcke haben, oder von 0 bis 1 für ein $4\times4$ Sudoku, wo wir $2\times2$ Blöcke haben.
 
 ![Sudoku-Block-Indizierung](images/sudoku-blocks.png){width=50% style="display: block; margin: 0 auto"}

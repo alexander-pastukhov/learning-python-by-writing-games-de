@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 13 Minesweeper | Lerne Python, indem du Textspiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="Du hast viel gelernt, also lass uns all dieses Wissen nutzen. Du wirst immer noch ein paar neue nützliche Funktionen auf dem Weg lernen. Schnapp dir das Übungsnotebook, bevor wir anfangen.  13.1...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Kapitel 13 Minesweeper | Lerne Python, indem du Textspiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/minesweeper.html">
+<meta property="og:description" content="Du hast viel gelernt, also lass uns all dieses Wissen nutzen. Du wirst immer noch ein paar neue nützliche Funktionen auf dem Weg lernen. Schnapp dir das Übungsnotebook, bevor wir anfangen.  13.1...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 13 Minesweeper | Lerne Python, indem du Textspiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="Du hast viel gelernt, also lass uns all dieses Wissen nutzen. Du wirst immer noch ein paar neue nützliche Funktionen auf dem Weg lernen. Schnapp dir das Übungsnotebook, bevor wir anfangen.  13.1...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/python-text-favicon.svg">
+<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Textspiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
+<li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+<li><a class="" href="One-armed-bandit.html"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></li>
+<li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
+<li><a class="" href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></li>
+<li><a class="" href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
+<li><a class="" href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></li>
+<li><a class="active" href="minesweeper.html"><span class="header-section-number">13</span> Minesweeper</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="minesweeper" class="section level1" number="13">
+<h1>
+<span class="header-section-number">Kapitel 13</span> Minesweeper<a class="anchor" aria-label="anchor" href="#minesweeper"><i class="fas fa-link"></i></a>
+</h1>
+<p>Du hast viel gelernt, also lass uns all dieses Wissen nutzen. Du wirst immer noch ein paar neue nützliche Funktionen auf dem Weg lernen. Schnapp dir das <a href="notebooks/minesweeper.ipynb">Übungsnotebook</a>, bevor wir anfangen.</p>
+<div id="kapitelkonzepte-1" class="section level2" number="13.1">
+<h2>
+<span class="header-section-number">13.1</span> Kapitelkonzepte<a class="anchor" aria-label="anchor" href="#kapitelkonzepte-1"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>
+<a href="minesweeper.html#print-end">Mehrmals drucken</a> auf derselben Zeile</li>
+<li>
+<a href="minesweeper.html#str.join">Verketten</a> einer Liste von Zeichenketten zu einer einzigen Zeichenkette</li>
+<li>
+<a href="minesweeper.html#chr-ord">Umwandeln von Zeichen</a> in ihren Code und zurück</li>
+<li>Erstellen einer Matrix, <a href="minesweeper.html#np.fill">gefüllt</a> mit einem beliebigen Wert oder Zeichen</li>
+</ul>
+</div>
+<div id="minesweeper-1" class="section level2" number="13.2">
+<h2>
+<span class="header-section-number">13.2</span> Minesweeper<a class="anchor" aria-label="anchor" href="#minesweeper-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Heute werden wir eine vereinfachte textbasierte Version des Minesweeper-Spiels programmieren. In diesem Spiel musst du ein rechteckiges Feld räumen, dabei aber keine Mine treffen. Jedes Mal, wenn du eine Zelle öffnest, wird entweder eine Explosion ausgelöst, falls dort eine Mine war, oder dir wird die Anzahl der Minen in den umliegenden Zellen angezeigt. Das Spiel ist zu Ende, sobald du alle Felder, die keine Minen sind, geöffnet hast. Das klassische Spiel verwendet Grafiken und die Maus, aber wir werden es nur mit Text nachbilden. Daher wird der Spieler statt auf eine Zelle zu klicken ihre Koordinaten eingeben müssen, und zwar mittels Zeile (Buchstabe) und Spalte (Ziffer). Unten ist ein Beispiel dafür, wie ein 5×5-Spielfeld in der Ausgabe aussehen würde, wenn alle Felder noch ungeöffnet sind.</p>
+<pre><code>#&gt;   12345
+#&gt;   -----
+#&gt; A|•••••
+#&gt; B|•••••
+#&gt; C|•••••
+#&gt; D|•••••
+#&gt; E|•••••</code></pre>
+<p>Und so sollte es aussehen, wenn alle Zellen außer den Minen geöffnet sind.</p>
+<pre><code>#&gt;   12345
+#&gt;   -----
+#&gt; A|00000
+#&gt; B|01121
+#&gt; C|02•4•
+#&gt; D|13•4•
+#&gt; E|1•221</code></pre>
+<p>Wie üblich werden wir das Spiel Schritt für Schritt aufbauen.</p>
+</div>
+<div id="print-end" class="section level2" number="13.3">
+<h2>
+<span class="header-section-number">13.3</span> Spaltenindizes mit einer for-Schleife drucken<a class="anchor" aria-label="anchor" href="#print-end"><i class="fas fa-link"></i></a>
+</h2>
+<p>Um dem Spieler visuell zu helfen, die Spalten zu identifizieren, müssen wir deren Indizes ausdrucken, wie in der oben gezeigten Ausgabe. Du <em>könntest</em> einen String <code>"  12345"</code> von Hand definieren und diesen ausdrucken, aber wir möchten flexibler sein und diesen String basierend auf der Größe des Spielfelds, die in einer Konstanten <code>FIELD_SIZE</code> gespeichert ist, generieren. Es gibt mehrere Wege, dasselbe Ziel zu erreichen, und wir werden sie alle implementieren (denn es geht ja um Übung und darum, deine Fähigkeiten auf die Probe zu stellen, erinnerst du dich?)</p>
+<p>Unser erster Ansatz ist konzeptionell der einfachste: Schleife einfach über die Zahlen bis <code>FIELD_SIZE</code> und drucke sie eine nach der anderen aus. Denke daran, dass <a href="https://docs.python.org/3/library/functions.html#range">range</a> von <code>0</code> bis <code>stop - 1</code> geht, also überlege, wie du dies für die Ausgabe anpassen willst oder welche <code>start</code>- und <code>stop</code>-Parameter du verwenden solltest. Das einzige Problem, das wir haben, ist, dass jede Zahl in ihrer eigenen Zeile gedruckt wird. Dies ist jedoch leicht über den <code>end</code>-Parameter der <a href="https://docs.python.org/3/library/functions.html#print">print</a>-Funktion zu beheben. Standardmäßig entspricht er <code>'\n'</code> (neue Zeile), aber du kannst ihn auf jede andere Zeichenkette umdefinieren, einschließlich einer leeren <code>''</code>. Verwende eine for-Schleife, um eine Ziffer nach der anderen in derselben Zeile zu drucken. Vergiss nicht, zwei zusätzliche Leerzeichen voranzustellen, um später den Zeilenindex zu berücksichtigen.</p>
+<div class="program">
+<p>Implementiere Code in Übung 1.</p>
+</div>
+</div>
+<div id="str.join" class="section level2" number="13.4">
+<h2>
+<span class="header-section-number">13.4</span> Alle Spaltenindizes zu einer einzigen Zeichenkette verbinden<a class="anchor" aria-label="anchor" href="#str.join"><i class="fas fa-link"></i></a>
+</h2>
+<p>Ein anderer Weg, dasselbe Ziel zu erreichen, besteht darin:</p>
+<ol style="list-style-type: decimal">
+<li>Eine Liste von Zahlen erstellen.</li>
+<li>Jedes Element der Liste mit <a href="One-armed-bandit.html#list-comprehension">List comprehensions</a> in einen String umwandeln.</li>
+<li>Sie mit <a href="https://docs.python.org/3/library/stdtypes.html#str.join">join</a> zu einem String zusammenfügen.</li>
+</ol>
+<p>Der erste Schritt ist einfach: Du benutzt denselben <a href="https://docs.python.org/3/library/functions.html#range">range</a>, um die Folge von Zahlen zu erstellen. Der zweite Schritt ist auch einfach (zumindest hast du es schon einmal gemacht!): Verwende List Comprehension, um über die von range erzeugten Werte zu iterieren und sie nacheinander in einen <a href="https://docs.python.org/3/library/functions.html#func-str">String</a> umzuwandeln. Vergiss nicht, die Zahlen anzupassen, wie du es in der vorherigen Version getan hast, bevor du sie in Strings umwandelst. Der letzte Teil ist neu, aber konzeptionell sehr einfach. <a href="https://docs.python.org/3/library/stdtypes.html#str.join">join</a> ist eine <em>Methode</em> eines Strings, die eine Liste von Strings (und nur Strings, deshalb brauchten wir List Comprehension zur Umwandlung) mit einem “ursprünglichen” String als Separator verbindet. Hier sind ein paar Beispiele, wie es funktioniert:</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb146-1"><a href="minesweeper.html#cb146-1" tabindex="-1"></a>a_list <span class="op">=</span> [<span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"duck"</span>]</span>
+<span id="cb146-2"><a href="minesweeper.html#cb146-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">' - '</span>.join(a_list))</span>
+<span id="cb146-3"><a href="minesweeper.html#cb146-3" tabindex="-1"></a><span class="co">#&gt; cat - dog - duck</span></span>
+<span id="cb146-4"><a href="minesweeper.html#cb146-4" tabindex="-1"></a><span class="bu">print</span>(<span class="st">''</span>.join(a_list))</span>
+<span id="cb146-5"><a href="minesweeper.html#cb146-5" tabindex="-1"></a><span class="co">#&gt; catdogduck</span></span></code></pre></div>
+<p>Implementiere diese Lösung für unseren Spaltenindex. Vergiss nicht, ihm zwei zusätzliche Leerzeichen voranzustellen. Verwende anstelle eines zusätzlichen Prints wie zuvor, um die beiden Strings mit <code>+</code> zu verbinden. Zum Beispiel:</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb147-1"><a href="minesweeper.html#cb147-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'a cat and'</span> <span class="op">+</span> <span class="st">' a dog'</span>)</span>
+<span id="cb147-2"><a href="minesweeper.html#cb147-2" tabindex="-1"></a><span class="co">#&gt; a cat and a dog</span></span></code></pre></div>
+<div class="program">
+<p>Implementiere Code in Übung 2.</p>
+</div>
+</div>
+<div id="ein-numpy-array-von-strings-zu-einer-einzigen-zeichenkette-verbinden" class="section level2" number="13.5">
+<h2>
+<span class="header-section-number">13.5</span> Ein numpy-Array von Strings zu einer einzigen Zeichenkette verbinden<a class="anchor" aria-label="anchor" href="#ein-numpy-array-von-strings-zu-einer-einzigen-zeichenkette-verbinden"><i class="fas fa-link"></i></a>
+</h2>
+<p>Du kennst bereits <a href="https://numpy.org/">NumPy</a>, und natürlich hat es auch für solche Probleme eine Lösung parat. Hier werden wir</p>
+<ol style="list-style-type: decimal">
+<li>Ein geordnetes Array von Zahlen unter Verwendung von <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html">arange</a> erstellen.</li>
+<li>Mit der Methode <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.astype.html">astype</a> alles in ein Array umwandeln.</li>
+<li>Werte <a href="https://docs.python.org/3/library/stdtypes.html#str.join">verbinden</a>, genau wie du es zuvor getan hast.</li>
+</ol>
+<p>Wieder einmal ist der erste Schritt einfach, da du <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html">arange</a> bereits verwendet hast, denke nur über die <code>start</code>- und <code>stop</code>-Werte nach, um das Array von <code>1</code> bis <code>FIELD_SIZE</code>, das du benötigst, zu erhalten. Der zweite Schritt ist neu, aber konzeptionell einfach. Du kannst den Typ aller Elemente des Arrays ändern, indem du seine Methode <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.astype.html">astype</a> aufrufst und einen neuen Typ angibst. Hier ist zum Beispiel, wie du ein Array von Ganzzahlen in ein Array von logischen Werten umwandelst (denke daran, <code>0</code> ist <code>False</code>, alles andere ist <code>True</code>):</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb148-1"><a href="minesweeper.html#cb148-1" tabindex="-1"></a>an_array_of_integers <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>])</span>
+<span id="cb148-2"><a href="minesweeper.html#cb148-2" tabindex="-1"></a>an_array_of_integers.astype(<span class="bu">bool</span>)</span>
+<span id="cb148-3"><a href="minesweeper.html#cb148-3" tabindex="-1"></a><span class="co">#&gt; array([False,  True, False,  True,  True, False])</span></span></code></pre></div>
+<p>Du musst denselben Code verwenden, aber für den Typ, den du benötigst: <code>str</code>. Der letzte Schritt —- das Verbinden einzelner Elemente zu einer einzigen Zeichenkette und das Voranstellen von zwei zusätzlichen Leerzeichen —- ist genau wie in der vorherigen Lösung.</p>
+<div class="program">
+<p>Implementiere Code in Übung 3.</p>
+</div>
+</div>
+<div id="eine-horizontale-linie-zeichnen" class="section level2" number="13.6">
+<h2>
+<span class="header-section-number">13.6</span> Eine horizontale Linie zeichnen<a class="anchor" aria-label="anchor" href="#eine-horizontale-linie-zeichnen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Der nächste Teil der Ausgabe ist eine horizontale Linie, die <code>FIELD_SIZE</code> lang ist (plus zwei zusätzliche Leerzeichen vorne!). Das sollte einfach sein, verwende einfach <a href="sudoku-backtracking.html#list-repetition">Listenreplikation</a>, um eine <code>FIELD_SIZE</code> lange Liste von <code>-</code>-Elementen zu erstellen, und verbinde sie auf dieselbe Art und Weise, wie du es für Ziffern getan hast.</p>
+<div class="program">
+<p>Implementiere Code in Übung 4.</p>
+</div>
+</div>
+<div id="chr-ord" class="section level2" number="13.7">
+<h2>
+<span class="header-section-number">13.7</span> Zeichen in Code umwandeln und zurück<a class="anchor" aria-label="anchor" href="#chr-ord"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die Zeilen sind mit Buchstaben markiert, daher brauchen wir eine einfache Methode zur Umwandlung zwischen Buchstaben und Zahlen. Der einfachste Ansatz hierbei ist, Zeichen über die <a href="https://docs.python.org/3/library/functions.html#ord">ord</a>-Funktion in ihren Code umzuwandeln und vom Code zurück zum Zeichen über die <a href="https://docs.python.org/3/library/functions.html#chr">chr</a>-Funktion. Hier ist die Funktionsweise:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb149-1"><a href="minesweeper.html#cb149-1" tabindex="-1"></a><span class="co"># Code aus Symbol</span></span>
+<span id="cb149-2"><a href="minesweeper.html#cb149-2" tabindex="-1"></a>a_symbol <span class="op">=</span> <span class="st">'G'</span></span>
+<span id="cb149-3"><a href="minesweeper.html#cb149-3" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">ord</span>(a_symbol))</span>
+<span id="cb149-4"><a href="minesweeper.html#cb149-4" tabindex="-1"></a><span class="co">#&gt; 71</span></span>
+<span id="cb149-5"><a href="minesweeper.html#cb149-5" tabindex="-1"></a></span>
+<span id="cb149-6"><a href="minesweeper.html#cb149-6" tabindex="-1"></a></span>
+<span id="cb149-7"><a href="minesweeper.html#cb149-7" tabindex="-1"></a><span class="co"># Symbol aus Code</span></span>
+<span id="cb149-8"><a href="minesweeper.html#cb149-8" tabindex="-1"></a>a_code <span class="op">=</span> <span class="dv">72</span></span>
+<span id="cb149-9"><a href="minesweeper.html#cb149-9" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">chr</span>(a_code))</span>
+<span id="cb149-10"><a href="minesweeper.html#cb149-10" tabindex="-1"></a><span class="co">#&gt; H</span></span></code></pre></div>
+<p>Erstelle eine Liste von Buchstaben, beginnend mit <code>"A"</code>, die <code>FIELD_SIZE</code> Buchstaben lang ist. Denke daran, dass die Codes für Buchstaben aufeinanderfolgend sind, also ist der Code für <code>"B"</code> um eins größer als der Code für <code>"A"</code>, der Code für <code>"C"</code> ist um zwei größer als der Code für <code>"A"</code> usw. In der Übung drucke einfach diese Buchstaben jeweils einzeln in jeder separaten Zeile mit einer for-Schleife aus.</p>
+<div class="program">
+<p>Implementiere Code in Übung 5.</p>
+</div>
+</div>
+<div id="koordinaten-eingeben" class="section level2" number="13.8">
+<h2>
+<span class="header-section-number">13.8</span> Koordinaten eingeben<a class="anchor" aria-label="anchor" href="#koordinaten-eingeben"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da wir ein Koordinatensystem haben, lassen uns eine Eingabefunktion (<code>input_coords</code>) erstellen, die den Benutzer auffordert, die Koordinaten der nächsten Zelle, die sie öffnen möchten, einzugeben, bis sie eine <em>gültige</em> Eingabe gemacht haben. Zum Beispiel sollte bei einem 5×5-Spielfeld <code>A3</code> oder <code>e5</code> eine gültige Eingabe sein, aber <code>f1</code>, <code>a6</code> oder <code>huh</code> wären ungültig. Die Funktion sollte <code>field_size</code> als Parameter akzeptieren und eine Liste von zwei <em>Zahlen</em> zurückgeben, d.h., sie sollte sowohl die Spalte (ursprünglich Ziffer) als auch die Reihe (ursprünglich Buchstabe) in einen entsprechenden nullbasierten Zeilen- und Spaltenindex umwandeln. Also würde <code>A3</code> zu <code>(0, 2)</code> werden und <code>e5</code> wäre <code>(4, 4)</code>.</p>
+<p>Du hast bereits Erfahrung darin, Funktionen zu schreiben, die den Benutzer so lange ärgern, bis sie eine gültige Eingabe machen, daher sollte dies ziemlich unkompliziert sein. Der Hauptunterschied ist, dass dieses Mal mehrere Dinge zu überprüfen sind:</p>
+<ol style="list-style-type: decimal">
+<li>Der String hat eine <a href="https://docs.python.org/3/library/functions.html#len">Länge</a> von <span class="math inline">\(2\)</span> (ein Symbol für die Reihe, eines für die Spalte)</li>
+<li>Das erste Zeichen des Strings ist ein Buchstabe im gültigen Bereich</li>
+<li>Das zweite Zeichen des Strings ist eine Ziffer im gültigen Bereich.</li>
+</ol>
+<p>Hier sind die Informationen, die du benötigst, um dies zu vervollständigen. Du kannst auf einzelne Zeichen des Strings genauso zugreifen, wie du es bei Listen tust:</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb150-1"><a href="minesweeper.html#cb150-1" tabindex="-1"></a>a_string <span class="op">=</span> <span class="st">"cat"</span></span>
+<span id="cb150-2"><a href="minesweeper.html#cb150-2" tabindex="-1"></a>a_string[<span class="dv">2</span>]</span>
+<span id="cb150-3"><a href="minesweeper.html#cb150-3" tabindex="-1"></a><span class="co">#&gt; 't'</span></span></code></pre></div>
+<p>Um zu überprüfen, ob ein Buchstabe in einem gültigen Bereich ist, musst du 1) eine Liste gültiger Buchstaben erstellen und 2) überprüfen, dass das erste Symbol <a href="#in-collection">in</a> dieser Liste ist. In der vorherigen Übung hast du diese gültigen Buchstaben einzeln ausgedruckt, also musst du sie hier alle mithilfe von <a href="One-armed-bandit.html#list-comprehension">List-Comprehensions</a> in eine Liste setzen. Deine Liste wird entweder aus Groß- oder Kleinbuchstaben bestehen, also stelle sicher, dass du die Groß-/Kleinschreibung des Symbols über <a href="https://docs.python.org/3/library/stdtypes.html?highlight=upper#str.upper">upper</a> oder <a href="https://docs.python.org/3/library/stdtypes.html?highlight=upper#str.lower">lower</a> festlegst.</p>
+<div class="program">
+<p>Mache Übung 6.</p>
+</div>
+<p>Um zu überprüfen, ob das zweite Symbol eine Ziffer im richtigen Bereich ist, kannst du entweder den gleichen Trick anwenden indem du 1) eine Liste von <em>Strings</em> mit gültigen Ziffern erstellst und 2) überprüfst, ob das zweite Symbol darin enthalten ist. Stattdessen verwende jedoch die <a href="hunt-the-wumpus.html#isdigit">isdigit</a>-Methode in Kombination mit <a href="https://docs.python.org/3/library/functions.html#int">int</a>, wie du es beim <a href="hunt-the-wumpus.html#hunt-the-wumpus">Jagen des Wumpus</a> getan hast.</p>
+<div class="program">
+<p>Mache Übung 7.</p>
+</div>
+<p>Jetzt, da du weißt, wie du alle Prüfungen durchführen kannst, kannst du die Funktion <code>input_coords</code> schreiben. Fordere den Spieler wie zuvor in einer <a href="guess-the-number-multi-round.html#while-loop">While-Schleife</a> auf, bis alle drei Prüfungen bestanden sind. Konvertiere dann jedes Symbol in einen Index. Das zweite Symbol ist einfach, da du es bereits in eine Ganzzahl umgewandelt hast, korrigiere es nur für den nullbasierten Index (<span class="math inline">\(1\)</span> sollte <span class="math inline">\(0\)</span> sein, <span class="math inline">\(2\)</span> sollte <span class="math inline">\(1\)</span> sein usw.). Das erste Symbol ist ein wenig kniffliger, aber du weißt bereits, wie du einen Buchstaben in eine Zahl umwandelst, indem du <a href="https://docs.python.org/3/library/functions.html#ord">ord</a> verwendest, und das Einzige, woran du denken musst, ist, dass <code>"A"</code> <span class="math inline">\(0\)</span> ist (überlege, wie das nützlich ist).</p>
+<div class="program">
+<p>Implementiere <code>input_coords</code> in <em>utils.py</em> <br>
+Teste es in <em>code01.py</em>.</p>
+</div>
+</div>
+<div id="np.fill" class="section level2" number="13.9">
+<h2>
+<span class="header-section-number">13.9</span> Ein leeres Minenfeld mit NumPy erstellen<a class="anchor" aria-label="anchor" href="#np.fill"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unser Minenfeld wird ein 2D-<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html">NumPy-Array</a> sein, genau wie bei unserem <a href="sudoku-brute-force.html#sudoku-brute-force">Sudoku</a>-Rätsel. Der einzige Unterschied besteht darin, dass wir anstelle von Zahlen Zeichen (Strings) verwenden, um den Inhalt der Zelle anzugeben. Eine Zelle mit einer Mine darin wird als <code>"*"</code> gekennzeichnet. Eine Zelle <em>ohne</em> Mine wird zunächst als <code>" "</code> (Leerzeichen) angegeben, aber sobald der Spieler sie öffnet, wird dies durch die Anzahl der Minen in ihrer Umgebung ersetzt (zum Beispiel <code>"1"</code> oder <code>"0"</code>). Wir kümmern uns später darum, leere Räume in Zahlen umzuwandeln, da unsere erste Aufgabe darin besteht, das Minenfeld selbst zu generieren.</p>
+<p>Du beginnst mit einem leeren Feld der Größe <code>FIELD_SIZE</code> × <code>FIELD_SIZE</code>, also einem NumPy-Array von <code>" "</code> mit der Größe <code>(FIELD_SIZE, FIELD_SIZE)</code>. Wie üblich gibt es mehrere Wege, dies zu erstellen. Erstelle zunächst eine Liste von Listen über <a href="sudoku-backtracking.html#list-repetition">Listenreplikation</a> und konvertiere sie dann in ein <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html">NumPy-Array</a>. Denke daran, dass du eine Liste von Zeichen erstellen kannst, indem du ein einzelnes Zeichen in eine Liste setzt und dann diese Liste <code>FIELD_SIZE</code>-mal wiederholst. Und dann kannst du <em>diese</em> Liste noch einmal <code>FIELD_SIZE</code> wiederholen.</p>
+<div class="program">
+<p>Implementiere Code in Übung 8.</p>
+</div>
+<p>Alternativ kannst du dir das Leben leichter machen, indem du ein Array mit dem <a href="https://numpy.org/doc/stable/reference/generated/numpy.full.html">full</a>-Befehl erzeugst, das mit diesem Symbol gefüllt ist.</p>
+<div class="program">
+<p>Implementiere Code in Übung 9.</p>
+</div>
+</div>
+<div id="minen-platzieren" class="section level2" number="13.10">
+<h2>
+<span class="header-section-number">13.10</span> Minen platzieren<a class="anchor" aria-label="anchor" href="#minen-platzieren"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt, da du ein leeres Feld hast, solltest du einige Minen darin platzieren! Definiere eine Konstante <code>MINES_NUMBER</code> und setze sie auf eine vernünftige Anzahl von Minen (denke daran, je mehr du hast, desto schwieriger ist das Spiel). Danach platziere <code>MINES_NUMBER</code> Minen an zufälligen Stellen. Dafür benötigst du wahrscheinlich eine <a href="One-armed-bandit.html#for-loop">for</a>- und/oder <a href="guess-the-number-multi-round.html#while-loop">while</a>-Schleife:</p>
+<ol style="list-style-type: decimal">
+<li>Generiere ein Paar gültiger Zeilen- und Spaltenindizes.</li>
+<li>Überprüfe, ob diese Zelle leer ist (keine Mine darin).</li>
+<li>Platziere die Mine, wenn die Zelle leer ist, und gehe andernfalls zu Schritt 1 zurück.</li>
+</ol>
+<p>Verbinde deinen Code mit dem aus Übung 9, um ein Minenfeld zu generieren.</p>
+<div class="program">
+<p>Implementiere Code in Übung 10.</p>
+</div>
+</div>
+<div id="das-minenfeld-ausdrucken" class="section level2" number="13.11">
+<h2>
+<span class="header-section-number">13.11</span> Das Minenfeld ausdrucken<a class="anchor" aria-label="anchor" href="#das-minenfeld-ausdrucken"><i class="fas fa-link"></i></a>
+</h2>
+<p>Du hast das Minenfeld und du weißt, wie man die Zeilen- und Spaltenindizes ausdruckt. Kombiniere alles in einer Funktion <code>print_minefield</code>, die das Minenfeldarray als einzigen Eingabewert nimmt und <code>"•"</code> ausdruckt, wenn das Feld leer, aber noch nicht geöffnet (<code>" "</code>) ist oder eine Mine enthält (<code>"*"</code>, denke daran, wenn der Spieler die Mine geöffnet hat, ist das Spiel vorbei). Die einzige andere Möglichkeit ist eine bereits geöffnete Zelle, und diese wird eine Ziffer mit der Anzahl der umgebenden Minen enthalten (wird in Kürze behandelt!). Du benötigst definitiv verschachtelte <a href="One-armed-bandit.html#for-loop">For-Schleifen</a> und bedingte Anweisungen. Denke daran, dass die Ausgabe so aussehen sollte (alle Felder sind entweder leer oder haben uneröffnete Minen):</p>
+<pre><code>#&gt;   12345
+#&gt;   -----
+#&gt; A|•••••
+#&gt; B|•••••
+#&gt; C|•••••
+#&gt; D|•••••
+#&gt; E|•••••</code></pre>
+<div class="program">
+<p>Implementiere <code>print_minefield</code> in <em>utils.py</em> <br>
+Teste es in <em>code02.py</em>.</p>
+</div>
+</div>
+<div id="die-umliegenden-minen-zählen" class="section level2" number="13.12">
+<h2>
+<span class="header-section-number">13.12</span> Die umliegenden Minen zählen<a class="anchor" aria-label="anchor" href="#die-umliegenden-minen-z%C3%A4hlen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Wir sind fast fertig, da wir ein Feld voller Minen haben, können wir es ausdrucken und wir können den Spieler fragen, welches Feld er öffnen möchte. Wenn der Spieler jedoch das Feld öffnet und es keine Mine ist, müssen wir die Anzahl der Minen in den umliegenden Zellen zählen. Dies kann von <code>$0$</code> (überhaupt keine Minen) bis zu <code>$8$</code> reichen (du hast ein Feld betreten, das komplett von Minen umgeben ist).</p>
+<p><img src="images/minesweeper-mine-counts.svg" style="display: block; margin: 0 auto;width:100.0%" alt="Beispiel für Minenzählungen für verschiedene Zellen"><br></p>
+<p>Die Implementierung davon ist ziemlich unkompliziert (obwohl es einen Haken gibt):</p>
+<ol style="list-style-type: decimal">
+<li>Extrahiere eine 3×3-Matrix, die die Zelle umgibt.</li>
+<li>Berechne ein logisches Array, das angibt, ob diese Zellen gleich <code>"*"</code> sind.</li>
+<li>Berechne die Gesamtanzahl der Minen mit <a href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum">numpy.sum</a>.</li>
+</ol>
+<p>Erinnerst du dich, dass ich dich vor dem Haken gewarnt habe? Nun, wenn unsere Zelle am <em>Rand</em> des Feldes liegt, können wir keinen 3×3-Ausschnitt haben:</p>
+<p><img src="images/minesweeper-edge-problem.svg" style="display: block; margin: 0 auto;width:100.0%" alt="Beispiel für Randzellen"><br></p>
+<p>Es gibt zwei Möglichkeiten, das Problem zu lösen. Die erste Möglichkeit besteht darin, das Array mit <code>" "</code>-Symbolen zu erweitern und mit einem <code>(FIELD_SIZE + 2, FIELD_SIZE + 2)</code>-Array zu arbeiten. In diesem Fall musst du dir keine Gedanken über Randfälle machen, da sie immer benachbarte Zellen haben. Und du musst die Indizes nicht in nullbasierte Indizes umwandeln, da dein tatsächliches Minenfeld nun von <code>1</code> bis <code>FIELD_SIZE</code> verläuft und nicht von <code>0</code> bis <code>FIELD_SIZE - 1</code> wie bei nullbasierten Indizes. Jedoch werden wir aus didaktischen Gründen stattdessen eine kompliziertere Lösung implementieren, die die Grenzen des Ausschnittbereichs automatisch anpasst.</p>
+<p>Du hast bereits einen rechteckigen Teil eines Numpy-Arrays ausgeschnitten, als du die Gültigkeit der <a href="#id_#sudoku-block">Sudoku-Blöcke</a> überprüft hast. Hier ist die Logik dieselbe, da du 1) die Startzeile, 2) die Endzeile, 3) die Startspalte und 4) die Endspalte berechnen musst. Bevor du diese Zahlen jedoch verwendest, musst du darauf achten, dass sowohl die Startzeile als auch die Startspalte nicht niedriger als <span class="math inline">\(0\)</span> sind und die Endzeile und Endspalte nicht höher als <code>FIELD_SIZE</code>. Du kannst bedingte If-Else-Aussagen verwenden, aber lass uns dies als Gelegenheit nutzen, um Grenzüberprüfungen über die Funktionen <a href="https://docs.python.org/3/library/functions.html#min">min</a> und <a href="https://docs.python.org/3/library/functions.html#max">max</a> zu erstellen. Hier ist die Logik: Ein Zellenspaltenindex (der, für den du Minen zählst) kann von <span class="math inline">\(0\)</span> bis <span class="math inline">\(4\)</span> variieren, was bedeutet, dass der Index für die Zellen links davon von <span class="math inline">\(-1\)</span> bis <span class="math inline">\(3\)</span> geht. Der niedrigste gültige Spaltenindex ist <span class="math inline">\(0\)</span>, also überlege, wie du mithilfe von <a href="https://docs.python.org/3/library/functions.html#min">min</a> oder <a href="https://docs.python.org/3/library/functions.html#max">max</a> (welche Funktion benötigst du dafür?) eine korrekte Zahl aus 1) dem Index der Zelle links und 2) dem niedrigstmöglichen Index von <span class="math inline">\(0\)</span> wählen kannst.</p>
+<div class="program">
+<p>Implementiere Code in Übung 11.</p>
+</div>
+<p>Die Logik für den rechten Rand ist ähnlich, aber weil das Slicing den Stop-Wert ausschließt, liegt der rechte Rand unseres rechteckigen Ausschnitts bei <code>Spalte + 2</code> (also geht von <span class="math inline">\(2\)</span> bis <span class="math inline">\(6\)</span>), anstatt bei <code>Spalte + 1</code>. Der größte gültige Index ist jedoch <code>FIELD_SIZE</code>. Auch hier verwende entweder <a href="https://docs.python.org/3/library/functions.html#min">min</a> oder <a href="https://docs.python.org/3/library/functions.html#max">max</a> um die korrekte Grenze zu wählen.</p>
+<div class="program">
+<p>Implementiere Code in Übung 12.</p>
+</div>
+<p>Die Logik für die Zeilengrenzen ist dieselbe. Sobald du die rechteckigen Grenzen hast, vergleiche alle Elemente mit <code>"*"</code> (Mine). Denk daran, dies ist ein vektorisiertes NumPy-Array, sodass du das gesamte Array mit <code>"*"</code> vergleichen kannst und NumPy wird es elementweise für dich durchführen. Zähle dann die Anzahl der Minen mit <a href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum">numpy.sum</a>.</p>
+<p>Schreibe eine Funktion <code>count_mines</code>, die die Matrix und Koordinaten als zwei Parameter nimmt und die Anzahl der Minen als Ergebnis zurückgibt. Beachte, dass du die Konstante <code>FIELD_SIZE</code> nicht explizit übergeben musst, da du sie aus der <a href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html">Form</a> des Minenfelds selbst berechnen kannst. Wie üblich, dokumentiere sie (das gilt auch für alle oben genannten Funktionen!)! Hier ist ein Beispiel-Array, an dem du es testen kannst:</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb152-1"><a href="minesweeper.html#cb152-1" tabindex="-1"></a>a_minefield <span class="op">=</span> np.array(</span>
+<span id="cb152-2"><a href="minesweeper.html#cb152-2" tabindex="-1"></a>  [[<span class="st">' '</span>, <span class="st">' '</span>, <span class="st">' '</span>, <span class="st">' '</span>, <span class="st">' '</span>],</span>
+<span id="cb152-3"><a href="minesweeper.html#cb152-3" tabindex="-1"></a>   [<span class="st">' '</span>, <span class="st">' '</span>, <span class="st">' '</span>, <span class="st">' '</span>, <span class="st">' '</span>],</span>
+<span id="cb152-4"><a href="minesweeper.html#cb152-4" tabindex="-1"></a>   [<span class="st">' '</span>, <span class="st">' '</span>, <span class="st">'*'</span>, <span class="st">' '</span>, <span class="st">'*'</span>],</span>
+<span id="cb152-5"><a href="minesweeper.html#cb152-5" tabindex="-1"></a>   [<span class="st">' '</span>, <span class="st">' '</span>, <span class="st">'*'</span>, <span class="st">' '</span>, <span class="st">'*'</span>],</span>
+<span id="cb152-6"><a href="minesweeper.html#cb152-6" tabindex="-1"></a>   [<span class="st">' '</span>, <span class="st">'*'</span>, <span class="st">' '</span>, <span class="st">' '</span>, <span class="st">' '</span>]], dtype<span class="op">=</span><span class="st">'&lt;U1'</span>)</span></code></pre></div>
+<div class="program">
+<p>Implementiere <code>count_mines</code> in <em>utils.py</em> <br>
+Teste es in <em>code03.py</em> mit einem fest codierten <br>
+Minenfeld und Koordinaten.</p>
+</div>
+</div>
+<div id="alles-zusammenfügen-1" class="section level2" number="13.13">
+<h2>
+<span class="header-section-number">13.13</span> Alles zusammenfügen<a class="anchor" aria-label="anchor" href="#alles-zusammenf%C3%BCgen-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Jetzt hast du alles, was du brauchst! Schreibe ein Programm, das ein Minenfeld generiert und dann den Spieler nach Koordinaten fragt. Wenn der Spieler die Koordinaten einer Mine eingibt, ist das Spiel vorbei. Andernfalls wird die Anzahl der umliegenden Minen berechnet und <em>in diese Zelle eingetragen</em>. Als Nächstes wird das aktualisierte Minenfeld ausgedruckt und der Spieler wird erneut nach Koordinaten gefragt.</p>
+<p>Das Spiel ist vorbei, sobald der Spieler auf eine Mine tritt <em>oder</em> alle leeren Felder öffnet. Im letzteren Fall werden alle leeren Felder von <code>" "</code> in eine Zahl umgewandelt, sodass keine <code>" "</code>-Symbole mehr im Array übrig bleiben. Mit anderen Worten, wenn du die Anzahl der <code>" "</code> im Minenfeld-Matrix zählst und es null ist, hat der Spieler gewonnen! Hier denke über deine While-Schleifen-Variable nach. Du kannst die logische verwenden, aber du kannst auch eine <code>game_state</code>-Variable implementieren, die zunächst auf <code>"playing"</code> gesetzt ist und das Spiel so lange fortgesetzt wird, wie der <code>game_state</code> <code>"playing"</code> ist. Wenn der Spieler explodiert, wird es zu <code>"exploded"</code> geändert und sobald der Spieler alle Felder geöffnet hat, sollte es zu <code>"victory"</code> wechseln. Dann <em>nach</em> der Spielschleife, überprüfe den <code>game_state</code> und drucke eine entsprechende (glückliche oder traurige) Nachricht aus.</p>
+<p>Teste den Code mit einem kleineren 2×2-Feld mit einer oder zwei Minen. Du kannst (heimlich) die rohe Minenfeld-Matrix ausdrucken, um dir selbst zu helfen zu gewinnen und alle Szenarien zu testen.</p>
+<div class="program">
+<p>Implementiere das Spiel in <em>code04.py</em>.</p>
+</div>
+</div>
+<div id="ausbreitung-durch-den-leeren-raum" class="section level2" number="13.14">
+<h2>
+<span class="header-section-number">13.14</span> Ausbreitung durch den leeren Raum<a class="anchor" aria-label="anchor" href="#ausbreitung-durch-den-leeren-raum"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unser Spiel ist funktionsfähig, aber es ist mühsam, da wir die Koordinaten jeder einzelnen Zelle eingeben müssen, von der wir denken, dass sie keine Mine enthält. Das Originalspiel hat jedoch ein cooles Feature, das “triviale” Fälle für den Spieler öffnet. Wenn die Zelle, die du öffnest, <em>keine</em> Minen um sich hat, breiten sich die leeren Felder automatisch bis an die Grenzen der Nicht-Null-Zählung aus. Hier ist ein Beispiel für dasselbe Minenfeld, das ich zuvor verwendet habe, und der Spieler entscheidet, die obere linke Ecke zu öffnen. Da dies Teil des leeren Feldes ist, öffnet der Computer alle seine Nachbarn und macht dasselbe für jeden Nachbarn mit einer Null-Zählung, bis ihm die Zellen zum Öffnen ausgehen. Wenn sich das Aufrufen einer Funktion zum Öffnen von Feldern für einen Nachbarn innerhalb der Funktion, die Felder für die Zelle öffnet, wie eine Rekursion anhört, dann ist es das auch!</p>
+<p><img src="images/minesweeper-spread.svg" style="display: block; margin: 0 auto;width:100.0%" alt="Beispiel für Ausbreitung"><br></p>
+<p>Der Algorithmus selbst ist sehr einfach, aber wir werden zuerst eine modifizierte Version unserer Funktion <code>count_mines</code> erstellen. Statt die Anzahl der Minen an das Hauptskript zurückzugeben, wird diese Zahl direkt in die Zelle eingetragen. Mit anderen Worten, es modifiziert die <a href="guess-the-animal.html#mutable-objects">veränderbare</a> Matrix direkt ohne etwas zurückzugeben (so brauchen wir auch im Hauptcode keine Zuweisung).</p>
+<p>Nenne die Funktion <code>count_mines_and_fill</code> und lasse sie <code>count_mines</code> für die Hauptaufgabe aufrufen. Gleiche Eingaben, <em>keine</em> Ausgabe, <em>keine</em> Zuweisung im Hauptskript. Ansonsten ist der Code gleich und sollte auf dieselbe Weise funktionieren. Beachte, dass wir eigentlich die ursprüngliche Funktion <code>count_mines</code> aus der neuen Funktion aufrufen <em>könnten</em>, und für einen Moment würde es auch gut funktionieren. Aber <code>count_mines_and_fill</code> ist nur ein Vorläufer für <code>count_mines_and_spread</code>, die die Koordinaten des rechteckigen Ausschnitts kennen muss, daher benötigen wir die interne Berechnung, die von <code>count_mines</code> durchgeführt wird, und müssen diesen Code wiederverwenden.</p>
+<div class="program">
+<p>Implementiere <code>count_mines_and_fill</code> in <em>utils.py</em> <br>
+Implementiere das Spiel in <em>code05.py</em></p>
+</div>
+<p>Nun zur Rekursion. Die Funktion <code>count_mines_and_spread</code> übernimmt den Code von <code>count_mines_and_fill</code> und erweitert ihn für den Fall, dass die Minenzahl null ist. Dann sollte die Funktion (verschachtelte Schleifen?) über alle benachbarten Zellen iterieren und sich selbst auf diesen aufrufen, um die Minen zu zählen, die Zählungen einzugeben und, falls auch die benachbarten Zählungen zu Null werden, die Ausbreitung sogar noch weiter voranzutreiben.</p>
+<p><img src="images/minesweeper-spread.svg" style="display: block; margin: 0 auto;width:100.0%" alt="Beispiel für Ausbreitung (nochmals)"><br></p>
+<p>Beachte, dass die Funktion für dieselbe Zelle mehrmals aufgerufen werden könnte, und das könnte ein Problem sein. Schauen wir uns die obige Illustration an. Wir starten bei der Zelle oben links <code>(0, 0)</code>. Weil ihre Minenzahl Null ist, rufen wir dieselbe Funktion für alle ihre Nachbarn auf. Aber für <code>(1, 0)</code> ist die Minenzahl auch Null, was bedeutet, dass sie die Funktion für alle <em>seine</em> Nachbarn aufruft, einschließlich natürlich <code>(0, 0)</code>! Da die Minenzählungen für <code>(0, 0)</code> Null sind, löst es einen weiteren Aufruf nach <code>(1, 0)</code> aus, welcher dann wieder auf <code>(0, 0)</code> aufruft ad infinitum. Um dies zu verhindern, müssen wir nur überprüfen, ob wir diese Zelle bereits bearbeitet haben, <em>bevor</em> wir irgendetwas anderes tun. Mit anderen Worten, das Erste, was du tun musst, ist zu überprüfen, ob der Wert der Zelle <code>" "</code> ist (wir haben sie noch nicht bearbeitet). Wenn dies nicht der Fall ist (wir haben bereits Minen dafür gezählt), sollte die Funktion einfach nur zurückkehren (buchstäblich nur <code>return</code> ohne Ausgabe, da unsere Funktion keine Ausgabe liefert).</p>
+<p>Und das sind die einzigen zusätzlichen Teile: 1) am Anfang überprüfen, ob die Zelle bereits bearbeitet wurde, 2) sich selbst auf alle Nachbarn aufrufen, wenn die Minenzahl der Zelle Null ist. Entweder verwende ein fest codiertes Minenfeld, das wir oben definiert haben, oder verwende ein größeres (5×5) Feld mit nur einer Mine, um die Ausbreitung zu sehen. Muss im Hauptskript etwas anderes als der Funktionsname geändert werden?</p>
+<div class="program">
+<p>Implementiere <code>count_mines_and_spread</code> in <em>utils.py</em> <br>
+Implementiere das Spiel in <em>code06.py</em></p>
+</div>
+</div>
+<div id="zusammenfassung-3" class="section level2" number="13.15">
+<h2>
+<span class="header-section-number">13.15</span> Zusammenfassung<a class="anchor" aria-label="anchor" href="#zusammenfassung-3"><i class="fas fa-link"></i></a>
+</h2>
+<p>Großartig, packe deinen Code in ein Archiv und reiche ihn ein!</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#minesweeper"><span class="header-section-number">13</span> Minesweeper</a></li>
+<li><a class="nav-link" href="#kapitelkonzepte-1"><span class="header-section-number">13.1</span> Kapitelkonzepte</a></li>
+<li><a class="nav-link" href="#minesweeper-1"><span class="header-section-number">13.2</span> Minesweeper</a></li>
+<li><a class="nav-link" href="#print-end"><span class="header-section-number">13.3</span> Spaltenindizes mit einer for-Schleife drucken</a></li>
+<li><a class="nav-link" href="#str.join"><span class="header-section-number">13.4</span> Alle Spaltenindizes zu einer einzigen Zeichenkette verbinden</a></li>
+<li><a class="nav-link" href="#ein-numpy-array-von-strings-zu-einer-einzigen-zeichenkette-verbinden"><span class="header-section-number">13.5</span> Ein numpy-Array von Strings zu einer einzigen Zeichenkette verbinden</a></li>
+<li><a class="nav-link" href="#eine-horizontale-linie-zeichnen"><span class="header-section-number">13.6</span> Eine horizontale Linie zeichnen</a></li>
+<li><a class="nav-link" href="#chr-ord"><span class="header-section-number">13.7</span> Zeichen in Code umwandeln und zurück</a></li>
+<li><a class="nav-link" href="#koordinaten-eingeben"><span class="header-section-number">13.8</span> Koordinaten eingeben</a></li>
+<li><a class="nav-link" href="#np.fill"><span class="header-section-number">13.9</span> Ein leeres Minenfeld mit NumPy erstellen</a></li>
+<li><a class="nav-link" href="#minen-platzieren"><span class="header-section-number">13.10</span> Minen platzieren</a></li>
+<li><a class="nav-link" href="#das-minenfeld-ausdrucken"><span class="header-section-number">13.11</span> Das Minenfeld ausdrucken</a></li>
+<li><a class="nav-link" href="#die-umliegenden-minen-z%C3%A4hlen"><span class="header-section-number">13.12</span> Die umliegenden Minen zählen</a></li>
+<li><a class="nav-link" href="#alles-zusammenf%C3%BCgen-1"><span class="header-section-number">13.13</span> Alles zusammenfügen</a></li>
+<li><a class="nav-link" href="#ausbreitung-durch-den-leeren-raum"><span class="header-section-number">13.14</span> Ausbreitung durch den leeren Raum</a></li>
+<li><a class="nav-link" href="#zusammenfassung-3"><span class="header-section-number">13.15</span> Zusammenfassung</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/11-minesweeper.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/11-minesweeper.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-24.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

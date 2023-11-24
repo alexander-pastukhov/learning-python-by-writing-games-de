@@ -107,7 +107,7 @@ ein-höhlensystem
 herumwandern
 prüfen-ob-ein-wert-in-der-liste-istin-collection
 gültigen-höhlenindex-prüfen
-überprüfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann
+isdigit
 überprüfung-der-gültigen-ganzzahleneingabe
 den-code-in-einer-funktion-kapseln
 sets
@@ -160,7 +160,7 @@ wiederholen-und-kacheln
 sudoku-erzeugung-mittels-brute-force-ordnung-und-chaos
 beispiele-für-validierungen
 ist-diese-zeile-überhaupt-gültig
-blöcke
+sudoku-block
 brute-force-in-aktion
 zusammenfassung-1
 sudoku-backtracking
@@ -180,3 +180,19 @@ exceptions
 das-rätsel-ist-gelöst-sobald-keine-zellen-mehr-zum-überprüfen-vorhanden-sind
 hinzufügen-des-backtracking-mechanismus
 zusammenfassung-2
+minesweeper
+kapitelkonzepte-1
+minesweeper-1
+print-end
+str.join
+ein-numpy-array-von-strings-zu-einer-einzigen-zeichenkette-verbinden
+eine-horizontale-linie-zeichnen
+chr-ord
+koordinaten-eingeben
+np.fill
+minen-platzieren
+das-minenfeld-ausdrucken
+die-umliegenden-minen-zählen
+alles-zusammenfügen-1
+ausbreitung-durch-den-leeren-raum
+zusammenfassung-3

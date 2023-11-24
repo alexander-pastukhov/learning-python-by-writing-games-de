@@ -65,6 +65,7 @@
 <li><a class="" href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></li>
 <li><a class="" href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
 <li><a class="" href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></li>
+<li><a class="" href="minesweeper.html"><span class="header-section-number">13</span> Minesweeper</a></li>
 </ul>
 
         <div class="book-extra">
@@ -165,9 +166,9 @@
 <p>Füge deinen Code in <em>code03.py</em> ein.</p>
 </div>
 </div>
-<div id="überprüfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann" class="section level2" number="9.6">
+<div id="isdigit" class="section level2" number="9.6">
 <h2>
-<span class="header-section-number">9.6</span> Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann<a class="anchor" aria-label="anchor" href="#%C3%BCberpr%C3%BCfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.6</span> Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann<a class="anchor" aria-label="anchor" href="#isdigit"><i class="fas fa-link"></i></a>
 </h2>
 <p>Es gibt eine weitere Gefahr bei unserer Eingabe: Der Spieler ist nicht garantiert eine gültige Ganzzahl einzugeben! Bisher haben wir uns darauf verlassen, dass du dich benimmst, aber im wirklichen Leben werden die Leute, selbst wenn sie nicht absichtlich versuchen, dein Programm zu stören, gelegentlich die falsche Taste drücken. Daher müssen wir überprüfen, ob die <em>Zeichenfolge</em>, die sie eingegeben haben, in eine <em>Ganzzahl</em> umgewandelt werden kann.</p>
 <p>Die Python-Zeichenkette ist ein Objekt (mehr dazu in ein paar Kapiteln) mit verschiedenen Methoden, die es ermöglichen, verschiedene Operationen an ihnen durchzuführen. Eine Teilmenge von Methoden ermöglicht es dir, eine grobe Überprüfung ihres Inhalts durchzuführen. Die Methode, die uns interessiert, ist <a href="https://docs.python.org/3/library/stdtypes.html#str.isdigit">str.isdigit()</a>, die überprüft, ob alle Symbole Ziffern sind und dass die Zeichenfolge nicht leer ist (sie hat mindestens ein Symbol). Du kannst dem obigen Link folgen, um andere Alternativen wie <code>str.islower()</code>, <code>str.isalpha()</code>, usw. zu überprüfen.</p>
@@ -534,7 +535,7 @@ während WAHR:
 <li><a class="nav-link" href="#herumwandern"><span class="header-section-number">9.3</span> Herumwandern</a></li>
 <li><a class="nav-link" href="#pr%C3%BCfen-ob-ein-wert-in-der-liste-istin-collection"><span class="header-section-number">9.4</span> Prüfen, ob ein Wert in der Liste ist[#in-collection]</a></li>
 <li><a class="nav-link" href="#g%C3%BCltigen-h%C3%B6hlenindex-pr%C3%BCfen"><span class="header-section-number">9.5</span> Gültigen Höhlenindex prüfen</a></li>
-<li><a class="nav-link" href="#%C3%BCberpr%C3%BCfung-ob-eine-zeichenfolge-in-eine-ganze-zahl-umgewandelt-werden-kann"><span class="header-section-number">9.6</span> Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann</a></li>
+<li><a class="nav-link" href="#isdigit"><span class="header-section-number">9.6</span> Überprüfung, ob eine Zeichenfolge in eine ganze Zahl umgewandelt werden kann</a></li>
 <li><a class="nav-link" href="#%C3%BCberpr%C3%BCfung-der-g%C3%BCltigen-ganzzahleneingabe"><span class="header-section-number">9.7</span> Überprüfung der gültigen Ganzzahleneingabe</a></li>
 <li><a class="nav-link" href="#den-code-in-einer-funktion-kapseln"><span class="header-section-number">9.8</span> Den Code in einer Funktion kapseln</a></li>
 <li><a class="nav-link" href="#sets"><span class="header-section-number">9.9</span> Mengen</a></li>
@@ -572,7 +573,7 @@ während WAHR:
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-20.</p>
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
