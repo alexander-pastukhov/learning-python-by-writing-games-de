@@ -1,0 +1,27 @@
+# Game of Life {#game-of-life}
+
+Practice makes perfect, so today we will implement a text version of the _Game of Life_ game. There will be little if any new material, as we will concentrate on using the skills and knowledge that you already have. Rather, the main focus will be on implementing the same functionality using different approaches, to make it easier to see both common and solution-specific aspects of the code. So be 
+
+# Game of life
+The [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) was created by the British mathematician John Horton Conway. This is not really a game but rather a simulation where you set initial conditions up and observe how the population evolves. The rules, [as described on Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), are very simple:
+
+1. Any live cell with two or three live neighbors survives.
+2. Any dead cell with three live neighbors becomes a live cell.
+3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+Despite rules simplicity they produce remarkable evolution of a cell culture and give rise to many dynamic or static configurations. Here is an example simulation with a random starting state.
+
+```{r, eval=knitr::is_html_output(excludes = "epub"), results = 'asis', echo = F}
+cat(
+'<div style="text-align:center;"><video controls>
+    <source src="videos/game-of-life.m4v" type="video/mp4"> 
+  </video></div>'
+)
+```
+
+Our version will be less dynamic, as we will stick to the text-based output but will exhibit the same behavior as in the video above.
+
+## Creating the world
+In the Game of Life, the world is a rectangular grid, whose size we will define via `WORLD_SIZE = (<W>, <H>)` where `<W>` and `<H>` are dimensions of your choice (e.g., 10 by 5?). 
+
+
