@@ -21,6 +21,78 @@ cat(
 
 Our version will be less dynamic, as we will stick to the text-based output but will exhibit the same behavior as in the video above.
 
+## Printing out the world
+Before we go to creating the world and let it evolve, we need some means of seeing it, a `print_world` function. As this chapter is primarily about practice, we will produce with functionality three different ways:
+
+* using nested for loops
+* printing rows one by one, joining elements into a string
+* joining all elements into a single string and printing just once.
+
+Here is the practice matrix that you can use
+
+```{python}
+import numpy as np
+
+the_world = np.array([[" ", "*", "*", " "],
+                      ["*", "*", " ", " "],
+                      [" ", " ", " ", " "],
+                      [" ", " ", "*", "*"]])
+```
+
+and here is how it should look like when you print it out:
+
+```{python echo=FALSE}
+def print_world_via_nested_loop(a_world):
+  """Print out world via nested loops.
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  """
+  print(" " + "".join(["-"] * a_world.shape[0] ))
+  for irow in range(a_world.shape[0]):
+    print("│", end="")
+    for icol in range(a_world.shape[1]):
+      print(a_world[irow, icol], end="")
+    print("|")
+  print(" " + "".join(["-"] * a_world.shape[0] ))
+  
+def print_world_joining_rows(a_world):
+  """
+  Print out world by joining each row into a string.
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  """
+  print(" " + "".join(["-"] * a_world.shape[0]))
+  for irow in range(a_world.shape[0]):
+    row_string = "|" +  "".join(a_world[irow, :]) + "|"
+    print(row_string)
+  print(" " + "".join(["-"] * a_world.shape[0]))
+  
+  
+def print_world_as_a_single_string(a_world):
+  """Print out world by first creating a single string
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  """
+  world_string = " " + "".join(["-"] * a_world.shape[0]) + "\n"
+  row_strings = ["|" + "".join(a_world[irow, :]) + "|" for irow in range(a_world.shape[0])]
+  world_string += "\n".join(row_strings)
+  world_string += "\n " + "".join(["-"] * a_world.shape[0])
+  print(world_string)
+    
+print_world_via_nested_loop(the_world)
+# print_world_joining_rows(the_world)
+# print_world_as_a_single_string(the_world)
+```
+
+
+
+
 ## Creating the world
 In the Game of Life, the world is a rectangular grid, whose size we will define via `WORLD_SIZE = (<W>, <H>)` where `<W>` and `<H>` are dimensions of your choice (e.g., 10 by 5?). 
 
