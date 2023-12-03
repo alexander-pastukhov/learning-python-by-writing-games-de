@@ -19,7 +19,13 @@ cat(
 )
 ```
 
-Our version will be less dynamic, as we will stick to the text-based output but will exhibit the same behavior as in the video above.
+Our version will be less dynamic, as we will stick to the text-based output but will exhibit the same behavior as in the video above. This is more of a simulation than a game, so we need just three functions that
+
+* generate the initial state of the world
+* compute its state in the text time instance
+* print it out.
+
+The latter helps us see what the first two are doing, so we will start with it.
 
 ## Printing out the world
 Before we go to creating the world and let it evolve, we need some means of seeing it, a `print_world` function. As this chapter is primarily about practice, we will produce with functionality three different ways:
@@ -28,15 +34,21 @@ Before we go to creating the world and let it evolve, we need some means of seei
 * printing rows one by one, joining elements into a string
 * joining all elements into a single string and printing just once.
 
-Here is the practice matrix that you can use
+Here is the practice matrix with a [glider spaceship](https://conwaylife.com/wiki/Glider) pattern that you can use
 
 ```{python}
 import numpy as np
 
-the_world = np.array([[" ", "*", "*", " "],
-                      ["*", "*", " ", " "],
-                      [" ", " ", " ", " "],
-                      [" ", " ", "*", "*"]])
+the_world = np.array([[" ", " ", "*", " "],
+                      ["*", " ", "*", " "],
+                      [" ", "*", "*", " "],
+                      [" ", " ", " ", " "]])
+```
+
+here is dictionary we will use to translate between boring but simpler to type characters and better looking in out output
+
+```{python}
+OUTPUT_MAP = {" ": "⬜", "*" : "⬛"}
 ```
 
 and here is how it should look like when you print it out:
@@ -49,14 +61,12 @@ def print_world_via_nested_loop(a_world):
   ----------
   a_world : numpy.array
   """
-  print(" " + "".join(["-"] * a_world.shape[0] ))
   for irow in range(a_world.shape[0]):
-    print("│", end="")
     for icol in range(a_world.shape[1]):
-      print(a_world[irow, icol], end="")
-    print("|")
-  print(" " + "".join(["-"] * a_world.shape[0] ))
-  
+      print(OUTPUT_MAP[a_world[irow, icol]], end="")
+    print("")
+
+
 def print_world_joining_rows(a_world):
   """
   Print out world by joining each row into a string.
@@ -65,12 +75,10 @@ def print_world_joining_rows(a_world):
   ----------
   a_world : numpy.array
   """
-  print(" " + "".join(["-"] * a_world.shape[0]))
   for irow in range(a_world.shape[0]):
-    row_string = "|" +  "".join(a_world[irow, :]) + "|"
+    row_string = "".join([OUTPUT_MAP[cell] for cell in a_world[irow, :]])
     print(row_string)
-  print(" " + "".join(["-"] * a_world.shape[0]))
-  
+
   
 def print_world_as_a_single_string(a_world):
   """Print out world by first creating a single string
@@ -79,18 +87,20 @@ def print_world_as_a_single_string(a_world):
   ----------
   a_world : numpy.array
   """
-  world_string = " " + "".join(["-"] * a_world.shape[0]) + "\n"
-  row_strings = ["|" + "".join(a_world[irow, :]) + "|" for irow in range(a_world.shape[0])]
-  world_string += "\n".join(row_strings)
-  world_string += "\n " + "".join(["-"] * a_world.shape[0])
+  row_strings = ["".join([OUTPUT_MAP[cell] for cell in a_world[irow, :]]) 
+                 for irow in range(a_world.shape[0])]
+  world_string = "\n".join(row_strings)
   print(world_string)
     
 print_world_via_nested_loop(the_world)
+# print()
 # print_world_joining_rows(the_world)
+# print()
 # print_world_as_a_single_string(the_world)
 ```
 
-
+## Printing out via nested for loops
+The first approach is to 
 
 
 ## Creating the world
