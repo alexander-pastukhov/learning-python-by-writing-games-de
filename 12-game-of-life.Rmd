@@ -103,14 +103,144 @@ print_world_via_nested_loop(the_world)
 The first approach is print one element at a time by looping over rows and then looping over each element of the row. You know how to [loop over items](#for-loop), so you just need to think which value `end` parameter of the [print](https://docs.python.org/3/library/functions.html#print) do you use and when. Also, you need to translate the symbol from internal representation to the output using the `OUTPUT_MAP` dictionary (no if-elses are necessary!). Put the code into function `print_world_via_nested_loop`, which takes a single parameter (should be pretty obvious what it is). Document the function!
 
 ::: {.program}
-Implement `print_world_via_nested_loop` in _utils.py_ <br/>
+Implement `print_world_via_nested_loop` in _print_utils.py_ <br/>
 Test it in _code01.py_.
 :::
 
 ## Print each row as a single string
+The second solution is to loop over row but [join](#str.join) all elements of the row into a single string and then do just one print per row. However, before you can join elements into a single string, you must translate them using the `OUTPUT_MAP` dictionary via [list comprehension](#list-comprehension). You can do it in a single line: build a new list with translated elements, [join](https://docs.python.org/3/library/stdtypes.html#str.join) it, and print it.
 
+::: {.program}
+Implement `print_world_joining_rows` in _print_utils.py_ <br/>
+Test it in _code02.py_.
+:::
+
+## Print entire field as a single string
+Our final solution is to convert the entire field to a single string and then do just a single print. You already know how to create a string for a single row. Now, you just need to build a list of strings, one for each row, via [list comprehension](#list-comprehension) (yes, this means nested list comprehensions!) and then join them all using `"\n"` (new line) character. So, things are pretty nested, as you are joining a list (created via list comprehension) whose elements are strings produced by joining a list of translated characters (that is also created via list comprehension). If that sound confusing, just start with what you already implemented --- turning a single row into a string --- and think of how would convert a for loop you were using into a for loop inside of the list comprehension.
+
+::: {.program}
+Implement `print_world_as_a_single_string` in _print_utils.py_ <br/>
+Test it in _code03.py_.
+:::
 
 ## Creating the world
-In the Game of Life, the world is a rectangular grid, whose size we will define via `WORLD_SIZE = (<W>, <H>)` where `<W>` and `<H>` are dimensions of your choice (e.g., 10 by 5?). 
+In the Game of Life, the world is a rectangular grid, whose size we will define via `WORLD_SIZE = (<W>, <H>)` where `<W>` and `<H>` are dimensions of your choice (e.g., 10 by 5?). We will generate the world randomly with a specific proportion of cells  being alive at the start: `P_ALIVE = 0.25` (you can change the proportion to your liking). As with printing, we will implement multiple versions of the same procedure.
+
+## Creating the world via NumPy
+The easiest way to create the world is via [numpy.random.choice()](https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html). You only need to specify values that we choose from (`" "` and `"*"`), size of the matrix, and _probability of choosing each value_. If you do not specify the latter, each value is equally likely to be picked but in out case, probabilities for `" "` (dead cell) and `"*"` (living cell) are different, so you need to supply both.
+
+Implement this code in a function `create_world_via_numpy`, it should take two parameters (size of the game world and probability of a living cell), and return a NumPy matrix with the world. Keep in mind that NumPy expects size as `(number-of-rows, number-of-columns)`. However, number of rows is height and number of columns is width, so think about the order here! Once you implement the code, you should see a similar world ([seed](https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html) NumPy with 42 and you should get exactly the same one). 
+
+::: {.program}
+Implement `create_world_via_numpy` in `creation_utils.py` <br/>
+Test code in _code04.py_ using print function of your choice.
+:::
+
+```{python echo=FALSE}
+WORLD_SIZE = (10, 5)
+P_ALIVE = 0.25
+
+def create_world_via_numpy(world_size, p_alive):
+  """Create a random world via numpy.
+  
+  Parameters
+  ----------
+  world_size : tuple
+  p_alive : float
+    Probability that cell is alive
+
+  Returns
+  ----------
+  numpy.array : dimensions are world_size 
+  """
+  return np.random.choice([" ", "*"], size=(world_size[1], world_size[0]), p=[1 - p_alive, p_alive])
+  
+
+np.random.seed(42)
+the_world =  create_world_via_numpy(WORLD_SIZE, P_ALIVE)
+print_world_as_a_single_string(the_world)
+```
+
+## Creating the world via nested loops
+Let us do the same but creating one element at a time, building a list of lists and then converting it to a [NumPy array](https://numpy.org/doc/stable/reference/generated/numpy.array.html). Here, you loop over rows and columns ([range](https://docs.python.org/3/library/functions.html#func-range) is definitely useful) and create one element at a time using [random.choices](https://docs.python.org/3/library/random.html#random.choices) function. It works the same way as [numpy.random.choice](https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html), but probabilities are called "weights". Be careful, as there is a function called [random.choice](https://docs.python.org/3/library/random.html#random.choice) (as in single "choice" not plural "choices") and it works almost the same way but does not allow you to specify weights/probabilities!
+
+Overall logic should be mostly straightforward. You create a list for every row and put these lists into a single list. Here, use conventional [for loops](#for-loop). For the row, you start with an empty list for the row and [extend](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) it with a list produced by [random.choice](https://docs.python.org/3/library/random.html#random.choice) (it returns a list, not a single value, hence our need to [extend](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) rather than [append](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists)!) Similarly, you start with an emply list for the world,  [appending](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) one row at a time. 
+Once you done, convert to a [NumPy array](https://numpy.org/doc/stable/reference/generated/numpy.array.html) and return.
+
+Function input and outputs are the same, the only change is how you implement the solution. My [random seed](https://docs.python.org/3/library/random.html#random.seed) was again 42.
 
 
+```{python echo=FALSE}
+import random
+
+def create_world_via_nested_loops(world_size, p_alive):
+  """Create a random world via nested loops
+  
+  Parameters
+  ----------
+  world_size : tuple
+  p_alive : float
+    Probability that cell is alive
+
+  Returns
+  ----------
+  numpy.array : dimensions are world_size 
+  """
+  world_as_list = []
+  for _ in range(world_size[1]):
+    row_as_list = []
+    for _ in range(world_size[0]):
+      row_as_list.extend(random.choices([" ", "*"], [1 - p_alive, p_alive]))
+    world_as_list.append(row_as_list)
+    
+  return np.array(world_as_list)
+
+random.seed(42)
+the_world =  create_world_via_nested_loops(WORLD_SIZE, P_ALIVE)
+print_world_as_a_single_string(the_world)
+```
+
+::: {.program}
+Implement `create_world_via_nested_loops` in `creation_utils.py` <br/>
+Test code in _code05.py_ using print function of your choice.
+:::
+
+## Creating the world via list comprehension
+Hopefully, you have realized already that as the only thing that the for loops are used for is building a list, so you should be thinking "This would be simpler with list comprehension!". Yes it would, at this is our third implementation `create_world_via_list_comprehension`. We will simplify our life but generating the whole row in one call by specifying `k` parameter of [random.choices](https://docs.python.org/3/library/random.html#random.choices) function. This way, we will get a list of `k` elements (what should `k` correspond to, width or height of our world?) and use list comprehension to build a list of rows. Then, convert to NumPy array and return. Same inputs and outputs, same functionality, just a slightly different implementation. Here, same [random seed](https://docs.python.org/3/library/random.html#random.seed) 42 gives us the same world.
+
+```{python echo=FALSE}
+def create_world_via_list_comprehension(world_size, p_alive):
+  """Create a random world via nested loops
+  
+  Parameters
+  ----------
+  world_size : tuple
+  p_alive : float
+    Probability that cell is alive
+
+  Returns
+  ----------
+  numpy.array : dimensions are world_size 
+  """
+  world_as_list = [random.choices([" ", "*"], [1 - p_alive, p_alive], k=world_size[0])
+                   for _ in range(world_size[1])]
+  return np.array(world_as_list)
+
+random.seed(42)
+the_world =  create_world_via_list_comprehension(WORLD_SIZE, P_ALIVE)
+print_world_as_a_single_string(the_world)
+```
+
+::: {.program}
+Implement `create_world_via_list_comprehension` in `creation_utils.py` <br/>
+Test code in _code06.py_ using print function of your choice.
+:::
+
+## Live and let die
+Recall the rules of simulation:
+
+1. Any live cell with two or three live neighbors survives.
+2. Any dead cell with three live neighbors becomes a live cell.
+3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+This means that for every cell, we need to count its neighbors the almost same way we [counted mines](#minesweeper-count-mines) in the minesweeper game. Why almost? When we counted mines, we knew that the cell itself is empty, otherwise we would have exploded. Here, we need to count the total number of live cells _not counting the cell itself_. This  
