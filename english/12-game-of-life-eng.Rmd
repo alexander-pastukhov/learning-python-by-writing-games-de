@@ -1,6 +1,6 @@
 # Game of Life {#game-of-life}
 
-Practice makes perfect, so today we will implement a text version of the _Game of Life_ game. There will be little if any new material, as we will concentrate on using the skills and knowledge that you already have. Rather, the main focus will be on implementing the same functionality using different approaches, to make it easier to see both common and solution-specific aspects of the code. So be 
+Practice makes perfect, so today we will implement a text version of the _Game of Life_ game. There will be little if any new material, as we will concentrate on using the skills and knowledge that you already have. Rather, the main focus will be on implementing the same functionality using different approaches, to make it easier to see both common and solution-specific aspects of the code.
 
 # Game of life
 The [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) was created by the British mathematician John Horton Conway. This is not really a game but rather a simulation where you set initial conditions up and observe how the population evolves. The rules, [as described on Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), are very simple:
@@ -36,7 +36,7 @@ Before we go to creating the world and let it evolve, we need some means of seei
 
 Here is the practice matrix with a [glider spaceship](https://conwaylife.com/wiki/Glider) pattern that you can use
 
-```{python}
+```{python gol-glider}
 import numpy as np
 
 the_world = np.array([[" ", " ", "*", " "],
@@ -47,13 +47,13 @@ the_world = np.array([[" ", " ", "*", " "],
 
 here is dictionary we will use to translate between boring but simpler to type characters and better looking in out output
 
-```{python}
+```{python gol-output_map}
 OUTPUT_MAP = {" ": "⬜", "*" : "⬛"}
 ```
 
 and here is how it should look like when you print it out:
 
-```{python echo=FALSE}
+```{python gol-printing, echo=FALSE}
 def print_world_via_nested_loop(a_world):
   """Print out world via nested loops.
   
@@ -136,7 +136,7 @@ Implement `create_world_via_numpy` in `creation_utils.py` <br/>
 Test code in _code04.py_ using print function of your choice.
 :::
 
-```{python echo=FALSE}
+```{python gol-create-numpy, echo=FALSE}
 WORLD_SIZE = (10, 5)
 P_ALIVE = 0.25
 
@@ -170,7 +170,7 @@ Once you done, convert to a [NumPy array](https://numpy.org/doc/stable/reference
 Function input and outputs are the same, the only change is how you implement the solution. My [random seed](https://docs.python.org/3/library/random.html#random.seed) was again 42.
 
 
-```{python echo=FALSE}
+```{python gol-create-loop, echo=FALSE}
 import random
 
 def create_world_via_nested_loops(world_size, p_alive):
@@ -208,7 +208,7 @@ Test code in _code05.py_ using print function of your choice.
 ## Creating the world via list comprehension
 Hopefully, you have realized already that as the only thing that the for loops are used for is building a list, so you should be thinking "This would be simpler with list comprehension!". Yes it would, at this is our third implementation `create_world_via_list_comprehension`. We will simplify our life but generating the whole row in one call by specifying `k` parameter of [random.choices](https://docs.python.org/3/library/random.html#random.choices) function. This way, we will get a list of `k` elements (what should `k` correspond to, width or height of our world?) and use list comprehension to build a list of rows. Then, convert to NumPy array and return. Same inputs and outputs, same functionality, just a slightly different implementation. Here, same [random seed](https://docs.python.org/3/library/random.html#random.seed) 42 gives us the same world.
 
-```{python echo=FALSE}
+```{python gol-create-comprehensions, echo=FALSE}
 def create_world_via_list_comprehension(world_size, p_alive):
   """Create a random world via nested loops
   
@@ -258,7 +258,7 @@ Implement `count_neighbors_via_slicing` in `evolution_utils.py` <br/>
 Test it in _code07.py_.
 :::
 
-```{python echo=FALSE, eval=FALSE}
+```{python gol-count-slicing, echo=FALSE}
 def count_neighbors_via_slicing(a_world, cell_pos):
   """Count cell's neighbors via slicing
   
@@ -278,8 +278,6 @@ def count_neighbors_via_slicing(a_world, cell_pos):
   right = min(cell_pos[1] + 2, a_world.shape[1])
   
   return np.sum(a_world[top:bottom, left:right] == "*") - (a_world[cell_pos[0], cell_pos[1]] == "*")
-
-count_neighbors_via_slicing(the_world, (0, 2))
 ```
 
 ## Counting neighbors via nested for loops
@@ -292,7 +290,7 @@ Implement `count_neighbors_via_for_loops` in `evolution_utils.py` <br/>
 Test it in _code08.py_.
 :::
 
-```{python echo=FALSE, eval=FALSE}
+```{python gol-count-loops, echo=FALSE}
 def count_neighbors_via_for_loops(a_world, cell_pos):
   """Count cell's neighbors via slicing
   
@@ -317,8 +315,6 @@ def count_neighbors_via_for_loops(a_world, cell_pos):
       cell_count += a_world[irow, icol] == "*"
   
   return cell_count - (a_world[cell_pos[0], cell_pos[1]] == "*")
-
-count_neighbors_via_for_loops(the_world, (0, 0))
 ```
 
 ## Next generation
@@ -331,7 +327,7 @@ The only function we need is one that create a _new_ matrix for the world of tom
 
 We will call the function `evolve` and should take the world matrix as an input and return, again, a _different_ matrix as output. Once you implemented the function, test on the glider world. Your initial and the next two states should look as follows:
 
-```{python echo=FALSE}
+```{python gol-evolve, echo=FALSE}
 def evolve(a_world):
   """Evolve the world to the next state.
   
@@ -384,12 +380,12 @@ You have everything to create an evolving world. Implement a game using [while](
 
 Here is an example of the world that has been created using `create_world_via_numpy()` function with seed 42. Note how the structure becomes stable at time 6.
 
-```{python echo=FALSE}
+```{python gol-simulation, echo=FALSE}
 WORLD_SIZE = (10, 5)
 P_ALIVE = 0.25
 
 np.random.seed(42)
-the_world = (WORLD_SIZE, P_ALIVE)
+the_world = create_world_via_numpy(WORLD_SIZE, P_ALIVE)
 print("Time 0")
 print_world_as_a_single_string(the_world)
 

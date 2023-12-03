@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Kapitel 14 Game of Life | Lerne Python, indem du Textspiele entwickels</title>
+<meta name="author" content="Alexander (Sasha) Pastukhov">
+<meta name="description" content="Übung macht den Meister, also werden wir heute eine Textversion des Game of Life Spiels implementieren. Es wird kaum oder gar kein neues Material geben, denn wir konzentrieren uns darauf, die...">
+<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta property="og:title" content="Kapitel 14 Game of Life | Lerne Python, indem du Textspiele entwickels">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/game-of-life.html">
+<meta property="og:description" content="Übung macht den Meister, also werden wir heute eine Textversion des Game of Life Spiels implementieren. Es wird kaum oder gar kein neues Material geben, denn wir konzentrieren uns darauf, die...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kapitel 14 Game of Life | Lerne Python, indem du Textspiele entwickels">
+<meta name="twitter:site" content="@PastukhovSasha">
+<meta name="twitter:description" content="Übung macht den Meister, also werden wir heute eine Textversion des Game of Life Spiels implementieren. Es wird kaum oder gar kein neues Material geben, denn wir konzentrieren uns darauf, die...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link rel="shortcut icon" href="images/python-text-favicon.svg">
+<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBXRG6YB3R"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TMHDLSM1CE');
+      </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Lerne Python, indem du Textspiele entwickels</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Einleitung</a></li>
+<li><a class="" href="Software.html"><span class="header-section-number">2</span> Software</a></li>
+<li><a class="" href="programming-tips.html"><span class="header-section-number">3</span> Programmier-Tipps und -Tricks</a></li>
+<li><a class="" href="python-grundlagen.html"><span class="header-section-number">4</span> Python Grundlagen</a></li>
+<li><a class="" href="guess-the-number-single-round.html"><span class="header-section-number">5</span> Errate die Zahl: eine einzelne Runden Edition</a></li>
+<li><a class="" href="guess-the-number-multi-round.html"><span class="header-section-number">6</span> Errate die Zahl: Eine Mehr-Runden-Ausgabe</a></li>
+<li><a class="" href="guess-the-number-ai.html"><span class="header-section-number">7</span> Guess the Number: KI ist dran</a></li>
+<li><a class="" href="One-armed-bandit.html"><span class="header-section-number">8</span> Einarmiger Bandit, aber mit Listen und Schleifen</a></li>
+<li><a class="" href="hunt-the-wumpus.html"><span class="header-section-number">9</span> Jagd auf den Wumpus</a></li>
+<li><a class="" href="guess-the-animal.html"><span class="header-section-number">10</span> Rate das Tier</a></li>
+<li><a class="" href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
+<li><a class="" href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></li>
+<li><a class="" href="minesweeper.html"><span class="header-section-number">13</span> Minesweeper</a></li>
+<li><a class="active" href="game-of-life.html"><span class="header-section-number">14</span> Game of Life</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="game-of-life" class="section level1" number="14">
+<h1>
+<span class="header-section-number">Kapitel 14</span> Game of Life<a class="anchor" aria-label="anchor" href="#game-of-life"><i class="fas fa-link"></i></a>
+</h1>
+<p>Übung macht den Meister, also werden wir heute eine Textversion des <em>Game of Life</em> Spiels implementieren. Es wird kaum oder gar kein neues Material geben, denn wir konzentrieren uns darauf, die Fähigkeiten und das Wissen, das du bereits hast, zu nutzen. Stattdessen liegt der Hauptfokus darauf, dieselbe Funktionalität mit verschiedenen Ansätzen zu implementieren, um sowohl gemeinsame als auch lösungsspezifische Aspekte des Codes leichter erkennen zu können.</p>
+<div id="game-of-life-1" class="section level2" number="14.1">
+<h2>
+<span class="header-section-number">14.1</span> Game of Life<a class="anchor" aria-label="anchor" href="#game-of-life-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Das <a href="">Game of Life</a> wurde von dem britischen Mathematiker John Horton Conway erschaffen. Es handelt sich hierbei eigentlich nicht um ein Spiel, sondern um eine Simulation, bei der man Anfangsbedingungen festlegt und beobachtet, wie sich die Population entwickelt. Die Regeln, <a href="https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens">wie auf Wikipedia beschrieben</a>, sind sehr einfach:</p>
+<ol style="list-style-type: decimal">
+<li>Jede lebendige Zelle mit zwei oder drei lebendigen Nachbarn überlebt.</li>
+<li>Jede tote Zelle mit drei lebendigen Nachbarn wird zu einer lebendigen Zelle.</li>
+<li>Alle anderen lebendigen Zellen sterben in der nächsten Generation. Ebenso bleiben alle anderen toten Zellen tot.</li>
+</ol>
+<p>Trotz der Einfachheit der Regeln erzeugen sie eine bemerkenswerte Evolution einer Zellkultur und führen zu vielen dynamischen oder statischen Konfigurationen. Hier ist ein Beispiel einer Simulation mit einem zufälligen Anfangszustand.</p>
+<div style="text-align:center;">
+<video controls><source src="videos/game-of-life.m4v" type="video/mp4"></source></video>
+</div>
+<p>Unsere Version wird weniger dynamisch sein, da wir uns an eine textbasierte Ausgabe halten werden, aber das gleiche Verhalten wie im obigen Video zeigen werden. Da dies eher eine Simulation als ein Spiel ist, benötigen wir lediglich drei Funktionen, die</p>
+<ul>
+<li>den Anfangszustand der Welt generieren,</li>
+<li>ihren Zustand im nächsten Zeitpunkt berechnen,</li>
+<li>sie ausdrucken.</li>
+</ul>
+<p>Die letzte Funktion hilft uns zu sehen, was die ersten beiden tun, daher werden wir mit dieser beginnen.</p>
+</div>
+<div id="die-welt-ausdrucken" class="section level2" number="14.2">
+<h2>
+<span class="header-section-number">14.2</span> Die Welt ausdrucken<a class="anchor" aria-label="anchor" href="#die-welt-ausdrucken"><i class="fas fa-link"></i></a>
+</h2>
+<p>Bevor wir damit beginnen, die Welt zu erschaffen und sie sich entwickeln zu lassen, benötigen wir eine Möglichkeit, sie zu sehen, eine <code>print_world</code> Funktion. Da dieses Kapitel in erster Linie um Praxis geht, werden wir die Funktionalität auf drei verschiedene Arten erzeugen:</p>
+<ul>
+<li>unter Verwendung von verschachtelten for-Schleifen</li>
+<li>indem wir Reihen einzeln ausdrucken, indem wir Elemente zu einem String zusammenfügen</li>
+<li>indem wir alle Elemente zu einem einzigen String zusammenfügen und nur einmal ausdrucken.</li>
+</ul>
+<p>Hier ist die Übungsmatrix mit einem <a href="https://conwaylife.com/wiki/Glider">Gleiter-Raumschiff-Muster</a>, das du verwenden kannst</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb153-1"><a href="game-of-life.html#cb153-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb153-2"><a href="game-of-life.html#cb153-2" tabindex="-1"></a></span>
+<span id="cb153-3"><a href="game-of-life.html#cb153-3" tabindex="-1"></a>the_world <span class="op">=</span> np.array([[<span class="st">" "</span>, <span class="st">" "</span>, <span class="st">"*"</span>, <span class="st">" "</span>],</span>
+<span id="cb153-4"><a href="game-of-life.html#cb153-4" tabindex="-1"></a>                      [<span class="st">"*"</span>, <span class="st">" "</span>, <span class="st">"*"</span>, <span class="st">" "</span>],</span>
+<span id="cb153-5"><a href="game-of-life.html#cb153-5" tabindex="-1"></a>                      [<span class="st">" "</span>, <span class="st">"*"</span>, <span class="st">"*"</span>, <span class="st">" "</span>],</span>
+<span id="cb153-6"><a href="game-of-life.html#cb153-6" tabindex="-1"></a>                      [<span class="st">" "</span>, <span class="st">" "</span>, <span class="st">" "</span>, <span class="st">" "</span>]])</span></code></pre></div>
+<p>Hier ist das Wörterbuch, das wir verwenden werden, um zwischen langweiligen, aber einfacher zu tippenen Zeichen und besser aussehenden in unserem Ausgabemedium zu übersetzen.</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb154-1"><a href="game-of-life.html#cb154-1" tabindex="-1"></a>OUTPUT_MAP <span class="op">=</span> {<span class="st">" "</span>: <span class="st">"⬜"</span>, <span class="st">"*"</span> : <span class="st">"⬛"</span>}</span></code></pre></div>
+<p>und so sollte es aussehen, wenn du es ausdruckst:</p>
+<pre><code>#&gt; ⬜⬜⬛⬜
+#&gt; ⬛⬜⬛⬜
+#&gt; ⬜⬛⬛⬜
+#&gt; ⬜⬜⬜⬜</code></pre>
+</div>
+<div id="ausgabe-über-verschachtelte-for-schleifen" class="section level2" number="14.3">
+<h2>
+<span class="header-section-number">14.3</span> Ausgabe über verschachtelte for-Schleifen<a class="anchor" aria-label="anchor" href="#ausgabe-%C3%BCber-verschachtelte-for-schleifen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Der erste Ansatz besteht darin, ein Element nach dem anderen auszudrucken, indem du zuerst über die Reihen und dann über jedes Element der Reihe iterierst. Du weißt, wie man <a href="One-armed-bandit.html#for-loop">über Elemente iteriert</a>, also musst du nur noch überlegen, welchen Wert du für den Parameter <code>end</code> der <a href="https://docs.python.org/3/library/functions.html#print">print</a>-Funktion verwenden sollst und wann. Außerdem musst du das Symbol von der internen Darstellung in die Ausgabe mithilfe des <code>OUTPUT_MAP</code>-Wörterbuchs übersetzen (keine if-elses notwendig!). Füge den Code in die Funktion <code>print_world_via_nested_loop</code> ein, die einen einzelnen Parameter nimmt (es sollte ziemlich offensichtlich sein, welcher das ist). Dokumentiere die Funktion!</p>
+<div class="program">
+<p>Implementiere <code>print_world_via_nested_loop</code> in <em>print_utils.py</em> <br>
+Teste es in <em>code01.py</em>.</p>
+</div>
+</div>
+<div id="jede-reihe-als-einzelnen-string-ausdrucken" class="section level2" number="14.4">
+<h2>
+<span class="header-section-number">14.4</span> Jede Reihe als einzelnen String ausdrucken<a class="anchor" aria-label="anchor" href="#jede-reihe-als-einzelnen-string-ausdrucken"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die zweite Lösung besteht darin, über die Reihen zu iterieren, aber <a href="minesweeper.html#str.join">alle Elemente der Reihe zu einem einzigen String zusammenzufügen</a> und dann nur einmal pro Reihe zu drucken. Bevor du jedoch Elemente zu einem einzigen String zusammenführen kannst, musst du sie mit dem <code>OUTPUT_MAP</code>-Wörterbuch mithilfe der <a href="One-armed-bandit.html#list-comprehension">Listengenerierung</a> übersetzen. Du kannst das in einer einzigen Zeile machen: Erstelle eine neue Liste mit übersetzten Elementen, <a href="https://docs.python.org/3/library/stdtypes.html#str.join">füge sie zusammen</a> und drucke sie aus.</p>
+<div class="program">
+<p>Implementire <code>print_world_joining_rows</code> in <em>print_utils.py</em> <br>
+Teste es in <em>code02.py</em>.</p>
+</div>
+</div>
+<div id="das-gesamte-feld-als-einen-einzigen-string-ausdrucken" class="section level2" number="14.5">
+<h2>
+<span class="header-section-number">14.5</span> Das gesamte Feld als einen einzigen String ausdrucken<a class="anchor" aria-label="anchor" href="#das-gesamte-feld-als-einen-einzigen-string-ausdrucken"><i class="fas fa-link"></i></a>
+</h2>
+<p>Unsere finale Lösung besteht darin, das gesamte Feld in einen einzigen String umzuwandeln und dann nur einmal zu drucken. Du weißt bereits, wie man einen String für eine einzelne Reihe erstellt. Jetzt musst du lediglich eine Liste von Strings erstellen, einen für jede Reihe, mithilfe der <a href="One-armed-bandit.html#list-comprehension">Listengenerierung</a> (ja, das bedeutet verschachtelte Listengenerierungen!) und dann alle mit <code>"\n"</code> (neue Zeile) als Trennzeichen zusammenführen. Es wird also ziemlich verschachtelt, da du eine Liste (erzeugt durch Listengenerierung) zusammenführst, deren Elemente Strings sind, die wiederum durch das Zusammenfügen einer Liste von übersetzten Zeichen (die ebenfalls durch Listengenerierung erstellt wird) produziert werden. Wenn das verwirrend klingt, beginne einfach mit dem, was du bereits implementiert hast – eine einzelne Reihe in einen String umzuwandeln – und überlege, wie du die for-Schleife, die du verwendet hast, in eine for-Schleife innerhalb der Listengenerierung umwandeln könntest.</p>
+<div class="program">
+<p>Implementire <code>print_world_as_a_single_string</code> in <em>print_utils.py</em> <br>
+Teste es in <em>code03.py</em>.</p>
+</div>
+</div>
+<div id="die-welt-erschaffen" class="section level2" number="14.6">
+<h2>
+<span class="header-section-number">14.6</span> Die Welt erschaffen<a class="anchor" aria-label="anchor" href="#die-welt-erschaffen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Im Game of Life ist die Welt ein rechteckiges Gitter, dessen Größe wir mit <code>WORLD_SIZE = (&lt;W&gt;, &lt;H&gt;)</code> definieren werden, wobei <code>&lt;W&gt;</code> und <code>&lt;H&gt;</code> die von dir gewählten Dimensionen sind (zum Beispiel 10 mal 5?). Wir werden die Welt zufällig mit einem spezifischen Anteil an lebendigen Zellen zu Beginn generieren: <code>P_ALIVE = 0.25</code> (du kannst das Verhältnis nach Belieben ändern). Wie beim Drucken werden wir mehrere Versionen desselben Verfahrens implementieren.</p>
+</div>
+<div id="die-welt-mit-numpy-erschaffen" class="section level2" number="14.7">
+<h2>
+<span class="header-section-number">14.7</span> Die Welt mit NumPy erschaffen<a class="anchor" aria-label="anchor" href="#die-welt-mit-numpy-erschaffen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Der einfachste Weg, die Welt zu erschaffen, ist über <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html">numpy.random.choice()</a>. Du musst nur die Werte angeben, aus denen wir wählen ( <code>" "</code> und <code>"*"</code>), die Größe der Matrix und die <em>Wahrscheinlichkeit, jeden Wert auszuwählen</em>. Wenn du das Letztere nicht angibst, ist es gleich wahrscheinlich, dass jeder Wert gewählt wird, aber in unserem Fall sind die Wahrscheinlichkeiten für <code>" "</code> (tote Zelle) und <code>"*"</code> (lebende Zelle) unterschiedlich, daher musst du beide angeben.</p>
+<p>Implementiere diesen Code in einer Funktion mit dem Namen <code>create_world_via_numpy</code>. Sie sollte zwei Parameter nehmen (die Größe der Spielwelt und die Wahrscheinlichkeit einer lebenden Zelle) und eine NumPy-Matrix mit der Welt zurückgeben. Behalte im Kopf, dass NumPy die Größe als <code>(Anzahl-der-Reihen, Anzahl-der-Spalten)</code> erwartet. Allerdings ist die Anzahl der Reihen die Höhe und die Anzahl der Spalten die Breite, also denke über die Reihenfolge hier nach! Sobald du den Code implementiert hast, solltest du eine ähnliche Welt sehen (<a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html">seede</a> NumPy mit 42 und du solltest genau die gleiche erhalten).</p>
+<div class="program">
+<p>Implementire <code>create_world_via_numpy</code> in <code>creation_utils.py</code> <br>
+Teste den Code in <em>code04.py</em> mithilfe der von dir gewählten Druckfunktion.</p>
+</div>
+<pre><code>#&gt; ⬜⬛⬜⬜⬜⬜⬜⬛⬜⬜
+#&gt; ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬜⬛⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬛⬛⬛⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜</code></pre>
+</div>
+<div id="die-welt-mit-verschachtelten-schleifen-erschaffen" class="section level2" number="14.8">
+<h2>
+<span class="header-section-number">14.8</span> Die Welt mit verschachtelten Schleifen erschaffen<a class="anchor" aria-label="anchor" href="#die-welt-mit-verschachtelten-schleifen-erschaffen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Lass uns dasselbe tun, aber ein Element nach dem anderen erstellen, indem wir eine Liste von Listen aufbauen und diese dann in ein <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html">NumPy-Array</a> umwandeln. Hierbei iterierst du über Zeilen und Spalten (<a href="https://docs.python.org/3/library/functions.html#func-range">range</a> ist definitiv nützlich) und erschaffst mithilfe der Funktion <a href="https://docs.python.org/3/library/random.html#random.choices">random.choices</a> jeweils ein Element. Es funktioniert genauso wie <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html">numpy.random.choice</a>, aber Wahrscheinlichkeiten werden als “Gewichte” bezeichnet. Sei vorsichtig, denn es gibt auch eine Funktion namens <a href="https://docs.python.org/3/library/random.html#random.choice">random.choice</a> (im Singular “choice” und nicht im Plural “choices”), die fast auf die gleiche Weise funktioniert, aber es erlaubt nicht, Gewichte/Wahrscheinlichkeiten anzugeben!</p>
+<p>Die Gesamtlogik sollte größtenteils unkompliziert sein. Du erstellst für jede Zeile eine Liste und fügst diese Listen zu einer einzigen Liste zusammen. Hierbei verwendest du konventionelle <a href="One-armed-bandit.html#for-loop">for-Schleifen</a>. Für die Zeile beginnst du mit einer leeren Liste und <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">erweiterst</a> sie mit einer Liste, die von <a href="https://docs.python.org/3/library/random.html#random.choices">random.choices</a> produziert wird (es gibt eine Liste zurück, nicht einen einzelnen Wert, daher müssen wir <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">erweitern</a> und nicht <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">anhängen</a>!). Ähnlich beginnst du mit einer leeren Liste für die Welt, in die du <a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">nacheinander</a> eine Zeile hinzufügst.
+Sobald du fertig bist, konvertierst du es in ein <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html">NumPy-Array</a> und gibst es zurück.</p>
+<p>Eingabe und Ausgabe der Funktion sind gleich, es ändert sich nur, wie du die Lösung implementierst. Mein <a href="https://docs.python.org/3/library/random.html#random.seed">Zufallskeim</a> war wieder 42.</p>
+<pre><code>#&gt; ⬜⬜⬜⬜⬜⬜⬛⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬛⬜
+#&gt; ⬛⬜⬜⬜⬛⬜⬜⬜⬛⬜
+#&gt; ⬛⬜⬜⬛⬜⬜⬛⬜⬛⬜
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</code></pre>
+<div class="program">
+<p>Implementire <code>create_world_via_nested_loops</code> in <code>creation_utils.py</code> <br>
+Teste den Code in <em>code05.py</em> mithilfe der von dir gewählten Druckfunktion.</p>
+</div>
+</div>
+<div id="die-welt-mit-listengenerierung-erschaffen" class="section level2" number="14.9">
+<h2>
+<span class="header-section-number">14.9</span> Die Welt mit Listengenerierung erschaffen<a class="anchor" aria-label="anchor" href="#die-welt-mit-listengenerierung-erschaffen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Hoffentlich ist dir bereits aufgefallen, dass die for-Schleifen lediglich dazu verwendet werden, eine Liste zu erstellen, also solltest du denken “Das wäre einfacher mit einer Listengenerierung!”. Ja, das wäre es, und das ist unsere dritte Implementierung <code>create_world_via_list_comprehension</code>. Wir vereinfachen unser Leben, indem wir die ganze Reihe mit einem Aufruf erzeugen, indem wir den <code>k</code>-Parameter der Funktion <a href="https://docs.python.org/3/library/random.html#random.choices">random.choices</a> angeben. Auf diese Weise erhalten wir eine Liste mit <code>k</code> Elementen (wofür sollte <code>k</code> stehen, für die Breite oder Höhe unserer Welt?) und verwenden Listengenerierung, um eine Liste von Reihen zu erstellen. Anschließend konvertieren wir sie in ein NumPy-Array und geben sie zurück. Gleiche Eingaben und Ausgaben, gleiche Funktionalität, nur eine leicht abweichende Implementierung. Hier gibt uns der gleiche <a href="https://docs.python.org/3/library/random.html#random.seed">Zufallskeim</a> 42 wieder die gleiche Welt.</p>
+<pre><code>#&gt; ⬜⬜⬜⬜⬜⬜⬛⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬛⬜
+#&gt; ⬛⬜⬜⬜⬛⬜⬜⬜⬛⬜
+#&gt; ⬛⬜⬜⬛⬜⬜⬛⬜⬛⬜
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</code></pre>
+<div class="program">
+<p>Implementire <code>create_world_via_list_comprehension</code> in <code>creation_utils.py</code> <br>
+Teste den Code in <em>code06.py</em> mithilfe der von dir gewählten Druckfunktion.</p>
+</div>
+</div>
+<div id="leben-und-sterben-lassen" class="section level2" number="14.10">
+<h2>
+<span class="header-section-number">14.10</span> Leben und sterben lassen<a class="anchor" aria-label="anchor" href="#leben-und-sterben-lassen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Erinnere dich an die Regeln der Simulation:</p>
+<ol style="list-style-type: decimal">
+<li>Jede lebende Zelle mit zwei oder drei lebenden Nachbarn überlebt.</li>
+<li>Jede tote Zelle mit drei lebenden Nachbarn wird zu einer lebenden Zelle.</li>
+<li>Alle anderen lebenden Zellen sterben in der nächsten Generation. Ebenso bleiben alle anderen toten Zellen tot.</li>
+</ol>
+<p>Das bedeutet, dass wir für jede Zelle auf fast die gleiche Weise ihre Nachbarn zählen müssen, wie wir <a href="minesweeper.html#minesweeper-count-mines">Minen gezählt haben</a> im Minesweeper-Spiel. Warum fast? Als wir Minen gezählt haben, wussten wir, dass die Zelle selbst leer ist, sonst wären wir explodiert. Hier müssen wir die Gesamtanzahl der lebenden Zellen zählen, <em>ohne die Zelle selbst</em>. Oder du kannst es auch anders ausdrücken: Wir müssen alle Zellen zählen und dann die Zelle selbst von dieser Anzahl abziehen. Hier sind einige Beispiele für die Glider-Welt mit sowohl einfachen als auch Grenzfällen. Denke daran, dass du im letzteren Fall die Grenzen für deine Slices anpassen musst.</p>
+<p><img src="images/game-of-life-cell-counts.svg" style="display: block; margin: 0 auto;width:100.0%" alt="Beispielzählungen der Zellen"><br></p>
+</div>
+<div id="nachbarn-mit-slicing-zählen" class="section level2" number="14.11">
+<h2>
+<span class="header-section-number">14.11</span> Nachbarn mit Slicing zählen<a class="anchor" aria-label="anchor" href="#nachbarn-mit-slicing-z%C3%A4hlen"><i class="fas fa-link"></i></a>
+</h2>
+<p>In unserem ersten Ansatz implementieren wir diese Funktionalität mit NumPy-Array-Slicing, genau wie wir es im Minesweeper-Spiel gemacht haben. Ich schlage vor, dass du den <a href="minesweeper.html#minesweeper-count-mines">Abschnitt zur Minenzählung</a> noch einmal liest, aber nicht einfach den Code kopierst und einfügst, den du dort erstellt hast. Denke daran, wir üben hier, also lohnt es sich, den Code von Grund auf neu zu erfinden. Die gute Nachricht ist, dass es schneller gehen sollte, da du bereits eine Intuition dafür hast, wie es umzusetzen ist.</p>
+<p>Erstelle eine Funktion <code>count_neighbors_via_slicing()</code>. Sie sollte nur zwei Parameter nehmen — die Weltmatrix und die Position der Zelle, für die wir die Nachbarn zählen — und eine ganze Zahl zurückgeben, die von <span class="math inline">\(0\)</span> bis <span class="math inline">\(8\)</span> geht (warum nur bis <span class="math inline">\(8\)</span>?). Teste diese Funktion mit der Glider-Weltmatrix, die du oben finden kannst.</p>
+<div class="program">
+<p>Implementire <code>count_neighbors_via_slicing</code> in <code>evolution_utils.py</code> <br>
+Teste es in <em>code07.py</em>.</p>
+</div>
+</div>
+<div id="nachbarn-mit-verschachtelten-for-schleifen-zählen" class="section level2" number="14.12">
+<h2>
+<span class="header-section-number">14.12</span> Nachbarn mit verschachtelten for-Schleifen zählen<a class="anchor" aria-label="anchor" href="#nachbarn-mit-verschachtelten-for-schleifen-z%C3%A4hlen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Was man mit Slicing tun kann, kann man auch mit <a href="One-armed-bandit.html#for-loop">for-Schleifen</a> machen! Implementiere die gleiche Funktion erneut, aber anstatt einfache Slices mit Grenzwerten zu machen, verwende diese Grenzwerte, um über einzelne Zellen zu iterieren. Tipp: <a href="https://docs.python.org/3/library/functions.html#func-range">range</a> kann sowohl <code>start</code>- als auch <code>stop</code>-Werte akzeptieren. Ansonsten benötigst du nur einen Zähler, der bei Null beginnt und jedes Mal um Eins erhöht wird, wenn die Zelle lebendig ist.</p>
+<p>Der Funktionsname wird <code>count_neighbors_via_for_loops()</code> sein und sie sollte die gleichen Eingaben und Ausgaben wie <code>count_neighbors_via_slicing()</code> haben. Und natürlich sollten die zurückgegebenen Zählungen identisch sein und mit denen in der Abbildung oben übereinstimmen. Teste sie auf die gleiche Weise wie <code>count_neighbors_via_slicing()</code>, um sicherzugehen.</p>
+<div class="program">
+<p>Implementire <code>count_neighbors_via_for_loops</code> in <code>evolution_utils.py</code> <br>
+Teste es in <em>code08.py</em>.</p>
+</div>
+</div>
+<div id="nächste-generation" class="section level2" number="14.13">
+<h2>
+<span class="header-section-number">14.13</span> Nächste Generation<a class="anchor" aria-label="anchor" href="#n%C3%A4chste-generation"><i class="fas fa-link"></i></a>
+</h2>
+<p>Die einzige Funktion, die wir benötigen, ist eine, die eine <em>neue</em> Matrix für die Welt von morgen erschafft. Warum <em>neu</em>? Weil wir die Matrix für die Zukunft erschaffen müssen, unter Verwendung der Daten aus der Gegenwart. Wenn wir Zellen direkt ändern, würden wir die Nachbarzählungen verfälschen und ob eine Zelle lebt oder stirbt, würde von der Reihenfolge abhängen, in der wir sie untersuchen. Erstelle also eine neue leere Welt (erinnere dich, <a href="https://numpy.org/doc/stable/reference/generated/numpy.full.html">numpy.full</a> könnte nützlich sein!) und iteriere über alle Reihen und Spalten. Zähle die Nachbarn für jedes Element und wende dann die Regeln an:</p>
+<ol style="list-style-type: decimal">
+<li>Jede lebende Zelle mit zwei oder drei lebenden Nachbarn überlebt.</li>
+<li>Jede tote Zelle mit drei lebenden Nachbarn wird zu einer lebenden Zelle.</li>
+<li>Alle anderen lebenden Zellen sterben in der nächsten Generation. Ebenso bleiben alle anderen toten Zellen tot.</li>
+</ol>
+<p>Wir nennen die Funktion <code>evolve</code> und sie sollte die Weltmatrix als Eingabe nehmen und, wiederum, eine <em>andere</em> Matrix als Ausgabe zurückgeben. Sobald du die Funktion implementiert hast, teste sie mit der Glider-Welt. Deine Anfangszustände und die nächsten zwei Zustände sollten wie folgt aussehen:</p>
+<pre><code>#&gt; Zeit 0
+#&gt; ⬜⬜⬛⬜
+#&gt; ⬛⬜⬛⬜
+#&gt; ⬜⬛⬛⬜
+#&gt; ⬜⬜⬜⬜
+#&gt; 
+#&gt; Zeit 1
+#&gt; ⬜⬛⬜⬜
+#&gt; ⬜⬜⬛⬛
+#&gt; ⬜⬛⬛⬜
+#&gt; ⬜⬜⬜⬜
+#&gt; 
+#&gt; Zeit 2
+#&gt; ⬜⬜⬛⬜
+#&gt; ⬜⬜⬜⬛
+#&gt; ⬜⬛⬛⬛
+#&gt; ⬜⬜⬜⬜</code></pre>
+<div class="program">
+<p>Implementire <code>evolve</code> in <code>evolution_utils.py</code> <br>
+Teste es in <em>code09.py</em>.</p>
+</div>
+</div>
+<div id="und-wiederholen" class="section level2" number="14.14">
+<h2>
+<span class="header-section-number">14.14</span> Und wiederholen<a class="anchor" aria-label="anchor" href="#und-wiederholen"><i class="fas fa-link"></i></a>
+</h2>
+<p>Du hast jetzt alles, um eine sich entwickelnde Welt zu erschaffen. Implementiere ein Spiel mit einer <a href="guess-the-number-multi-round.html#while-loop">while</a>-Schleife, sodass es den Spieler nach jedem Zeitschritt nach einer Eingabe fragt und wenn die Eingabe nicht leer ist, stoppt das Spiel. Auf diese Weise macht das Spiel eine weitere Runde, wenn du einfach “Enter” drückst. Wenn du etwas anderes eingibst, stoppt es. Überlege dir eine Variable für die while-Schleife (kein <code>while True:</code>!), was ihr Anfangszustand sein sollte und wie du sie in der Schleife modifizierst/zuzuweist (es ist kein if-else erforderlich!).</p>
+<p>Hier ist ein Beispiel für eine Welt, die mit der Funktion <code>create_world_via_numpy()</code> und dem Seed 42 erschaffen wurde. Beachte, wie die Struktur ab Zeitpunkt 6 stabil wird.</p>
+<pre><code>#&gt; Zeit 0
+#&gt; ⬜⬛⬜⬜⬜⬜⬜⬛⬜⬜
+#&gt; ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬜⬛⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬛⬛⬛⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
+#&gt; Zeit 1
+#&gt; ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬛⬜⬛⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬛⬜⬛⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
+#&gt; Zeit 2
+#&gt; ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬜⬛⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬛⬜⬜⬜⬜⬜
+#&gt; Zeit 3
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬛⬛⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; Zeit 4
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬛⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
+#&gt; Zeit 5
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬛⬛⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬜⬛⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬛⬜⬜⬜⬜⬜⬜
+#&gt; Zeit 6
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬜⬛⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬜⬜⬛⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬛⬜⬜⬜⬜⬜⬜
+#&gt; Zeit 7
+#&gt; ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬜⬛⬜⬜⬜⬜⬜⬜
+#&gt; ⬜⬛⬜⬜⬛⬜⬜⬜⬜⬜
+#&gt; ⬜⬜⬛⬛⬜⬜⬜⬜⬜⬜</code></pre>
+<div class="program">
+<p>Implementire Program in <em>code10.py</em>.</p>
+</div>
+</div>
+<div id="zusammenfassung-4" class="section level2" number="14.15">
+<h2>
+<span class="header-section-number">14.15</span> Zusammenfassung<a class="anchor" aria-label="anchor" href="#zusammenfassung-4"><i class="fas fa-link"></i></a>
+</h2>
+<p>Großartig, packe deine Dateien in ein Zip-Archiv und reiche sie ein.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="minesweeper.html"><span class="header-section-number">13</span> Minesweeper</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#game-of-life"><span class="header-section-number">14</span> Game of Life</a></li>
+<li><a class="nav-link" href="#game-of-life-1"><span class="header-section-number">14.1</span> Game of Life</a></li>
+<li><a class="nav-link" href="#die-welt-ausdrucken"><span class="header-section-number">14.2</span> Die Welt ausdrucken</a></li>
+<li><a class="nav-link" href="#ausgabe-%C3%BCber-verschachtelte-for-schleifen"><span class="header-section-number">14.3</span> Ausgabe über verschachtelte for-Schleifen</a></li>
+<li><a class="nav-link" href="#jede-reihe-als-einzelnen-string-ausdrucken"><span class="header-section-number">14.4</span> Jede Reihe als einzelnen String ausdrucken</a></li>
+<li><a class="nav-link" href="#das-gesamte-feld-als-einen-einzigen-string-ausdrucken"><span class="header-section-number">14.5</span> Das gesamte Feld als einen einzigen String ausdrucken</a></li>
+<li><a class="nav-link" href="#die-welt-erschaffen"><span class="header-section-number">14.6</span> Die Welt erschaffen</a></li>
+<li><a class="nav-link" href="#die-welt-mit-numpy-erschaffen"><span class="header-section-number">14.7</span> Die Welt mit NumPy erschaffen</a></li>
+<li><a class="nav-link" href="#die-welt-mit-verschachtelten-schleifen-erschaffen"><span class="header-section-number">14.8</span> Die Welt mit verschachtelten Schleifen erschaffen</a></li>
+<li><a class="nav-link" href="#die-welt-mit-listengenerierung-erschaffen"><span class="header-section-number">14.9</span> Die Welt mit Listengenerierung erschaffen</a></li>
+<li><a class="nav-link" href="#leben-und-sterben-lassen"><span class="header-section-number">14.10</span> Leben und sterben lassen</a></li>
+<li><a class="nav-link" href="#nachbarn-mit-slicing-z%C3%A4hlen"><span class="header-section-number">14.11</span> Nachbarn mit Slicing zählen</a></li>
+<li><a class="nav-link" href="#nachbarn-mit-verschachtelten-for-schleifen-z%C3%A4hlen"><span class="header-section-number">14.12</span> Nachbarn mit verschachtelten for-Schleifen zählen</a></li>
+<li><a class="nav-link" href="#n%C3%A4chste-generation"><span class="header-section-number">14.13</span> Nächste Generation</a></li>
+<li><a class="nav-link" href="#und-wiederholen"><span class="header-section-number">14.14</span> Und wiederholen</a></li>
+<li><a class="nav-link" href="#zusammenfassung-4"><span class="header-section-number">14.15</span> Zusammenfassung</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/blob/master/12-game-of-life.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/alexander-pastukhov/learning-python-by-writing-games-de/edit/master/12-game-of-life.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-12-03.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>Please note that this website collects anonymized data via Google analytics. This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

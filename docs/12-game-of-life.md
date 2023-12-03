@@ -12,13 +12,9 @@ Das [Game of Life]() wurde von dem britischen Mathematiker John Horton Conway er
 
 Trotz der Einfachheit der Regeln erzeugen sie eine bemerkenswerte Evolution einer Zellkultur und führen zu vielen dynamischen oder statischen Konfigurationen. Hier ist ein Beispiel einer Simulation mit einem zufälligen Anfangszustand.
 
-```{r, eval=knitr::is_html_output(excludes = "epub"), results = 'asis', echo = F}
-cat(
-'<div style="text-align:center;"><video controls>
+<div style="text-align:center;"><video controls>
     <source src="videos/game-of-life.m4v" type="video/mp4"> 
-  </video></div>'
-)
-```
+  </video></div>
 
 Unsere Version wird weniger dynamisch sein, da wir uns an eine textbasierte Ausgabe halten werden, aber das gleiche Verhalten wie im obigen Video zeigen werden. Da dies eher eine Simulation als ein Spiel ist, benötigen wir lediglich drei Funktionen, die
 
@@ -37,7 +33,8 @@ Bevor wir damit beginnen, die Welt zu erschaffen und sie sich entwickeln zu lass
 
 Hier ist die Übungsmatrix mit einem [Gleiter-Raumschiff-Muster](https://conwaylife.com/wiki/Glider), das du verwenden kannst
 
-```{python gol-glider}
+
+```python
 import numpy as np
 
 the_world = np.array([[" ", " ", "*", " "],
@@ -48,56 +45,19 @@ the_world = np.array([[" ", " ", "*", " "],
 
 Hier ist das Wörterbuch, das wir verwenden werden, um zwischen langweiligen, aber einfacher zu tippenen Zeichen und besser aussehenden in unserem Ausgabemedium zu übersetzen.
 
-```{python gol-output_map}
+
+```python
 OUTPUT_MAP = {" ": "⬜", "*" : "⬛"}
 ```
 
 und so sollte es aussehen, wenn du es ausdruckst:
 
-```{python gol-printing, echo=FALSE}
-def print_world_via_nested_loop(a_world):
-  """Print out world via nested loops.
-  
-  Parameters
-  ----------
-  a_world : numpy.array
-  """
-  for irow in range(a_world.shape[0]):
-    for icol in range(a_world.shape[1]):
-      print(OUTPUT_MAP[a_world[irow, icol]], end="")
-    print("")
 
-
-def print_world_joining_rows(a_world):
-  """
-  Print out world by joining each row into a string.
-  
-  Parameters
-  ----------
-  a_world : numpy.array
-  """
-  for irow in range(a_world.shape[0]):
-    row_string = "".join([OUTPUT_MAP[cell] for cell in a_world[irow, :]])
-    print(row_string)
-
-  
-def print_world_as_a_single_string(a_world):
-  """Print out world by first creating a single string
-  
-  Parameters
-  ----------
-  a_world : numpy.array
-  """
-  row_strings = ["".join([OUTPUT_MAP[cell] for cell in a_world[irow, :]]) 
-                 for irow in range(a_world.shape[0])]
-  world_string = "\n".join(row_strings)
-  print(world_string)
-    
-print_world_via_nested_loop(the_world)
-# print()
-# print_world_joining_rows(the_world)
-# print()
-# print_world_as_a_single_string(the_world)
+```
+#> ⬜⬜⬛⬜
+#> ⬛⬜⬛⬜
+#> ⬜⬛⬛⬜
+#> ⬜⬜⬜⬜
 ```
 
 ## Ausgabe über verschachtelte for-Schleifen
@@ -137,29 +97,13 @@ Implementire `create_world_via_numpy` in `creation_utils.py` <br/>
 Teste den Code in _code04.py_ mithilfe der von dir gewählten Druckfunktion.
 :::
 
-```{python gol-create-numpy, echo=FALSE}
-WORLD_SIZE = (10, 5)
-P_ALIVE = 0.25
 
-def create_world_via_numpy(world_size, p_alive):
-  """Create a random world via numpy.
-  
-  Parameters
-  ----------
-  world_size : tuple
-  p_alive : float
-    Probability that cell is alive
-
-  Returns
-  ----------
-  numpy.array : dimensions are world_size 
-  """
-  return np.random.choice([" ", "*"], size=(world_size[1], world_size[0]), p=[1 - p_alive, p_alive])
-  
-
-np.random.seed(42)
-the_world =  create_world_via_numpy(WORLD_SIZE, P_ALIVE)
-print_world_as_a_single_string(the_world)
+```
+#> ⬜⬛⬜⬜⬜⬜⬜⬛⬜⬜
+#> ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬜⬜⬛⬜⬜⬜⬜
+#> ⬜⬜⬜⬛⬛⬛⬜⬜⬜⬜
+#> ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
 ```
 
 ## Die Welt mit verschachtelten Schleifen erschaffen
@@ -171,34 +115,13 @@ Sobald du fertig bist, konvertierst du es in ein [NumPy-Array](https://numpy.org
 Eingabe und Ausgabe der Funktion sind gleich, es ändert sich nur, wie du die Lösung implementierst. Mein [Zufallskeim](https://docs.python.org/3/library/random.html#random.seed) war wieder 42.
 
 
-```{python gol-create-loop, echo=FALSE}
-import random
 
-def create_world_via_nested_loops(world_size, p_alive):
-  """Create a random world via nested loops
-  
-  Parameters
-  ----------
-  world_size : tuple
-  p_alive : float
-    Probability that cell is alive
-
-  Returns
-  ----------
-  numpy.array : dimensions are world_size 
-  """
-  world_as_list = []
-  for _ in range(world_size[1]):
-    row_as_list = []
-    for _ in range(world_size[0]):
-      row_as_list.extend(random.choices([" ", "*"], [1 - p_alive, p_alive]))
-    world_as_list.append(row_as_list)
-    
-  return np.array(world_as_list)
-
-random.seed(42)
-the_world =  create_world_via_nested_loops(WORLD_SIZE, P_ALIVE)
-print_world_as_a_single_string(the_world)
+```
+#> ⬜⬜⬜⬜⬜⬜⬛⬜⬜⬜
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬛⬜
+#> ⬛⬜⬜⬜⬛⬜⬜⬜⬛⬜
+#> ⬛⬜⬜⬛⬜⬜⬛⬜⬛⬜
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
 ```
 
 ::: {.program}
@@ -209,27 +132,13 @@ Teste den Code in _code05.py_ mithilfe der von dir gewählten Druckfunktion.
 ## Die Welt mit Listengenerierung erschaffen
 Hoffentlich ist dir bereits aufgefallen, dass die for-Schleifen lediglich dazu verwendet werden, eine Liste zu erstellen, also solltest du denken "Das wäre einfacher mit einer Listengenerierung!". Ja, das wäre es, und das ist unsere dritte Implementierung `create_world_via_list_comprehension`. Wir vereinfachen unser Leben, indem wir die ganze Reihe mit einem Aufruf erzeugen, indem wir den `k`-Parameter der Funktion [random.choices](https://docs.python.org/3/library/random.html#random.choices) angeben. Auf diese Weise erhalten wir eine Liste mit `k` Elementen (wofür sollte `k` stehen, für die Breite oder Höhe unserer Welt?) und verwenden Listengenerierung, um eine Liste von Reihen zu erstellen. Anschließend konvertieren wir sie in ein NumPy-Array und geben sie zurück. Gleiche Eingaben und Ausgaben, gleiche Funktionalität, nur eine leicht abweichende Implementierung. Hier gibt uns der gleiche [Zufallskeim](https://docs.python.org/3/library/random.html#random.seed) 42 wieder die gleiche Welt.
 
-```{python gol-create-comprehensions, echo=FALSE}
-def create_world_via_list_comprehension(world_size, p_alive):
-  """Create a random world via nested loops
-  
-  Parameters
-  ----------
-  world_size : tuple
-  p_alive : float
-    Probability that cell is alive
 
-  Returns
-  ----------
-  numpy.array : dimensions are world_size 
-  """
-  world_as_list = [random.choices([" ", "*"], [1 - p_alive, p_alive], k=world_size[0])
-                   for _ in range(world_size[1])]
-  return np.array(world_as_list)
-
-random.seed(42)
-the_world =  create_world_via_list_comprehension(WORLD_SIZE, P_ALIVE)
-print_world_as_a_single_string(the_world)
+```
+#> ⬜⬜⬜⬜⬜⬜⬛⬜⬜⬜
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬛⬜
+#> ⬛⬜⬜⬜⬛⬜⬜⬜⬛⬜
+#> ⬛⬜⬜⬛⬜⬜⬛⬜⬛⬜
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
 ```
 
 ::: {.program}
@@ -259,27 +168,7 @@ Implementire `count_neighbors_via_slicing` in `evolution_utils.py` <br/>
 Teste es in _code07.py_.
 :::
 
-```{python gol-count-slicing, echo=FALSE}
-def count_neighbors_via_slicing(a_world, cell_pos):
-  """Count cell's neighbors via slicing
-  
-  Parameters
-  ----------
-  a_world : numpy.array
-  cell_pos : tuple
-    (row, col)
-    
-  Returns
-  ----------
-  int
-  """
-  top = max(cell_pos[0] - 1, 0)
-  bottom = min(cell_pos[0] + 2, a_world.shape[0])
-  left = max(cell_pos[1] - 1, 0)
-  right = min(cell_pos[1] + 2, a_world.shape[1])
-  
-  return np.sum(a_world[top:bottom, left:right] == "*") - (a_world[cell_pos[0], cell_pos[1]] == "*")
-```
+
 
 ## Nachbarn mit verschachtelten for-Schleifen zählen
 Was man mit Slicing tun kann, kann man auch mit [for-Schleifen](#for-loop) machen! Implementiere die gleiche Funktion erneut, aber anstatt einfache Slices mit Grenzwerten zu machen, verwende diese Grenzwerte, um über einzelne Zellen zu iterieren. Tipp: [range](https://docs.python.org/3/library/functions.html#func-range) kann sowohl `start`- als auch `stop`-Werte akzeptieren. Ansonsten benötigst du nur einen Zähler, der bei Null beginnt und jedes Mal um Eins erhöht wird, wenn die Zelle lebendig ist.
@@ -291,32 +180,7 @@ Implementire `count_neighbors_via_for_loops` in `evolution_utils.py` <br/>
 Teste es in _code08.py_.
 :::
 
-```{python gol-count-loops, echo=FALSE}
-def count_neighbors_via_for_loops(a_world, cell_pos):
-  """Count cell's neighbors via slicing
-  
-  Parameters
-  ----------
-  a_world : numpy.array
-  cell_pos : tuple
-    (row, col)
-    
-  Returns
-  ----------
-  int
-  """
-  top = max(cell_pos[0] - 1, 0)
-  bottom = min(cell_pos[0] + 2, a_world.shape[0])
-  left = max(cell_pos[1] - 1, 0)
-  right = min(cell_pos[1] + 2, a_world.shape[1])
-  
-  cell_count = 0
-  for irow in range(top, bottom):
-    for icol in range(left, right):
-      cell_count += a_world[irow, icol] == "*"
-  
-  return cell_count - (a_world[cell_pos[0], cell_pos[1]] == "*")
-```
+
 
 ## Nächste Generation
 
@@ -328,47 +192,25 @@ Die einzige Funktion, die wir benötigen, ist eine, die eine _neue_ Matrix für 
 
 Wir nennen die Funktion `evolve` und sie sollte die Weltmatrix als Eingabe nehmen und, wiederum, eine _andere_ Matrix als Ausgabe zurückgeben. Sobald du die Funktion implementiert hast, teste sie mit der Glider-Welt. Deine Anfangszustände und die nächsten zwei Zustände sollten wie folgt aussehen:
 
-```{python gol-evolve, echo=FALSE}
-def evolve(a_world):
-  """Evolve the world to the next state.
-  
-  Parameters
-  ----------
-  a_world : numpy.array
-  
-  Returns
-  ----------
-  numpy.array : same size as a_world
-  """
-  new_world = np.full(shape=a_world.shape, fill_value=" ")
-  
-  for irow in range(a_world.shape[0]):
-    for icol in range(a_world.shape[1]):
-      neighbors_count = count_neighbors_via_slicing(a_world, (irow, icol))
-      
 
-      # only conditions when cell lives or appears
-      if (neighbors_count == 3) or (neighbors_count == 2 and a_world[irow, icol] == "*"):
-        new_world[irow, icol] = "*"
-
-  return new_world
-  
-
-glider = np.array([[" ", " ", "*", " "],
-                   ["*", " ", "*", " "],
-                   [" ", "*", "*", " "],
-                   [" ", " ", " ", " "]])
-  
-print("Zeit 0")
-print_world_as_a_single_string(glider)
-
-glider2 = evolve(glider)
-print("\nZeit 1")
-print_world_as_a_single_string(glider2)
-
-glider3 = evolve(glider2)
-print("\nZeit 2")
-print_world_as_a_single_string(glider3)
+```
+#> Zeit 0
+#> ⬜⬜⬛⬜
+#> ⬛⬜⬛⬜
+#> ⬜⬛⬛⬜
+#> ⬜⬜⬜⬜
+#> 
+#> Zeit 1
+#> ⬜⬛⬜⬜
+#> ⬜⬜⬛⬛
+#> ⬜⬛⬛⬜
+#> ⬜⬜⬜⬜
+#> 
+#> Zeit 2
+#> ⬜⬜⬛⬜
+#> ⬜⬜⬜⬛
+#> ⬜⬛⬛⬛
+#> ⬜⬜⬜⬜
 ```
 
 ::: {.program}
@@ -381,26 +223,56 @@ Du hast jetzt alles, um eine sich entwickelnde Welt zu erschaffen. Implementiere
 
 Hier ist ein Beispiel für eine Welt, die mit der Funktion `create_world_via_numpy()` und dem Seed 42 erschaffen wurde. Beachte, wie die Struktur ab Zeitpunkt 6 stabil wird.
 
-```{python gol-simulation, echo=FALSE}
-WORLD_SIZE = (10, 5)
-P_ALIVE = 0.25
 
-np.random.seed(42)
-the_world = create_world_via_numpy(WORLD_SIZE, P_ALIVE)
-print("Zeit 0")
-print_world_as_a_single_string(the_world)
-
-
-# doit = ""
-# while doit == "":
-#   the_world = evolve(the_world)
-#   print_world_as_a_single_string(the_world)
-#   doit = input()
-
-for t in range(7):
-  the_world = evolve(the_world)
-  print("Zeit %d"%(t + 1))
-  print_world_as_a_single_string(the_world)
+```
+#> Zeit 0
+#> ⬜⬛⬜⬜⬜⬜⬜⬛⬜⬜
+#> ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬜⬜⬛⬜⬜⬜⬜
+#> ⬜⬜⬜⬛⬛⬛⬜⬜⬜⬜
+#> ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
+#> Zeit 1
+#> ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬛⬜⬛⬜⬜⬜⬜
+#> ⬜⬜⬜⬛⬜⬛⬜⬜⬜⬜
+#> ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
+#> Zeit 2
+#> ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬜⬛⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬜⬛⬜⬜⬜⬜⬜
+#> Zeit 3
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬛⬛⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> Zeit 4
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬛⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜
+#> Zeit 5
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬛⬛⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬜⬛⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬛⬜⬜⬜⬜⬜⬜
+#> Zeit 6
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬜⬛⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬜⬜⬛⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬛⬜⬜⬜⬜⬜⬜
+#> Zeit 7
+#> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬜⬛⬜⬜⬜⬜⬜⬜
+#> ⬜⬛⬜⬜⬛⬜⬜⬜⬜⬜
+#> ⬜⬜⬛⬛⬜⬜⬜⬜⬜⬜
 ```
 
 

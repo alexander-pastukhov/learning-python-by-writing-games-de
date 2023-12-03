@@ -213,7 +213,7 @@ Implementiere `print_minefield` in _utils.py_ <br/>
 Teste es in _code02.py_.
 :::
 
-## Die umliegenden Minen zählen
+## Die umliegenden Minen zählen {#minesweeper-count-mines}
 Wir sind fast fertig, da wir ein Feld voller Minen haben, können wir es ausdrucken und wir können den Spieler fragen, welches Feld er öffnen möchte. Wenn der Spieler jedoch das Feld öffnet und es keine Mine ist, müssen wir die Anzahl der Minen in den umliegenden Zellen zählen. Dies kann von `$0$` (überhaupt keine Minen) bis zu `$8$` reichen (du hast ein Feld betreten, das komplett von Minen umgeben ist). 
 
 ![Beispiel für Minenzählungen für verschiedene Zellen](images/minesweeper-mine-counts.svg){width=100% style="display: block; margin: 0 auto"}<br/>

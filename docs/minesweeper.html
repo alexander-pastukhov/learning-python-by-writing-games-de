@@ -7,7 +7,7 @@
 <title>Kapitel 13 Minesweeper | Lerne Python, indem du Textspiele entwickels</title>
 <meta name="author" content="Alexander (Sasha) Pastukhov">
 <meta name="description" content="Du hast viel gelernt, also lass uns all dieses Wissen nutzen. Du wirst immer noch ein paar neue nützliche Funktionen auf dem Weg lernen. Schnapp dir das Übungsnotebook, bevor wir anfangen.  13.1...">
-<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta name="generator" content="bookdown 0.36 with bs4_book()">
 <meta property="og:title" content="Kapitel 13 Minesweeper | Lerne Python, indem du Textspiele entwickels">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://alexander-pastukhov.github.io/writing-games-with-python-and-psychopy/minesweeper.html">
@@ -66,6 +66,7 @@
 <li><a class="" href="sudoku-brute-force.html"><span class="header-section-number">11</span> Sudoku: Brute-Force-Algorithmus</a></li>
 <li><a class="" href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></li>
 <li><a class="active" href="minesweeper.html"><span class="header-section-number">13</span> Minesweeper</a></li>
+<li><a class="" href="game-of-life.html"><span class="header-section-number">14</span> Game of Life</a></li>
 </ul>
 
         <div class="book-extra">
@@ -270,9 +271,9 @@ Teste es in <em>code01.py</em>.</p>
 Teste es in <em>code02.py</em>.</p>
 </div>
 </div>
-<div id="die-umliegenden-minen-zählen" class="section level2" number="13.12">
+<div id="minesweeper-count-mines" class="section level2" number="13.12">
 <h2>
-<span class="header-section-number">13.12</span> Die umliegenden Minen zählen<a class="anchor" aria-label="anchor" href="#die-umliegenden-minen-z%C3%A4hlen"><i class="fas fa-link"></i></a>
+<span class="header-section-number">13.12</span> Die umliegenden Minen zählen<a class="anchor" aria-label="anchor" href="#minesweeper-count-mines"><i class="fas fa-link"></i></a>
 </h2>
 <p>Wir sind fast fertig, da wir ein Feld voller Minen haben, können wir es ausdrucken und wir können den Spieler fragen, welches Feld er öffnen möchte. Wenn der Spieler jedoch das Feld öffnet und es keine Mine ist, müssen wir die Anzahl der Minen in den umliegenden Zellen zählen. Dies kann von <code>$0$</code> (überhaupt keine Minen) bis zu <code>$8$</code> reichen (du hast ein Feld betreten, das komplett von Minen umgeben ist).</p>
 <p><img src="images/minesweeper-mine-counts.svg" style="display: block; margin: 0 auto;width:100.0%" alt="Beispiel für Minenzählungen für verschiedene Zellen"><br></p>
@@ -347,63 +348,9 @@ Implementiere das Spiel in <em>code06.py</em></p>
 
 </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <div class="chapter-nav">
 <div class="prev"><a href="sudoku-backtracking.html"><span class="header-section-number">12</span> Sudoku: Backtracking-Algorithmus</a></div>
-<div class="empty"></div>
+<div class="next"><a href="game-of-life.html"><span class="header-section-number">14</span> Game of Life</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
@@ -419,7 +366,7 @@ Implementiere das Spiel in <em>code06.py</em></p>
 <li><a class="nav-link" href="#np.fill"><span class="header-section-number">13.9</span> Ein leeres Minenfeld mit NumPy erstellen</a></li>
 <li><a class="nav-link" href="#minen-platzieren"><span class="header-section-number">13.10</span> Minen platzieren</a></li>
 <li><a class="nav-link" href="#das-minenfeld-ausdrucken"><span class="header-section-number">13.11</span> Das Minenfeld ausdrucken</a></li>
-<li><a class="nav-link" href="#die-umliegenden-minen-z%C3%A4hlen"><span class="header-section-number">13.12</span> Die umliegenden Minen zählen</a></li>
+<li><a class="nav-link" href="#minesweeper-count-mines"><span class="header-section-number">13.12</span> Die umliegenden Minen zählen</a></li>
 <li><a class="nav-link" href="#alles-zusammenf%C3%BCgen-1"><span class="header-section-number">13.13</span> Alles zusammenfügen</a></li>
 <li><a class="nav-link" href="#ausbreitung-durch-den-leeren-raum"><span class="header-section-number">13.14</span> Ausbreitung durch den leeren Raum</a></li>
 <li><a class="nav-link" href="#zusammenfassung-3"><span class="header-section-number">13.15</span> Zusammenfassung</a></li>
@@ -440,7 +387,7 @@ Implementiere das Spiel in <em>code06.py</em></p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-11-24.</p>
+    <p>"<strong>Lerne Python, indem du Textspiele entwickels</strong>" was written by Alexander (Sasha) Pastukhov. It was last built on 2023-12-03.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
