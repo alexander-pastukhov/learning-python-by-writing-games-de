@@ -1,0 +1,415 @@
+# Game of Life {#game-of-life}
+
+Practice makes perfect, so today we will implement a text version of the _Game of Life_ game. There will be little if any new material, as we will concentrate on using the skills and knowledge that you already have. Rather, the main focus will be on implementing the same functionality using different approaches, to make it easier to see both common and solution-specific aspects of the code. So be 
+
+# Game of life
+The [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) was created by the British mathematician John Horton Conway. This is not really a game but rather a simulation where you set initial conditions up and observe how the population evolves. The rules, [as described on Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), are very simple:
+
+1. Any live cell with two or three live neighbors survives.
+2. Any dead cell with three live neighbors becomes a live cell.
+3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+Despite rules simplicity they produce remarkable evolution of a cell culture and give rise to many dynamic or static configurations. Here is an example simulation with a random starting state.
+
+```{r, eval=knitr::is_html_output(excludes = "epub"), results = 'asis', echo = F}
+cat(
+'<div style="text-align:center;"><video controls>
+    <source src="videos/game-of-life.m4v" type="video/mp4"> 
+  </video></div>'
+)
+```
+
+Our version will be less dynamic, as we will stick to the text-based output but will exhibit the same behavior as in the video above. This is more of a simulation than a game, so we need just three functions that
+
+* generate the initial state of the world
+* compute its state in the text time instance
+* print it out.
+
+The latter helps us see what the first two are doing, so we will start with it.
+
+## Printing out the world
+Before we go to creating the world and let it evolve, we need some means of seeing it, a `print_world` function. As this chapter is primarily about practice, we will produce with functionality three different ways:
+
+* using nested for loops
+* printing rows one by one, joining elements into a string
+* joining all elements into a single string and printing just once.
+
+Here is the practice matrix with a [glider spaceship](https://conwaylife.com/wiki/Glider) pattern that you can use
+
+```{python}
+import numpy as np
+
+the_world = np.array([[" ", " ", "*", " "],
+                      ["*", " ", "*", " "],
+                      [" ", "*", "*", " "],
+                      [" ", " ", " ", " "]])
+```
+
+here is dictionary we will use to translate between boring but simpler to type characters and better looking in out output
+
+```{python}
+OUTPUT_MAP = {" ": "⬜", "*" : "⬛"}
+```
+
+and here is how it should look like when you print it out:
+
+```{python echo=FALSE}
+def print_world_via_nested_loop(a_world):
+  """Print out world via nested loops.
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  """
+  for irow in range(a_world.shape[0]):
+    for icol in range(a_world.shape[1]):
+      print(OUTPUT_MAP[a_world[irow, icol]], end="")
+    print("")
+
+
+def print_world_joining_rows(a_world):
+  """
+  Print out world by joining each row into a string.
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  """
+  for irow in range(a_world.shape[0]):
+    row_string = "".join([OUTPUT_MAP[cell] for cell in a_world[irow, :]])
+    print(row_string)
+
+  
+def print_world_as_a_single_string(a_world):
+  """Print out world by first creating a single string
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  """
+  row_strings = ["".join([OUTPUT_MAP[cell] for cell in a_world[irow, :]]) 
+                 for irow in range(a_world.shape[0])]
+  world_string = "\n".join(row_strings)
+  print(world_string)
+    
+print_world_via_nested_loop(the_world)
+# print()
+# print_world_joining_rows(the_world)
+# print()
+# print_world_as_a_single_string(the_world)
+```
+
+## Printing out via nested for loops
+The first approach is print one element at a time by looping over rows and then looping over each element of the row. You know how to [loop over items](#for-loop), so you just need to think which value `end` parameter of the [print](https://docs.python.org/3/library/functions.html#print) do you use and when. Also, you need to translate the symbol from internal representation to the output using the `OUTPUT_MAP` dictionary (no if-elses are necessary!). Put the code into function `print_world_via_nested_loop`, which takes a single parameter (should be pretty obvious what it is). Document the function!
+
+::: {.program}
+Implement `print_world_via_nested_loop` in _print_utils.py_ <br/>
+Test it in _code01.py_.
+:::
+
+## Print each row as a single string
+The second solution is to loop over row but [join](#str.join) all elements of the row into a single string and then do just one print per row. However, before you can join elements into a single string, you must translate them using the `OUTPUT_MAP` dictionary via [list comprehension](#list-comprehension). You can do it in a single line: build a new list with translated elements, [join](https://docs.python.org/3/library/stdtypes.html#str.join) it, and print it.
+
+::: {.program}
+Implement `print_world_joining_rows` in _print_utils.py_ <br/>
+Test it in _code02.py_.
+:::
+
+## Print entire field as a single string
+Our final solution is to convert the entire field to a single string and then do just a single print. You already know how to create a string for a single row. Now, you just need to build a list of strings, one for each row, via [list comprehension](#list-comprehension) (yes, this means nested list comprehensions!) and then join them all using `"\n"` (new line) character. So, things are pretty nested, as you are joining a list (created via list comprehension) whose elements are strings produced by joining a list of translated characters (that is also created via list comprehension). If that sound confusing, just start with what you already implemented --- turning a single row into a string --- and think of how would convert a for loop you were using into a for loop inside of the list comprehension.
+
+::: {.program}
+Implement `print_world_as_a_single_string` in _print_utils.py_ <br/>
+Test it in _code03.py_.
+:::
+
+## Creating the world
+In the Game of Life, the world is a rectangular grid, whose size we will define via `WORLD_SIZE = (<W>, <H>)` where `<W>` and `<H>` are dimensions of your choice (e.g., 10 by 5?). We will generate the world randomly with a specific proportion of cells  being alive at the start: `P_ALIVE = 0.25` (you can change the proportion to your liking). As with printing, we will implement multiple versions of the same procedure.
+
+## Creating the world via NumPy
+The easiest way to create the world is via [numpy.random.choice()](https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html). You only need to specify values that we choose from (`" "` and `"*"`), size of the matrix, and _probability of choosing each value_. If you do not specify the latter, each value is equally likely to be picked but in out case, probabilities for `" "` (dead cell) and `"*"` (living cell) are different, so you need to supply both.
+
+Implement this code in a function `create_world_via_numpy`, it should take two parameters (size of the game world and probability of a living cell), and return a NumPy matrix with the world. Keep in mind that NumPy expects size as `(number-of-rows, number-of-columns)`. However, number of rows is height and number of columns is width, so think about the order here! Once you implement the code, you should see a similar world ([seed](https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html) NumPy with 42 and you should get exactly the same one). 
+
+::: {.program}
+Implement `create_world_via_numpy` in `creation_utils.py` <br/>
+Test code in _code04.py_ using print function of your choice.
+:::
+
+```{python echo=FALSE}
+WORLD_SIZE = (10, 5)
+P_ALIVE = 0.25
+
+def create_world_via_numpy(world_size, p_alive):
+  """Create a random world via numpy.
+  
+  Parameters
+  ----------
+  world_size : tuple
+  p_alive : float
+    Probability that cell is alive
+
+  Returns
+  ----------
+  numpy.array : dimensions are world_size 
+  """
+  return np.random.choice([" ", "*"], size=(world_size[1], world_size[0]), p=[1 - p_alive, p_alive])
+  
+
+np.random.seed(42)
+the_world =  create_world_via_numpy(WORLD_SIZE, P_ALIVE)
+print_world_as_a_single_string(the_world)
+```
+
+## Creating the world via nested loops
+Let us do the same but creating one element at a time, building a list of lists and then converting it to a [NumPy array](https://numpy.org/doc/stable/reference/generated/numpy.array.html). Here, you loop over rows and columns ([range](https://docs.python.org/3/library/functions.html#func-range) is definitely useful) and create one element at a time using [random.choices](https://docs.python.org/3/library/random.html#random.choices) function. It works the same way as [numpy.random.choice](https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html), but probabilities are called "weights". Be careful, as there is a function called [random.choice](https://docs.python.org/3/library/random.html#random.choice) (as in single "choice" not plural "choices") and it works almost the same way but does not allow you to specify weights/probabilities!
+
+Overall logic should be mostly straightforward. You create a list for every row and put these lists into a single list. Here, use conventional [for loops](#for-loop). For the row, you start with an empty list for the row and [extend](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) it with a list produced by [random.choice](https://docs.python.org/3/library/random.html#random.choice) (it returns a list, not a single value, hence our need to [extend](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) rather than [append](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists)!) Similarly, you start with an emply list for the world,  [appending](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) one row at a time. 
+Once you done, convert to a [NumPy array](https://numpy.org/doc/stable/reference/generated/numpy.array.html) and return.
+
+Function input and outputs are the same, the only change is how you implement the solution. My [random seed](https://docs.python.org/3/library/random.html#random.seed) was again 42.
+
+
+```{python echo=FALSE}
+import random
+
+def create_world_via_nested_loops(world_size, p_alive):
+  """Create a random world via nested loops
+  
+  Parameters
+  ----------
+  world_size : tuple
+  p_alive : float
+    Probability that cell is alive
+
+  Returns
+  ----------
+  numpy.array : dimensions are world_size 
+  """
+  world_as_list = []
+  for _ in range(world_size[1]):
+    row_as_list = []
+    for _ in range(world_size[0]):
+      row_as_list.extend(random.choices([" ", "*"], [1 - p_alive, p_alive]))
+    world_as_list.append(row_as_list)
+    
+  return np.array(world_as_list)
+
+random.seed(42)
+the_world =  create_world_via_nested_loops(WORLD_SIZE, P_ALIVE)
+print_world_as_a_single_string(the_world)
+```
+
+::: {.program}
+Implement `create_world_via_nested_loops` in `creation_utils.py` <br/>
+Test code in _code05.py_ using print function of your choice.
+:::
+
+## Creating the world via list comprehension
+Hopefully, you have realized already that as the only thing that the for loops are used for is building a list, so you should be thinking "This would be simpler with list comprehension!". Yes it would, at this is our third implementation `create_world_via_list_comprehension`. We will simplify our life but generating the whole row in one call by specifying `k` parameter of [random.choices](https://docs.python.org/3/library/random.html#random.choices) function. This way, we will get a list of `k` elements (what should `k` correspond to, width or height of our world?) and use list comprehension to build a list of rows. Then, convert to NumPy array and return. Same inputs and outputs, same functionality, just a slightly different implementation. Here, same [random seed](https://docs.python.org/3/library/random.html#random.seed) 42 gives us the same world.
+
+```{python echo=FALSE}
+def create_world_via_list_comprehension(world_size, p_alive):
+  """Create a random world via nested loops
+  
+  Parameters
+  ----------
+  world_size : tuple
+  p_alive : float
+    Probability that cell is alive
+
+  Returns
+  ----------
+  numpy.array : dimensions are world_size 
+  """
+  world_as_list = [random.choices([" ", "*"], [1 - p_alive, p_alive], k=world_size[0])
+                   for _ in range(world_size[1])]
+  return np.array(world_as_list)
+
+random.seed(42)
+the_world =  create_world_via_list_comprehension(WORLD_SIZE, P_ALIVE)
+print_world_as_a_single_string(the_world)
+```
+
+::: {.program}
+Implement `create_world_via_list_comprehension` in `creation_utils.py` <br/>
+Test code in _code06.py_ using print function of your choice.
+:::
+
+## Live and let die
+Recall the rules of simulation:
+
+1. Any live cell with two or three live neighbors survives.
+2. Any dead cell with three live neighbors becomes a live cell.
+3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+This means that for every cell, we need to count its neighbors the almost same way we [counted mines](#minesweeper-count-mines) in the minesweeper game. Why almost? When we counted mines, we knew that the cell itself is empty, otherwise we would have exploded. Here, we need to count the total number of live cells _not counting the cell itself_. Or, you can put it differently in that we need to count all cells and then subtracted the cell itself from that count. Here are a few examples for the glider world with both easy and edge cases. Remember, in the latter case you need to adjust the limits for your slices.
+
+![Example cell counts](images/game-of-life-cell-counts.svg){width=100% style="display: block; margin: 0 auto"}<br/>
+
+
+## Counting neighbors via slicing
+In our first approach, we will implement this functionality using NumPy array slicing, just as we did in the Minesweeper game. I suggest that you reread the [mine counting section](#minesweeper-count-mines) but do not just copy-paste the code that you created where. Remember, we are practicing here, so it is worth your effort to reinvent the code from scratch. Good news, it should go faster as you already have intuition on how to implement it.
+
+Create a function `count_neighbors_via_slicing()`. It should take just two parameters --- the world matrix and the position of the cell we are counting neighbors for --- and return an integer that goes from $0$ till $8$ (why only $8$?). Test this function using the glider world matrix, which you can find above.
+
+::: {.program}
+Implement `count_neighbors_via_slicing` in `evolution_utils.py` <br/>
+Test it in _code07.py_.
+:::
+
+```{python echo=FALSE, eval=FALSE}
+def count_neighbors_via_slicing(a_world, cell_pos):
+  """Count cell's neighbors via slicing
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  cell_pos : tuple
+    (row, col)
+    
+  Returns
+  ----------
+  int
+  """
+  top = max(cell_pos[0] - 1, 0)
+  bottom = min(cell_pos[0] + 2, a_world.shape[0])
+  left = max(cell_pos[1] - 1, 0)
+  right = min(cell_pos[1] + 2, a_world.shape[1])
+  
+  return np.sum(a_world[top:bottom, left:right] == "*") - (a_world[cell_pos[0], cell_pos[1]] == "*")
+
+count_neighbors_via_slicing(the_world, (0, 2))
+```
+
+## Counting neighbors via nested for loops
+Whatever you can do with slicing, you can do using [for loops](#for-loop)! Re-implement the same function but now, instead of using limits to make a simple slice, use them to loop over individual cells. Hint: [range](https://docs.python.org/3/library/functions.html#func-range) can accept both `start` and `stop` values. Otherwise, you only need a counter that starts at zero and is increased by one whenever the cell is alive.
+
+The function name will be `count_neighbors_via_for_loops()` and it should have the same inputs and output as `count_neighbors_via_slicing()`. And, of course, the counts it returns should be identical and match that in the figure above. Test it the same way as `count_neighbors_via_slicing()` to make sure.
+
+::: {.program}
+Implement `count_neighbors_via_for_loops` in `evolution_utils.py` <br/>
+Test it in _code08.py_.
+:::
+
+```{python echo=FALSE, eval=FALSE}
+def count_neighbors_via_for_loops(a_world, cell_pos):
+  """Count cell's neighbors via slicing
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  cell_pos : tuple
+    (row, col)
+    
+  Returns
+  ----------
+  int
+  """
+  top = max(cell_pos[0] - 1, 0)
+  bottom = min(cell_pos[0] + 2, a_world.shape[0])
+  left = max(cell_pos[1] - 1, 0)
+  right = min(cell_pos[1] + 2, a_world.shape[1])
+  
+  cell_count = 0
+  for irow in range(top, bottom):
+    for icol in range(left, right):
+      cell_count += a_world[irow, icol] == "*"
+  
+  return cell_count - (a_world[cell_pos[0], cell_pos[1]] == "*")
+
+count_neighbors_via_for_loops(the_world, (0, 0))
+```
+
+## Next generation
+
+The only function we need is one that create a _new_ matrix for the world of tomorrow. Why _new_? Because we need to create the matrix for future, using data from present. If we modify cell in place, we will alter the neighbor counts and whether cell lives or dies will depend on the order we examine them. Thus, create a new empty world (remember [numpy.full](https://numpy.org/doc/stable/reference/generated/numpy.full.html), could be useful!) and loop over all rows and columns. Count neighbors for every element and then apply the rules:
+
+1. Any live cell with two or three live neighbors survives.
+2. Any dead cell with three live neighbors becomes a live cell.
+3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+We will call the function `evolve` and should take the world matrix as an input and return, again, a _different_ matrix as output. Once you implemented the function, test on the glider world. Your initial and the next two states should look as follows:
+
+```{python echo=FALSE}
+def evolve(a_world):
+  """Evolve the world to the next state.
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  
+  Returns
+  ----------
+  numpy.array : same size as a_world
+  """
+  new_world = np.full(shape=a_world.shape, fill_value=" ")
+  
+  for irow in range(a_world.shape[0]):
+    for icol in range(a_world.shape[1]):
+      neighbors_count = count_neighbors_via_slicing(a_world, (irow, icol))
+      
+
+      # only conditions when cell lives or appears
+      if (neighbors_count == 3) or (neighbors_count == 2 and a_world[irow, icol] == "*"):
+        new_world[irow, icol] = "*"
+
+  return new_world
+  
+
+glider = np.array([[" ", " ", "*", " "],
+                   ["*", " ", "*", " "],
+                   [" ", "*", "*", " "],
+                   [" ", " ", " ", " "]])
+  
+print("Time 0")
+print_world_as_a_single_string(glider)
+
+glider2 = evolve(glider)
+print("\nTime 1")
+print_world_as_a_single_string(glider2)
+
+glider3 = evolve(glider2)
+print("\nTime 2")
+print_world_as_a_single_string(glider3)
+```
+
+::: {.program}
+Implement `evolve` in `evolution_utils.py` <br/>
+Test it in _code09.py_.
+:::
+
+## And repeat
+You have everything to create an evolving world. Implement a game using [while](#while-loop), so that it asks player for input after each time step and if the input is not empty, the game stops. This way, if you just press "Enter", the game does another round. If you enter anything else, it stops. Think about a while loop varible (no `while True:`!), what its initial state should be and how you modify/assign it in the loop (no if-else is needed!). 
+
+Here is an example of the world that has been created using `create_world_via_numpy()` function with seed 42. Note how the structure becomes stable at time 6.
+
+```{python echo=FALSE}
+WORLD_SIZE = (10, 5)
+P_ALIVE = 0.25
+
+np.random.seed(42)
+the_world = (WORLD_SIZE, P_ALIVE)
+print("Time 0")
+print_world_as_a_single_string(the_world)
+
+
+# doit = ""
+# while doit == "":
+#   the_world = evolve(the_world)
+#   print_world_as_a_single_string(the_world)
+#   doit = input()
+
+for t in range(7):
+  the_world = evolve(the_world)
+  print("Time %d"%(t + 1))
+  print_world_as_a_single_string(the_world)
+```
+
+
+::: {.program}
+Implement program in _code10.py_.
+:::
+
+## Wrap up
+Most excellent, zip your files and submit.
