@@ -100,7 +100,14 @@ print_world_via_nested_loop(the_world)
 ```
 
 ## Printing out via nested for loops
-The first approach is to 
+The first approach is print one element at a time by looping over rows and then looping over each element of the row. You know how to [loop over items](#for-loop), so you just need to think which value `end` parameter of the [print](https://docs.python.org/3/library/functions.html#print) do you use and when. Also, you need to translate the symbol from internal representation to the output using the `OUTPUT_MAP` dictionary (no if-elses are necessary!). Put the code into function `print_world_via_nested_loop`, which takes a single parameter (should be pretty obvious what it is). Document the function!
+
+::: {.program}
+Implement `print_world_via_nested_loop` in _utils.py_ <br/>
+Test it in _code01.py_.
+:::
+
+## Print each row as a single string
 
 
 ## Creating the world
