@@ -243,4 +243,95 @@ Recall the rules of simulation:
 2. Any dead cell with three live neighbors becomes a live cell.
 3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
-This means that for every cell, we need to count its neighbors the almost same way we [counted mines](#minesweeper-count-mines) in the minesweeper game. Why almost? When we counted mines, we knew that the cell itself is empty, otherwise we would have exploded. Here, we need to count the total number of live cells _not counting the cell itself_. This  
+This means that for every cell, we need to count its neighbors the almost same way we [counted mines](#minesweeper-count-mines) in the minesweeper game. Why almost? When we counted mines, we knew that the cell itself is empty, otherwise we would have exploded. Here, we need to count the total number of live cells _not counting the cell itself_. Or, you can put it differently in that we need to count all cells and then subtracted the cell itself from that count. Here are a few examples for the glider world with both easy and edge cases. Remember, in the latter case you need to adjust the limits for your slices.
+
+![Example cell counts](images/game-of-life-cell-counts.svg){width=100% style="display: block; margin: 0 auto"}<br/>
+
+
+## Counting neighbors via slicing
+In our first approach, we will implement this functionality using NumPy array slicing, just as we did in the Minesweeper game. I suggest that you reread the [mine counting section](#minesweeper-count-mines) but do not just copy-paste the code that you created where. Remember, we are practicing here, so it is worth your effort to reinvent the code from scratch. Good news, it should go faster as you already have intuition on how to implement it.
+
+Create a function `count_neighbors_via_slicing()`. It should take just two parameters --- the world matrix and the position of the cell we are counting neighbors for --- and return an integer that goes from $0$ till $8$ (why only $8$?). Test this function using the glider world matrix, which you can find above.
+
+::: {.program}
+Implement `count_neighbors_via_slicing` in `evolution_utils.py` <br/>
+Test it in _code07.py_.
+:::
+
+```{python echo=FALSE, eval=FALSE}
+def count_neighbors_via_slicing(a_world, cell_pos):
+  """Count cell's neighbors via slicing
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  cell_pos : tuple
+    (row, col)
+    
+  Returns
+  ----------
+  int
+  """
+  top = max(cell_pos[0] - 1, 0)
+  bottom = min(cell_pos[0] + 2, a_world.shape[0])
+  left = max(cell_pos[1] - 1, 0)
+  right = min(cell_pos[1] + 2, a_world.shape[1])
+  
+  return np.sum(a_world[top:bottom, left:right] == "*") - (a_world[cell_pos[1], cell_pos[0]] == "*")
+
+count_neighbors_via_slicing(the_world, (0, 2))
+```
+
+## Counting neighbors via nested for loops
+Whatever you can do with slicing, you can do using [for loops](#for-loop)! Re-implement the same function but now, instead of using limits to make a simple slice, use them to loop over individual cells. Hint: [range](https://docs.python.org/3/library/functions.html#func-range) can accept both `start` and `stop` values. Otherwise, you only need a counter that starts at zero and is increased by one whenever the cell is alive.
+
+The function name will be `count_neighbors_via_for_loops()` and it should have the same inputs and output as `count_neighbors_via_slicing()`. And, of course, the counts it returns should be identical and match that in the figure above. Test it the same way as `count_neighbors_via_slicing()` to make sure.
+
+::: {.program}
+Implement `count_neighbors_via_for_loops` in `evolution_utils.py` <br/>
+Test it in _code08.py_.
+:::
+
+```{python echo=FALSE, eval=FALSE}
+def count_neighbors_via_for_loops(a_world, cell_pos):
+  """Count cell's neighbors via slicing
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  cell_pos : tuple
+    (row, col)
+    
+  Returns
+  ----------
+  int
+  """
+  top = max(cell_pos[0] - 1, 0)
+  bottom = min(cell_pos[0] + 2, a_world.shape[0])
+  left = max(cell_pos[1] - 1, 0)
+  right = min(cell_pos[1] + 2, a_world.shape[1])
+  
+  cell_count = 0
+  for irow in range(top, bottom):
+    for icol in range(left, right):
+      cell_count += a_world[irow, icol] == "*"
+  
+  return cell_count - (a_world[cell_pos[1], cell_pos[0]] == "*")
+
+count_neighbors_via_slicing(the_world, (1, 1))
+```
+
+## Next generation
+
+The only function we need is one that create a _new_ matrix for the world of tomorrow. Why _new_? Because we need to create the matrix for future, using data from present. If we modify cell in place, we will alter the neighbor counts and whether cell lives or dies will depend on the order we examine them. Thus, create a new empty world (remember [numpy.full](https://numpy.org/doc/stable/reference/generated/numpy.full.html), could be useful!) and loop over all rows and columns. Count neighbors for every element and then apply the rules:
+
+1. Any live cell with two or three live neighbors survives.
+2. Any dead cell with three live neighbors becomes a live cell.
+3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+We will call the function `evolve` and should take the world matrix as an input and return, again, a _different_ matrix as output. Once you implemented the function, test on the glider world. Your initial and follow up states should look as follows:
+
+```{python echo=FALSE}
+
+```
+
