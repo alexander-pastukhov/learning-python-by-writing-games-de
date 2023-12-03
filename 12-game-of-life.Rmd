@@ -277,7 +277,7 @@ def count_neighbors_via_slicing(a_world, cell_pos):
   left = max(cell_pos[1] - 1, 0)
   right = min(cell_pos[1] + 2, a_world.shape[1])
   
-  return np.sum(a_world[top:bottom, left:right] == "*") - (a_world[cell_pos[1], cell_pos[0]] == "*")
+  return np.sum(a_world[top:bottom, left:right] == "*") - (a_world[cell_pos[0], cell_pos[1]] == "*")
 
 count_neighbors_via_slicing(the_world, (0, 2))
 ```
@@ -316,9 +316,9 @@ def count_neighbors_via_for_loops(a_world, cell_pos):
     for icol in range(left, right):
       cell_count += a_world[irow, icol] == "*"
   
-  return cell_count - (a_world[cell_pos[1], cell_pos[0]] == "*")
+  return cell_count - (a_world[cell_pos[0], cell_pos[1]] == "*")
 
-count_neighbors_via_slicing(the_world, (1, 1))
+count_neighbors_via_for_loops(the_world, (0, 0))
 ```
 
 ## Next generation
@@ -329,9 +329,87 @@ The only function we need is one that create a _new_ matrix for the world of tom
 2. Any dead cell with three live neighbors becomes a live cell.
 3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
-We will call the function `evolve` and should take the world matrix as an input and return, again, a _different_ matrix as output. Once you implemented the function, test on the glider world. Your initial and follow up states should look as follows:
+We will call the function `evolve` and should take the world matrix as an input and return, again, a _different_ matrix as output. Once you implemented the function, test on the glider world. Your initial and the next two states should look as follows:
 
 ```{python echo=FALSE}
+def evolve(a_world):
+  """Evolve the world to the next state.
+  
+  Parameters
+  ----------
+  a_world : numpy.array
+  
+  Returns
+  ----------
+  numpy.array : same size as a_world
+  """
+  new_world = np.full(shape=a_world.shape, fill_value=" ")
+  
+  for irow in range(a_world.shape[0]):
+    for icol in range(a_world.shape[1]):
+      neighbors_count = count_neighbors_via_slicing(a_world, (irow, icol))
+      
 
+      # only conditions when cell lives or appears
+      if (neighbors_count == 3) or (neighbors_count == 2 and a_world[irow, icol] == "*"):
+        new_world[irow, icol] = "*"
+
+  return new_world
+  
+
+glider = np.array([[" ", " ", "*", " "],
+                   ["*", " ", "*", " "],
+                   [" ", "*", "*", " "],
+                   [" ", " ", " ", " "]])
+  
+print("Time 0")
+print_world_as_a_single_string(glider)
+
+glider2 = evolve(glider)
+print("\nTime 1")
+print_world_as_a_single_string(glider2)
+
+glider3 = evolve(glider2)
+print("\nTime 2")
+print_world_as_a_single_string(glider3)
 ```
 
+::: {.program}
+Implement `evolve` in `evolution_utils.py` <br/>
+Test it in _code09.py_.
+:::
+
+## And repeat
+You have everything to create an evolving world. Implement a game using [while](#while-loop), so that it asks player for input after each time step and if the input is not empty, the game stops. This way, if you just press "Enter", the game does another round. If you enter anything else, it stops. Think about a while loop varible (no `while True:`!), what its initial state should be and how you modify/assign it in the loop (no if-else is needed!). 
+
+Here is an example of the world that has been created using `create_world_via_numpy()` function with seed 42. Note how the structure becomes stable at time 6.
+
+```{python echo=FALSE}
+WORLD_SIZE = (10, 5)
+P_ALIVE = 0.25
+
+np.random.seed(42)
+the_world = (WORLD_SIZE, P_ALIVE)
+print("Time 0")
+print_world_as_a_single_string(the_world)
+
+
+# doit = ""
+# while doit == "":
+#   the_world = evolve(the_world)
+#   print_world_as_a_single_string(the_world)
+#   doit = input()
+
+for t in range(7):
+  the_world = evolve(the_world)
+  print("Time %d"%(t + 1))
+  print_world_as_a_single_string(the_world)
+```
+
+
+::: {.program}
+Implement program in _code10.py_.
+:::
+
+## Wrap up
+Most excellent, zip your files and submit.
