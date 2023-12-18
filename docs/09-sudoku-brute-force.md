@@ -365,13 +365,13 @@ Du weißt bereits, wie man eine geordnete Matrix erstellt, die vier oder neun Ze
 an_array = np.arange(5)
 np.random.shuffle(an_array)
 print(an_array)
-#> [4 2 0 3 1]
+#> [2 4 3 0 1]
 
 # Einen Teil eines Arrays mischen
 an_array = np.arange(5)
 np.random.shuffle(an_array[:3])
 print(an_array)
-#> [0 1 2 3 4]
+#> [1 0 2 3 4]
 ```
 
 Schreibe den Code, der eine $4\times4$-Matrix erstellt (definiere die Größe der Matrix über die Konstante `SUDOKU_SIZE`), die nach Zeilen geordnet ist 

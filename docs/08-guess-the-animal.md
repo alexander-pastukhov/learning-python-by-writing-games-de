@@ -302,12 +302,12 @@ Wichtiger Hinweis! Denke daran, dass `tree` eine _Referenz_ ist, daher wird dir 
 dict1 = {"a": 1}
 dict2 = dict1
 print(id(dict1), id(dict2), dict1 is dict2)
-#> 1705078947520 1705078947520 True
+#> 1855593973632 1855593973632 True
 
 # Das Objekt referenziert sich selbst!
 dict1["a"] = dict1
 print(id(dict1), id(dict1["a"]), dict1 is dict1["a"])
-#> 1705078947520 1705078947520 True
+#> 1855593973632 1855593973632 True
 ```
 
 Es gibt zwei Wege, dieses Problem zu lösen. Du kannst ein neues Wörterbuch erstellen, indem du die _Feld-_ Werte einzeln zuweist. Da unsere "Tier"-Wörterbuchfeldwerte unveränderliche Zeichenketten sind, wird dieses Vorgehen ein _anderes_ Objekt mit dem gleichen _Inhalt_ erstellen.
@@ -323,7 +323,7 @@ print(dict1 == dict2)
 
 # verschiedene Objekte
 print(id(dict1), id(dict2), dict1 is dict2)
-#> 1705078863744 1705079025152 False
+#> 1855593862336 1855594022400 False
 ```
 
 Alternativ kannst du entweder eine flache [Kopie](https://docs.python.org/3/library/copy.html#copy.copy) oder eine [tiefe Kopie](https://docs.python.org/3/library/copy.html#copy.deepcopy) von einem Objekt erstellen, indem du die [copy](https://docs.python.org/3/library/copy.html) Bibliothek verwendest. Die erstere - [copy](https://docs.python.org/3/library/copy.html#copy.copy) - erstellt eine "flache" Kopie indem sie den Kontext "wie er ist" kopiert. In diesem Fall wird eine Referenz zu einem anderen Objekt kopiert, so wie sie ist, und verweist immer noch auf das gleiche Objekt. Die [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) geht tiefer und erstellt eine Kopie für das Objekt, auf das das Original verweist. Letzteres ist rechenintensiver (du erstellst Kopien von _allem_!), aber es garantiert, dass eine Kopie erstellt wird, die keine versteckten Verbindungen zum Original hat. Also, im Zweifelsfall, nimm die [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy). In unserem Fall gibt es keinen Unterschied, da unser ursprüngliches Wörterbuch gerade mal zwei unveränderliche Zeichenketten hat, so dass sowohl [copy](https://docs.python.org/3/library/copy.html#copy.copy) als auch [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy) das Gleiche tun würden.

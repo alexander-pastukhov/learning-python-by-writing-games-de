@@ -1,0 +1,43 @@
+# Practice {#practice}
+
+Practice makes perfect, so let us practice. Below are problems similar to that for the exam. Some problems can (should) be solved in numerous ways. Create separate file for each problem.
+
+## Problem 01
+
+Generate a list of 5 random integer number between 0 and 10. 
+
+* 01A: Use for loop to find the smallest element in the list. Print it out using string formatting with a nice message.
+* 01B: Use NumPy to find the largest element in the list. Print it out using string formatting with a nice message.
+
+## Problem 02
+
+Create a dictionary with 5 entries (your choice of field names and values). Print out "key: value" pairs using for loop.
+
+## Problem 03
+Write a function that generates a random number between 1 and 10 until it gets value specified in a parameter `desired_value`. It should return _number of attempts_ that were required to get this number. For example, if already the first value was equal to `desired_value` it should return $1$. If this happened on the second attempt, it should return $2$, etc. Document function. Put function in _problem03_utils.py_, use it in the script, pick arbitrary but valid number for `desired_value`.
+
+## Problem 04
+Call function from **Problem 03** 100 times to generate a list of 100 waiting times. 
+
+* 04A: Compute mean waiting time using for loop.
+* 04B: Compute median waiting time using NumPy.
+
+## Problem 05
+Generate a list of 100 normally distributed values. Compute a new list with their exponent using
+
+* 05A: For loop
+* 05A: List comprehension
+* 05A: NumPy
+
+## Problem 06
+Generate to lists of random integers between -5 and 5 (10 values each). Produce a new loop that has a largest element from each list. For example, if lists are `(-1, 2, 3...)` and `(-4, 3, 3, ...)` then new list should be `(-1, 3, 3, ...)`. Produce new list using 
+
+* 06A: For loop
+* 06B: Loop comprehension
+
+## Problem 07
+Create a function that computes series $1 + \frac{1}{2} + \frac{1}{3}+ \frac{1}{4}+...$ up to arbitrary value $n$. The function should use recursion, computing just on value and passing the next element computation to itself. Create another function that performs the same computation but using for loop. Functions go to  _problem07_utils.py_, show that both functions return the same value in the script.
+
+## Problem 08
+Ask user for input until they enter valid number that is larger than 35.
+
